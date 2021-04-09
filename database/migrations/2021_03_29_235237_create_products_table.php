@@ -16,9 +16,9 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('categoryId');
-            $table->unsignedBigInteger('typeId');
-            $table->unsignedBigInteger('brandId');
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('type_id');
+            $table->unsignedBigInteger('brand_id');
             $table->unsignedDecimal('costo');
             $table->unsignedDecimal('precio');
             $table->unsignedBigInteger('stock');
@@ -32,9 +32,9 @@ class CreateProductsTable extends Migration
             $table->unsignedDecimal('descuento')->default(0.0);
             $table->string('foto',250);
 
-            $table->foreign('categoryId')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('typeId')->references('id')->on('types')->onDelete('cascade');
-            $table->foreign('brandId')->references('id')->on('brands')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
 
         });
     }

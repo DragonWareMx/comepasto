@@ -31,5 +31,11 @@ class Product extends Model
         return $this->belongsToMany('App\Models\Sale');
     }
 
+    public function recipe(){
+        return $this->belongsToMany('App\Models\Recipe');
+    }
     
+    public function img(){
+        return $this->hasMany('App\Models\Img');
+    }
 }

@@ -16,12 +16,12 @@ class CreateBuysTable extends Migration
         Schema::create('buys', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('supplierId');
+            $table->unsignedBigInteger('supplier_id');
             $table->unsignedDecimal('costoProducto');
             $table->unsignedDecimal('costoEnvio')->nullable();
             $table->enum('formaPago',['efectivo','transferencia','depósito']);
             $table->unsignedDecimal('total');
-            $table->foreign('supplierId')->references('id')->on('suppliers')->onDelete('cascade');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
         });
     }
 

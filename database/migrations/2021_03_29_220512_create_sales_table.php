@@ -16,7 +16,7 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('clientId')->nullable();
+            $table->unsignedBigInteger('client_id')->nullable();
             $table->unsignedDecimal('costoProducto');
             $table->unsignedDecimal('costoEnvio');
             $table->enum('formaPago',['paypal','stripe']);
@@ -24,7 +24,7 @@ class CreateSalesTable extends Migration
             $table->unsignedDecimal('descuento')->default(0.0);
             $table->unsignedDecimal('ganancia');
 
-            $table->foreign('clientId')->references('id')->on('clients')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
         });
     }
 

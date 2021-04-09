@@ -21,6 +21,7 @@ class CreateClientsTable extends Migration
             $table->string('direccion',250);
             $table->string('tel',10)->unique()->nullable();
             $table->string('fb',250)->nullable();
+            
         });
     }
 
