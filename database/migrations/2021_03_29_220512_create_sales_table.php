@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateSalesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('sales', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->unsignedBigInteger('clientId')->nullable();
+            $table->unsignedDecimal('costoProducto');
+            $table->unsignedDecimal('costoEnvio');
+            $table->enum('formaPago',['paypal','stripe']);
+            $table->unsignedDecimal('total');
+            $table->unsignedDecimal('descuento')->default(0.0);
+            $table->unsignedDecimal('ganancia');
+
+            $table->foreign('clientId')->references('id')->on('clients')->onDelete('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('sales');
+    }
+}

@@ -1,0 +1,114 @@
+#iconofb:hover{
+    width:50px;
+    transition: width 0.5s;
+    -moz-transition:width 0.5s;
+    -webkit-transition:width 0.5s;
+    -o-transition:width 0.5s;
+}
+#iconoig:hover {
+    width:50px;
+    transition: width 0.5s;
+    -moz-transition:width 0.5s;
+    -webkit-transition:width 0.5s;
+    -o-transition:width 0.5s;}
+#iconowa:hover {
+    width:50px;
+    transition: width 0.5s;
+    -moz-transition:width 0.5s;
+    -webkit-transition:width 0.5s;
+    -o-transition:width 0.5s;
+}
+#iconomail:hover {
+    width:50px;
+    transition: width 0.5s;
+    -moz-transition:width 0.5s;
+    -webkit-transition:width 0.5s;
+    -o-transition:width 0.5s;
+}
+#bagdiv {
+    opacity: 0;
+    transition: opacity 0.8s;
+    -moz-transition:opacity 0.8s;
+    -webkit-transition:opacity 0.8s;
+    -o-transition:opacity 0.8s;
+}
+#prueba:hover ~ #bagdiv{
+    opacity: 1;
+}
+#prueba:hover p{
+    color: #FFDE59 !important;
+}
+#doit:hover {
+    width: 100px;
+    transition: width 0.5s;
+    -moz-transition:width 0.5s;
+    -webkit-transition:width 0.5s;
+    -o-transition:width 0.5s;
+}
+.linea {
+    width:0px;
+    border:0;    
+    background-color: white;
+    transition: all 0.10s;
+    -moz-transition:all 0.5s;
+    -webkit-transition:all 0.5s;
+    -o-transition:all 0.5s;
+    border-radius: 5px;
+}
+.menu:hover ~ .linea{
+    width:180px;
+    height: 1.5px;
+}
+
+.cont_tienda{
+    display: flex;
+    width: 100%;
+}
+.producto {
+    width:30%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.img_product {
+    width:80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.info_product {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5px;
+    margin-bottom: 10%;
+}
+
+@media (max-width:600px){
+    .title {
+        font-size: 70px !important;
+    }
+    .redes {
+        width: 30px;
+    }
+}
+@media (max-width:450px){
+    .title {
+        font-size: 50px !important;
+    }
+    .redes {
+        width: 20px !important;
+        margin:10px !important;
+    }
+    #menu {
+        margin:3px !important;
+    }
+    #menutxt{
+        font-size: 18px !important;
+    }
+    #imgbag {
+        width: 60px !important;
+    }
+    #prueba {
+        width:60px !important;
+    }
+}
