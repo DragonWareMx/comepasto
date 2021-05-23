@@ -1,0 +1,9 @@
+@font-face {
+    font-family: Atma;
+    src: url(../Atma-Light.ttf);
+}
+
+
+.Atma{
+    font-family: Atma;
+}
