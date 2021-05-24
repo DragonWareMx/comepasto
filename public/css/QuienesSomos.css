@@ -5,3 +5,12 @@
 .Oxygen{
     font-family: "Oxygen";
 }
+
+.quienes_somos{
+    background-image: url('/img/CATEGORIAS/backgroundblue.jpg');
+}
+
+.quienes_somos_content{
+    position: fixed;
+    z-index: 9999;
+}
