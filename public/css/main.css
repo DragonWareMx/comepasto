@@ -1,0 +1,47 @@
+@font-face {
+    font-family: Atma;
+    src: url(/fonts/Atma-Light.ttf);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Atma;
+    src: url(/fonts/Atma-Regular.ttf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Atma;
+    src: url(/fonts/Atma-Medium.ttf);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Atma;
+    src: url(/fonts/Atma-SemiBold.ttf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Atma;
+    src: url(/fonts/Atma-Bold.ttf);
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: Oxygen;
+    src: url(/fonts/Oxygen-Bold.ttf);
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: Oxygen;
+    src: url(/fonts/Oxygen-Regular.ttf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Oxygen;
+    src: url(/fonts/Oxygen-Light.ttf);
+    font-weight: 300;
+}

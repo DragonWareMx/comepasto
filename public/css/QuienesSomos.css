@@ -1,9 +1,7 @@
-@font-face {
-    font-family: Atma;
-    src: url(../Atma-Light.ttf);
+.Atma{
+    font-family: "Atma";
 }
 
-
-.Atma{
-    font-family: Atma;
+.Oxygen{
+    font-family: "Oxygen";
 }
