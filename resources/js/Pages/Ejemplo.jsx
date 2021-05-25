@@ -1,7 +1,8 @@
-import React from 'react'
+import React from 'react';
+import Layout from '../layouts/Layout';
 
 
-export default function Welcome() {
+const Welcome = () => {
     return (
         <div>
             <h1>Welcome</h1>
@@ -9,3 +10,7 @@ export default function Welcome() {
         </div >
     )
 }
+
+Welcome.layout = page => <Layout children={page} title="Inicio" pageTitle="Inicio" />
+
+export default Welcome

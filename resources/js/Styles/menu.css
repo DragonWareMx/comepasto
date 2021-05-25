@@ -1,0 +1,108 @@
+.footer-main{
+    width: 100%;
+    min-height: 108px;
+    background-color: #1DA3A8;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px 30px;
+}
+
+.footer-left{
+    width: 30%;
+    align-items: flex-end;
+    display: flex;
+}
+
+.footer-middle{
+    width: 30%;
+    font-family: Atma;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    text-align: center;
+
+    color: #FFFFFF;
+}
+
+.footer-right{
+    width: 30%;
+    text-align: end;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.footer-icons{
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0px auto 11px auto;
+}
+
+.footer-right a{
+    text-decoration: none;
+    font-family: Atma;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 23px;
+
+    color: #FFFFFF;
+}
+
+.footer-come{
+    font-family: "Fredoka One";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 36px;
+
+    color: #FFDE59;
+    margin-top: 10px;
+}
+
+.footer-copy{
+    font-family: Atma;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 23px;
+    color: #FFFFFF;
+}
+
+@media (max-width: 1200px) {
+    .footer-icons {
+      width: 60%;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .footer-icons {
+      width: 80%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .footer-icons {
+      width: 40%;
+    }
+    .footer-left, .footer-right, .footer-middle{
+        width: 100%;
+    }
+
+    .footer-left{
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .footer-middle{
+      margin-bottom: 15px;
+    }
+
+    .footer-right{
+      justify-content: center;
+    }
+  }
