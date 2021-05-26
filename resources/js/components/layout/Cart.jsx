@@ -75,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
 
 
         color: "#474747",
+        marginRight: 10
     },
     precio: {
         fontFamily: "Oxygen",
@@ -114,11 +115,27 @@ const useStyles = makeStyles((theme) => ({
         lineHeight: "16px",
 
         color: "#595959",
-        marginTop: 10
+        marginTop: 10,
+        marginRight: 10
+    },
+    precioTotal: {
+        fontFamily: "Oxygen",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: "15px",
+        lineHeight: "19px",
+
+        color: "#1DA3A8",
+        marginTop: 10,
+        marginRight: 10,
+        marginLeft: 10
     },
     inputSinFlechas: {
         "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
             display: "none"
+        },
+        "& input":{
+            width: "26px"
         },
         height: 33,
         paddingLeft: 0,
@@ -169,29 +186,31 @@ export default function Footer() {
                         {/* PRODUCTO */}
                         <Grid container spacing={2}>
                             {/* Imagen del producto */}
-                            <Grid item>
+                            <Grid item xs={3}>
                                 <ButtonBase>
                                     <img className={classes.img} alt="complex" src="/img/PRODUCTOS/1.png" />
                                 </ButtonBase>
                             </Grid>
 
-                            <Grid item xs={12} sm container>
+                            <Grid item xs container>
                                 {/* Nombre del producto */}
                                 <Grid item xs={12}>
-                                    <Typography gutterBottom variant="subtitle1" className={classes.nombreProducto}>
-                                        Nombre del producto
-                                    </Typography>
+                                    <InertiaLink href="/producto" style={{textDecoration: "none"}}>
+                                        <Typography gutterBottom className={classes.nombreProducto}>
+                                            Nombre del productoNombre del productoNombre del productoNombre del productoNombre del producto
+                                        </Typography>
+                                    </InertiaLink>
                                 </Grid>
 
                                 {/* Precios */}
                                 <Grid item xs={12} container spacing={1}>
                                     <Grid item >
-                                        <Typography gutterBottom variant="subtitle1" className={classes.precioDescuento} align="left">
+                                        <Typography gutterBottom className={classes.precioDescuento} align="left">
                                             $99.99 MXN
                                         </Typography>
                                     </Grid>
                                     <Grid item >
-                                        <Typography gutterBottom variant="subtitle1" className={classes.precio} align="left">
+                                        <Typography gutterBottom  className={classes.precio} align="left">
                                             $80.50 MXN
                                         </Typography>
                                     </Grid>
@@ -200,12 +219,12 @@ export default function Footer() {
                                 {/* Cantidad */}
                                 <Grid item xs={12} container spacing={1}>
                                     <Grid item xs container alignItems="center" justify="flex-end">
-                                        <Typography gutterBottom variant="subtitle1" className={classes.cantidad} align="right">
+                                        <Typography gutterBottom className={classes.cantidad} align="right">
                                             Cantidad
                                         </Typography>
                                     </Grid>
 
-                                    <Grid item xs={6}>
+                                    <Grid item xs container justify="flex-end">
                                         <OutlinedInput type="number"
                                         className={classes.inputSinFlechas}
                                         endAdornment={
@@ -231,41 +250,29 @@ export default function Footer() {
                                     
                                 {/* Precio */}
                                 <Grid item xs={12}>
-                                    <Typography gutterBottom variant="subtitle1" className={classes.precioProducto} align="right">
+                                    <Typography gutterBottom className={classes.precioProducto} align="right">
                                         1x$80.50
                                     </Typography>
                                 </Grid>
                             </Grid>
-                            
-                            {/* <Grid item xs={12} sm container>
-                                <Grid item xs container direction="column" spacing={2}>
-                                    <Grid item xs>
-                                        <Typography gutterBottom variant="subtitle1">
-                                            Standard license
-                                        </Typography>
-
-                                        <Typography variant="body2" gutterBottom>
-                                            Full resolution 1920x1080 • JPEG
-                                        </Typography>
-
-                                        <Typography variant="body2" color="textSecondary">
-                                            ID: 1030114
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="body2" style={{ cursor: 'pointer' }}>
-                                            Remove
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid item>
-                                    <Typography variant="subtitle1">$19.00</Typography>
-                                </Grid>
-                            </Grid> */}
                         </Grid>
                         
                         <Divider variant="middle" />
+
+                        {/* TOTAL */}
+                        <Grid item xs={12} container justify="space-between">
+                            <Grid item>
+                                <Typography gutterBottom className={classes.precioTotal} align="left">
+                                    Total:
+                                </Typography>
+                            </Grid>
+
+                            <Grid item>
+                            <Typography gutterBottom className={classes.precioTotal} align="right">
+                                $80.50
+                            </Typography>
+                            </Grid>
+                        </Grid>
 
                     </CardContent>
 
