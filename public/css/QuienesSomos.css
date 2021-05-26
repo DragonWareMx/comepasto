@@ -8,9 +8,69 @@
 
 .quienes_somos{
     background-image: url('/img/CATEGORIAS/backgroundblue.jpg');
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center;
+    margin-top:10px;
+    padding-top: 0px;
 }
 
 .quienes_somos_content{
-    position: fixed;
-    z-index: 9999;
+    width: 100%;
+    background: rgba(29, 163, 168, 0.8);
+    padding-top: 75px;
+    padding-bottom:68px;
+}
+
+.quienes_title{
+    color: #FFDE59;
+    font-weight: 600;
+    font-size: 30px;
+    font-family: "Atma";
+}
+
+.quienes_title2{
+    color:#FFFFFF;
+    font-size: 30px;
+    font-family: "Atma";
+    font-weight: 200;
+    padding-left: 10px;
+}
+
+.quienes_subtitle{
+    font-family: "Atma";
+    font-weight: 500;
+    font-size: 20px;
+    color: #FFFFFF;
+    padding-top:8px;
+}
+
+.quienes_info{
+    font-family: Oxygen;
+    font-weight: normal;
+    font-size: 17px;
+    color: #FFFFFF;
+    padding-top: 16px;
+}
+
+.quienes_img{
+    width: 100%;
+    object-fit: cover;
+}
+
+.quienes_card{
+    background: #FFFFFF;
+    border: 1px solid #E3E3E3;
+    box-sizing: border-box;
+    border-radius: 2px;
+    width: 30%;
+}
+
+
+.red{
+    background-color:red;
+}
+
+.black{
+    background-color:#191919;
 }

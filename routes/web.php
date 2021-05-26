@@ -30,4 +30,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/quienes-somos', [App\Http\Controllers\quienesSomosController::class, 'index'])->name('quienesSomos');
+Route::get('/quienessomos', [App\Http\Controllers\quienesSomosController::class, 'index'])->name('quienesSomos');
