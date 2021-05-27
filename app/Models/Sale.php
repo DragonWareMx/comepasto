@@ -10,7 +10,7 @@ class Sale extends Model
     use HasFactory;
 
     public function client(){
-        return $this->belongsTo('App\Models\Client');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function product(){

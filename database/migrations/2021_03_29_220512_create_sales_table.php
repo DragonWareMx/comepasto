@@ -19,12 +19,12 @@ class CreateSalesTable extends Migration
             $table->unsignedBigInteger('client_id')->nullable();
             $table->unsignedDecimal('costoProducto');
             $table->unsignedDecimal('costoEnvio');
-            $table->enum('formaPago',['paypal','stripe']);
+            $table->enum('formaPago',['paypal','stripe','efectivo','transferencia']);
             $table->unsignedDecimal('total');
             $table->unsignedDecimal('descuento')->default(0.0);
             $table->unsignedDecimal('ganancia');
 
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -38,4 +38,8 @@ class Product extends Model
     public function img(){
         return $this->hasMany('App\Models\Img');
     }
+
+    public function cart(){
+        return $this->belongsToMany('App\Models\Cart');
+    }
 }
