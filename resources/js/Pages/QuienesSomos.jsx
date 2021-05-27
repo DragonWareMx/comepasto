@@ -66,6 +66,33 @@ const QuienesSomos = () => {
                 <Grid container direction="row" justify="center" style={{marginTop:50,marginBottom:50}}>
                     <Grid item xs={12} className="quienes_marcas_title">MARCAS CON LAS QUE TRABAJAMOS</Grid>
                     <Grid item xs={12} className="quienes_marcas_text">Texto si estás interesado en trabajar o unirte con nuestros productos <a href="#" className="quienes_contactanos">Contáctanos</a>, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua lorem ipsum dolor sit amet. </Grid>
+                    <Grid container direction="row" justify="space-around" spacing={1} xs={12}>
+                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
+                            <img className="quienes_marca" src="/img/logos/Beyond_Meat-Logo.wine.png" alt="" />
+                        </Grid>
+                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
+                            <img className="quienes_marca" src="/img/logos/Logo_color_Mesa-de-trabajo-1.png" alt="" />
+                        </Grid>
+                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
+                            <img className="quienes_marca" src="/img/logos/logo-slider.png" alt="" />
+                        </Grid>
+                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
+                            <img className="quienes_marca" src="/img/logos/logotipo-morama.png" alt="" />
+                        </Grid>
+                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
+                            <img className="quienes_marca" src="/img/logos/Beyond_Meat-Logo.wine.png" alt="" />
+                        </Grid>
+                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
+                            <img className="quienes_marca" src="/img/logos/Logo_color_Mesa-de-trabajo-1.png" alt="" />
+                        </Grid>
+                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
+                            <img className="quienes_marca" src="/img/logos/logo-slider.png" alt="" />
+                        </Grid>
+                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
+                            <img className="quienes_marca" src="/img/logos/logotipo-morama.png" alt="" />
+                        </Grid>
+                        
+                    </Grid>
                 </Grid>
             </Container>
         </>

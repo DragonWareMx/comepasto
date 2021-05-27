@@ -126,6 +126,11 @@
     font-weight: bold;
 }
 
+.quienes_marca{
+    width: 100%;
+    object-fit: cover;
+}
+
 .red{
     background-color:red;
 }
