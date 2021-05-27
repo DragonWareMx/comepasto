@@ -104,6 +104,27 @@
     display: none;
 }
 
+.quienes_marcas_title{
+    font-family: "Atma";
+    font-weight: 600;
+    line-height: 49px;
+    font-size: 30px;
+    color: #1DA3A8;
+    text-align: center;
+}
+.quienes_marcas_text{
+    font-family: "Oxygen";
+    font-weight: normal;
+    font-size: 17px;
+    text-align: center;
+    color: #535353;
+}
+
+.quienes_contactanos{
+    color: #1DA3A8;
+    text-decoration: none;
+    font-weight: bold;
+}
 
 .red{
     background-color:red;

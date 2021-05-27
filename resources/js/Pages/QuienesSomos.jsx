@@ -62,6 +62,12 @@ const QuienesSomos = () => {
                     </Container>
                 </div>
             </div>
+            <Container>
+                <Grid container direction="row" justify="center" style={{marginTop:50,marginBottom:50}}>
+                    <Grid item xs={12} className="quienes_marcas_title">MARCAS CON LAS QUE TRABAJAMOS</Grid>
+                    <Grid item xs={12} className="quienes_marcas_text">Texto si estás interesado en trabajar o unirte con nuestros productos <a href="#" className="quienes_contactanos">Contáctanos</a>, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua lorem ipsum dolor sit amet. </Grid>
+                </Grid>
+            </Container>
         </>
     )
 }
