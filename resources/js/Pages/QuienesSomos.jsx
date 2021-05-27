@@ -3,6 +3,9 @@ import '/css/QuienesSomos.css';
 import Layout from '../layouts/Layout';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
+import LocalShippingOutlinedIcon from '@material-ui/icons/LocalShippingOutlined';
+import LockIcon from '@material-ui/icons/Lock';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 
 const QuienesSomos = () => {
     return (
@@ -25,15 +28,35 @@ const QuienesSomos = () => {
                                 <img className="quienes_img" src="/img/ilustraciones/In-no-time-amico-2.png" alt="" />
                             </Grid>
                         </Grid>
-                        <Grid container direction="row" justify="space-between" item xs={12}>
+                        <Grid container direction="row" justify="space-between" item xs={12} style={{marginTop:20}}>
                             <Grid item className="quienes_card">
-                                    hola
+                                    <Grid container item justify="center" alignItems="center" xs={4}>
+                                        <Grid className="quienes_card_circle"><LocalShippingOutlinedIcon style={{fontSize:40}} className="quienes_card_icon"></LocalShippingOutlinedIcon></Grid>
+                                    </Grid>
+                                    <Grid item xs={8} style={{paddingRight:17,paddingBottom:10}}>
+                                        <Grid row className="quienes_card_title">Envíos rápidos</Grid>
+                                        <Grid row className="quienes_card_text">Texto breve sobre los envíos rápidos y seguros, lorem ipsum dolor sit amet</Grid>
+                                    </Grid>
                             </Grid>
+                            <div className="quienes_cards_spaces">{/*esto funciona como un espacio*/}</div>
                             <Grid item className="quienes_card">
-                                    hola
+                                    <Grid container item justify="center" alignItems="center" xs={4}>
+                                        <Grid className="quienes_card_circle"><LockIcon style={{fontSize:40}} className="quienes_card_icon"></LockIcon></Grid>
+                                    </Grid>
+                                    <Grid item xs={8} style={{paddingRight:17,paddingBottom:10}}>
+                                        <Grid row className="quienes_card_title">Tus compras seguras</Grid>
+                                        <Grid row className="quienes_card_text">Texto breve sobre las compras seguras, lorem ipsum dolor sit amet</Grid>
+                                    </Grid>
                             </Grid>
+                            <div className="quienes_cards_spaces">{/*esto funciona como un espacio*/}</div>
                             <Grid item className="quienes_card">
-                                    hola
+                                    <Grid container item justify="center" alignItems="center" xs={4}>
+                                        <Grid className="quienes_card_circle"><LocalOfferIcon style={{fontSize:40}} className="quienes_card_icon"></LocalOfferIcon></Grid>
+                                    </Grid>
+                                    <Grid item xs={8} style={{paddingRight:17,paddingBottom:10}}>
+                                        <Grid row className="quienes_card_title">Los mejores precios</Grid>
+                                        <Grid row className="quienes_card_text">Texto breve sobre los mejores precios, lorem ipsum dolor sit amet</Grid>
+                                    </Grid>
                             </Grid>
                         </Grid>
                     </Container>
