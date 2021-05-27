@@ -8,9 +8,139 @@
 
 .quienes_somos{
     background-image: url('/img/CATEGORIAS/backgroundblue.jpg');
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center;
+    margin-top:10px;
+    padding-top: 0px;
 }
 
 .quienes_somos_content{
-    position: fixed;
-    z-index: 9999;
+    width: 100%;
+    background: rgba(29, 163, 168, 0.8);
+    padding-top: 75px;
+    padding-bottom:68px;
+}
+
+.quienes_title{
+    color: #FFDE59;
+    font-weight: 600;
+    font-size: 30px;
+    font-family: "Atma";
+}
+
+.quienes_title2{
+    color:#FFFFFF;
+    font-size: 30px;
+    font-family: "Atma";
+    font-weight: 200;
+    padding-left: 10px;
+}
+
+.quienes_subtitle{
+    font-family: "Atma";
+    font-weight: 500;
+    font-size: 20px;
+    color: #FFFFFF;
+    padding-top:8px;
+}
+
+.quienes_info{
+    font-family: Oxygen;
+    font-weight: normal;
+    font-size: 17px;
+    color: #FFFFFF;
+    padding-top: 16px;
+}
+
+.quienes_img{
+    width: 100%;
+    object-fit: cover;
+}
+
+.quienes_card{
+    background: #FFFFFF;
+    border: 1px solid #E3E3E3;
+    box-sizing: border-box;
+    border-radius: 2px;
+    width: 30%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.quienes_card_circle{
+    background: rgba(29, 163, 168, 0.14);
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    margin-top:12px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.quienes_card_icon{
+    color:#1DA3A8;
+    margin-left: -10px;
+}
+
+.quienes_card_title{
+    font-family: Oxygen;
+    font-weight: bold;
+    font-size: 16px;
+    color: #4F4F4F;
+    margin-top: 12px;
+}
+
+.quienes_card_text{
+    font-family: Oxygen;
+    font-weight: 300;
+    font-size: 14px;
+    color: #707070;
+    margin-top:5px;
+}
+
+.quienes_cards_spaces{
+    display: none;
+}
+
+.quienes_marcas_title{
+    font-family: "Atma";
+    font-weight: 600;
+    line-height: 49px;
+    font-size: 30px;
+    color: #1DA3A8;
+    text-align: center;
+}
+.quienes_marcas_text{
+    font-family: "Oxygen";
+    font-weight: normal;
+    font-size: 17px;
+    text-align: center;
+    color: #535353;
+}
+
+.quienes_contactanos{
+    color: #1DA3A8;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.red{
+    background-color:red;
+}
+
+.black{
+    background-color:#191919;
+}
+
+@media (max-width:850px){
+    .quienes_card{
+        width: 100%;
+    }
+    .quienes_cards_spaces{
+        display: flex;
+        width: 100%;
+        height: 20px;
+    }
 }
