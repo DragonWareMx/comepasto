@@ -24,7 +24,7 @@ const QuienesSomos = () => {
                                     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure
                                 </Grid>
                             </Grid>
-                            <Grid container item xs={4} row justify="center" alignItems="center">
+                            <Grid container item xs={4} justify="center" alignItems="center">
                                 <img className="quienes_img" src="/img/ilustraciones/In-no-time-amico-2.png" alt="" />
                             </Grid>
                         </Grid>
@@ -34,8 +34,8 @@ const QuienesSomos = () => {
                                         <Grid className="quienes_card_circle"><LocalShippingOutlinedIcon style={{fontSize:40}} className="quienes_card_icon"></LocalShippingOutlinedIcon></Grid>
                                     </Grid>
                                     <Grid item xs={8} style={{paddingRight:17,paddingBottom:10}}>
-                                        <Grid row className="quienes_card_title">Envíos rápidos</Grid>
-                                        <Grid row className="quienes_card_text">Texto breve sobre los envíos rápidos y seguros, lorem ipsum dolor sit amet</Grid>
+                                        <Grid className="quienes_card_title">Envíos rápidos</Grid>
+                                        <Grid className="quienes_card_text">Texto breve sobre los envíos rápidos y seguros, lorem ipsum dolor sit amet</Grid>
                                     </Grid>
                             </Grid>
                             <div className="quienes_cards_spaces">{/*esto funciona como un espacio*/}</div>
@@ -44,8 +44,8 @@ const QuienesSomos = () => {
                                         <Grid className="quienes_card_circle"><LockIcon style={{fontSize:40}} className="quienes_card_icon"></LockIcon></Grid>
                                     </Grid>
                                     <Grid item xs={8} style={{paddingRight:17,paddingBottom:10}}>
-                                        <Grid row className="quienes_card_title">Tus compras seguras</Grid>
-                                        <Grid row className="quienes_card_text">Texto breve sobre las compras seguras, lorem ipsum dolor sit amet</Grid>
+                                        <Grid className="quienes_card_title">Tus compras seguras</Grid>
+                                        <Grid className="quienes_card_text">Texto breve sobre las compras seguras, lorem ipsum dolor sit amet</Grid>
                                     </Grid>
                             </Grid>
                             <div className="quienes_cards_spaces">{/*esto funciona como un espacio*/}</div>
@@ -54,8 +54,8 @@ const QuienesSomos = () => {
                                         <Grid className="quienes_card_circle"><LocalOfferIcon style={{fontSize:40}} className="quienes_card_icon"></LocalOfferIcon></Grid>
                                     </Grid>
                                     <Grid item xs={8} style={{paddingRight:17,paddingBottom:10}}>
-                                        <Grid row className="quienes_card_title">Los mejores precios</Grid>
-                                        <Grid row className="quienes_card_text">Texto breve sobre los mejores precios, lorem ipsum dolor sit amet</Grid>
+                                        <Grid className="quienes_card_title">Los mejores precios</Grid>
+                                        <Grid className="quienes_card_text">Texto breve sobre los mejores precios, lorem ipsum dolor sit amet</Grid>
                                     </Grid>
                             </Grid>
                         </Grid>
@@ -66,32 +66,23 @@ const QuienesSomos = () => {
                 <Grid container direction="row" justify="center" style={{marginTop:50,marginBottom:50}}>
                     <Grid item xs={12} className="quienes_marcas_title">MARCAS CON LAS QUE TRABAJAMOS</Grid>
                     <Grid item xs={12} className="quienes_marcas_text">Texto si estás interesado en trabajar o unirte con nuestros productos <a href="#" className="quienes_contactanos">Contáctanos</a>, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua lorem ipsum dolor sit amet. </Grid>
-                    <Grid container direction="row" justify="space-around" spacing={1} xs={12}>
-                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
-                            <img className="quienes_marca" src="/img/logos/Beyond_Meat-Logo.wine.png" alt="" />
+                    <Grid container direction="row" justify="space-around">
+                        <Grid container item xs={3} sm={2} alignItems="center" className="quienes_marca_paps">
+                            <img className="quienes_marca" src="/img/logos/Beyond_Meat-Logo.wine.png" alt=""/>
+                            <Grid xs={12} className="quienes_marca_nombre">Beyond Meat</Grid>
                         </Grid>
-                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
+                        <Grid container item xs={3} sm={2} alignItems="center" className="quienes_marca_paps">
                             <img className="quienes_marca" src="/img/logos/Logo_color_Mesa-de-trabajo-1.png" alt="" />
+                            <Grid xs={12} className="quienes_marca_nombre">LEAF Productos Veganos</Grid>
                         </Grid>
-                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
+                        <Grid container item xs={3} sm={2} alignItems="center" className="quienes_marca_paps">
                             <img className="quienes_marca" src="/img/logos/logo-slider.png" alt="" />
+                            <Grid xs={12} className="quienes_marca_nombre">Benji Vegan Gourmet</Grid>
                         </Grid>
-                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
+                        <Grid container item xs={3} sm={2} alignItems="center" className="quienes_marca_paps">
                             <img className="quienes_marca" src="/img/logos/logotipo-morama.png" alt="" />
+                            <Grid xs={12} className="quienes_marca_nombre">Morama</Grid>
                         </Grid>
-                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
-                            <img className="quienes_marca" src="/img/logos/Beyond_Meat-Logo.wine.png" alt="" />
-                        </Grid>
-                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
-                            <img className="quienes_marca" src="/img/logos/Logo_color_Mesa-de-trabajo-1.png" alt="" />
-                        </Grid>
-                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
-                            <img className="quienes_marca" src="/img/logos/logo-slider.png" alt="" />
-                        </Grid>
-                        <Grid container item xs={3} sm={2} alignItems="center" style={{marginTop:30}}>
-                            <img className="quienes_marca" src="/img/logos/logotipo-morama.png" alt="" />
-                        </Grid>
-                        
                     </Grid>
                 </Grid>
             </Container>

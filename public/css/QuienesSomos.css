@@ -126,9 +126,36 @@
     font-weight: bold;
 }
 
+.quienes_marca_paps{
+    filter: grayscale(100%);
+    transition: all 1.5s;
+    display: flex;
+    align-items: center;
+}
+
 .quienes_marca{
     width: 100%;
     object-fit: cover;
+}
+
+.quienes_marca_paps:hover {
+    filter: grayscale(0%);
+    transition: all 0.3s;
+}
+
+.quienes_marca_paps:hover .quienes_marca_nombre{
+    color:#363636;
+    transition: ease-in-out 0.3s;
+}
+
+.quienes_marca_nombre{
+    font-family: Oxygen;
+    font-weight: normal;
+    font-size: 15px;
+    text-align: center;
+    color: #FFFFFF;
+    display: block;
+    transition: ease-in-out 0.3s;
 }
 
 .red{
