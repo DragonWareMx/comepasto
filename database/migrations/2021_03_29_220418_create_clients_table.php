@@ -13,6 +13,7 @@ class CreateClientsTable extends Migration
      */
     public function up()
     {
+        //ESTA TABLA YA ALV, YA SON USUARIOS
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
@@ -22,6 +23,7 @@ class CreateClientsTable extends Migration
             $table->string('tel',10)->unique()->nullable();
             $table->string('fb',250)->nullable();
             
+
         });
     }
 
