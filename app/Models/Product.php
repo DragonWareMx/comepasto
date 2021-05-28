@@ -18,7 +18,7 @@ class Product extends Model
         return $this->belongsTo('App\Models\Category');
     }
 
-    public function Type(){
+    public function type(){
         return $this->belongsTo('App\Models\Type');
     }
     
@@ -39,7 +39,7 @@ class Product extends Model
         return $this->hasMany('App\Models\Img');
     }
 
-    public function cart(){
-        return $this->belongsToMany('App\Models\Cart');
+    public function user(){
+        return $this->belongsToMany('App\Models\User');
     }
 }
