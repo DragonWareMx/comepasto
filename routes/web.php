@@ -31,3 +31,4 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/quienessomos', [App\Http\Controllers\quienesSomosController::class, 'index'])->name('quienesSomos');
+Route::get('/recetas', [App\Http\Controllers\recetasController::class, 'index'])->name('recetas');

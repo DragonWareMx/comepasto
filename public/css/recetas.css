@@ -1,0 +1,23 @@
+.background-cover-img{
+    background-image: url('/img/imgs/img8.jpg');
+    background-size:     cover;                      
+    background-repeat:   no-repeat;
+    background-position: center center;
+    margin-top:10px;
+    padding-top: 0px;
+}
+.recetas_content{
+    width: 100%;
+    background: rgba(29, 163, 168, 0.8);
+    padding-top: 75px;
+}
+.img_recetas{
+    width: 65%;
+    object-fit: cover;
+}
+.padding-remove{
+    padding: 0px 0px 0px 0px !important;
+}
+.height-max{
+    height:max-content !important;
+}
