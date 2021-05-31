@@ -116,7 +116,7 @@
     padding: 0px 5%;
     position: fixed;
     top: 0px;
-    transition: height 0.2s;
+    transition: height 0.3s;
   }
 
   .navbar-sup{
@@ -243,7 +243,7 @@
 /*Aqui empiezan los estilos para que se vea chida la navbar chiquita*/
   .main-navbar.shrinked{
     height: 76px;
-    transition: height 0.2s;
+    transition: height 0.3s;
   }
 
   .main-navbar.shrinked .navbar-sup{
