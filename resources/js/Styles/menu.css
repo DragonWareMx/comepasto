@@ -106,3 +106,105 @@
       justify-content: center;
     }
   }
+
+
+  /* Aqui empiezan los estilos de la navbar :v */
+  .main-navbar{
+    height: 137px;
+    width: 100%;
+    background-color:  #FFFFFF;
+    padding: 0px 5%;
+    position: fixed;
+    top: 0px;
+  }
+
+  .navbar-sup{
+    height: 78px;
+    width: 100%;
+    border-bottom: 1px solid #D3D3D3;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+  }
+
+  .navbar-inf{
+    height: 59px;
+    width: 100%;
+    display: flex;
+    align-content: center;
+  }
+
+  .div-logo{
+    font-family: Fredoka One;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 40px;
+    line-height: 48px;
+    color: #FFDE59;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 15px;
+    left: calc((100% / 2) - 108.5px);
+  }
+
+  .div-iconos{
+    display: flex;
+    align-items: center;
+  }
+
+  .div-redes{
+    display: flex;
+    align-items: center;
+  }
+
+  .div-redes .icono{
+    text-decoration: none;
+    font-family: Atma;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 24px;
+
+    color: #A3A3A3;
+    display: flex;
+    align-items: center;
+  }
+
+  .div-redes .icono img{
+    margin-right: 6px;
+  }
+
+  .links{
+    width: 60%;
+    margin: 0px auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+  }
+
+  .links a{
+    text-decoration: none;
+    font-family: Atma;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 29px;
+
+    color: #1DA3A8;
+    /* esto es el efecto ese feo xd */
+    transform: scale(0.95);
+    transition: all 700ms;
+  }
+
+  .links a:hover{
+    border-bottom: 2px solid #FFDE59;
+    /* esto es el efecto ese feo xd */
+    transform: scale(1.05);
+  }
+
+  .content{
+    margin-top: 137px;
+  }

@@ -15,11 +15,6 @@ export default function Layout({ title, pageTitle, children }) {
             <Navbar />
             {/* contenido */}
             <div className="content">
-                <div className="row page-title">
-                    <div className="col">
-                        {pageTitle}
-                    </div>
-                </div>
                 {children}
             </div>
             {/* <MenuLateral />*/}
