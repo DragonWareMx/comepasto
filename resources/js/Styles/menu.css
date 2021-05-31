@@ -116,6 +116,7 @@
     padding: 0px 5%;
     position: fixed;
     top: 0px;
+    transition: height 0.2s;
   }
 
   .navbar-sup{
@@ -205,6 +206,65 @@
     transform: scale(1.05);
   }
 
+  .links-hide{
+    width: 50%;
+    margin: 0px auto;
+
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+
+  }
+
+  .links-hide a{
+    text-decoration: none;
+    font-family: Atma;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 29px;
+
+    color: #1DA3A8;
+    /* esto es el efecto ese feo xd */
+    transform: scale(0.95);
+    transition: all 700ms;
+  }
+
+  .links-hide a:hover{
+    border-bottom: 2px solid #FFDE59;
+    /* esto es el efecto ese feo xd */
+    transform: scale(1.05);
+  }
+
   .content{
     margin-top: 137px;
+    /* transition: height 0.2s; */
   }
+/*Aqui empiezan los estilos para que se vea chida la navbar chiquita*/
+  .main-navbar.shrinked{
+    height: 76px;
+    transition: height 0.2s;
+  }
+
+  .main-navbar.shrinked .navbar-sup{
+    height: 76px;
+    border-bottom: 0px;
+  }
+
+  .main-navbar.shrinked .navbar-inf{
+    display: none;
+  }
+  .main-navbar.main-navbar.shrinked .div-logo{
+    position: static;
+  }
+  .main-navbar.main-navbar.shrinked .div-redes{
+    display: none;
+  }
+
+  .main-navbar.main-navbar.shrinked .links-hide{
+    display: flex;
+  }
+  /* .content.shrinked{
+    margin-top: 76px;
+    transition: height 0.2s;
+  } */

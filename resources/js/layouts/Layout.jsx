@@ -14,7 +14,7 @@ export default function Layout({ title, pageTitle, children }) {
             <CssBaseline />
             <Navbar />
             {/* contenido */}
-            <div className="content">
+            <div className="content" id="content">
                 {children}
             </div>
             {/* <MenuLateral />*/}

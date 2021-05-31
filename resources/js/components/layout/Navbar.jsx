@@ -8,12 +8,13 @@ export default function Navbar() {
     useEffect(() => {
         window.addEventListener('scroll', (e) => {
             var navbar = document.getElementById('main-navbar');
+            // var main = document.getElementById('content');
             if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
-                console.log('aqui se debe achicar we');
                 navbar.classList.add('shrinked');
+                // main.classList.add('shrinked');
             } else {
-                console.log('aqui otra vez grande we');
                 navbar.classList.remove('shrinked');
+                // main.classList.remove('shrinked');
             }
         })
     })
@@ -34,6 +35,12 @@ export default function Navbar() {
                     </div>
                     <div className="div-logo">
                         Comepasto
+                    </div>
+                    <div className="links-hide">
+                        <a href="#">TIENDA</a>
+                        <a href="#">RECETAS</a>
+                        <a href="#">QUIÉNES SOMOS</a>
+                        <a href="#">PREGUNTAS FRECUENTES</a>
                     </div>
                     <div className="div-iconos">
                         <SearchIcon fontSize="large" style={{ color: '#1DA3A8' }} />
