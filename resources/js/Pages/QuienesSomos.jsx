@@ -14,7 +14,7 @@ const QuienesSomos = () => {
                 <div className={"quienes_somos_content"}> 
                     <Container> 
                         <Grid container direction="row" justify="flex-start">
-                            <Grid container direction="row" justify="flex-start" item xs={8}>
+                            <Grid container direction="row" justify="flex-start" className="quienes_left">
                                 <Grid item className="quienes_title ">¿Quiénes somos?</Grid>
                                 <Grid item className="quienes_title2">DISTRIBUIDOR VEGANO</Grid>
                                 <Grid item xs={12} className="quienes_subtitle">Distribuidor vegano de Morelia, Michoacán, México</Grid>
@@ -24,11 +24,11 @@ const QuienesSomos = () => {
                                     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure
                                 </Grid>
                             </Grid>
-                            <Grid container item xs={4} justify="center" alignItems="center">
-                                <img className="quienes_img" src="/img/ilustraciones/In-no-time-amico-2.png" alt="" />
+                            <Grid container justify="center" alignItems="center" className="quienes_right">
+                               <img className="quienes_img" src="/img/ilustraciones/quienes.svg" alt="" />
                             </Grid>
                         </Grid>
-                        <Grid container direction="row" justify="space-between" item xs={12} style={{marginTop:20}}>
+                        <Grid container direction="row" justify="space-between" style={{marginTop:20}}>
                             <Grid item className="quienes_card">
                                     <Grid container item justify="center" alignItems="center" xs={4}>
                                         <Grid className="quienes_card_circle"><LocalShippingOutlinedIcon style={{fontSize:40}} className="quienes_card_icon"></LocalShippingOutlinedIcon></Grid>
@@ -66,20 +66,20 @@ const QuienesSomos = () => {
                 <Grid container direction="row" justify="center" style={{marginTop:50,marginBottom:50}}>
                     <Grid item xs={12} className="quienes_marcas_title">MARCAS CON LAS QUE TRABAJAMOS</Grid>
                     <Grid item xs={12} className="quienes_marcas_text">Texto si estás interesado en trabajar o unirte con nuestros productos <a href="#" className="quienes_contactanos">Contáctanos</a>, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua lorem ipsum dolor sit amet. </Grid>
-                    <Grid container direction="row" justify="space-around">
-                        <Grid container item xs={3} sm={2} alignItems="center" className="quienes_marca_paps">
+                    <Grid container direction="row" justify="space-around" style={{marginTop:25}}>
+                        <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
                             <img className="quienes_marca" src="/img/logos/Beyond_Meat-Logo.wine.png" alt=""/>
                             <Grid xs={12} className="quienes_marca_nombre">Beyond Meat</Grid>
                         </Grid>
-                        <Grid container item xs={3} sm={2} alignItems="center" className="quienes_marca_paps">
+                        <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
                             <img className="quienes_marca" src="/img/logos/Logo_color_Mesa-de-trabajo-1.png" alt="" />
                             <Grid xs={12} className="quienes_marca_nombre">LEAF Productos Veganos</Grid>
                         </Grid>
-                        <Grid container item xs={3} sm={2} alignItems="center" className="quienes_marca_paps">
+                        <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
                             <img className="quienes_marca" src="/img/logos/logo-slider.png" alt="" />
                             <Grid xs={12} className="quienes_marca_nombre">Benji Vegan Gourmet</Grid>
                         </Grid>
-                        <Grid container item xs={3} sm={2} alignItems="center" className="quienes_marca_paps">
+                        <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
                             <img className="quienes_marca" src="/img/logos/logotipo-morama.png" alt="" />
                             <Grid xs={12} className="quienes_marca_nombre">Morama</Grid>
                         </Grid>

@@ -158,12 +158,33 @@
     transition: ease-in-out 0.3s;
 }
 
+.quienes_left{
+    width: 60% !important;
+}
+
+.quienes_right{
+    width: 40% !important;
+}
+
 .red{
     background-color:red;
 }
 
 .black{
     background-color:#191919;
+}
+
+@media (max-width:600px){
+    .quienes_left{
+        width: 100% !important;
+    }
+    
+    .quienes_right{
+        width: 100% !important;
+    }
+    .quienes_img{
+        width: 60%;
+    }
 }
 
 @media (max-width:850px){
