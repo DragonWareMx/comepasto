@@ -65,6 +65,7 @@
 }
 .button-receta:hover{
     background-color:#1DA3A8 !important;
+    border: 1px solid #1DA3A8 !important;
     color:white !important;
     transition:all ease-in-out 0.25s !important;
 }
