@@ -170,16 +170,52 @@ export default function Footer() {
         return cantidad
     }
 
+    function calcularDescuento(precio, descuento){
+        let precioDescuento
+
+        if(descuento <= 100)
+            precioDescuento = precio - precio * (descuento/100)
+        else
+            precioDescuento = 0
+
+        return "$"+precioDescuento.toFixed(2)+" MXN"
+    }
+
+    function calcularTotalProducto(producto){
+        let precioDescuento
+
+        if(producto.descuento <= 100)
+            precioDescuento = producto.precio - producto.precio * (producto.descuento/100)
+        else
+            precioDescuento = 0
+
+        if(precioDescuento < 0)
+            precioDescuento = 0
+
+        return (precioDescuento*producto.pivot.cantidad)
+    }
+
+    function calcularTotal(carrito){
+        let total = 0
+
+        carrito.forEach(producto => {
+            total += calcularTotalProducto(producto)
+        });
+
+        return "$"+total.toFixed(2)
+    }
+
     return (
         <>
         {/* ICONO DEL CARRITO */}
-        <IconButton aria-label="delete" className={classes.cartbutton} onClick={handleClick('left-start')}>
+        <IconButton aria-label="cart" className={classes.cartbutton} onClick={handleClick('left-start')}>
             <StyledBadge badgeContent={auth.cart ? calcularCantidadDeProductos(auth.cart) : 0} color="primary">
                 <ShoppingCartSharpIcon fontSize="large" style={{ color: '#1DA3A8' }} />
             </StyledBadge>
         </IconButton>
 
         {/* CARD DEL CARRITO, AQUI SE MUESTRAN LOS ELEMENTOS EN EL CARRITO */}
+        {auth && auth.user && auth.cart &&
         <Popper open={open} anchorEl={anchorEl} placement={placement} transition>
             {/* Detecta si se hizo click afuera del card para cerrar el carrito */}
             <ClickAwayListener onClickAway={handleClickAway}>
@@ -193,13 +229,16 @@ export default function Footer() {
                     } />
                     
                     {/* PRODUCTOS DEL CARRITO */}
+                    {auth.cart.length > 0 && auth.cart.map(producto => (
                     <CardContent>
                         {/* PRODUCTO */}
                         <Grid container spacing={2}>
                             {/* Imagen del producto */}
                             <Grid item xs={3}>
                                 <ButtonBase>
-                                    <img className={classes.img} alt="complex" src="/img/PRODUCTOS/1.png" />
+                                    {producto.foto &&
+                                    <img className={classes.img} alt="complex" src={"/storage/products/" + producto.foto} />
+                                    }
                                 </ButtonBase>
                             </Grid>
 
@@ -208,7 +247,11 @@ export default function Footer() {
                                 <Grid item xs={12}>
                                     <InertiaLink href="/producto" style={{textDecoration: "none"}}>
                                         <Typography gutterBottom className={classes.nombreProducto}>
-                                            Nombre del productoNombre del productoNombre del productoNombre del productoNombre del producto
+                                            {producto.name.length > 100 ?
+                                            producto.name.substring(0, 100 - 3) + "..."
+                                            : 
+                                            producto.name
+                                            }
                                         </Typography>
                                     </InertiaLink>
                                 </Grid>
@@ -217,12 +260,12 @@ export default function Footer() {
                                 <Grid item xs={12} container spacing={1}>
                                     <Grid item >
                                         <Typography gutterBottom className={classes.precioDescuento} align="left">
-                                            $99.99 MXN
+                                            {"$"+producto.precio+" MXN"}
                                         </Typography>
                                     </Grid>
                                     <Grid item >
                                         <Typography gutterBottom  className={classes.precio} align="left">
-                                            $80.50 MXN
+                                            {calcularDescuento(producto.precio, producto.descuento)}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -255,14 +298,16 @@ export default function Footer() {
                                                 <RemoveIcon fontSize="small" />
                                             </IconButton>
                                             </InputAdornment>
-                                        } />
+                                        }
+                                        
+                                        value={producto.pivot.cantidad} />
                                     </Grid>
                                 </Grid>
                                     
                                 {/* Precio */}
                                 <Grid item xs={12}>
                                     <Typography gutterBottom className={classes.precioProducto} align="right">
-                                        1x$80.50
+                                        {producto.pivot.cantidad+"x$"+calcularTotalProducto(producto).toFixed(2)}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -280,12 +325,14 @@ export default function Footer() {
 
                             <Grid item>
                             <Typography gutterBottom className={classes.precioTotal} align="right">
-                                $80.50
+                                {calcularTotal(auth.cart)}
                             </Typography>
                             </Grid>
                         </Grid>
 
                     </CardContent>
+                    ))
+                    }
 
 
                     {/* BOTONES DE PAGO Y ENVIO */}
@@ -309,6 +356,7 @@ export default function Footer() {
                 </Card>
             </ClickAwayListener>
         </Popper>
+        }
 
         </>
     );
