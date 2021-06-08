@@ -45,7 +45,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Sale');
     }
 
-    public function product(){
-        return $this->belongsToMany('App\Models\Product');
+    public function cart(){
+        return $this->belongsToMany('App\Models\Product', 'product_user')->withPivot('estatus','cantidad');
     }
 }

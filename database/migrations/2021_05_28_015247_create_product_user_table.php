@@ -22,6 +22,7 @@ class CreateProductUserTable extends Migration
                                                                     //pagar. Standby: está en lista de espera, 
                                                                     //es como el "guardar para después" de Amazón.
                                                                     //onwatching: lo tienen en la mira nomás LOL.
+            $table->unsignedInteger('cantidad');
 
 
             $table->foreign('product_id')->references('id')->on('products');

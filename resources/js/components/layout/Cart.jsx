@@ -6,7 +6,7 @@ import CloseSharpIcon from '@material-ui/icons/CloseSharp';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Popper from '@material-ui/core/Popper';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 
 const StyledBadge = withStyles((theme) => ({
     badge: {
@@ -144,6 +144,8 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export default function Footer() {
+    const { auth } = usePage().props
+
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -159,11 +161,20 @@ export default function Footer() {
         setOpen(false);
     };
 
+    function calcularCantidadDeProductos(carrito){
+        let cantidad = 0
+        carrito.forEach(producto => {
+            cantidad += producto.pivot.cantidad ?? 0
+        });
+
+        return cantidad
+    }
+
     return (
         <>
         {/* ICONO DEL CARRITO */}
         <IconButton aria-label="delete" className={classes.cartbutton} onClick={handleClick('left-start')}>
-            <StyledBadge badgeContent={4} color="primary">
+            <StyledBadge badgeContent={auth.cart ? calcularCantidadDeProductos(auth.cart) : 0} color="primary">
                 <ShoppingCartSharpIcon fontSize="large" style={{ color: '#1DA3A8' }} />
             </StyledBadge>
         </IconButton>

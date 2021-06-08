@@ -38,6 +38,17 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             //
+            // Lazily
+            'auth.user' => fn () => $request->user()
+                ? $request->user()
+                : null,
+
+            // Lazily
+            'auth.cart' => 
+                fn () => $request->user() ? 
+                    $request->user()->cart()->get()
+                    : 
+                    null,
         ]);
     }
 }
