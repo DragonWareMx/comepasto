@@ -17,6 +17,7 @@ class CategorySeeder extends Seeder
         //
         DB::table('categories')->insert([
             'name' => 'Lacteos',
+            'icono' => 'icono1.png',
         ]);
     }
 }

@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('inicio');
-});
+// Route::get('/', function () {
+//     return view('inicio');
+// });
 Route::get('/menu', function () {
     return view('menu');
 });
@@ -30,5 +30,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+//INICIO
+Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'inicio'])->name('inicio');
+
 Route::get('/quienessomos', [App\Http\Controllers\quienesSomosController::class, 'index'])->name('quienesSomos');
-Route::get('/recetas', [App\Http\Controllers\recetasController::class, 'index'])->name('recetas');
+Route::get('/recetas', [App\Http\Controllers\Controller::class, 'index'])->name('recetas');

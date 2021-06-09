@@ -6,6 +6,7 @@ import Container from '@material-ui/core/Container';
 import LocalShippingOutlinedIcon from '@material-ui/icons/LocalShippingOutlined';
 import LockIcon from '@material-ui/icons/Lock';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const QuienesSomos = () => {
     return (
@@ -67,22 +68,26 @@ const QuienesSomos = () => {
                     <Grid item xs={12} className="quienes_marcas_title">MARCAS CON LAS QUE TRABAJAMOS</Grid>
                     <Grid item xs={12} className="quienes_marcas_text">Texto si estás interesado en trabajar o unirte con nuestros productos <a href="#" className="quienes_contactanos">Contáctanos</a>, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua lorem ipsum dolor sit amet. </Grid>
                     <Grid container direction="row" justify="space-around" style={{marginTop:25}}>
-                        <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
-                            <img className="quienes_marca" src="/img/logos/Beyond_Meat-Logo.wine.png" alt=""/>
-                            <Grid xs={12} className="quienes_marca_nombre">Beyond Meat</Grid>
-                        </Grid>
-                        <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
-                            <img className="quienes_marca" src="/img/logos/Logo_color_Mesa-de-trabajo-1.png" alt="" />
-                            <Grid xs={12} className="quienes_marca_nombre">LEAF Productos Veganos</Grid>
-                        </Grid>
-                        <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
-                            <img className="quienes_marca" src="/img/logos/logo-slider.png" alt="" />
-                            <Grid xs={12} className="quienes_marca_nombre">Benji Vegan Gourmet</Grid>
-                        </Grid>
-                        <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
-                            <img className="quienes_marca" src="/img/logos/logotipo-morama.png" alt="" />
-                            <Grid xs={12} className="quienes_marca_nombre">Morama</Grid>
-                        </Grid>
+                        <Tooltip title="Beyond Meat">
+                            <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
+                                <img className="quienes_marca" src="/img/logos/Beyond_Meat-Logo.wine.png" alt=""/>
+                            </Grid>
+                        </Tooltip>
+                        <Tooltip title="LEAF Productos Veganos">
+                            <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
+                                <img className="quienes_marca" src="/img/logos/Logo_color_Mesa-de-trabajo-1.png" alt="" />
+                            </Grid>
+                        </Tooltip>
+                        <Tooltip title="Benji Vegan Gourmet">
+                            <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
+                                <img className="quienes_marca" src="/img/logos/logo-slider.png" alt="" />
+                            </Grid>
+                        </Tooltip>
+                        <Tooltip title="Morama">
+                            <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
+                                <img className="quienes_marca" src="/img/logos/logotipo-morama.png" alt="" />
+                            </Grid>
+                        </Tooltip>
                     </Grid>
                 </Grid>
             </Container>
@@ -91,6 +96,6 @@ const QuienesSomos = () => {
 }
 
 
-QuienesSomos.layout = page => <Layout children={page} title="Comepasto - ¿Quienes somos?" pageTitle="¿Quienes Somos?" />
+QuienesSomos.layout = page => <Layout children={page} title="Comepasto - ¿Quiénes somos?" pageTitle="¿Quiénes Somos?" />
 
 export default QuienesSomos
