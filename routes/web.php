@@ -35,3 +35,8 @@ Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'inicio'])->n
 
 Route::get('/quienessomos', [App\Http\Controllers\quienesSomosController::class, 'index'])->name('quienesSomos');
 Route::get('/recetas', [App\Http\Controllers\Controller::class, 'index'])->name('recetas');
+
+//PRODUCTOS
+Route::name('product.')->group(function () {
+    Route::get('/productos', [App\Http\Controllers\ProductController::class, 'index'])->name('index');
+});
