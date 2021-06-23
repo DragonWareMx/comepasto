@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 //css
 import '/css/QuienesSomos.css';
 import Paginacion from '../../components/common/paginacion';
+import Product from '../../components/Product'
 
 const useStyles = makeStyles((theme) => ({
     category: {
@@ -30,6 +31,11 @@ const useStyles = makeStyles((theme) => ({
             width: "auto",
             margin: "auto",
             userSelect: "none"
+        },
+        '&:hover img':{
+            height: "90px",
+            width: "auto",
+            transition: "all 1s",
         }
     },
 }));
@@ -132,7 +138,7 @@ const Products = ({products}) => {
 
                         <Grid item>
                             <InertiaLink href="/quienessomos" style={{textDecoration: "none"}}>
-                                <Paper className={classes.paper} elevation={0} square >
+                                <Paper className={classes.paper} elevation={0} square>
                                     <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                         <Grid item>
                                             <img className="quienes_marca" src="/img/CATEGORIAS/icons/destacados_white.png" alt=""/>
@@ -150,6 +156,12 @@ const Products = ({products}) => {
                     <Grid item xs={12} container direction="row" justify="center" spacing={1} alignItems="center" className="quienes_marcas_title">
                         <Grid item className="quienes_marcas_title">NUESTROS PRODUCTOS</Grid>
                         <Grid item className="quienes_marcas_title" style={{fontWeight: 100}}>DESTACADOS</Grid>
+                    </Grid>
+
+                    <Grid item xs={12} container direction="row" spacing={3}>
+                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((value) => (
+                            <Product name="Queso manchego super vegano lígero y saludable" img={"1.png"} price={102} brand={"Leaf"} logo={"Logo_color_Mesa-de-trabajo-1.png"} />
+                         ))}
                     </Grid>
                 </Grid>
             </Container>
