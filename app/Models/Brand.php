@@ -17,7 +17,7 @@ class Brand extends Model
         return $this->belongsTo('App\Models\Supplier');
     }
 
-    public function product(){
-        return $this->hasMany('App\Models\Banner');
-    }
+    // public function product(){
+    //     return $this->hasMany('App\Models\Banner');
+    // }
 }

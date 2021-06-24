@@ -153,15 +153,22 @@ const Products = ({products}) => {
                     </Grid>
 
                     {/* TITULO TIENDA CATEGORIAS */}
-                    <Grid item xs={12} container direction="row" justify="center" spacing={1} alignItems="center" className="quienes_marcas_title">
+                    <Grid item xs={12} container direction="row" justify="center" spacing={1} alignItems="center" className="quienes_marcas_title" style={{marginBottom: "30px"}}>
                         <Grid item className="quienes_marcas_title">NUESTROS PRODUCTOS</Grid>
                         <Grid item className="quienes_marcas_title" style={{fontWeight: 100}}>DESTACADOS</Grid>
                     </Grid>
 
+                    <Grid item xs={12} container direction="row" spacing={3} style={{marginBottom: "40px"}}>
+                        {(products && products.data && products.data.length > 0) ? products.data.map((product) => (
+                            <Product key={product.id} name={product.name} img={product.foto} price={product.precio} brand={product.brand ? product.brand.name : "Sin marca"} logo={product.brand ? product.brand.logo : "Logo_color_Mesa-de-trabajo-1.png"} id={product.id} />
+                         ))
+                        :
+                        "Sin resultados"
+                        }
+                    </Grid>
+
                     <Grid item xs={12} container direction="row" spacing={3}>
-                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((value) => (
-                            <Product name="Queso manchego super vegano lígero y saludable" img={"1.png"} price={102} brand={"Leaf"} logo={"Logo_color_Mesa-de-trabajo-1.png"} />
-                         ))}
+                        <Paginacion links={products.links}/>
                     </Grid>
                 </Grid>
             </Container>

@@ -36,6 +36,17 @@ const useStyles = makeStyles((theme) => ({
         color: "#1DA3A8",
         marginTop: "6px"
     },
+    discount:{
+        fontFamily: "Oxygen",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: "12px",
+        lineHeight: "15px",
+        textDecorationLine: "line-through",
+
+        color: "#ABABAB",
+        height: "14.4px"
+    },
     brand:{
         fontFamily: "Oxygen",
         fontStyle: "normal",
@@ -44,7 +55,8 @@ const useStyles = makeStyles((theme) => ({
         lineHeight: "18px",
 
         color: "#595959",
-        marginTop: "6px"
+        marginTop: "6px",
+        height: "35px"
     },
     logo:{
         width: "89px",
@@ -159,7 +171,7 @@ export default function Product({img, name, price, discount, brand, logo, id}){
 
                         {/* NOMBRE */}
                         <Grid item className={classes.name}>
-                            {limitString(name, 60)}
+                            {limitString(name, 46)}
                         </Grid>
 
                         <Grid item container direction="row" justify="center" style={{width:"220px"}}>
@@ -168,8 +180,13 @@ export default function Product({img, name, price, discount, brand, logo, id}){
                                 <Grid item className={classes.price}>
                                     $ {showPrice(price)} MXN
                                 </Grid>
+                                <Grid item className={classes.discount}>
+                                    {(id % 2 == 0) &&
+                                    "$ " + showPrice(price) + " MXN"
+                                    }
+                                </Grid>
                                 <Grid item className={classes.brand}>
-                                    Marca: {brand}
+                                    Marca: {limitString(brand, 27)}
                                 </Grid>
                             </Grid>
 
