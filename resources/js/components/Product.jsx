@@ -51,8 +51,8 @@ const useStyles = makeStyles((theme) => ({
         height: "62px"
     },
     button: {
-        background: '#1DA3A8',
-        color: '#FFFFFF',
+        background: 'transparent',
+        color: '#9F9F9F',
 
         fontFamily: 'Atma',
         fontStyle: 'normal',
@@ -69,11 +69,15 @@ const useStyles = makeStyles((theme) => ({
 
         '&:hover': {
             background: '#1DA3A8',
+            color: '#FFFFFF',
         },
     },
     paper:{
-        border: "1px solid #1DA3A8",
+        border: "1px solid #E3E3E3",
         backgroundColor: "transparent",
+        '&:hover':{
+            border: "1px solid #1DA3A8",
+        }
     }
 }));
 
