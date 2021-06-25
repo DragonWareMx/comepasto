@@ -52,7 +52,7 @@ const Paginacion = ({links}) => {
                 {
                     links.map((link, index) => (
                         <Grid item key={index}>
-                            <InertiaLink href={link.url ?? "#"} preserveState style={{textDecoration: "none"}}>
+                            <InertiaLink href={link.url ?? "#"} preserveState preserveScroll style={{textDecoration: "none"}}>
                             {/* SI NO ES UN NUMERO */}
                             {isNaN(link.label) ? 
                                 //SI ES EL PRIMER ELEMENTO ENTONCES ES LA FLECHA
