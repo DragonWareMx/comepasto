@@ -160,7 +160,16 @@ const Products = ({products}) => {
 
                     <Grid item xs={12} container direction="row" spacing={3} style={{marginBottom: "40px"}}>
                         {(products && products.data && products.data.length > 0) ? products.data.map((product) => (
-                            <Product key={product.id} name={product.name} img={product.foto} price={product.precio} discount={product.descuento} brand={product.brand ? product.brand.name : "Sin marca"} logo={product.brand ? product.brand.logo : "Logo_color_Mesa-de-trabajo-1.png"} id={product.id} />
+                            <Product key={product.id} 
+                                name={product.name} 
+                                img={product.foto} 
+                                price={product.precio} 
+                                discount={product.descuento} 
+                                brand={product.brand ? product.brand.name : "Sin marca"} 
+                                logo={product.brand ? product.brand.logo : "Logo_color_Mesa-de-trabajo-1.png"} 
+                                link={product.brand ? product.brand.link ?? "#" : "#"} 
+                                id={product.id} 
+                            />
                          ))
                         :
                         "Sin resultados"

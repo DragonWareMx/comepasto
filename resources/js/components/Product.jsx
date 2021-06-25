@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Product({img, name, price, discount, brand, logo, id}){
+export default function Product({img, name, price, discount, brand, logo, link, id}){
     const classes = useStyles();
 
     function limitString(string, length){
@@ -168,20 +168,24 @@ export default function Product({img, name, price, discount, brand, logo, id}){
                                     }
                                 </Grid>
                                 <Grid item className={classes.brand}>
-                                    Marca: {limitString(brand, 27)}
+                                    <a href={link} style={{textDecoration: "none", color:"#595959"}} target="_blank">
+                                        Marca: {limitString(brand, 27)}
+                                    </a>
                                 </Grid>
                             </Grid>
 
                             {/* LOGO MARCA */}
                             <Grid item xs={6}>
-                            <div className={classes.logo} style={{
-                                    backgroundImage: logo ? 'url("/storage/logos/'+ logo +'")' : 'url("/storage/logos/default.jpg")',
-                                    backgroundRepeat: "no-repeat",
-                                    backgroundPosition: "center center",
-                                    backgroundSize: "100%"
-                                }}
-                            >
-                            </div>
+                                <a href={link} target="_blank">
+                                    <div className={classes.logo} style={{
+                                            backgroundImage: logo ? 'url("/storage/logos/'+ logo +'")' : 'url("/storage/logos/default.jpg")',
+                                            backgroundRepeat: "no-repeat",
+                                            backgroundPosition: "center center",
+                                            backgroundSize: "100%"
+                                        }}
+                                    >
+                                    </div>
+                                </a>
                             </Grid>
                         </Grid>
 

@@ -17,7 +17,7 @@ class ProductController extends Controller
     public function index()
     {
         //
-        $products = Product::with('brand:id,name,logo')->select('name','foto','precio','brand_id','id','descuento')->paginate(8);
+        $products = Product::with('brand:id,name,logo,link')->select('name','foto','precio','brand_id','id','descuento')->paginate(8);
         return Inertia::render('Products/Products',[
             'products' => $products
         ]);
