@@ -40,3 +40,7 @@ Route::get('/recetas', [App\Http\Controllers\Controller::class, 'index'])->name(
 Route::name('product.')->group(function () {
     Route::get('/productos', [App\Http\Controllers\ProductController::class, 'index'])->name('index');
 });
+
+Route::name('cart.')->group(function () {
+    Route::post('/producto/{id}', [App\Http\Controllers\CartController::class, 'store'])->name('store');
+});

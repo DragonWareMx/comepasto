@@ -75,8 +75,6 @@ const useStyles = makeStyles((theme) => ({
         width: '220px',
         height: '38px',
 
-        marginTop: "12px",
-        marginBottom: "20px",
         border: "1px solid #E3E3E3",
 
         '&:hover': {
@@ -90,6 +88,15 @@ const useStyles = makeStyles((theme) => ({
         '&:hover':{
             border: "1px solid #1DA3A8",
         }
+    },
+    inertiaButton: {
+        width: "fit-content",
+        height: "fit-content",
+        backgroundColor: "transparent",
+        marginTop: "12px",
+        marginBottom: "20px",
+        padding: "0px",
+        border: "none"
     }
 }));
 
@@ -102,87 +109,62 @@ export default function Product({img, name, price, discount, brand, logo, id}){
                     string; 
     }
 
-    function showPrice(precio){
-        return parseFloat(precio).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+    function showPrice(precio, descuento){
+        if(descuento){
+            var fPrecio = parseFloat(precio);
+            var fDescuento = parseFloat(descuento)
+
+            var nPrecio = fPrecio - (fPrecio * (fDescuento/100))
+
+            if(nPrecio < 0)
+                nPrecio = 0
+
+            return nPrecio.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
+        else{
+            return parseFloat(precio).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
     }
 
     return (
         <>
-            {/* <Grid item  xs={12} sm={6} md={4} lg={3}>
-                <div style={{width: "fit-content", margin: "auto"}}>
-                    {/* IMAGEN *
-                    <Grid item>
-                        <div className="producto_imagen" style={{
-                                backgroundImage: img ? 'url("/img/productos/'+ img +'")' : 'url("storage/productos/default.jpg")',
-                                backgroundRepeat: "no-repeat",
-                                backgroundPosition: "center center",
-                                backgroundSize: "100%"
-                            }}
-                        >
-                        </div>
-                    </Grid>
-
-                    {/* NOMBRE *
-                    <Grid item className="producto_nombre">
-                        {limitString(name, 60)}
-                    </Grid>
-
-                    {/* PRECIO 
-                    <Grid item className="producto_precio">
-                        {price ?
-                        "Desde $"+ showPrice(price) +" MXN"
-                        :
-                        "Próximamente"
-                        }
-                    </Grid>
-                        
-                    {/* BOTON *
-                    <Grid item>
-                        <InertiaLink href={"/quienessomos"} style={{textDecoration: "none"}}>
-                            <ColorButton
-                                variant="outlined"
-                                className="mt-4"
-                                disableElevation
-                            >
-                                MÁS INFORMACIÓN
-                            </ColorButton>
-                        </InertiaLink>
-                    </Grid>:
-                    <>
-                    </>
-                </div>
-            </Grid> */}
             <Grid item  xs={12} sm={6} md={4} lg={3}>
                 <Paper variant="outlined" className={classes.paper}>
                     <Grid container direction="column" justify="center" alignItems="center">
                         {/* IMAGEN */}
                         <Grid item>
-                            <div className={classes.image} style={{
-                                    backgroundImage: img ? 'url("/storage/products/'+ img +'")' : 'url("/storage/products/default.jpg")',
-                                    backgroundRepeat: "no-repeat",
-                                    backgroundPosition: "center center",
-                                    backgroundSize: "100%",
-                                    marginTop: "25px",
-                                    marginBottom: "12px"
-                                }}
-                            >
-                            </div>
+                            {/* LINK DEL PRODUCTO */}
+                            <InertiaLink href="#">
+                                <div className={classes.image} style={{
+                                        backgroundImage: img ? 'url("/storage/products/'+ img +'")' : 'url("/storage/products/default.jpg")',
+                                        backgroundRepeat: "no-repeat",
+                                        backgroundPosition: "center center",
+                                        backgroundSize: "100%",
+                                        marginTop: "25px",
+                                        marginBottom: "12px"
+                                    }}
+                                >
+                                </div>
+                            </InertiaLink>
                         </Grid>
 
                         {/* NOMBRE */}
                         <Grid item className={classes.name}>
-                            {limitString(name, 46)}
+                            {/* LINK DEL PRODUCTO */}
+                            <InertiaLink href="#" style={{textDecoration: "none", color:"#474747"}}>
+                                {limitString(name, 46)}
+                            </InertiaLink>
                         </Grid>
 
                         <Grid item container direction="row" justify="center" style={{width:"220px"}}>
                             {/* PRECIO Y MARCA */}
                             <Grid item xs={6} container direction="column">
                                 <Grid item className={classes.price}>
-                                    $ {showPrice(price)} MXN
+                                    $ {showPrice(price, discount)} MXN
                                 </Grid>
                                 <Grid item className={classes.discount}>
-                                    {(id % 2 == 0) &&
-                                    "$ " + showPrice(price) + " MXN"
+                                    {discount > 0 &&
+                                    "$ " + showPrice(price, null) + " MXN"
                                     }
                                 </Grid>
                                 <Grid item className={classes.brand}>
@@ -204,7 +186,7 @@ export default function Product({img, name, price, discount, brand, logo, id}){
                         </Grid>
 
                         <Grid item container justify="center" style={{width:"220px"}}> 
-                            <InertiaLink href="/ejemplo" style={{textDecoration: "none"}} className={classes.buttonGrid}>
+                            <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButton}>
                                 <Button variant="contained" color="primary" disableElevation className={classes.button}>
                                     AGREGAR AL CARRITO
                                     <ShoppingCartOutlinedIcon fontSize="small" style={{marginLeft: "6px"}} />
