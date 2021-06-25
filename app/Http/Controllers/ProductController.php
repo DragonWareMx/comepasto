@@ -19,35 +19,34 @@ class ProductController extends Controller
     {
         //
         $products = Product::with('brand:id,name,logo,link')
-                            // ->select('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento')
                             ->when($request->categoria, function ($query, $categoria) {
                                 switch ($categoria) {
                                     case 'SIN SOYA':
-                                        return $query->where('products.soyaFree', true);
+                                        return $query->where('products.soyaFree', true)->select('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree');
                                         break;
                                     case 'SIN GLUTEN':
-                                            return $query->where('products.trigoFree', true);
+                                            return $query->where('products.trigoFree', true)->select('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree');
                                             break;
                                     case 'DESTACADOS':
                                         return $query
                                                 ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
-                                                ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, COALESCE(sum(product_sale.cantidad),0) total')
-                                                ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento')
+                                                ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, products.trigoFree, products.soyaFree, COALESCE(sum(product_sale.cantidad),0) total')
+                                                ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree')
                                                 ->orderBy('total','desc');
                                         break;
                                     
                                     default:
                                         return $query->whereHas('category', function ($query) use($categoria) {
                                             $query->where('categories.name', 'like', '%'. $categoria .'%');
-                                        });
+                                        })->select('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree');
                                         break;
                                 }
                                 return $query;
                             }, function ($query) {
                                 return $query
                                 ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
-                                ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, COALESCE(sum(product_sale.cantidad),0) total')
-                                ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento')
+                                ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, products.trigoFree, products.soyaFree, COALESCE(sum(product_sale.cantidad),0) total')
+                                ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree')
                                 ->orderBy('total','desc');
                             })
                             ->paginate(8)

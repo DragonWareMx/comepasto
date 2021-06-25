@@ -6,6 +6,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
 import route from 'ziggy-js';
 import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+
 
 //iconos
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
@@ -97,10 +99,15 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "20px",
         padding: "0px",
         border: "none"
+    },
+    iconoFree:{
+        width: "35px",
+        height: "35px",
+        filter: "invert(46%) sepia(20%) saturate(2938%) hue-rotate(142deg) brightness(104%) contrast(77%)"
     }
 }));
 
-export default function Product({img, name, price, discount, brand, logo, link, id}){
+export default function Product({img, name, price, discount, brand, logo, link, id, glutenFree, soyaFree}){
     const classes = useStyles();
 
     function limitString(string, length){
@@ -167,25 +174,36 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                                     "$ " + showPrice(price, null) + " MXN"
                                     }
                                 </Grid>
-                                <Grid item className={classes.brand}>
-                                    <a href={link} style={{textDecoration: "none", color:"#595959"}} target="_blank">
-                                        Marca: {limitString(brand, 27)}
-                                    </a>
+                                <Grid item className={classes.brand} container direction="row" justify="flex-start" spacing={2}>
+                                    {/* SIN GLUTEN */}
+                                    <Grid item style={{paddingTop: "0px", paddingBottom: "0px", paddingRight: soyaFree ? "8px" : "0px"}}>
+                                        {soyaFree == true &&
+                                            <img src="/img/CATEGORIAS/icons/soya3.png" className={classes.iconoFree} />
+                                        }
+                                    </Grid>
+                                    {/* SIN SOYA */}
+                                    <Grid item style={{paddingTop: "0px", paddingBottom: "0px", paddingLeft: soyaFree ? "8px" : "0px"}}>
+                                        {glutenFree == true &&
+                                            <img src="/img/CATEGORIAS/icons/gluten3.png" className={classes.iconoFree} />
+                                        }
+                                    </Grid>
                                 </Grid>
                             </Grid>
 
                             {/* LOGO MARCA */}
-                            <Grid item xs={6}>
-                                <a href={link} target="_blank">
-                                    <div className={classes.logo} style={{
-                                            backgroundImage: logo ? 'url("/storage/logos/'+ logo +'")' : 'url("/storage/logos/default.jpg")',
-                                            backgroundRepeat: "no-repeat",
-                                            backgroundPosition: "center center",
-                                            backgroundSize: "100%"
-                                        }}
-                                    >
-                                    </div>
-                                </a>
+                            <Grid item xs={6} container direction="column">
+                                <Tooltip title={"Marca: " + brand} placement="right">
+                                    <a href={link} target="_blank">
+                                        <div className={classes.logo} style={{
+                                                backgroundImage: logo ? 'url("/storage/logos/'+ logo +'")' : 'url("/storage/logos/default.jpg")',
+                                                backgroundRepeat: "no-repeat",
+                                                backgroundPosition: "center center",
+                                                backgroundSize: "100%"
+                                            }}
+                                        >
+                                        </div>
+                                    </a>
+                                </Tooltip>
                             </Grid>
                         </Grid>
 

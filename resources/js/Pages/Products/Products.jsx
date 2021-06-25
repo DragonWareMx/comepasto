@@ -145,7 +145,9 @@ const Products = ({products, categories, request}) => {
                                 brand={product.brand ? product.brand.name : "Sin marca"} 
                                 logo={product.brand ? product.brand.logo : "Logo_color_Mesa-de-trabajo-1.png"} 
                                 link={product.brand ? product.brand.link ?? "#" : "#"} 
-                                id={product.id} 
+                                id={product.id}
+                                glutenFree={product.trigoFree}
+                                soyaFree={product.soyaFree}
                             />
                          ))
                         :
