@@ -15,9 +15,13 @@ class CreateProductSaleTable extends Migration
     {
         Schema::create('product_sale', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('sale_id');
+            $table->unsignedDecimal('costo');
+            $table->unsignedDecimal('precio');
+            $table->unsignedDecimal('descuento')->default(0.0);
+            $table->unsignedInteger('cantidad');
+            $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('sale_id')->references('id')->on('sales');

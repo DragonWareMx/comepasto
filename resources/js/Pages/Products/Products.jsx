@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import '/css/QuienesSomos.css';
 import Paginacion from '../../components/common/paginacion';
 import Product from '../../components/Product'
+import route from 'ziggy-js';
 
 const useStyles = makeStyles((theme) => ({
     category: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Products = ({products}) => {
+const Products = ({products, categories, request}) => {
     const classes = useStyles();
 
     return (
@@ -61,53 +62,25 @@ const Products = ({products}) => {
 
                     {/* CATEGORIAS */}
                     <Grid container justify="center" spacing={3} style={{marginTop: "36px", marginBottom: "50px"}}>
-                        <Grid item>
-                            <InertiaLink href="/quienessomos" style={{textDecoration: "none"}}>
-                                <Paper className={classes.paper} elevation={0} square >
-                                    <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
-                                        <Grid item>
-                                            <img className="quienes_marca" src="/img/CATEGORIAS/icons/lacteos_white.png" alt=""/>
+                        {categories && categories.length > 0 && categories.map(category => (
+                            <Grid item>
+                                <InertiaLink href={route('product.index')} data={{ categoria: category.name }} style={{textDecoration: "none"}} preserveScroll preserveState>
+                                    <Paper className={classes.paper} elevation={0} square >
+                                        <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
+                                            <Grid item>
+                                                <img className="quienes_marca" src={"/storage/categories/"+ category.icono +""} alt=""/>
+                                            </Grid>
+                                            <Grid item className={classes.category}>
+                                                {category.name}
+                                            </Grid>
                                         </Grid>
-                                        <Grid item className={classes.category}>
-                                            LÁCTEOS
-                                        </Grid>
-                                    </Grid>
-                                </Paper>
-                            </InertiaLink>
-                        </Grid>
+                                    </Paper>
+                                </InertiaLink>
+                            </Grid>
+                        ))}
 
                         <Grid item>
-                            <InertiaLink href="/quienessomos" style={{textDecoration: "none"}}>
-                                <Paper className={classes.paper} elevation={0} square >
-                                    <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
-                                        <Grid item>
-                                            <img className="quienes_marca" src="/img/CATEGORIAS/icons/carnicos_white.png" alt=""/>
-                                        </Grid>
-                                        <Grid item className={classes.category}>
-                                            CÁRNICOS
-                                        </Grid>
-                                    </Grid>
-                                </Paper>
-                            </InertiaLink>
-                        </Grid>
-
-                        <Grid item>
-                            <InertiaLink href="/quienessomos" style={{textDecoration: "none"}}>
-                                <Paper className={classes.paper} elevation={0} square >
-                                    <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
-                                        <Grid item>
-                                            <img className="quienes_marca" src="/img/CATEGORIAS/icons/embutidos_white.png" alt=""/>
-                                        </Grid>
-                                        <Grid item className={classes.category}>
-                                            EMBUTIDOS
-                                        </Grid>
-                                    </Grid>
-                                </Paper>
-                            </InertiaLink>
-                        </Grid>
-
-                        <Grid item>
-                            <InertiaLink href="/quienessomos" style={{textDecoration: "none"}}>
+                            <InertiaLink href={route('product.index')} data={{ categoria: "SIN GLUTEN" }} style={{textDecoration: "none"}} preserveScroll preserveState>
                                 <Paper className={classes.paper} elevation={0} square >
                                     <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                         <Grid item>
@@ -122,7 +95,7 @@ const Products = ({products}) => {
                         </Grid>
 
                         <Grid item>
-                            <InertiaLink href="/quienessomos" style={{textDecoration: "none"}}>
+                            <InertiaLink href={route('product.index')} data={{ categoria: "SIN SOYA" }} style={{textDecoration: "none"}} preserveScroll preserveState>
                                 <Paper className={classes.paper} elevation={0} square >
                                     <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                         <Grid item>
@@ -137,7 +110,7 @@ const Products = ({products}) => {
                         </Grid>
 
                         <Grid item>
-                            <InertiaLink href="/quienessomos" style={{textDecoration: "none"}}>
+                            <InertiaLink href={route('product.index')} data={{ categoria: "DESTACADOS" }} style={{textDecoration: "none"}} preserveScroll preserveState>
                                 <Paper className={classes.paper} elevation={0} square>
                                     <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                         <Grid item>
@@ -154,8 +127,12 @@ const Products = ({products}) => {
 
                     {/* TITULO TIENDA CATEGORIAS */}
                     <Grid item xs={12} container direction="row" justify="center" spacing={1} alignItems="center" className="quienes_marcas_title" style={{marginBottom: "30px"}}>
-                        <Grid item className="quienes_marcas_title">NUESTROS PRODUCTOS</Grid>
-                        <Grid item className="quienes_marcas_title" style={{fontWeight: 100}}>DESTACADOS</Grid>
+                        <Grid item className="quienes_marcas_title">
+                            NUESTROS PRODUCTOS
+                        </Grid>
+                        <Grid item className="quienes_marcas_title" style={{fontWeight: 100}}>
+                            {request.categoria ?? "DESTACADOS"}
+                        </Grid>
                     </Grid>
 
                     <Grid item xs={12} container direction="row" spacing={3} style={{marginBottom: "40px"}}>

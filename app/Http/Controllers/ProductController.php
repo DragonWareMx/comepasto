@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -14,12 +15,49 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $products = Product::with('brand:id,name,logo,link')->select('name','foto','precio','brand_id','id','descuento')->paginate(8);
+        $products = Product::with('brand:id,name,logo,link')
+                            // ->select('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento')
+                            ->when($request->categoria, function ($query, $categoria) {
+                                switch ($categoria) {
+                                    case 'SIN SOYA':
+                                        return $query->where('products.soyaFree', true);
+                                        break;
+                                    case 'SIN GLUTEN':
+                                            return $query->where('products.trigoFree', true);
+                                            break;
+                                    case 'DESTACADOS':
+                                        return $query
+                                                ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
+                                                ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, COALESCE(sum(product_sale.cantidad),0) total')
+                                                ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento')
+                                                ->orderBy('total','desc');
+                                        break;
+                                    
+                                    default:
+                                        return $query->whereHas('category', function ($query) use($categoria) {
+                                            $query->where('categories.name', 'like', '%'. $categoria .'%');
+                                        });
+                                        break;
+                                }
+                                return $query;
+                            }, function ($query) {
+                                return $query
+                                ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
+                                ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, COALESCE(sum(product_sale.cantidad),0) total')
+                                ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento')
+                                ->orderBy('total','desc');
+                            })
+                            ->paginate(8);
+
+        $categories = Category::get(['id','name','icono']);
+
         return Inertia::render('Products/Products',[
-            'products' => $products
+            'products' => $products,
+            'categories' => $categories,
+            'request' => $request
         ]);
     }
 

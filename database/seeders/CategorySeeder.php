@@ -16,8 +16,18 @@ class CategorySeeder extends Seeder
     {
         //
         DB::table('categories')->insert([
-            'name' => 'Lacteos',
-            'icono' => 'icono1.png',
+            'name' => 'LÁCTEOS',
+            'icono' => 'lacteos_white.png',
+        ]);
+
+        DB::table('categories')->insert([
+            'name' => 'CÁRNICOS',
+            'icono' => 'carnicos_white.png',
+        ]);
+
+        DB::table('categories')->insert([
+            'name' => 'EMBUTIDOS',
+            'icono' => 'embutidos_white.png',
         ]);
     }
 }

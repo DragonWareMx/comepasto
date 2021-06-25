@@ -27,7 +27,7 @@ class Product extends Model
     }
 
     
-    public function sale(){
+    public function sales(){
         return $this->belongsToMany('App\Models\Sale');
     }
 
