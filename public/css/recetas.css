@@ -70,8 +70,71 @@
     transition:all ease-in-out 0.25s !important;
 }
 
+/* RECETA-------------------- */
+.sub-div-receta{
+    font-family: Atma;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 26px;
+    line-height: 30px;
+    color: #1DA3A8;
+}
+.navigate-back{
+    display:flex;
+    justify-content: flex-end;
+}
+.navigate-back a{
+    color:#7E7E7E;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width:max-content;
+}
+.descrip-receta{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #7E7E7E;
+}
+.a-despla{
+    margin-top: 25px;;
+    font-family: Atma;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 26px;
+    color:#7E7E7E;
+    display:flex;
+    align-items: center;
+    text-decoration: none;
+}
+.title-receta{
+    font-family: Atma;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 40px;
+    color: #1DA3A8;
+    margin-bottom: 10px;
+}
+.grid-img-producto img{
+    width:60%;
+}
+.grid-ingredientes{
+    background-color: #FFDE59;
+    padding:25px;
+}
 
 
+
+
+
+.a-despla:hover, .a-despla:focus, .navigate-back a:hover, .navigate-back a:focus{
+    transition:all ease-in-out 0.25s;
+    color: #454545;
+}
 
 
 

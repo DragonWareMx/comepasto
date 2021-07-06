@@ -1,7 +1,7 @@
 import React from 'react';
 import '/css/QuienesSomos.css';
 import '/css/recetas.css';
-import Layout from '../layouts/Layout';
+import Layout from '../../layouts/Layout';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Icon from '@material-ui/core/Icon';
@@ -40,7 +40,7 @@ const Recetas = () => {
             <Container>
                 <Grid container direction="row" justify="flex-start" alignItems="stretch" style={{marginTop:30, marginBottom:50}} spacing={3}>
                     <Grid item xs={12} sm={4}>
-                        <img className="receta-image" src="/img/imgs/img2.jpg" alt="Illustration by Freepik Storyset" />
+                        <img className="receta-image" src="/img/imgs/img2.jpg" alt="" />
                         <Tooltip title="Burritos veganos y deliciosos" arrow TransitionComponent={Zoom} placement="top-start">
                             <Link href="#!" style={{textDecoration:'none'}}><Typography item xs={12} className="receta-name" noWrap>Burritos veganos y deliciosos</Typography></Link>
                         </Tooltip>
@@ -53,7 +53,7 @@ const Recetas = () => {
                         </Link>
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <img className="receta-image" src="/img/imgs/img10.jpg" alt="Illustration by Freepik Storyset" />
+                        <img className="receta-image" src="/img/imgs/img10.jpg" alt="" />
                         <Tooltip title="Taquitos Crujientes y Jugosos de Soya" arrow TransitionComponent={Zoom} placement="top-start">
                             <Link href="#!" style={{textDecoration:'none'}}><Typography item xs={12} className="receta-name" noWrap>Taquitos Crujientes y Jugosos de Soya</Typography></Link>
                         </Tooltip>
@@ -65,7 +65,7 @@ const Recetas = () => {
                         </Link>
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <img className="receta-image" src="/img/imgs/img1.jpg" alt="Illustration by Freepik Storyset" />
+                        <img className="receta-image" src="/img/imgs/img1.jpg" alt="" />
                         <Tooltip title="Sopa de Tortilla con Queso Vegano muy poco Salado y cosas" arrow TransitionComponent={Zoom} placement="top-start">
                             <Link href="#!" style={{textDecoration:'none'}}><Typography href="#" item xs={12} className="receta-name" noWrap>Sopa de Tortilla con Queso Vegano muy poco Salado y cosas</Typography></Link>
                         </Tooltip>

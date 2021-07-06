@@ -34,7 +34,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'inicio'])->name('inicio');
 
 Route::get('/quienessomos', [App\Http\Controllers\quienesSomosController::class, 'index'])->name('quienesSomos');
-Route::get('/recetas', [App\Http\Controllers\Controller::class, 'index'])->name('recetas');
+
+// RECETAS
+Route::get('/recetas', [App\Http\Controllers\recetasController::class, 'index'])->name('recetas');
+Route::get('/recetas/{id}', [App\Http\Controllers\recetasController::class, 'verReceta'])->name('ver-receta');
 
 //PRODUCTOS
 Route::name('product.')->group(function () {
