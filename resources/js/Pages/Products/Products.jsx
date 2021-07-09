@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../../layouts/Layout';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { InertiaLink } from '@inertiajs/inertia-react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import MuiAlert from '@material-ui/lab/Alert';
+import { usePage } from '@inertiajs/inertia-react'
+import Button from "@material-ui/core/Button";
 
 //css
 import '/css/QuienesSomos.css';
 import Paginacion from '../../components/common/paginacion';
 import Product from '../../components/Product'
 import route from 'ziggy-js';
+import { Dialog, Snackbar } from '@material-ui/core';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     category: {
@@ -39,10 +47,105 @@ const useStyles = makeStyles((theme) => ({
             transition: "all 1s",
         }
     },
+    cardInicioSesion:{
+        width: "100%",
+        maxWidth: "400px",
+        height: "fit-content",
+
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    button: {
+        background: '#1DA3A8',
+            color: '#FFFFFF',
+
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontSize: '13px',
+        lineHeight: '21px',
+
+        minWidth: '220px',
+        maxWidth: '319px',
+        height: '45px',
+        width: "100%",
+
+        border: "1px solid #E3E3E3",
+
+        '&:hover': {
+            background: '#1DA3A8',
+            color: '#FFFFFF',
+        },
+    },
+    inertiaButton: {
+        width: "90%",
+        minWidth: '220px',
+        maxWidth: '319px',
+
+        height: "fit-content",
+        backgroundColor: "transparent",
+
+        marginTop: "12px",
+        marginBottom: "20px",
+
+        padding: "0px",
+        border: "none",
+    },
+    cardText: {
+        color: '#626262',
+
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontSize: '14px',
+        lineHeight: '23px',
+        width: "90%",
+        textAlign: "center"
+    },
+    cardLink: {
+        color: '#1DA3A8',
+
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: '600',
+        fontSize: '14px',
+        lineHeight: '23px',
+        textAlign: "center",
+        textDecoration: "none",
+        marginRight: "2px"
+    },
 }));
 
 const Products = ({products, categories, request}) => {
+    const { flash } = usePage().props
+    
     const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+    const [dialog, setDialog] = React.useState(false);
+
+    const handleDialogClose = () => {
+        setDialog(false);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    //se ejecuta cuando se monta el componente, inicializa materialize y el buscador
+    useEffect(() => {
+        if(flash.error || flash.success){
+            setOpen(true)
+        }
+        if(flash.message){
+            setDialog(true)
+        }
+    }, [flash])
 
     return (
         <>
@@ -63,7 +166,7 @@ const Products = ({products, categories, request}) => {
                     {/* CATEGORIAS */}
                     <Grid container justify="center" spacing={3} style={{marginTop: "36px", marginBottom: "50px"}}>
                         {categories && categories.length > 0 && categories.map(category => (
-                            <Grid item>
+                            <Grid item key={category.id + category.name}>
                                 <InertiaLink href={route('product.index')} data={{ categoria: category.name }} style={{textDecoration: "none"}} preserveScroll preserveState>
                                     <Paper className={classes.paper} elevation={0} square >
                                         <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
@@ -160,6 +263,45 @@ const Products = ({products, categories, request}) => {
                     </Grid>
                 </Grid>
             </Container>
+
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                {flash.error ?
+                    <Alert onClose={handleClose} severity="error">
+                        {flash.error}
+                    </Alert>
+                :
+                flash.success &&
+                    <Alert onClose={handleClose} severity="success">
+                        {flash.success}
+                    </Alert>
+                }
+            </Snackbar>
+
+            <Dialog 
+                open={dialog}
+                onClose={handleDialogClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <div className={classes.cardInicioSesion}>
+                    <div className={classes.cardText} style={{marginTop: "30px"}}>
+                        Inicia sesión en comepasto para comenzar a añadir productos a tu carrito
+                    </div>
+
+                    <InertiaLink href={route('login')} as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
+                        <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
+                            INICIAR SESIÓN
+                        </Button>
+                    </InertiaLink>
+
+                    <div className={classes.cardText} style={{marginBottom: "30px"}}>
+                        <InertiaLink href={route("register")} className={classes.cardLink}>
+                            ¿Deseas registrarte?
+                        </InertiaLink>
+                        Esto agilizará tus procesos de compra
+                    </div>
+                </div>
+            </Dialog>
         </>
     )
 }

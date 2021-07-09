@@ -8,7 +8,6 @@ import route from 'ziggy-js';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 
-
 //iconos
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 
@@ -103,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
     iconoFree:{
         width: "35px",
         height: "35px",
-        filter: "invert(46%) sepia(20%) saturate(2938%) hue-rotate(142deg) brightness(104%) contrast(77%)"
+        filter: "invert(46%) sepia(20%) saturate(2938%) hue-rotate(142deg) brightness(104%) contrast(77%)",
     }
 }));
 
@@ -174,7 +173,7 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                                     "$ " + showPrice(price, null) + " MXN"
                                     }
                                 </Grid>
-                                <Grid item className={classes.brand} container direction="row" justify="flex-start" spacing={2}>
+                                <Grid item className={classes.brand} container direction="row" justify="flex-start" spacing={2} style={{marginBottom: "1px"}}>
                                     {/* SIN GLUTEN */}
                                     <Grid item style={{paddingTop: "0px", paddingBottom: "0px", paddingRight: soyaFree ? "8px" : "0px"}}>
                                         {soyaFree == true &&
@@ -208,8 +207,8 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                         </Grid>
 
                         <Grid item container justify="center" style={{width:"220px"}}> 
-                            <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButton}>
-                                <Button variant="contained" color="primary" disableElevation className={classes.button}>
+                            <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
+                                <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
                                     AGREGAR AL CARRITO
                                     <ShoppingCartOutlinedIcon fontSize="small" style={{marginLeft: "6px"}} />
                                 </Button>

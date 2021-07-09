@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -37,10 +37,22 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id, Request $request)
     {
-        //
-        dd("se agrega el producto al carrito");
+        //si está loggeado
+        if(!\Auth::user()){
+            return \Redirect::back()->with('message','Inicia sesión.');
+        }
+
+        //se encuentra el producto
+        $product = Product::find($id);
+
+        //si no hay producto se manda el mensaje de error
+        if(!$product){
+            return \Redirect::back()->with('error','El producto solicitado no existe.');
+        }
+
+        return \Redirect::back()->with('success','Producto agregado.');
     }
 
     /**
