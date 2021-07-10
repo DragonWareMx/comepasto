@@ -47,4 +47,5 @@ Route::name('product.')->group(function () {
 Route::name('cart.')->group(function () {
     //agrega al carrito
     Route::post('/producto/{id}', [App\Http\Controllers\CartController::class, 'store'])->name('store');
+    Route::patch('/producto/{id}', [App\Http\Controllers\CartController::class, 'update'])->name('update');
 });

@@ -46,6 +46,6 @@ class User extends Authenticatable
     }
 
     public function cart(){
-        return $this->belongsToMany('App\Models\Product', 'product_user')->withPivot('estatus','cantidad');
+        return $this->belongsToMany('App\Models\Product', 'product_user')->withPivot('estatus','cantidad')->withTimestamps();
     }
 }

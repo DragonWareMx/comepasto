@@ -40,6 +40,6 @@ class Product extends Model
     }
 
     public function user(){
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsToMany('App\Models\User')->withTimestamps();
     }
 }
