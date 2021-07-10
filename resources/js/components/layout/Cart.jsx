@@ -1,12 +1,14 @@
-import { Badge, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, ClickAwayListener, Divider, Fade, Grid, IconButton, Input, InputAdornment, OutlinedInput, Drawer, Typography } from '@material-ui/core';
+import { Badge, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, ClickAwayListener, Divider, Dialog, Fade, Grid, IconButton, Input, InputAdornment, OutlinedInput, Drawer, Typography } from '@material-ui/core';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import ShoppingCartSharpIcon from '@material-ui/icons/ShoppingCartSharp';
-import CloseSharpIcon from '@material-ui/icons/CloseSharp';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
 import Popper from '@material-ui/core/Popper';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
+
+//iconos
+import RemoveIcon from '@material-ui/icons/Remove';
+import AddIcon from '@material-ui/icons/Add';
+import CloseSharpIcon from '@material-ui/icons/CloseSharp';
 
 const StyledBadge = withStyles((theme) => ({
     badge: {
@@ -73,9 +75,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "15px",
         lineHeight: "19px",
 
-
         color: "#474747",
-        marginRight: 10
+        marginRight: 10,
+        width: "fit-content",
     },
     precio: {
         fontFamily: "Oxygen",
@@ -83,7 +85,6 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: "bold",
         fontSize: "14px",
         lineHeight: "18px",
-
 
         color: "#1DA3A8",
     },
@@ -94,7 +95,6 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "12px",
         lineHeight: "15px",
         textDecorationLine: "line-through",
-
 
         color: "#ABABAB",
     },
@@ -135,12 +135,89 @@ const useStyles = makeStyles((theme) => ({
             display: "none"
         },
         "& input":{
-            width: "26px"
+            width: "26px",
+            textAlign: "center"
         },
         height: 33,
         paddingLeft: 0,
         paddingRight: 0
-    }
+    },
+    cardInicioSesion:{
+        width: "100%",
+        maxWidth: "400px",
+        height: "fit-content",
+
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    buttonDial: {
+        background: '#1DA3A8',
+            color: '#FFFFFF',
+
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontSize: '13px',
+        lineHeight: '21px',
+
+        minWidth: '220px',
+        maxWidth: '319px',
+        height: '45px',
+        width: "100%",
+
+        border: "1px solid #E3E3E3",
+
+        '&:hover': {
+            background: '#1DA3A8',
+            color: '#FFFFFF',
+        },
+    },
+    inertiaButton: {
+        width: "90%",
+        minWidth: '220px',
+        maxWidth: '319px',
+
+        height: "fit-content",
+        backgroundColor: "transparent",
+
+        marginTop: "12px",
+        marginBottom: "20px",
+
+        padding: "0px",
+        border: "none",
+    },
+    cardText: {
+        color: '#626262',
+
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontSize: '14px',
+        lineHeight: '23px',
+        width: "90%",
+        textAlign: "center"
+    },
+    cardLink: {
+        color: '#1DA3A8',
+
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: '600',
+        fontSize: '14px',
+        lineHeight: '23px',
+        textAlign: "center",
+        textDecoration: "none",
+        marginRight: "2px"
+    },
+    inertiaButtonPlusRemove: {
+        width: "fit-content",
+        height: "fit-content",
+        backgroundColor: "transparent",
+        padding: "0px",
+        border: "none"
+    },
   }));
 
 export default function Footer() {
@@ -148,10 +225,21 @@ export default function Footer() {
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [dialog, setDialog] = React.useState(false);
 
     function handleClick(event){
-        setOpen(true);
+        console.log(auth.cart)
+        if(auth && auth.cart){
+            setOpen(true);
+        }
+        else{
+            setDialog(true)
+        }
     }
+
+    const handleDialogClose = () => {
+        setDialog(false);
+    };
 
     const toggleDrawer = (open) => (event) => {
         if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -224,25 +312,44 @@ export default function Footer() {
         >
             <div
                 role="presentation"
-                //onClick={toggleDrawer(false)}
-                //onKeyDown={toggleDrawer(false)}
             >
+                {/* CLOSE MENU */}
+                <Grid 
+                    container
+                    direction="row"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                >
+                    <Grid item style={{margin: 10}}>
+                        <IconButton 
+                            aria-label="cerrar" 
+                            onClick={toggleDrawer(false)}
+                            onKeyDown={toggleDrawer(false)}
+                        >
+                            <CloseSharpIcon/>
+                        </IconButton>
+                    </Grid>
+                </Grid>
+
+                <Divider variant="middle" />
+
+
                 {/* PRODUCTOS DEL CARRITO */}
                 {auth.cart.length > 0 && auth.cart.map(producto => (
                 <>
-                    <Grid container spacing={2}>
-                        {/* PRODUCTO */}
+                    {/* PRODUCTO */}
+                    <Grid container style={{maxWidth: 320, margin: 10}}>
                         {/* Imagen del producto */}
                         <Grid item xs={3}>
                             <ButtonBase>
                                 {producto.foto &&
-                                <img className={classes.img} alt="complex" src={"/storage/products/" + producto.foto} />
+                                    <img className={classes.img} alt="complex" src={"/storage/products/" + producto.foto} />
                                 }
                             </ButtonBase>
                         </Grid>
 
                         <Grid item xs container>
-                            {/* Nombre del producto */}
+                            {/* NOMBRE DEL PRODUCTO */}
                             <Grid item xs={12}>
                                 <InertiaLink href="/producto" style={{textDecoration: "none"}}>
                                     <Typography gutterBottom className={classes.nombreProducto}>
@@ -282,27 +389,32 @@ export default function Footer() {
                                     className={classes.inputSinFlechas}
                                     endAdornment={
                                         <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="add"
-                                        >
-                                            <AddIcon fontSize="small" />
-                                        </IconButton>
+                                            <InertiaLink href={route('cart.store', producto.id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
+                                                <IconButton
+                                                    aria-label="add"
+                                                    component="div"
+                                                >
+                                                    <AddIcon fontSize="small" />
+                                                </IconButton>
+                                            </InertiaLink>
                                         </InputAdornment>
                                     }
                                     startAdornment={
                                         <InputAdornment position="start">
-                                        <IconButton
-                                            aria-label="remove"
-                                        >
-                                            <RemoveIcon fontSize="small" />
-                                        </IconButton>
+                                            <InertiaLink href={route('cart.update', producto.id)} method="patch" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
+                                                <IconButton
+                                                    aria-label="remove"
+                                                >
+                                                    <RemoveIcon fontSize="small" />
+                                                </IconButton>
+                                            </InertiaLink>
                                         </InputAdornment>
                                     }
                                     
                                     value={producto.pivot.cantidad} />
                                 </Grid>
                             </Grid>
-                                
+                                    
                             {/* Precio */}
                             <Grid item xs={12}>
                                 <Typography gutterBottom className={classes.precioProducto} align="right">
@@ -311,6 +423,7 @@ export default function Footer() {
                             </Grid>
                         </Grid>
                     </Grid>
+
                     <Divider variant="middle" />
                 </>
                 ))
@@ -488,6 +601,33 @@ export default function Footer() {
         //     </ClickAwayListener>
         // </Popper>
         }
+
+        {/* DIALOG QUE SE MUESTRA CUANDO EL USUARIO NO HA INICIADO SESION */}
+        <Dialog 
+        open={dialog}
+        onClose={handleDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        >
+            <div className={classes.cardInicioSesion}>
+                <div className={classes.cardText} style={{marginTop: "30px"}}>
+                    Inicia sesión en comepasto para comenzar a añadir productos a tu carrito
+                </div>
+
+                <InertiaLink href={route('login')} as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
+                    <Button variant="contained" color="primary" component="div" disableElevation className={classes.buttonDial}>
+                        INICIAR SESIÓN
+                    </Button>
+                </InertiaLink>
+
+                <div className={classes.cardText} style={{marginBottom: "30px"}}>
+                    <InertiaLink href={route("register")} className={classes.cardLink}>
+                        ¿Deseas registrarte?
+                    </InertiaLink>
+                    Esto agilizará tus procesos de compra
+                </div>
+            </div>
+        </Dialog>
 
         </>
     );
