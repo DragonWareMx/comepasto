@@ -43,7 +43,7 @@ export default function Layout({ title, pageTitle, children }) {
         document.title = title;
     }, [title])
 
-    //detecta cuando un nuevo mensaje es recibido
+    //detecta cuando un nuevo mensaje es recibido, cierra todas las alertas y cambia el mensaje
     useEffect(() => {
         if(flash.error){
             setAlert(state => ({
@@ -77,7 +77,7 @@ export default function Layout({ title, pageTitle, children }) {
         }
     }, [flash])
 
-    //se ejecuta cuando se monta el componente, inicializa materialize y el buscador
+    //abre de nuevo la alerta
     useEffect(() => {
         switch (open.tipo) {
             case "error":
