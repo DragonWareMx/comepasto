@@ -138,7 +138,7 @@ const Products = ({products, categories, request}) => {
     };
 
     function cantidadProducto(id){
-        if(auth.cart.length > 0){
+        if(auth && auth.cart && auth.cart.length > 0){
             var cantidad = 0
             auth.cart.forEach(productInCart => {
                 if(productInCart.id == id){
