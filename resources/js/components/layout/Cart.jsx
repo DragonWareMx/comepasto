@@ -228,7 +228,6 @@ export default function Footer() {
     const [dialog, setDialog] = React.useState(false);
 
     function handleClick(event){
-        console.log(auth.cart)
         if(auth && auth.cart){
             setOpen(true);
         }
@@ -266,14 +265,14 @@ export default function Footer() {
         else
             precioDescuento = 0
 
-        return "$"+precioDescuento.toFixed(2)+" MXN"
+        return "$" + parseFloat(precioDescuento).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " MXN"
     }
 
     function calcularTotalProducto(producto){
         let precioDescuento
 
         if(producto.descuento <= 100)
-            precioDescuento = producto.precio - producto.precio * (producto.descuento/100)
+            precioDescuento = (producto.precio - producto.precio * (producto.descuento/100)).toFixed(2)
         else
             precioDescuento = 0
 
@@ -290,7 +289,7 @@ export default function Footer() {
             total += calcularTotalProducto(producto)
         });
 
-        return "$"+total.toFixed(2)
+        return "$"+parseFloat(total).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
     }
 
     return (
@@ -364,16 +363,33 @@ export default function Footer() {
 
                             {/* Precios */}
                             <Grid item xs={12} container spacing={1}>
-                                <Grid item >
-                                    <Typography gutterBottom className={classes.precioDescuento} align="left">
-                                        {"$"+producto.precio+" MXN"}
-                                    </Typography>
-                                </Grid>
-                                <Grid item >
-                                    <Typography gutterBottom  className={classes.precio} align="left">
-                                        {calcularDescuento(producto.precio, producto.descuento)}
-                                    </Typography>
-                                </Grid>
+                                {producto.descuento > 0 ?
+                                <>
+                                    <Grid item >
+                                        <Typography gutterBottom className={classes.precioDescuento} align="left">
+                                            {"$"+parseFloat(producto.precio).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})+" MXN"}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item >
+                                        <Typography gutterBottom  className={classes.precio} align="left">
+                                            {calcularDescuento(producto.precio, producto.descuento)}
+                                        </Typography>
+                                    </Grid>
+                                </>
+                                :
+                                <>
+                                    <Grid item style={{padding: 0}}>
+                                        <Typography gutterBottom className={classes.precioDescuento} align="left" style={{padding: 0}} >
+                                            
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item >
+                                        <Typography gutterBottom  className={classes.precio} align="left">
+                                        {"$"+parseFloat(producto.precio).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})+" MXN"}
+                                        </Typography>
+                                    </Grid>
+                                </>
+                                }
                             </Grid>
                             
                             {/* Cantidad */}
@@ -404,6 +420,7 @@ export default function Footer() {
                                             <InertiaLink href={route('cart.update', producto.id)} method="patch" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
                                                 <IconButton
                                                     aria-label="remove"
+                                                    component="div"
                                                 >
                                                     <RemoveIcon fontSize="small" />
                                                 </IconButton>
@@ -418,7 +435,7 @@ export default function Footer() {
                             {/* Precio */}
                             <Grid item xs={12}>
                                 <Typography gutterBottom className={classes.precioProducto} align="right">
-                                    {producto.pivot.cantidad+"x$"+calcularTotalProducto(producto).toFixed(2)}
+                                    {producto.pivot.cantidad+"x$"+calcularTotalProducto(producto).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                                 </Typography>
                             </Grid>
                         </Grid>
