@@ -5,7 +5,6 @@ import Container from '@material-ui/core/Container';
 import { InertiaLink } from '@inertiajs/inertia-react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import MuiAlert from '@material-ui/lab/Alert';
 import { usePage } from '@inertiajs/inertia-react'
 import Button from "@material-ui/core/Button";
 
@@ -14,11 +13,7 @@ import '/css/QuienesSomos.css';
 import Paginacion from '../../components/common/paginacion';
 import Product from '../../components/Product'
 import route from 'ziggy-js';
-import { Dialog, Snackbar } from '@material-ui/core';
-
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+import { Dialog } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     category: {
@@ -122,19 +117,10 @@ const Products = ({products, categories, request}) => {
     const { flash,auth } = usePage().props
     
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
     const [dialog, setDialog] = React.useState(false);
 
     const handleDialogClose = () => {
         setDialog(false);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
     };
 
     function cantidadProducto(id){
@@ -151,16 +137,6 @@ const Products = ({products, categories, request}) => {
 
         return 0
     }
-
-    //se ejecuta cuando se monta el componente, inicializa materialize y el buscador
-    useEffect(() => {
-        if(flash.error || flash.success || flash.message){
-            setOpen(true)
-        }
-        if(flash.info){
-            setDialog(true)
-        }
-    }, [flash])
 
     return (
         <>
@@ -279,24 +255,6 @@ const Products = ({products, categories, request}) => {
                     </Grid>
                 </Grid>
             </Container>
-
-            <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-                {flash.error ?
-                    <Alert onClose={handleClose} severity="error">
-                        {flash.error}
-                    </Alert>
-                :
-                flash.message ?
-                    <Alert onClose={handleClose} severity="warning">
-                        {flash.message}
-                    </Alert>
-                :
-                flash.success &&
-                    <Alert onClose={handleClose} severity="success">
-                        {flash.success}
-                    </Alert>
-                }
-            </Snackbar>
 
             <Dialog 
                 open={dialog}

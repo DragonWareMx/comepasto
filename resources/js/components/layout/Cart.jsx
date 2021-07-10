@@ -1,6 +1,6 @@
 import { Badge, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, ClickAwayListener, Divider, Dialog, Fade, Grid, IconButton, Input, InputAdornment, OutlinedInput, Drawer, Typography } from '@material-ui/core';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ShoppingCartSharpIcon from '@material-ui/icons/ShoppingCartSharp';
 import Popper from '@material-ui/core/Popper';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
@@ -221,7 +221,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export default function Footer() {
-    const { auth } = usePage().props
+    const { auth, flash } = usePage().props
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -291,6 +291,12 @@ export default function Footer() {
 
         return "$"+parseFloat(total).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
     }
+
+    useEffect(() => {
+        if(flash.info){
+            setDialog(true)
+        }
+    }, [flash])
 
     return (
         <>
