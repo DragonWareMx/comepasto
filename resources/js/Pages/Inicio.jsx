@@ -9,7 +9,7 @@ const Inicio = ({banners}) => {
     return (
         <>
             <Container >
-                <div style={{height:30,display:'flex',backgroundColor:'red'}}></div>
+                <div style={{height:30,display:'flex'}}></div>
                 <CarruselBanners banners={banners} />
             </Container>
         </>
