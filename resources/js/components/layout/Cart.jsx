@@ -1,4 +1,4 @@
-import { Badge, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, ClickAwayListener, Divider, Fade, Grid, IconButton, Input, InputAdornment, OutlinedInput, Typography } from '@material-ui/core';
+import { Badge, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, ClickAwayListener, Divider, Fade, Grid, IconButton, Input, InputAdornment, OutlinedInput, Drawer, Typography } from '@material-ui/core';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import ShoppingCartSharpIcon from '@material-ui/icons/ShoppingCartSharp';
@@ -148,18 +148,18 @@ export default function Footer() {
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [placement, setPlacement] = React.useState();
 
-    const handleClick = (newPlacement) => (event) => {
-        setAnchorEl(event.currentTarget);
-        setOpen((prev) => placement !== newPlacement || !prev);
-        setPlacement(newPlacement);
-    };
+    function handleClick(event){
+        setOpen(true);
+    }
 
-    const handleClickAway = () => {
-        setOpen(false);
-    };
+    const toggleDrawer = (open) => (event) => {
+        if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+          return;
+        }
+    
+        setOpen(open);
+      };
 
     function calcularCantidadDeProductos(carrito){
         let cantidad = 0
@@ -208,7 +208,7 @@ export default function Footer() {
     return (
         <>
         {/* ICONO DEL CARRITO */}
-        <IconButton aria-label="cart" className={classes.cartbutton} onClick={handleClick('left-start')}>
+        <IconButton aria-label="cart" className={classes.cartbutton} onClick={handleClick}>
             <StyledBadge badgeContent={auth.cart ? calcularCantidadDeProductos(auth.cart) : 0} color="primary">
                 <ShoppingCartSharpIcon fontSize="large" style={{ color: '#1DA3A8' }} />
             </StyledBadge>
@@ -216,146 +216,277 @@ export default function Footer() {
 
         {/* CARD DEL CARRITO, AQUI SE MUESTRAN LOS ELEMENTOS EN EL CARRITO */}
         {auth && auth.user && auth.cart &&
-        <Popper open={open} anchorEl={anchorEl} placement={placement} transition>
-            {/* Detecta si se hizo click afuera del card para cerrar el carrito */}
-            <ClickAwayListener onClickAway={handleClickAway}>
-                <Card className={classes.card}>
-                    {/* Icono para cerrar el carrito */}
-                    <CardHeader 
-                    action={
-                        <IconButton aria-label="close" size="small" onClick={handleClickAway}>
-                            <CloseSharpIcon fontSize="small"/>
-                        </IconButton>
-                    } />
-                    
-                    {/* PRODUCTOS DEL CARRITO */}
-                    {auth.cart.length > 0 && auth.cart.map(producto => (
-                    <CardContent>
+        <Drawer
+            anchor="right"
+            open={open}
+            onClose={toggleDrawer(false)}
+            onOpen={toggleDrawer(true)}
+        >
+            <div
+                role="presentation"
+                //onClick={toggleDrawer(false)}
+                //onKeyDown={toggleDrawer(false)}
+            >
+                {/* PRODUCTOS DEL CARRITO */}
+                {auth.cart.length > 0 && auth.cart.map(producto => (
+                <>
+                    <Grid container spacing={2}>
                         {/* PRODUCTO */}
-                        <Grid container spacing={2}>
-                            {/* Imagen del producto */}
-                            <Grid item xs={3}>
-                                <ButtonBase>
-                                    {producto.foto &&
-                                    <img className={classes.img} alt="complex" src={"/storage/products/" + producto.foto} />
-                                    }
-                                </ButtonBase>
+                        {/* Imagen del producto */}
+                        <Grid item xs={3}>
+                            <ButtonBase>
+                                {producto.foto &&
+                                <img className={classes.img} alt="complex" src={"/storage/products/" + producto.foto} />
+                                }
+                            </ButtonBase>
+                        </Grid>
+
+                        <Grid item xs container>
+                            {/* Nombre del producto */}
+                            <Grid item xs={12}>
+                                <InertiaLink href="/producto" style={{textDecoration: "none"}}>
+                                    <Typography gutterBottom className={classes.nombreProducto}>
+                                        {producto.name.length > 100 ?
+                                        producto.name.substring(0, 100 - 3) + "..."
+                                        : 
+                                        producto.name
+                                        }
+                                    </Typography>
+                                </InertiaLink>
                             </Grid>
 
-                            <Grid item xs container>
-                                {/* Nombre del producto */}
-                                <Grid item xs={12}>
-                                    <InertiaLink href="/producto" style={{textDecoration: "none"}}>
-                                        <Typography gutterBottom className={classes.nombreProducto}>
-                                            {producto.name.length > 100 ?
-                                            producto.name.substring(0, 100 - 3) + "..."
-                                            : 
-                                            producto.name
-                                            }
-                                        </Typography>
-                                    </InertiaLink>
+                            {/* Precios */}
+                            <Grid item xs={12} container spacing={1}>
+                                <Grid item >
+                                    <Typography gutterBottom className={classes.precioDescuento} align="left">
+                                        {"$"+producto.precio+" MXN"}
+                                    </Typography>
                                 </Grid>
-
-                                {/* Precios */}
-                                <Grid item xs={12} container spacing={1}>
-                                    <Grid item >
-                                        <Typography gutterBottom className={classes.precioDescuento} align="left">
-                                            {"$"+producto.precio+" MXN"}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item >
-                                        <Typography gutterBottom  className={classes.precio} align="left">
-                                            {calcularDescuento(producto.precio, producto.descuento)}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                                
-                                {/* Cantidad */}
-                                <Grid item xs={12} container spacing={1}>
-                                    <Grid item xs container alignItems="center" justify="flex-end">
-                                        <Typography gutterBottom className={classes.cantidad} align="right">
-                                            Cantidad
-                                        </Typography>
-                                    </Grid>
-
-                                    <Grid item xs container justify="flex-end">
-                                        <OutlinedInput type="number"
-                                        className={classes.inputSinFlechas}
-                                        endAdornment={
-                                            <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="add"
-                                            >
-                                                <AddIcon fontSize="small" />
-                                            </IconButton>
-                                            </InputAdornment>
-                                        }
-                                        startAdornment={
-                                            <InputAdornment position="start">
-                                            <IconButton
-                                                aria-label="remove"
-                                            >
-                                                <RemoveIcon fontSize="small" />
-                                            </IconButton>
-                                            </InputAdornment>
-                                        }
-                                        
-                                        value={producto.pivot.cantidad} />
-                                    </Grid>
-                                </Grid>
-                                    
-                                {/* Precio */}
-                                <Grid item xs={12}>
-                                    <Typography gutterBottom className={classes.precioProducto} align="right">
-                                        {producto.pivot.cantidad+"x$"+calcularTotalProducto(producto).toFixed(2)}
+                                <Grid item >
+                                    <Typography gutterBottom  className={classes.precio} align="left">
+                                        {calcularDescuento(producto.precio, producto.descuento)}
                                     </Typography>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                        
-                        <Divider variant="middle" />
+                            
+                            {/* Cantidad */}
+                            <Grid item xs={12} container spacing={1}>
+                                <Grid item xs container alignItems="center" justify="flex-end">
+                                    <Typography gutterBottom className={classes.cantidad} align="right">
+                                        Cantidad
+                                    </Typography>
+                                </Grid>
 
-                        {/* TOTAL */}
-                        <Grid item xs={12} container justify="space-between">
-                            <Grid item>
-                                <Typography gutterBottom className={classes.precioTotal} align="left">
-                                    Total:
+                                <Grid item xs container justify="flex-end">
+                                    <OutlinedInput type="number"
+                                    className={classes.inputSinFlechas}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="add"
+                                        >
+                                            <AddIcon fontSize="small" />
+                                        </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    startAdornment={
+                                        <InputAdornment position="start">
+                                        <IconButton
+                                            aria-label="remove"
+                                        >
+                                            <RemoveIcon fontSize="small" />
+                                        </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    
+                                    value={producto.pivot.cantidad} />
+                                </Grid>
+                            </Grid>
+                                
+                            {/* Precio */}
+                            <Grid item xs={12}>
+                                <Typography gutterBottom className={classes.precioProducto} align="right">
+                                    {producto.pivot.cantidad+"x$"+calcularTotalProducto(producto).toFixed(2)}
                                 </Typography>
                             </Grid>
-
-                            <Grid item>
-                            <Typography gutterBottom className={classes.precioTotal} align="right">
-                                {calcularTotal(auth.cart)}
-                            </Typography>
-                            </Grid>
                         </Grid>
+                    </Grid>
+                    <Divider variant="middle" />
+                </>
+                ))
+                }
+                {/* TOTAL */}
+                <Grid item xs={12} container justify="space-between">
+                    <Grid item>
+                        <Typography gutterBottom className={classes.precioTotal} align="left">
+                            Total:
+                        </Typography>
+                    </Grid>
 
-                    </CardContent>
-                    ))
-                    }
+                    <Grid item>
+                    <Typography gutterBottom className={classes.precioTotal} align="right">
+                        {calcularTotal(auth.cart)}
+                    </Typography>
+                    </Grid>
+                </Grid>
+
+                <Grid container justify="center" direction="column">
+                    <Grid container item justify="center" xs={12}> 
+                        <InertiaLink href="/ejemplo" style={{textDecoration: "none"}} className={classes.buttonGrid}>
+                            <Button variant="contained" color="primary" disableElevation className={classes.button}>
+                                Proceder pago
+                            </Button>
+                        </InertiaLink>
+                    </Grid>
+
+                    <Grid container item className={classes.linkcotizar} justify="center">
+                        <InertiaLink style={{color: "#595959"}} href="/ejemplo">
+                            Cotizar costo de envío
+                        </InertiaLink>
+                    </Grid>
+                </Grid>
+            </div>
+        </Drawer>
+        // <Popper open={open} anchorEl={anchorEl} placement={placement} transition>
+        //     {/* Detecta si se hizo click afuera del card para cerrar el carrito */}
+        //     <ClickAwayListener onClickAway={handleClickAway}>
+        //         <Card className={classes.card}>
+        //             {/* Icono para cerrar el carrito */}
+        //             <CardHeader 
+        //             action={
+        //                 <IconButton aria-label="close" size="small" onClick={handleClickAway}>
+        //                     <CloseSharpIcon fontSize="small"/>
+        //                 </IconButton>
+        //             } />
+                    
+        //             {/* PRODUCTOS DEL CARRITO */}
+        //             {auth.cart.length > 0 && auth.cart.map(producto => (
+        //             <CardContent>
+        //                 {/* PRODUCTO */}
+        //                 <Grid container spacing={2}>
+        //                     {/* Imagen del producto */}
+        //                     <Grid item xs={3}>
+        //                         <ButtonBase>
+        //                             {producto.foto &&
+        //                             <img className={classes.img} alt="complex" src={"/storage/products/" + producto.foto} />
+        //                             }
+        //                         </ButtonBase>
+        //                     </Grid>
+
+        //                     <Grid item xs container>
+        //                         {/* Nombre del producto */}
+        //                         <Grid item xs={12}>
+        //                             <InertiaLink href="/producto" style={{textDecoration: "none"}}>
+        //                                 <Typography gutterBottom className={classes.nombreProducto}>
+        //                                     {producto.name.length > 100 ?
+        //                                     producto.name.substring(0, 100 - 3) + "..."
+        //                                     : 
+        //                                     producto.name
+        //                                     }
+        //                                 </Typography>
+        //                             </InertiaLink>
+        //                         </Grid>
+
+        //                         {/* Precios */}
+        //                         <Grid item xs={12} container spacing={1}>
+        //                             <Grid item >
+        //                                 <Typography gutterBottom className={classes.precioDescuento} align="left">
+        //                                     {"$"+producto.precio+" MXN"}
+        //                                 </Typography>
+        //                             </Grid>
+        //                             <Grid item >
+        //                                 <Typography gutterBottom  className={classes.precio} align="left">
+        //                                     {calcularDescuento(producto.precio, producto.descuento)}
+        //                                 </Typography>
+        //                             </Grid>
+        //                         </Grid>
+                                
+        //                         {/* Cantidad */}
+        //                         <Grid item xs={12} container spacing={1}>
+        //                             <Grid item xs container alignItems="center" justify="flex-end">
+        //                                 <Typography gutterBottom className={classes.cantidad} align="right">
+        //                                     Cantidad
+        //                                 </Typography>
+        //                             </Grid>
+
+        //                             <Grid item xs container justify="flex-end">
+        //                                 <OutlinedInput type="number"
+        //                                 className={classes.inputSinFlechas}
+        //                                 endAdornment={
+        //                                     <InputAdornment position="end">
+        //                                     <IconButton
+        //                                         aria-label="add"
+        //                                     >
+        //                                         <AddIcon fontSize="small" />
+        //                                     </IconButton>
+        //                                     </InputAdornment>
+        //                                 }
+        //                                 startAdornment={
+        //                                     <InputAdornment position="start">
+        //                                     <IconButton
+        //                                         aria-label="remove"
+        //                                     >
+        //                                         <RemoveIcon fontSize="small" />
+        //                                     </IconButton>
+        //                                     </InputAdornment>
+        //                                 }
+                                        
+        //                                 value={producto.pivot.cantidad} />
+        //                             </Grid>
+        //                         </Grid>
+                                    
+        //                         {/* Precio */}
+        //                         <Grid item xs={12}>
+        //                             <Typography gutterBottom className={classes.precioProducto} align="right">
+        //                                 {producto.pivot.cantidad+"x$"+calcularTotalProducto(producto).toFixed(2)}
+        //                             </Typography>
+        //                         </Grid>
+        //                     </Grid>
+        //                 </Grid>
+                        
+        //                 <Divider variant="middle" />
+
+        //                 {/* TOTAL */}
+        //                 <Grid item xs={12} container justify="space-between">
+        //                     <Grid item>
+        //                         <Typography gutterBottom className={classes.precioTotal} align="left">
+        //                             Total:
+        //                         </Typography>
+        //                     </Grid>
+
+        //                     <Grid item>
+        //                     <Typography gutterBottom className={classes.precioTotal} align="right">
+        //                         {calcularTotal(auth.cart)}
+        //                     </Typography>
+        //                     </Grid>
+        //                 </Grid>
+
+        //             </CardContent>
+        //             ))
+        //             }
 
 
-                    {/* BOTONES DE PAGO Y ENVIO */}
-                    <CardActions>
-                        <Grid container justify="center" direction="column">
-                            <Grid container item justify="center" xs={12}> 
-                                <InertiaLink href="/ejemplo" style={{textDecoration: "none"}} className={classes.buttonGrid}>
-                                    <Button variant="contained" color="primary" disableElevation className={classes.button}>
-                                        Proceder pago
-                                    </Button>
-                                </InertiaLink>
-                            </Grid>
+        //             {/* BOTONES DE PAGO Y ENVIO */}
+        //             <CardActions>
+        //                 <Grid container justify="center" direction="column">
+        //                     <Grid container item justify="center" xs={12}> 
+        //                         <InertiaLink href="/ejemplo" style={{textDecoration: "none"}} className={classes.buttonGrid}>
+        //                             <Button variant="contained" color="primary" disableElevation className={classes.button}>
+        //                                 Proceder pago
+        //                             </Button>
+        //                         </InertiaLink>
+        //                     </Grid>
 
-                            <Grid container item className={classes.linkcotizar} justify="center">
-                                <InertiaLink style={{color: "#595959"}} href="/ejemplo">
-                                    Cotizar costo de envío
-                                </InertiaLink>
-                            </Grid>
-                        </Grid>
-                    </CardActions>
-                </Card>
-            </ClickAwayListener>
-        </Popper>
+        //                     <Grid container item className={classes.linkcotizar} justify="center">
+        //                         <InertiaLink style={{color: "#595959"}} href="/ejemplo">
+        //                             Cotizar costo de envío
+        //                         </InertiaLink>
+        //                     </Grid>
+        //                 </Grid>
+        //             </CardActions>
+        //         </Card>
+        //     </ClickAwayListener>
+        // </Popper>
         }
 
         </>
