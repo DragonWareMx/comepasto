@@ -14,7 +14,9 @@ function Alert(props) {
 export default function Layout({ title, pageTitle, children }) {
     const { flash } = usePage().props
 
-    const [snackPack, setSnackPack] = React.useState([])
+    const [open, setOpen] = React.useState({
+        tipo: null
+    })
     const [alert, setAlert] = React.useState({
         openError: flash.error ? true : false,
         error: flash.error,
@@ -41,36 +43,68 @@ export default function Layout({ title, pageTitle, children }) {
         document.title = title;
     }, [title])
 
-    //se ejecuta cuando se monta el componente, inicializa materialize y el buscador
+    //detecta cuando un nuevo mensaje es recibido
     useEffect(() => {
         if(flash.error){
             setAlert(state => ({
                 ...state,
-                openError: true,
+                openError: false,
                 error: flash.error,
                 openWarning: false,
                 openSuccess: false
             }));
+            setTimeout(function(){ setOpen({tipo: "error"}) }, 100);
         }
         else if(flash.success){
             setAlert(state => ({
                 ...state,
                 openError: false,
                 openWarning: false,
-                openSuccess: true,
+                openSuccess: false,
                 success: flash.success
             }));
+            setTimeout(function(){ setOpen({tipo: "success"}) }, 100);
         }
         else if(flash.message){
             setAlert(state => ({
                 ...state,
                 openError: false,
-                openWarning: true,
+                openWarning: false,
                 warning: flash.message,
                 openSuccess: false
             }));
+            setTimeout(function(){ setOpen({tipo: "warning"}) }, 100);
         }
     }, [flash])
+
+    //se ejecuta cuando se monta el componente, inicializa materialize y el buscador
+    useEffect(() => {
+        switch (open.tipo) {
+            case "error":
+                setAlert(state => ({
+                    ...state,
+                    openError: true,
+                }));
+                setOpen({tipo: null})
+                break;
+            case "success":
+                setAlert(state => ({
+                    ...state,
+                    openSuccess: true,
+                }));
+                setOpen({tipo: null})
+                break;
+            case "warning":
+                setAlert(state => ({
+                    ...state,
+                    openWarning: true,
+                }));
+                setOpen({tipo: null})
+                break;
+            default:
+                break;
+        }
+    }, [open])
 
     return (
         <React.Fragment>
