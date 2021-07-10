@@ -31,7 +31,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //INICIO
-Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'inicio'])->name('inicio');
+Route::get('/inicio', [App\Http\Controllers\Controller::class, 'inicio'])->name('inicio');
 
 Route::get('/quienessomos', [App\Http\Controllers\quienesSomosController::class, 'index'])->name('quienesSomos');
 

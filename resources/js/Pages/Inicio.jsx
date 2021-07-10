@@ -3,12 +3,14 @@ import React from 'react';
 import Layout from '../layouts/Layout';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
+import CarruselBanners from '../components/common/CarruselBanners'
 
-const Inicio = () => {
+const Inicio = ({banners}) => {
     return (
         <>
             <Container >
-
+                <div style={{height:30,display:'flex',backgroundColor:'red'}}></div>
+                <CarruselBanners banners={banners} />
             </Container>
         </>
     )
