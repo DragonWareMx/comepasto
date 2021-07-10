@@ -49,6 +49,7 @@ class ProductController extends Controller
                                 ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree')
                                 ->orderBy('total','desc');
                             })
+                            ->where('stock','>',0)
                             ->paginate(8)
                             ->withQueryString();
 

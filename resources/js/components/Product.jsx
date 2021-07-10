@@ -265,11 +265,13 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                                 }
                                 startAdornment={
                                     <InputAdornment position="start">
-                                    <IconButton
-                                        aria-label="remove"
-                                    >
-                                        <RemoveIcon fontSize="small" />
-                                    </IconButton>
+                                        <InertiaLink href={route('cart.update', id)} method="patch" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
+                                            <IconButton
+                                                aria-label="remove"
+                                            >
+                                                <RemoveIcon fontSize="small" />
+                                            </IconButton>
+                                        </InertiaLink>
                                     </InputAdornment>
                                 }
                                 

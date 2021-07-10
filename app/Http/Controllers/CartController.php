@@ -48,21 +48,31 @@ class CartController extends Controller
         $product = Product::find($id);
 
         //si no hay producto se manda el mensaje de error
-        if(!$product){
-            return \Redirect::back()->with('error','El producto solicitado no existe.');
+        if(!$product || $product->stock == 0){
+            return \Redirect::back()->with('error','El producto solicitado no se encuentra disponible.');
         }
 
-        //si el carrito no esta vacio checa si existe el producto
+        // checa si existe el producto en el carrito
         $productInCart = \Auth::user()->cart()->where('product_id', $product->id)->first();
 
+        //si existe se suma la cantidad
         if($productInCart) {
             $cantidad = $productInCart->pivot->cantidad + 1;
 
+            $mensaje = true;
             //si la cantidad no excede el stock
-            if($cantidad <= $productInCart->stock){
-                \Auth::user()->cart()->sync([$product->id => ['cantidad' => $cantidad, 'estatus' => 'ready']], false);
-                
-                return \Redirect::back()->with('success','Producto agregado al carrito.');
+            if($cantidad > $productInCart->stock){
+                $cantidad = $productInCart->stock;
+                $mensaje = false;
+            }
+            if($cantidad < 1){
+                $cantidad = 1;
+            }
+
+            \Auth::user()->cart()->sync([$product->id => ['cantidad' => $cantidad, 'estatus' => 'ready']], false);
+            
+            if($mensaje){
+                return \Redirect::back();
             }
 
             //si excede el stock
@@ -98,15 +108,53 @@ class CartController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * resta o elimina un producto del carrito
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cart $cart)
+    public function update($id, Request $request)
     {
-        //
+        //si está loggeado
+        if(!\Auth::user()){
+            return \Redirect::back()->with('info','Inicia sesión.');
+        }
+
+        //se encuentra el producto
+        $product = Product::find($id);
+
+        //si no hay producto se manda el mensaje de error
+        if(!$product || $product->stock == 0){
+            return \Redirect::back()->with('error','El producto solicitado no se encuentra disponible.');
+        }
+
+        //checa si existe el producto en el carrito
+        $productInCart = \Auth::user()->cart()->where('product_id', $product->id)->first();
+
+        //si existe se elimina o se resta
+        if($productInCart) {
+            $cantidad = $productInCart->pivot->cantidad - 1;
+
+            //si la cantidad no excede el stock
+            if($cantidad > $productInCart->stock){
+                $cantidad = $productInCart->stock;
+            }
+
+            //si la cantidad es menor o igual a 0 se elimina el producto del carrito
+            if($cantidad <= 0){
+                \Auth::user()->cart()->detach($product->id);
+
+                return \Redirect::back()->with('success','Producto eliminado del carrito.');
+            }
+
+            //si la cantidad no es 0 se resta y se actualiza
+            \Auth::user()->cart()->sync([$product->id => ['cantidad' => $cantidad, 'estatus' => 'ready']], false);
+            
+            return \Redirect::back();
+        }
+
+        return \Redirect::back();
     }
 
     /**
