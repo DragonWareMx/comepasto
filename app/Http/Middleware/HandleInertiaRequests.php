@@ -46,7 +46,7 @@ class HandleInertiaRequests extends Middleware
             // Lazily
             'auth.cart' => 
                 fn () => $request->user() ? 
-                    $request->user()->cart()->get()
+                    $request->user()->cart()->select('products.id','precio','descuento','foto','name')->get()
                     : 
                     null,
             'flash' => [
