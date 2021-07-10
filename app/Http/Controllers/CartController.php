@@ -41,7 +41,7 @@ class CartController extends Controller
     {
         //si está loggeado
         if(!\Auth::user()){
-            return \Redirect::back()->with('message','Inicia sesión.');
+            return \Redirect::back()->with('info','Inicia sesión.');
         }
 
         //se encuentra el producto
@@ -52,7 +52,27 @@ class CartController extends Controller
             return \Redirect::back()->with('error','El producto solicitado no existe.');
         }
 
-        return \Redirect::back()->with('success','Producto agregado.');
+        //si el carrito no esta vacio checa si existe el producto
+        $productInCart = \Auth::user()->cart()->where('product_id', $product->id)->first();
+
+        if($productInCart) {
+            $cantidad = $productInCart->pivot->cantidad + 1;
+
+            //si la cantidad no excede el stock
+            if($cantidad <= $productInCart->stock){
+                \Auth::user()->cart()->sync([$product->id => ['cantidad' => $cantidad, 'estatus' => 'ready']], false);
+                
+                return \Redirect::back()->with('success','Producto agregado al carrito.');
+            }
+
+            //si excede el stock
+            return \Redirect::back()->with('message','Ya no puede agregar más cantidad de este producto.');
+        }
+
+        //si no existe el producto en el carrito se agrega
+        \Auth::user()->cart()->sync([$product->id => ['cantidad' => 1, 'estatus' => 'ready']], false);
+
+        return \Redirect::back()->with('success','Producto agregado al carrito.');
     }
 
     /**

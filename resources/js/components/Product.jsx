@@ -2,6 +2,7 @@ import React from 'react';
 import { InertiaLink } from '@inertiajs/inertia-react'
 import Grid from '@material-ui/core/Grid';
 import Button from "@material-ui/core/Button";
+import { OutlinedInput, InputAdornment, IconButton } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
 import route from 'ziggy-js';
@@ -10,6 +11,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 //iconos
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 const useStyles = makeStyles((theme) => ({
     image:{
@@ -103,10 +106,48 @@ const useStyles = makeStyles((theme) => ({
         width: "35px",
         height: "35px",
         filter: "invert(46%) sepia(20%) saturate(2938%) hue-rotate(142deg) brightness(104%) contrast(77%)",
-    }
+    },
+    inputSinFlechasProduct: {
+        "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+            display: "none"
+        },
+        "& input:focus": {
+            outline: "none"
+        },
+        "& input":{
+            width: "auto",
+            textAlign: "center"
+        },
+        '& fieldset': {
+            border: "1px solid #E3E3E3",
+        },
+        
+        width: '220px',
+        height: '38px',
+        
+        paddingLeft: 0,
+        paddingRight: 0,
+        marginTop: "12px",
+        marginBottom: "20px",
+        
+        fontFamily: 'Oxygen',
+        fontStyle: 'normal',
+        fontWeight: 'bold',
+        fontSize: '14px',
+        lineHeight: '18px',
+        color: "#595959",
+    },
+
+    inertiaButtonPlusRemove: {
+        width: "fit-content",
+        height: "fit-content",
+        backgroundColor: "transparent",
+        padding: "0px",
+        border: "none"
+    },
 }));
 
-export default function Product({img, name, price, discount, brand, logo, link, id, glutenFree, soyaFree}){
+export default function Product({img, name, price, discount, brand, logo, link, id, glutenFree, soyaFree, cantidad}){
     const classes = useStyles();
 
     function limitString(string, length){
@@ -206,13 +247,41 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                             </Grid>
                         </Grid>
 
-                        <Grid item container justify="center" style={{width:"220px"}}> 
-                            <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
-                                <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
-                                    AGREGAR AL CARRITO
-                                    <ShoppingCartOutlinedIcon fontSize="small" style={{marginLeft: "6px"}} />
-                                </Button>
-                            </InertiaLink>
+                        <Grid item container justify="center" style={{width:"220px"}}>
+                            {cantidad > 0 ?
+                                <OutlinedInput type="number"
+                                className={classes.inputSinFlechasProduct}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
+                                            <IconButton
+                                                aria-label="add"
+                                                component="div"
+                                            >
+                                                <AddIcon fontSize="small" />
+                                            </IconButton>
+                                        </InertiaLink>
+                                    </InputAdornment>
+                                }
+                                startAdornment={
+                                    <InputAdornment position="start">
+                                    <IconButton
+                                        aria-label="remove"
+                                    >
+                                        <RemoveIcon fontSize="small" />
+                                    </IconButton>
+                                    </InputAdornment>
+                                }
+                                
+                                value={cantidad} />
+                            :
+                                <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
+                                    <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
+                                        AGREGAR AL CARRITO
+                                        <ShoppingCartOutlinedIcon fontSize="small" style={{marginLeft: "6px"}} />
+                                    </Button>
+                                </InertiaLink>
+                            }
                         </Grid>
                     </Grid>
                 </Paper>

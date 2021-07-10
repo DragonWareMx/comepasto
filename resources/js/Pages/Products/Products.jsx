@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Products = ({products, categories, request}) => {
-    const { flash } = usePage().props
+    const { flash,auth } = usePage().props
     
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -137,12 +137,27 @@ const Products = ({products, categories, request}) => {
         setOpen(false);
     };
 
+    function cantidadProducto(id){
+        if(auth.cart.length > 0){
+            var cantidad = 0
+            auth.cart.forEach(productInCart => {
+                if(productInCart.id == id){
+                    cantidad = productInCart.pivot.cantidad
+                    return
+                }
+            });
+            return cantidad
+        }
+
+        return 0
+    }
+
     //se ejecuta cuando se monta el componente, inicializa materialize y el buscador
     useEffect(() => {
-        if(flash.error || flash.success){
+        if(flash.error || flash.success || flash.message){
             setOpen(true)
         }
-        if(flash.message){
+        if(flash.info){
             setDialog(true)
         }
     }, [flash])
@@ -251,6 +266,7 @@ const Products = ({products, categories, request}) => {
                                 id={product.id}
                                 glutenFree={product.trigoFree}
                                 soyaFree={product.soyaFree}
+                                cantidad={cantidadProducto(product.id)}
                             />
                          ))
                         :
@@ -264,10 +280,15 @@ const Products = ({products, categories, request}) => {
                 </Grid>
             </Container>
 
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
                 {flash.error ?
                     <Alert onClose={handleClose} severity="error">
                         {flash.error}
+                    </Alert>
+                :
+                flash.message ?
+                    <Alert onClose={handleClose} severity="warning">
+                        {flash.message}
                     </Alert>
                 :
                 flash.success &&
