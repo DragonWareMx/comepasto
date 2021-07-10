@@ -26,6 +26,9 @@ class DatabaseSeeder extends Seeder
 
             //usuarios
             UserSeeder::class,
+
+            //Banners
+            BannerSeeder::class,
         ]);
     }
 }

@@ -19,7 +19,6 @@ class CreateBannersTable extends Migration
             $table->string('url',250);
             $table->unsignedBigInteger('brand_id');
             $table->tinyInteger('activo');
-
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
         });
     }
