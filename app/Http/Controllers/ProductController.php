@@ -19,43 +19,41 @@ class ProductController extends Controller
     {
         //
         $products = Product::with('brand:id,name,logo,link')
+                            ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
+                            ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, products.trigoFree, products.soyaFree, COALESCE(sum(product_sale.cantidad),0) total, (`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)) AS precio_descuento')
+                            ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree')
                             ->when($request->categoria, function ($query, $categoria) {
                                 switch ($categoria) {
                                     case 'SIN SOYA':
-                                        return $query->where('products.soyaFree', true)->select('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree');
+                                        return $query->where('products.soyaFree', true);
                                         break;
                                     case 'SIN GLUTEN':
-                                            return $query->where('products.trigoFree', true)->select('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree');
+                                            return $query->where('products.trigoFree', true);
                                             break;
                                     case 'DESTACADOS':
-                                        return $query
-                                                ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
-                                                ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, products.trigoFree, products.soyaFree, COALESCE(sum(product_sale.cantidad),0) total')
-                                                ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree')
-                                                ->orderBy('total','desc');
+                                        return $query;
                                         break;
                                     
                                     default:
                                         return $query->whereHas('category', function ($query) use($categoria) {
                                             $query->where('categories.name', 'like', '%'. $categoria .'%');
-                                        })->select('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree');
+                                        });
                                         break;
                                 }
                                 return $query;
                             }, function ($query) {
-                                return $query
-                                ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
-                                ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, products.trigoFree, products.soyaFree, COALESCE(sum(product_sale.cantidad),0) total')
-                                ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree')
-                                ->orderBy('total','desc');
+                                return $query;
                             })
                             ->when($request->order, function ($query, $order) {
                                 switch ($order) {
                                     case '':
-                                        return $query->orderBy('products.precio','ASC');
+                                        return $query->orderBy('total','desc');
+                                        break;
+                                    case 'ascp':
+                                        return $query->orderBy('precio_descuento','ASC');
                                         break;
                                     case 'descp':
-                                            return $query->orderBy('products.precio','DESC');
+                                            return $query->orderBy('precio_descuento','DESC');
                                             break;
                                     case 'descn':
                                         return $query->orderBy('products.name','DESC');
@@ -65,13 +63,12 @@ class ProductController extends Controller
                                         break;
                                     
                                     default:
-                                        return $query->orderBy('products.precio','ASC');
+                                        return $query->orderBy('total','desc');
                                         break;
                                 }
-                                return $query->orderBy('products.precio','ASC');
+                                return $query->orderBy('total','desc');
                             }, function ($query) {
-                                //dd($query->orderBy(\DB::raw("`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)"),'ASC')->toSql());
-                                return $query->orderBy(\DB::raw("`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)"),'ASC');
+                                return $query->orderBy('total','desc');
                             })
                             ->where('stock','>',0)
                             ->paginate(8)
@@ -80,9 +77,9 @@ class ProductController extends Controller
         $categories = Category::get(['id','name','icono']);
 
         return Inertia::render('Products/Products',[
-            'products' => $products,
-            'categories' => $categories,
-            'request' => $request
+            'products' => fn () => $products,
+            'categories' => fn () => $categories,
+            'request' => fn () => $request
         ]);
     }
 

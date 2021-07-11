@@ -138,11 +138,17 @@ const Products = ({products, categories, request}) => {
     
     const classes = useStyles();
     const [dialog, setDialog] = React.useState(false);
-    const [order, setOrder] = React.useState('');
+    const [order, setOrder] = React.useState(
+        (request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn') ? request.order : ''
+    );
 
     const handleChange = (event) => {
         setOrder(event.target.value);
-        Inertia.reload({only: ['products'], data: {order: event.target.value}})
+        Inertia.reload({only: ['products','request','categories'], 
+        data: {
+            order: event.target.value},
+            onFinish: () => { setOrder((request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn') ? request.order : '') },
+        })
     }
 
     const handleDialogClose = () => {
@@ -163,6 +169,10 @@ const Products = ({products, categories, request}) => {
 
         return 0
     }
+
+    useEffect(() => {
+        setOrder((request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn') ? request.order : '')
+    }, [request])
 
     return (
         <>
@@ -261,9 +271,9 @@ const Products = ({products, categories, request}) => {
                         justify="flex-end"
                         alignItems="center" 
                     >
-                        {/* <Grid item container alignItems="center" style={{width: "fit-content"}}>
+                        <Grid item container alignItems="center" style={{width: "fit-content"}}>
                             <Grid item className={classes.orderText} >
-                                Ordenar por
+                                Filtrar
                             </Grid>
 
                             <Grid item>
@@ -275,7 +285,7 @@ const Products = ({products, categories, request}) => {
                                         classes={{ root: classes.selectOrder }}
                                     >
                                     <MenuItem value="">
-                                        <em>Menor a mayor precio</em>
+                                        Menor a mayor precio
                                     </MenuItem>
                                     <MenuItem value="descp">Mayor a menor precio</MenuItem>
                                     <MenuItem value="descn">A-Z nombre</MenuItem>
@@ -283,7 +293,7 @@ const Products = ({products, categories, request}) => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                        </Grid> */}
+                        </Grid>
 
                         <Grid item container alignItems="center" style={{width: "fit-content", padding: "5px"}}>
                             <Grid item className={classes.orderText} >
@@ -299,8 +309,9 @@ const Products = ({products, categories, request}) => {
                                         classes={{ root: classes.selectOrder }}
                                     >
                                     <MenuItem value="">
-                                        <em>Menor a mayor precio</em>
+                                        Más vendidos
                                     </MenuItem>
+                                    <MenuItem value="ascp">Menor a mayor precio</MenuItem>
                                     <MenuItem value="descp">Mayor a menor precio</MenuItem>
                                     <MenuItem value="ascn">A-Z nombre</MenuItem>
                                     <MenuItem value="descn">Z-A nombre</MenuItem>
