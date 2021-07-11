@@ -21,7 +21,7 @@ export default function Navbar() {
 
     return (
         <div>
-            <nav className="main-navbar" id="main-navbar">
+            <nav className="main-navbar" id="main-navbar" style={{zIndex: 999}}>
                 <div className="navbar-sup">
                     <div className="div-redes">
                         <a className="icono" href="http://facebook.com/comepastov">

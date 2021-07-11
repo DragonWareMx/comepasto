@@ -141,6 +141,7 @@ const Products = ({products, categories, request}) => {
     const [order, setOrder] = React.useState(
         (request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn') ? request.order : ''
     );
+    const [filter, setFilter] = React.useState('');
 
     const handleChange = (event) => {
         setOrder(event.target.value);
@@ -149,6 +150,15 @@ const Products = ({products, categories, request}) => {
             order: event.target.value},
             onFinish: () => { setOrder((request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn') ? request.order : '') },
         })
+    }
+
+    const handleChangeFilter = (event) => {
+        setFilter(event.target.value);
+        // Inertia.reload({only: ['products','request','categories'], 
+        // data: {
+        //     order: event.target.value},
+        //     onFinish: () => { setOrder((request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn') ? request.order : '') },
+        // })
     }
 
     const handleDialogClose = () => {
@@ -168,6 +178,11 @@ const Products = ({products, categories, request}) => {
         }
 
         return 0
+    }
+
+    function capitalize(word){
+        const lower = word.toLowerCase()
+        return word.charAt(0).toUpperCase() + lower.slice(1)
     }
 
     useEffect(() => {
@@ -279,17 +294,36 @@ const Products = ({products, categories, request}) => {
                             <Grid item>
                                 <FormControl variant="outlined" className={classes.formControl}>
                                     <Select
-                                        value={order}
-                                        onChange={handleChange}
+                                        value={filter}
+                                        onChange={handleChangeFilter}
                                         displayEmpty
                                         classes={{ root: classes.selectOrder }}
                                     >
                                     <MenuItem value="">
-                                        Menor a mayor precio
+                                        Sin filtro
                                     </MenuItem>
-                                    <MenuItem value="descp">Mayor a menor precio</MenuItem>
-                                    <MenuItem value="descn">A-Z nombre</MenuItem>
-                                    <MenuItem value="ascn">Z-A nombre</MenuItem>
+                                    {request.categoria == 'SIN GLUTEN' ? 
+                                        [
+                                            <MenuItem value="ss">Sin soya</MenuItem>,
+                                            categories && categories.length > 0 && categories.map(category => (
+                                                <MenuItem value={category.name} key={category.id + category.name + "filter"}>{capitalize(category.name)}</MenuItem>
+                                            ))
+                                        ]
+                                    :
+                                    request.categoria == 'SIN SOYA' ?
+                                        [
+                                            <MenuItem value="sg">Sin gluten</MenuItem>,
+                                            categories && categories.length > 0 && categories.map(category => (
+                                                <MenuItem value={category.name} key={category.id + category.name + "filter"}>{capitalize(category.name)}</MenuItem>
+                                            ))
+                                        ]
+                                    :
+                                        [
+                                            <MenuItem value="ss">Sin soya</MenuItem>,
+                                            <MenuItem value="sg">Sin gluten</MenuItem>,
+                                            <MenuItem value="sssg">Sin soya y sin gluten</MenuItem>,
+                                        ]
+                                    }
                                     </Select>
                                 </FormControl>
                             </Grid>
