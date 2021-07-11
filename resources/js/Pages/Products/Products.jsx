@@ -3,17 +3,20 @@ import Layout from '../../layouts/Layout';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { InertiaLink } from '@inertiajs/inertia-react'
+import { Inertia } from '@inertiajs/inertia'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { usePage } from '@inertiajs/inertia-react'
 import Button from "@material-ui/core/Button";
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
 
 //css
 import '/css/QuienesSomos.css';
 import Paginacion from '../../components/common/paginacion';
 import Product from '../../components/Product'
 import route from 'ziggy-js';
-import { Dialog } from '@material-ui/core';
+import { Dialog, InputLabel, Select } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     category: {
@@ -111,6 +114,23 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: "none",
         marginRight: "2px"
     },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 150,
+        maxWidth: 150,
+    },
+    orderText:{
+        color: '#474747',
+
+        fontFamily: 'Oxygen',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontSize: '15px',
+        lineHeight: '19px',
+    },
+    selectOrder: {
+        padding: "14px 14px",
+    }
 }));
 
 const Products = ({products, categories, request}) => {
@@ -118,6 +138,12 @@ const Products = ({products, categories, request}) => {
     
     const classes = useStyles();
     const [dialog, setDialog] = React.useState(false);
+    const [order, setOrder] = React.useState('');
+
+    const handleChange = (event) => {
+        setOrder(event.target.value);
+        Inertia.reload({only: ['products'], data: {order: event.target.value}})
+    }
 
     const handleDialogClose = () => {
         setDialog(false);
@@ -220,12 +246,67 @@ const Products = ({products, categories, request}) => {
                     </Grid>
 
                     {/* TITULO TIENDA CATEGORIAS */}
-                    <Grid item xs={12} container direction="row" justify="center" spacing={1} alignItems="center" className="quienes_marcas_title" style={{marginBottom: "30px"}}>
+                    <Grid item xs={12} container direction="row" justify="center" spacing={1} alignItems="center" className="quienes_marcas_title" style={{marginBottom: "0px"}}>
                         <Grid item className="quienes_marcas_title">
                             NUESTROS PRODUCTOS
                         </Grid>
                         <Grid item className="quienes_marcas_title" style={{fontWeight: 100}}>
                             {request.categoria ?? "DESTACADOS"}
+                        </Grid>
+                    </Grid>
+
+                    {/* FILTROS DE BUSQUEDA */}
+                    <Grid item xs={12} container 
+                        direction="row"
+                        justify="flex-end"
+                        alignItems="center" 
+                    >
+                        {/* <Grid item container alignItems="center" style={{width: "fit-content"}}>
+                            <Grid item className={classes.orderText} >
+                                Ordenar por
+                            </Grid>
+
+                            <Grid item>
+                                <FormControl variant="outlined" className={classes.formControl}>
+                                    <Select
+                                        value={order}
+                                        onChange={handleChange}
+                                        displayEmpty
+                                        classes={{ root: classes.selectOrder }}
+                                    >
+                                    <MenuItem value="">
+                                        <em>Menor a mayor precio</em>
+                                    </MenuItem>
+                                    <MenuItem value="descp">Mayor a menor precio</MenuItem>
+                                    <MenuItem value="descn">A-Z nombre</MenuItem>
+                                    <MenuItem value="ascn">Z-A nombre</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                        </Grid> */}
+
+                        <Grid item container alignItems="center" style={{width: "fit-content", padding: "5px"}}>
+                            <Grid item className={classes.orderText} >
+                                Ordenar por
+                            </Grid>
+
+                            <Grid item>
+                                <FormControl variant="outlined" className={classes.formControl}>
+                                    <Select
+                                        value={order}
+                                        onChange={handleChange}
+                                        displayEmpty
+                                        classes={{ root: classes.selectOrder }}
+                                    >
+                                    <MenuItem value="">
+                                        <em>Menor a mayor precio</em>
+                                    </MenuItem>
+                                    <MenuItem value="descp">Mayor a menor precio</MenuItem>
+                                    <MenuItem value="ascn">A-Z nombre</MenuItem>
+                                    <MenuItem value="descn">Z-A nombre</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
                         </Grid>
                     </Grid>
 

@@ -49,6 +49,30 @@ class ProductController extends Controller
                                 ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree')
                                 ->orderBy('total','desc');
                             })
+                            ->when($request->order, function ($query, $order) {
+                                switch ($order) {
+                                    case '':
+                                        return $query->orderBy('products.precio','ASC');
+                                        break;
+                                    case 'descp':
+                                            return $query->orderBy('products.precio','DESC');
+                                            break;
+                                    case 'descn':
+                                        return $query->orderBy('products.name','DESC');
+                                        break;
+                                    case 'ascn':
+                                        return $query->orderBy('products.name','ASC');
+                                        break;
+                                    
+                                    default:
+                                        return $query->orderBy('products.precio','ASC');
+                                        break;
+                                }
+                                return $query->orderBy('products.precio','ASC');
+                            }, function ($query) {
+                                //dd($query->orderBy(\DB::raw("`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)"),'ASC')->toSql());
+                                return $query->orderBy(\DB::raw("`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)"),'ASC');
+                            })
                             ->where('stock','>',0)
                             ->paginate(8)
                             ->withQueryString();
