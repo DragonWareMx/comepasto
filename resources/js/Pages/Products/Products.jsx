@@ -329,7 +329,7 @@ const Products = ({products, categories, request}) => {
                             </Grid>
                         </Grid>
 
-                        <Grid item container alignItems="center" style={{width: "fit-content", padding: "5px"}}>
+                        <Grid item container alignItems="center" style={{width: "fit-content", padding: "5px", paddingLeft: "55px"}}>
                             <Grid item className={classes.orderText} >
                                 Ordenar por
                             </Grid>
