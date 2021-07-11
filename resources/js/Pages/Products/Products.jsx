@@ -17,6 +17,7 @@ import Paginacion from '../../components/common/paginacion';
 import Product from '../../components/Product'
 import route from 'ziggy-js';
 import { Dialog, InputLabel, Select } from '@material-ui/core';
+import { Category } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     category: {
@@ -141,24 +142,32 @@ const Products = ({products, categories, request}) => {
     const [order, setOrder] = React.useState(
         (request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn') ? request.order : ''
     );
-    const [filter, setFilter] = React.useState('');
+    const [filter, setFilter] = React.useState(
+        request.filter ? exist(request.filter) : ''
+    );
 
     const handleChange = (event) => {
         setOrder(event.target.value);
-        Inertia.reload({only: ['products','request','categories'], 
-        data: {
-            order: event.target.value},
+        Inertia.reload
+        ({
+            only: ['products','request','categories'], 
+            data: {
+                order: event.target.value
+            },
             onFinish: () => { setOrder((request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn') ? request.order : '') },
         })
     }
 
     const handleChangeFilter = (event) => {
         setFilter(event.target.value);
-        // Inertia.reload({only: ['products','request','categories'], 
-        // data: {
-        //     order: event.target.value},
-        //     onFinish: () => { setOrder((request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn') ? request.order : '') },
-        // })
+        Inertia.reload
+        ({
+            only: ['products','request','categories'], 
+            data: {
+                filter: event.target.value
+            },
+            onFinish: () => { setFilter(exist(request.filter)) },
+        })
     }
 
     const handleDialogClose = () => {
@@ -180,6 +189,60 @@ const Products = ({products, categories, request}) => {
         return 0
     }
 
+    //verifica si existe el string en los filtros disponibles
+    function exist(filterString){
+        //las opciones del filtro dependen de la categoria
+        switch (request.categoria) {
+            case 'SIN SOYA':
+                //las opciones son:
+                    //SIN GLUTEN
+                    //CUALQUIER OTRA CATEGORIA
+                if(filterString == 'sg')
+                    return filterString
+                if(categories.length == 0)
+                    return ''
+
+                var categoryName = ''
+                categories.forEach(category => {
+                    if(filterString == category.name){
+                        categoryName = category.name
+                        return
+                    }
+                });
+
+                return categoryName
+                break;
+            case 'SIN GLUTEN':
+                //las opciones son:
+                    //SIN SOTA
+                    //CUALQUIER OTRA CATEGORIA
+                if(filterString == 'ss')
+                    return filterString
+                if(categories.length == 0)
+                    return ''
+
+                var categoryName = ''
+                categories.forEach(category => {
+                    if(filterString == category.name){
+                        categoryName = category.name
+                        return
+                    }
+                });
+                return categoryName
+                break;
+            default:
+                //las opciones son
+                    //SIN SOYA
+                    //SIN GLUYEN
+                    //SIN SOYA Y SIN GLUTEN
+                if(filterString == 'sg' || filterString == 'ss' || filterString == 'sssg')
+                    return filterString
+                
+                return ''
+                break;
+        }
+    }
+
     function capitalize(word){
         const lower = word.toLowerCase()
         return word.charAt(0).toUpperCase() + lower.slice(1)
@@ -187,6 +250,7 @@ const Products = ({products, categories, request}) => {
 
     useEffect(() => {
         setOrder((request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn') ? request.order : '')
+        setFilter(request.filter ? exist(request.filter) : '')
     }, [request])
 
     return (
