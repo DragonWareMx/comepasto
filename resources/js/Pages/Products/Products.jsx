@@ -146,6 +146,7 @@ const Products = ({products, categories, request}) => {
         request.filter ? exist(request.filter) : ''
     );
 
+    //onChange del select para ordenar los resultados
     const handleChange = (event) => {
         setOrder(event.target.value);
         Inertia.reload
@@ -158,6 +159,7 @@ const Products = ({products, categories, request}) => {
         })
     }
 
+    //onChange del select para filtrar los resultados
     const handleChangeFilter = (event) => {
         setFilter(event.target.value);
         Inertia.reload
@@ -166,14 +168,15 @@ const Products = ({products, categories, request}) => {
             data: {
                 filter: event.target.value
             },
-            onFinish: () => { setFilter(exist(request.filter)) },
         })
     }
 
+    //onClose del dialog para iniciar sesion
     const handleDialogClose = () => {
         setDialog(false);
     };
 
+    //devuelve la cantidad de un producto en el carrito
     function cantidadProducto(id){
         if(auth && auth.cart && auth.cart.length > 0){
             var cantidad = 0
@@ -214,7 +217,7 @@ const Products = ({products, categories, request}) => {
                 break;
             case 'SIN GLUTEN':
                 //las opciones son:
-                    //SIN SOTA
+                    //SIN SOYA
                     //CUALQUIER OTRA CATEGORIA
                 if(filterString == 'ss')
                     return filterString

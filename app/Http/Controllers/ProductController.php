@@ -70,6 +70,81 @@ class ProductController extends Controller
                             }, function ($query) {
                                 return $query->orderBy('total','desc');
                             })
+                            ->when($request->filter, function ($query, $filter) use ($request) {
+                                //el filtro depende de la categoria
+                                switch ($request->categoria) {
+                                    case 'SIN SOYA':
+                                        //las opciones son:
+                                            //SIN GLUTEN
+                                            //CUALQUIER OTRA CATEGORIA
+                                        if($filter == 'sg')
+                                            return $query->where('products.trigoFree',true);
+                                        
+                                        //si no es sg entonces es una cetogria
+
+                                        //verifica que exista la categoria
+                                        $bCategoria = Category::where('name',$filter)->first('id');
+
+                                        if($bCategoria){
+                                            return $query->whereHas('category', function ($query) use($filter) {
+                                                $query->where('categories.name', 'like', '%'. $filter .'%');
+                                            });
+                                        }
+
+                                        //si no existe se ignora el filtro
+                                        return $query;
+                                        break;
+                                    case 'SIN GLUTEN':
+                                        //las opciones son:
+                                            //SIN SOYA
+                                            //CUALQUIER OTRA CATEGORIA
+                                        if($filter == 'ss')
+                                            return $query->where('products.soyaFree',true);
+                                        
+                                        //si no es sg entonces es una cetogria
+
+                                        //verifica que exista la categoria
+                                        $bCategoria = Category::where('name',$filter)->first('id');
+
+                                        if($bCategoria){
+                                            return $query->whereHas('category', function ($query) use($filter) {
+                                                $query->where('categories.name', 'like', '%'. $filter .'%');
+                                            });
+                                        }
+
+                                        //si no existe se ignora el filtro
+                                        return $query;
+                                        break;
+                                    
+                                    default:
+                                    //las opciones son
+                                        //SIN SOYA
+                                        //SIN GLUYEN
+                                        //SIN SOYA Y SIN GLUTEN
+                                        switch ($filter) {
+                                            case 'ss':
+                                                return $query->where('products.soyaFree',true);
+                                                break;
+                                            case 'sg':
+                                                return $query->where('products.trigoFree',true);
+                                                break;
+                                            case 'sssg':
+                                                return $query->where('products.soyaFree',true)
+                                                            ->where('products.trigoFree',true);
+                                                break;
+                                            
+                                            default:
+                                                //si no es ninguna opcion se ignora el filtro
+                                                return $query;
+                                                break;
+                                        }
+                                        return $query;
+                                        break;
+                                }
+                                return $query;
+                            }, function ($query) {
+                                return $query;
+                            })
                             ->where('stock','>',0)
                             ->paginate(8)
                             ->withQueryString();
