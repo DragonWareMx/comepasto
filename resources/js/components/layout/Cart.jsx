@@ -554,7 +554,7 @@ export default function Footer() {
                     </Grid>
 
                     <Grid item>
-                        <InertiaLink href={route('inicio')} as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonCart} preserveScroll>
+                        <InertiaLink href={route('inicio')} as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonCart} preserveScroll onClick={toggleDrawer(false)}>
                             <Button variant="contained" color="primary" component="div" disableElevation className={classes.buttonCart}>
                                 IR A LA TIENDA
                             </Button>
