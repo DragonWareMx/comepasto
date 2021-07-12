@@ -131,6 +131,31 @@ const useStyles = makeStyles((theme) => ({
     },
     selectOrder: {
         padding: "14px 14px",
+    },
+    svgSinResultados: {
+        width: "80%",
+        maxWidth: 350,
+        margin: "auto",
+        objectFit: "cover"
+    },
+    sinResultadosTitle: {
+        fontFamily: "Atma",
+        fontWeight: "600",
+        lineHeight: "49px",
+        fontSize: "30px",
+        color: "#1DA3A8",
+        textAlign: "center",
+    },
+    sinResultadosText: {
+        color: '#626262',
+
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontSize: '24px',
+        lineHeight: '23px',
+        width: "90%",
+        textAlign: "center"
     }
 }));
 
@@ -439,7 +464,27 @@ const Products = ({products, categories, request}) => {
                             />
                          ))
                         :
-                        "Sin resultados"
+                        <>
+                        <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <Grid item className={classes.sinResultadosTitle} >
+                                ¡Ooops!
+                            </Grid>
+
+                            <Grid item style={{width: "100%"}} container justifyContent="center" alignItems="center">
+                                <img className={classes.svgSinResultados} src="/img/ilustraciones/product-hunt-animate.svg" alt="" />
+                            </Grid>
+
+                            <Grid item className={classes.sinResultadosText}>
+                                No se encontraron resultados
+                            </Grid>
+
+                        </Grid>
+                        </>
                         }
                     </Grid>
 
