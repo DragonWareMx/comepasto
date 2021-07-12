@@ -390,147 +390,149 @@ export default function Footer() {
 
 
                 {/* PRODUCTOS DEL CARRITO */}
-                {auth.cart.length > 0 ? auth.cart.map(producto => (
+                {auth.cart.length > 0 ? 
                 <>
-                    {/* PRODUCTO */}
-                    <Grid container style={{maxWidth: 320, margin: 10}}>
-                        {/* Imagen del producto */}
-                        <Grid item xs={3}>
-                            <ButtonBase>
-                                {producto.foto &&
-                                    <img className={classes.img} alt="complex" src={"/storage/products/" + producto.foto} />
-                                }
-                            </ButtonBase>
-                        </Grid>
-
-                        <Grid item xs container>
-                            {/* NOMBRE DEL PRODUCTO */}
-                            <Grid item xs={12}>
-                                <InertiaLink href="/producto" style={{textDecoration: "none"}}>
-                                    <Typography gutterBottom className={classes.nombreProducto}>
-                                        {producto.name.length > 100 ?
-                                        producto.name.substring(0, 100 - 3) + "..."
-                                        : 
-                                        producto.name
-                                        }
-                                    </Typography>
-                                </InertiaLink>
+                {auth.cart.map(producto => (
+                    <>
+                        {/* PRODUCTO */}
+                        <Grid container style={{maxWidth: 320, margin: 10}}>
+                            {/* Imagen del producto */}
+                            <Grid item xs={3}>
+                                <ButtonBase>
+                                    {producto.foto &&
+                                        <img className={classes.img} alt="complex" src={"/storage/products/" + producto.foto} />
+                                    }
+                                </ButtonBase>
                             </Grid>
 
-                            {/* Precios */}
-                            <Grid item xs={12} container spacing={1}>
-                                {producto.descuento > 0 ?
-                                <>
-                                    <Grid item >
-                                        <Typography gutterBottom className={classes.precioDescuento} align="left">
+                            <Grid item xs container>
+                                {/* NOMBRE DEL PRODUCTO */}
+                                <Grid item xs={12}>
+                                    <InertiaLink href="/producto" style={{textDecoration: "none"}}>
+                                        <Typography gutterBottom className={classes.nombreProducto}>
+                                            {producto.name.length > 100 ?
+                                            producto.name.substring(0, 100 - 3) + "..."
+                                            : 
+                                            producto.name
+                                            }
+                                        </Typography>
+                                    </InertiaLink>
+                                </Grid>
+
+                                {/* Precios */}
+                                <Grid item xs={12} container spacing={1}>
+                                    {producto.descuento > 0 ?
+                                    <>
+                                        <Grid item >
+                                            <Typography gutterBottom className={classes.precioDescuento} align="left">
+                                                {"$"+parseFloat(producto.precio).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})+" MXN"}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item >
+                                            <Typography gutterBottom  className={classes.precio} align="left">
+                                                {calcularDescuento(producto.precio, producto.descuento)}
+                                            </Typography>
+                                        </Grid>
+                                    </>
+                                    :
+                                    <>
+                                        <Grid item style={{padding: 0}}>
+                                            <Typography gutterBottom className={classes.precioDescuento} align="left" style={{padding: 0}} >
+                                                
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item >
+                                            <Typography gutterBottom  className={classes.precio} align="left">
                                             {"$"+parseFloat(producto.precio).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})+" MXN"}
+                                            </Typography>
+                                        </Grid>
+                                    </>
+                                    }
+                                </Grid>
+                                
+                                {/* Cantidad */}
+                                <Grid item xs={12} container spacing={1}>
+                                    <Grid item xs container alignItems="center" justify="flex-end">
+                                        <Typography gutterBottom className={classes.cantidad} align="right">
+                                            Cantidad
                                         </Typography>
                                     </Grid>
-                                    <Grid item >
-                                        <Typography gutterBottom  className={classes.precio} align="left">
-                                            {calcularDescuento(producto.precio, producto.descuento)}
-                                        </Typography>
+
+                                    <Grid item xs container justify="flex-end">
+                                        <OutlinedInput type="number"
+                                        className={classes.inputSinFlechas}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <InertiaLink href={route('cart.store', producto.id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
+                                                    <IconButton
+                                                        aria-label="add"
+                                                        component="div"
+                                                    >
+                                                        <AddIcon fontSize="small" />
+                                                    </IconButton>
+                                                </InertiaLink>
+                                            </InputAdornment>
+                                        }
+                                        startAdornment={
+                                            <InputAdornment position="start">
+                                                <InertiaLink href={route('cart.update', producto.id)} method="patch" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
+                                                    <IconButton
+                                                        aria-label="remove"
+                                                        component="div"
+                                                    >
+                                                        <RemoveIcon fontSize="small" />
+                                                    </IconButton>
+                                                </InertiaLink>
+                                            </InputAdornment>
+                                        }
+                                        
+                                        value={producto.pivot.cantidad} />
                                     </Grid>
-                                </>
-                                :
-                                <>
-                                    <Grid item style={{padding: 0}}>
-                                        <Typography gutterBottom className={classes.precioDescuento} align="left" style={{padding: 0}} >
-                                            
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item >
-                                        <Typography gutterBottom  className={classes.precio} align="left">
-                                        {"$"+parseFloat(producto.precio).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})+" MXN"}
-                                        </Typography>
-                                    </Grid>
-                                </>
-                                }
-                            </Grid>
-                            
-                            {/* Cantidad */}
-                            <Grid item xs={12} container spacing={1}>
-                                <Grid item xs container alignItems="center" justify="flex-end">
-                                    <Typography gutterBottom className={classes.cantidad} align="right">
-                                        Cantidad
+                                </Grid>
+                                        
+                                {/* Precio */}
+                                <Grid item xs={12}>
+                                    <Typography gutterBottom className={classes.precioProducto} align="right">
+                                        {producto.pivot.cantidad+"x$"+calcularTotalProducto(producto).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                                     </Typography>
                                 </Grid>
-
-                                <Grid item xs container justify="flex-end">
-                                    <OutlinedInput type="number"
-                                    className={classes.inputSinFlechas}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <InertiaLink href={route('cart.store', producto.id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
-                                                <IconButton
-                                                    aria-label="add"
-                                                    component="div"
-                                                >
-                                                    <AddIcon fontSize="small" />
-                                                </IconButton>
-                                            </InertiaLink>
-                                        </InputAdornment>
-                                    }
-                                    startAdornment={
-                                        <InputAdornment position="start">
-                                            <InertiaLink href={route('cart.update', producto.id)} method="patch" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
-                                                <IconButton
-                                                    aria-label="remove"
-                                                    component="div"
-                                                >
-                                                    <RemoveIcon fontSize="small" />
-                                                </IconButton>
-                                            </InertiaLink>
-                                        </InputAdornment>
-                                    }
-                                    
-                                    value={producto.pivot.cantidad} />
-                                </Grid>
-                            </Grid>
-                                    
-                            {/* Precio */}
-                            <Grid item xs={12}>
-                                <Typography gutterBottom className={classes.precioProducto} align="right">
-                                    {producto.pivot.cantidad+"x$"+calcularTotalProducto(producto).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
-                                </Typography>
                             </Grid>
                         </Grid>
-                    </Grid>
 
-                    <Divider variant="middle" />
-
-                    {/* TOTAL */}
-                    <Grid item xs={12} container justify="space-between">
-                        <Grid item>
-                            <Typography gutterBottom className={classes.precioTotal} align="left">
-                                Total:
-                            </Typography>
-                        </Grid>
-
-                        <Grid item>
-                        <Typography gutterBottom className={classes.precioTotal} align="right">
-                            {calcularTotal(auth.cart)}
+                        <Divider variant="middle" />
+                    </>
+                ))}
+                {/* TOTAL */}
+                <Grid item xs={12} container justify="space-between">
+                    <Grid item>
+                        <Typography gutterBottom className={classes.precioTotal} align="left">
+                            Total:
                         </Typography>
-                        </Grid>
                     </Grid>
 
-                    <Grid container justify="center" direction="column">
-                        <Grid container item justify="center" xs={12}> 
-                            <InertiaLink href="/ejemplo" style={{textDecoration: "none"}} className={classes.buttonGrid}>
-                                <Button variant="contained" color="primary" disableElevation className={classes.button}>
-                                    Proceder pago
-                                </Button>
-                            </InertiaLink>
-                        </Grid>
-
-                        <Grid container item className={classes.linkcotizar} justify="center">
-                            <InertiaLink style={{color: "#595959"}} href="/ejemplo">
-                                Cotizar costo de envío
-                            </InertiaLink>
-                        </Grid>
+                    <Grid item>
+                    <Typography gutterBottom className={classes.precioTotal} align="right">
+                        {calcularTotal(auth.cart)}
+                    </Typography>
                     </Grid>
+                </Grid>
+
+                <Grid container justify="center" direction="column">
+                    <Grid container item justify="center" xs={12}> 
+                        <InertiaLink href="/ejemplo" style={{textDecoration: "none"}} className={classes.buttonGrid}>
+                            <Button variant="contained" color="primary" disableElevation className={classes.button}>
+                                Proceder pago
+                            </Button>
+                        </InertiaLink>
+                    </Grid>
+
+                    <Grid container item className={classes.linkcotizar} justify="center">
+                        <InertiaLink style={{color: "#595959"}} href="/ejemplo">
+                            Cotizar costo de envío
+                        </InertiaLink>
+                    </Grid>
+                </Grid>
                 </>
-                ))
                 :
                 <>
                 {/* CARRITO VACIO */}
