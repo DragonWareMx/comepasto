@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import Layout from '../../layouts/Layout';
+import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { InertiaLink } from '@inertiajs/inertia-react'
@@ -13,11 +12,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 //css
 import '/css/QuienesSomos.css';
-import Paginacion from '../../components/common/paginacion';
-import Product from '../../components/Product'
+import Paginacion from '../common/paginacion';
+import Product from './Product'
 import route from 'ziggy-js';
-import { Dialog, InputLabel, Select } from '@material-ui/core';
-import { Category } from '@material-ui/icons';
+import { Dialog, Select } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     category: {
@@ -301,7 +299,7 @@ const Products = ({products, categories, request}) => {
                     <Grid container justify="center" spacing={3} style={{marginTop: "36px", marginBottom: "50px"}}>
                         {categories && categories.length > 0 && categories.map(category => (
                             <Grid item key={category.id + category.name}>
-                                <InertiaLink href={route('product.index')} data={{ categoria: category.name }} style={{textDecoration: "none"}} preserveScroll preserveState>
+                                <InertiaLink href={route('inicio')} data={{ categoria: category.name }} style={{textDecoration: "none"}} preserveScroll preserveState>
                                     <Paper className={classes.paper} elevation={0} square >
                                         <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                             <Grid item>
@@ -317,7 +315,7 @@ const Products = ({products, categories, request}) => {
                         ))}
 
                         <Grid item>
-                            <InertiaLink href={route('product.index')} data={{ categoria: "SIN GLUTEN" }} style={{textDecoration: "none"}} preserveScroll preserveState>
+                            <InertiaLink href={route('inicio')} data={{ categoria: "SIN GLUTEN" }} style={{textDecoration: "none"}} preserveScroll preserveState>
                                 <Paper className={classes.paper} elevation={0} square >
                                     <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                         <Grid item>
@@ -332,7 +330,7 @@ const Products = ({products, categories, request}) => {
                         </Grid>
 
                         <Grid item>
-                            <InertiaLink href={route('product.index')} data={{ categoria: "SIN SOYA" }} style={{textDecoration: "none"}} preserveScroll preserveState>
+                            <InertiaLink href={route('inicio')} data={{ categoria: "SIN SOYA" }} style={{textDecoration: "none"}} preserveScroll preserveState>
                                 <Paper className={classes.paper} elevation={0} square >
                                     <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                         <Grid item>
@@ -347,7 +345,7 @@ const Products = ({products, categories, request}) => {
                         </Grid>
 
                         <Grid item>
-                            <InertiaLink href={route('product.index')} data={{ categoria: "DESTACADOS" }} style={{textDecoration: "none"}} preserveScroll preserveState>
+                            <InertiaLink href={route('inicio')} data={{ categoria: "DESTACADOS" }} style={{textDecoration: "none"}} preserveScroll preserveState>
                                 <Paper className={classes.paper} elevation={0} square>
                                     <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                         <Grid item>
@@ -522,8 +520,5 @@ const Products = ({products, categories, request}) => {
         </>
     )
 }
-
-
-Products.layout = page => <Layout children={page} title="Comepasto - Productos" pageTitle="Productos" />
 
 export default Products

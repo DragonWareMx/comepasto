@@ -39,11 +39,6 @@ Route::get('/quienessomos', [App\Http\Controllers\quienesSomosController::class,
 Route::get('/recetas', [App\Http\Controllers\recetasController::class, 'index'])->name('recetas');
 Route::get('/recetas/{id}', [App\Http\Controllers\recetasController::class, 'verReceta'])->name('ver-receta');
 
-//PRODUCTOS
-Route::name('product.')->group(function () {
-    Route::get('/productos', [App\Http\Controllers\ProductController::class, 'index'])->name('index');
-});
-
 Route::name('cart.')->group(function () {
     //agrega al carrito
     Route::post('/producto/{id}', [App\Http\Controllers\CartController::class, 'store'])->name('store');

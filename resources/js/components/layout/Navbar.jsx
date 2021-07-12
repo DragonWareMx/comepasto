@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-
+import route from 'ziggy-js';
 
 import Cart from '../layout/Cart'
 import SearchIcon from '@material-ui/icons/Search';
+import { InertiaLink } from '@inertiajs/inertia-react';
 
 export default function Navbar() {
     useEffect(() => {
@@ -37,9 +38,18 @@ export default function Navbar() {
                         Comepasto
                     </div>
                     <div className="links-hide">
-                        <a href="#">TIENDA</a>
-                        <a href="#">RECETAS</a>
-                        <a href="#">QUIÉNES SOMOS</a>
+                        <InertiaLink href={route('inicio')}>
+                            TIENDA
+                        </InertiaLink>
+
+                        <InertiaLink href={route('recetas')}>
+                            RECETAS
+                        </InertiaLink>
+
+                        <InertiaLink href={route('quienesSomos')}>
+                            QUIÉNES SOMOS
+                        </InertiaLink>
+
                         <a href="#">PREGUNTAS FRECUENTES</a>
                     </div>
                     <div className="div-iconos">
@@ -49,9 +59,18 @@ export default function Navbar() {
                 </div>
                 <div className="navbar-inf">
                     <div className="links">
-                        <a href="#">TIENDA</a>
-                        <a href="#">RECETAS</a>
-                        <a href="#">QUIÉNES SOMOS</a>
+                    <InertiaLink href={route('inicio')}>
+                            TIENDA
+                        </InertiaLink>
+
+                        <InertiaLink href={route('recetas')}>
+                            RECETAS
+                        </InertiaLink>
+
+                        <InertiaLink href={route('quienesSomos')}>
+                            QUIÉNES SOMOS
+                        </InertiaLink>
+                        
                         <a href="#">PREGUNTAS FRECUENTES</a>
                     </div>
                 </div>
