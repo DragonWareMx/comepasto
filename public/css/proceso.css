@@ -1,0 +1,47 @@
+.proceso{
+    width: 100%;
+    background-color: #FFDE59;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 53px;
+    padding-bottom: 67px;
+    flex-wrap: wrap;
+}
+
+.proceso_item{
+    width: 233px;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 14px;
+    margin-right: 14px;
+    margin-top:14px;
+}
+
+.proceso_icono{
+    color:white;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #1DA3A8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.proceso_title{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: #4F4F4F;
+}
+
+.proceso_info{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    color: #707070;
+    margin-top: 5px;
+}
