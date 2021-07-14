@@ -11,25 +11,25 @@ export default function Footer() {
                     <div>
                         <div className="footer-come">
                             Comepasto
-                    </div>
+                        </div>
                         <div className="footer-copy">
                             © Copyright 2021 comepasto
-                    </div>
+                        </div>
                     </div>
                 </div>
                 <div className="footer-middle">
                     <div className="footer-icons">
                         <a href="http://facebook.com" target="_blank">
-                            <img src="/img/icons/fb2.png" alt="" srcset="" style={{ width: "20px", height: "20px" }} />
+                            <img src="/img/icons/fb2.png" alt="" srcSet="" style={{ width: "20px", height: "20px" }} />
                         </a>
                         <a href="http://facebook.com" target="_blank">
-                            <img src="/img/icons/ig2.png" alt="" srcset="" style={{ width: "20px", height: "20px" }} />
+                            <img src="/img/icons/ig2.png" alt="" srcSet="" style={{ width: "20px", height: "20px" }} />
                         </a>
                         <a href="http://facebook.com" target="_blank">
-                            <img src="/img/icons/whats.png" alt="" srcset="" style={{ width: "20px", height: "20px" }} />
+                            <img src="/img/icons/whats.png" alt="" srcSet="" style={{ width: "20px", height: "20px" }} />
                         </a>
                         <a href="http://facebook.com" target="_blank">
-                            <img src="/img/icons/mail.png" alt="" srcset="" style={{ width: "20px", height: "20px" }} />
+                            <img src="/img/icons/mail.png" alt="" srcSet="" style={{ width: "20px", height: "20px" }} />
                         </a>
                     </div>
                     <div>Distribuidor vegano</div>

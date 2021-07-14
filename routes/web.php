@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-// Route::get('/', function () {
-//     return view('inicio');
-// });
+Route::get('/', function () {
+    return redirect('inicio');
+});
 Route::get('/menu', function () {
     return view('menu');
 });

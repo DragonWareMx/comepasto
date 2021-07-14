@@ -268,3 +268,117 @@
     margin-top: 76px;
     transition: height 0.2s;
   } */
+
+  /*  Menu para celular */
+  header.mobile{
+    width: 100%;
+    height: 50px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(200, 200, 200, 0.25);
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    justify-content: space-between;
+    z-index: 999;
+  }
+
+  .mobile .left{
+    float: left;
+    display: flex;
+    align-items: center;
+    padding-left: 1vw;
+  }
+
+  .mobile .right{
+    float: right;
+    display: flex;
+    align-content: flex-end;
+    padding-right: 1vw;
+  }
+
+  .mobile .left svg{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin: 12px;
+  }
+
+  .div-logo-m{
+    font-family: Fredoka One;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 27px;
+    line-height: 35px;
+    color: #FFDE59;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 7.5px;
+    left: calc((100% / 2) - 73.615px);
+  }
+
+ .navigation{
+    width: 100%;
+    margin-top: 1rem;
+    background-color: #1DA3A8;
+    margin: 0;
+    margin-left: 0;
+    padding: 0;
+    position: fixed;
+    z-index: 998;
+    top: 50px;
+    display: none;
+}
+
+  .navigation ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+}
+
+.navigation ul li{
+    display: inline-block;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    width: 100%;
+    padding-left: 10vw;
+}
+
+.navigation ul li a{
+  text-decoration: none;
+    font-family: Atma;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 29px;
+
+    color: #FFDE59;
+    /* esto es el efecto ese feo xd */
+    transform: scale(0.95);
+    transition: all 700ms;
+}
+
+.navigation ul li a:hover{
+  border-bottom: 2px solid #FFDE59;
+    /* esto es el efecto ese feo xd */
+  transform: scale(1.05);
+}
+
+@media (max-width: 850px) {
+  .content {
+    margin-top: 60px !important;
+  }
+
+  header.mobile{
+    display: flex !important;
+  }
+
+  .main-navbar{
+    display: none !important;
+  }
+
+  .navigation{
+    display: block !important;
+  }
+}
