@@ -15,7 +15,8 @@ import '/css/QuienesSomos.css';
 import Paginacion from '../common/paginacion';
 import Product from './Product'
 import route from 'ziggy-js';
-import { Dialog, Select } from '@material-ui/core';
+import { CircularProgress, Dialog, Select } from '@material-ui/core';
+import AsyncImage from '../common/AsyncImage';
 
 const useStyles = makeStyles((theme) => ({
     category: {
@@ -303,7 +304,11 @@ const Products = ({products, categories, request}) => {
                                     <Paper className={classes.paper} elevation={0} square >
                                         <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                             <Grid item>
-                                                <img className="quienes_marca" src={"/storage/categories/"+ category.icono +""} alt=""/>
+                                                <AsyncImage 
+                                                    src={"/storage/categories/"+ category.icono +""}
+                                                    imageComponent={<img className="quienes_marca" src={"/storage/categories/"+ category.icono +""} alt=""/>}
+                                                    loadingComponent={<CircularProgress style={{width: 80, height: 80, color: "#ffffff"}} />}
+                                                />
                                             </Grid>
                                             <Grid item className={classes.category}>
                                                 {category.name}
@@ -319,7 +324,11 @@ const Products = ({products, categories, request}) => {
                                 <Paper className={classes.paper} elevation={0} square >
                                     <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                         <Grid item>
-                                            <img className="quienes_marca" src="/img/CATEGORIAS/icons/gluten3.png" alt=""/>
+                                        <AsyncImage 
+                                            src="/img/CATEGORIAS/icons/gluten3.png"
+                                            imageComponent={<img className="quienes_marca" src="/img/CATEGORIAS/icons/gluten3.png" alt=""/>}
+                                            loadingComponent={<CircularProgress style={{width: 80, height: 80, color: "#ffffff"}} />}
+                                        />
                                         </Grid>
                                         <Grid item className={classes.category}>
                                             SIN GLUTEN
@@ -334,7 +343,11 @@ const Products = ({products, categories, request}) => {
                                 <Paper className={classes.paper} elevation={0} square >
                                     <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                         <Grid item>
-                                            <img className="quienes_marca" src="/img/CATEGORIAS/icons/soya3.png" alt=""/>
+                                            <AsyncImage 
+                                                src="/img/CATEGORIAS/icons/soya3.png"
+                                                imageComponent={<img className="quienes_marca" src="/img/CATEGORIAS/icons/soya3.png" alt=""/>}
+                                                loadingComponent={<CircularProgress style={{width: 80, height: 80, color: "#ffffff"}} />}
+                                            />
                                         </Grid>
                                         <Grid item className={classes.category}>
                                             SIN SOYA
@@ -349,7 +362,11 @@ const Products = ({products, categories, request}) => {
                                 <Paper className={classes.paper} elevation={0} square>
                                     <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
                                         <Grid item>
-                                            <img className="quienes_marca" src="/img/CATEGORIAS/icons/destacados_white.png" alt=""/>
+                                        <AsyncImage 
+                                                src="/img/CATEGORIAS/icons/destacados_white.png"
+                                                imageComponent={<img className="quienes_marca" src="/img/CATEGORIAS/icons/destacados_white.png" alt=""/>}
+                                                loadingComponent={<CircularProgress style={{width: 80, height: 80, color: "#ffffff"}} />}
+                                            />
                                         </Grid>
                                         <Grid item className={classes.category}>
                                             DESTACADOS
