@@ -161,4 +161,8 @@ class Controller extends BaseController
             'request' => fn () => $request,
         ]);
     }
+
+    public function preguntas(){
+        return Inertia::render('Preguntas');
+    }
 }
