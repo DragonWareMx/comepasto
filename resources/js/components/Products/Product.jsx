@@ -7,6 +7,8 @@ import Paper from '@material-ui/core/Paper';
 import route from 'ziggy-js';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import AsyncImage from '../common/AsyncImage';
+import Skeleton from 'react-loading-skeleton';
 
 //iconos
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
@@ -172,6 +174,26 @@ export default function Product({img, name, price, discount, brand, logo, link, 
         }
     }
 
+    const imageC = (
+    <div className={classes.image} style={{
+        backgroundImage: img ? 'url("/storage/products/'+ img +'")' : 'url("/storage/products/default.jpg")',
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        backgroundSize: "100%",
+        marginTop: "25px",
+        marginBottom: "12px"
+    }}
+    >
+    </div>
+    )
+
+    const skeleton = (
+        <div style={{marginTop: "25px",
+        marginBottom: "12px"}}>
+            <Skeleton width={159} height={173} />
+        </div>
+    )
+
     return (
         <>
             <Grid item  xs={12} sm={6} md={4} lg={3}>
@@ -181,16 +203,11 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                         <Grid item>
                             {/* LINK DEL PRODUCTO */}
                             <InertiaLink href="#">
-                                <div className={classes.image} style={{
-                                        backgroundImage: img ? 'url("/storage/products/'+ img +'")' : 'url("/storage/products/default.jpg")',
-                                        backgroundRepeat: "no-repeat",
-                                        backgroundPosition: "center center",
-                                        backgroundSize: "100%",
-                                        marginTop: "25px",
-                                        marginBottom: "12px"
-                                    }}
-                                >
-                                </div>
+                                <AsyncImage 
+                                    src={"/storage/products/" + img}
+                                    imageComponent={imageC}
+                                    loadingComponent={skeleton}
+                                />
                             </InertiaLink>
                         </Grid>
 
