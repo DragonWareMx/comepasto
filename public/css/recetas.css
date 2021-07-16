@@ -122,6 +122,8 @@
 }
 .grid-img-producto img{
     width:60px;
+    max-height:90px;
+    object-fit:cover;
     margin:25px;
     margin-bottom:0px;
 }
