@@ -29,6 +29,11 @@ class DatabaseSeeder extends Seeder
 
             //Banners
             BannerSeeder::class,
+
+            //recetas
+            RecipeSeeder::class,
+            ImgSeeder::class,
+            ProductRecipe::class,
         ]);
     }
 }
