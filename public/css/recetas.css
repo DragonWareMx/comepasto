@@ -136,6 +136,8 @@
     font-size: 15px;
     line-height: 20px;
     color: #7E7E7E;
+    margin-top:20px;
+    margin-bottom:20px;
 }
 ol li::marker {
     font-size: 16px ;

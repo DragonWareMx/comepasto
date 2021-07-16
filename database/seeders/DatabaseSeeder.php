@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
             //recetas
             RecipeSeeder::class,
             ImgSeeder::class,
-            ProductRecipe::class,
+            ProductRecipeSeeder::class,
         ]);
     }
 }
