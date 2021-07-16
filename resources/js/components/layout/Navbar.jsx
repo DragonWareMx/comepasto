@@ -103,7 +103,7 @@ export default function Navbar() {
                 <nav className="navigation">
                     <ul>
                         <li><a href="#">TIENDA</a></li>
-                        <li><a href="#">RECETAS</a></li>
+                        <li><a href={route('recetas')}>RECETAS</a></li>
                         <li><a href="#">QUIÉNES SOMOS</a></li>
                         <li><a href="#">PREGUNTAS FRECUENTES</a></li>
                     </ul>
