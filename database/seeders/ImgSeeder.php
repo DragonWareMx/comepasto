@@ -17,7 +17,7 @@ class ImgSeeder extends Seeder
         DB::table('imgs')->insert([
             'recipe_id' => 1,
             'product_id' => null,
-            'descripcion' => 'La mejor maruchan que probaras en tu vida, descrubrelo como hacerlo',
+            'descripcion' => 'La mejor maruchan que probaras en tu vida, descrubrelo como hacerlo, en 3 minutos estará lista, perfecta para esos días con un antojo y poco tiempo de preparación, podrás hacer esta receta en cualquier lado',
             'url' => 'maruchan.jpg',
         ]);
 

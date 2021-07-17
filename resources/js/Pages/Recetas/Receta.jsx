@@ -21,23 +21,6 @@ import Divider from '@material-ui/core/Divider';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 
 const Recetas = ({receta, productos}) => {
-    const links = document.querySelectorAll(".a-despla a");
-    // alert(links);
- 
-    for (const link of links) {
-    link.addEventListener("click", clickHandler);
-    }
-    
-    function clickHandler(e) {
-    e.preventDefault();
-    const href = this.getAttribute("href");
-    const offsetTop = document.querySelector(href).offsetTop;
-    
-    scroll({
-        top: offsetTop,
-        behavior: "smooth"
-    });
-    }
     return (
         <>
             <Grid container direction="row" flexwrap="wrap">
@@ -45,7 +28,7 @@ const Recetas = ({receta, productos}) => {
                     {/* Titulo de la receta */}
                     <Grid container direction="row" alignItems="center" justify="space-between" className="sub-div-receta">
                         <Grid item xs={11}>{receta.nombre}</Grid>
-                        <Grid item xs={1} className="navigate-back"><a href={route('recetas')}><NavigateBeforeIcon style={{fontSize:'30px'}}></NavigateBeforeIcon></a></Grid>
+                        <Grid item xs={1} className="navigate-back"><InertiaLink href={route('recetas')}><NavigateBeforeIcon style={{fontSize:'30px'}}></NavigateBeforeIcon></InertiaLink></Grid>
                     </Grid>
                     <Grid item xs={12} className="descrip-receta" style={{marginTop:'35px'}}>{receta.descripcion}</Grid>
                     <a href="#ingredientes_preparacion" className="a-despla">INGREDIENTES Y PREPARACIÓN <ArrowForwardIcon></ArrowForwardIcon></a>
@@ -60,7 +43,7 @@ const Recetas = ({receta, productos}) => {
                     <Grid container direction="row" justify="flex-start" alignItems="center" spacing={0} style={{display:'flex',flexWrap:'wrap'}}>
                         
                         {productos && productos.map(producto=>(
-                        <Grid  className="grid-img-producto"><a href="#!"><Tooltip title={producto.name}><img src={"/storage/productos/" + producto.foto}></img></Tooltip></a></Grid>
+                        <Grid  className="grid-img-producto" id={producto.id}><a href="#!"><Tooltip title={producto.name}><img src={"/storage/productos/" + producto.foto}></img></Tooltip></a></Grid>
                         ))}
                         
                         <a href="#!" style={{textDecoration:'none', margin:'25px', marginBottom:'0px'}}>

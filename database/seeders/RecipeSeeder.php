@@ -16,7 +16,7 @@ class RecipeSeeder extends Seeder
     {
         DB::table('recipes')->insert([
             'created_at' => '2021-07-14 21:18:44',
-            'nombre' => 'Receta para la mejor maruchan del mundo',
+            'nombre' => 'Receta para la mejor maruchan del mundo con salsita valentina',
             'ingredientes' => '1 litro de agua
                 1 tenedor
                 1 limpon

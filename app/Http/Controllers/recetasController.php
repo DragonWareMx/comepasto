@@ -11,8 +11,8 @@ class recetasController extends Controller
 {
     public function index()
     {
-        // $recetas=Recipe::join('imgs','recipes.id', '=', 'imgs.recipe_id')->select('recipes.*', 'imgs.*')->orderBy('recipes.created_at','desc')->get();
-        $recetas=Recipe::get();
+        $recetas=Recipe::join('imgs','recipes.id', '=', 'imgs.recipe_id')->select('recipes.*', 'imgs.*')->orderBy('recipes.created_at','desc')->get();
+        // $recetas=Recipe::get();
         // dd($recetas);
 
         return Inertia::render('Recetas/Recetas',['recetas' => $recetas]); 
@@ -20,7 +20,7 @@ class recetasController extends Controller
 
     public function verReceta($id){
         $receta=Recipe::join('imgs','recipes.id', '=', 'imgs.recipe_id')->select('recipes.*', 'imgs.*')->findOrFail($id);
-        $productos=DB::table('product_recipe')->join('products', 'product_recipe.product_id', '=', 'products.id')->select('products.name', 'products.foto')->where('recipe_id', '=', $id)->get();
+        $productos=DB::table('product_recipe')->join('products', 'product_recipe.product_id', '=', 'products.id')->select('products.name', 'products.foto', 'products.id')->where('recipe_id', '=', $id)->get();
         return Inertia::render('Recetas/Receta',['receta' => $receta, 'productos' => $productos]);
     }
 }

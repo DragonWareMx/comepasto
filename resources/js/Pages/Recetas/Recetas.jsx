@@ -15,7 +15,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
 import Link from '@material-ui/core/Link';
 
-const Recetas = (recetas) => {
+const Recetas = ({recetas}) => {
     return (
         <>
             {/* PORTADA */}
@@ -40,21 +40,23 @@ const Recetas = (recetas) => {
             <Container>
                 <Grid container direction="row" justify="flex-start" alignItems="stretch" style={{marginTop:30, marginBottom:50}} spacing={3}>
                     
-                    {/* {recetas &&recetas.map(receta=>( */}
-                        <Grid item xs={12} sm={4}>
-                            <img className="receta-image" src="/img/imgs/img2.jpg" alt="" />
-                            <Tooltip title="Burritos veganos y deliciosos" arrow TransitionComponent={Zoom} placement="top-start">
-                                <Link href="#!" style={{textDecoration:'none'}}><Typography item xs={12} className="receta-name" noWrap>Burritos veganos y deliciosos</Typography></Link>
+                    {recetas && recetas.map(receta=>(
+                        <Grid item xs={12} sm={4} id={receta.id}>
+                            <img className="receta-image" src={"/storage/recetas/" + receta.url} alt="" />
+                            <Tooltip title={receta.nombre} arrow TransitionComponent={Zoom} placement="top-start">
+                                <Link href="#!" style={{textDecoration:'none'}}><Typography item xs={12} className="receta-name" noWrap>{receta.nombre}</Typography></Link>
                             </Tooltip>
                             {/* Maximo 100 caracteres de descripción, then ... */}
-                            <Grid item xs={12} className="receta-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et</Grid>
-                            <Link href="#!" style={{textDecoration:'none'}}>
+                            <Typography item xs={12} className="receta-desc" noWrap>{receta.descripcion}</Typography>
+                            <InertiaLink href={route('ver-receta', receta.recipe_id)} style={{textDecoration:'none'}}>
                                 <Button size="large" className="button-receta" endIcon={<ArrowForwardIcon>send</ArrowForwardIcon>}>
                                     LEER MÁS
                                 </Button>
-                            </Link>
+                            </InertiaLink>
                         </Grid>
-                    {/* ))} */}
+                    ))}
+
+                    
                 </Grid>
             </Container>
         </>
