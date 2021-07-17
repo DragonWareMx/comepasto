@@ -46,4 +46,4 @@ Route::name('cart.')->group(function () {
 });
 
 // PREGUNTAS
-Route::get('/preguntas', [App\Http\Controllers\Controller::class, 'preguntas'])->name('preguntas');
+Route::get('/preguntas', [App\Http\Controllers\QuestionController::class, 'preguntas'])->name('preguntas');

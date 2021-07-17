@@ -19,7 +19,7 @@ import FastfoodOutlinedIcon from '@material-ui/icons/FastfoodOutlined';
 import PaymentIcon from '@material-ui/icons/Payment';
 import LocalShippingOutlinedIcon from '@material-ui/icons/LocalShippingOutlined';
 
-const Preguntas = ({tipo}) => {
+const Preguntas = ({tipo,questions}) => {
     console.table(tipo)
     const [values, setValues] = React.useState({
         pregunta: '',
@@ -71,6 +71,11 @@ const Preguntas = ({tipo}) => {
                             imageComponent={<img className="pregunta_svg" src="/img/ilustraciones/questions.svg" alt="" />}
                             loadingComponent={<CircularProgress style={{width: 100, height: 100, color: "#1DA3A8", display:'flex', margin:'auto'}} />}
                         />
+                    </Grid>
+                    <Grid container >
+                        {questions && questions.map((question, index)=>(
+                            <Accordion title={question.question} text={question.answer}></Accordion>
+                        ))}
                     </Grid>
                 </Grid>
             </Container>

@@ -43,7 +43,7 @@ export default function CarruselBanners({banners}) {
                 autoplayHoverPause
                 margin={8} >  
                 {banners && banners.map((banner, index)=>(
-                    <div>
+                    <div key={index}>
                         <AsyncImage
                         src={"/storage/banners/"+banner.url}
                         imageComponent={<img src={"/storage/banners/"+banner.url}/>}

@@ -162,7 +162,4 @@ class Controller extends BaseController
         ]);
     }
 
-    public function preguntas(){
-        return Inertia::render('Preguntas');
-    }
 }
