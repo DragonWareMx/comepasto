@@ -12,15 +12,19 @@ import '/css/preguntas.css';
 
 //Componentes
 import AsyncImage from '../components/common/AsyncImage';
+import Acordeon from '../components/common/Acordeon';
 
 //Iconos
 import SearchIcon from '@material-ui/icons/Search';
 import FastfoodOutlinedIcon from '@material-ui/icons/FastfoodOutlined';
 import PaymentIcon from '@material-ui/icons/Payment';
 import LocalShippingOutlinedIcon from '@material-ui/icons/LocalShippingOutlined';
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import EmailIcon from '@material-ui/icons/Email';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
 
-const Preguntas = ({tipo,questions}) => {
-    console.table(tipo)
+const Preguntas = ({tipo, questions}) => {
     const [values, setValues] = React.useState({
         pregunta: '',
       });
@@ -72,10 +76,43 @@ const Preguntas = ({tipo,questions}) => {
                             loadingComponent={<CircularProgress style={{width: 100, height: 100, color: "#1DA3A8", display:'flex', margin:'auto'}} />}
                         />
                     </Grid>
-                    <Grid container >
+                    <Grid container style={{marginBottom:47}}>
                         {questions && questions.map((question, index)=>(
-                            <Accordion title={question.question} text={question.answer}></Accordion>
+                            <Acordeon key={index} title={question.question} text={question.answer}></Acordeon>
                         ))}
+                    </Grid>
+                    <Grid container alignItems="center" style={{justifyContent:'center'}}>
+                        <Grid item xs={12} style={{color:'#1DA3A8',fontFamily:'Atma',fontSize:25,textAlign:'center'}}>¿No encuentras tu pregunta?</Grid>
+                        <Grid item xs={12} style={{color:'#535353',fontFamily:'Oxygen',fontSize:17,textAlign:'center'}}>Puedes ponerte en contacto con nosotros en</Grid>
+                        <Grid item xs={5} style={{marginLeft:50}}>
+                            <AsyncImage 
+                                src={"/img/ilustraciones/contact.svg"}
+                                imageComponent={<img className="pregunta_svg" src="/img/ilustraciones/contact.svg" alt="" />}
+                                loadingComponent={<CircularProgress style={{width: 100, height: 100, color: "#1DA3A8", display:'flex', margin:'auto'}} />}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={5}>
+                            <Grid item xs={12} className='preguntas_contacto preguntas_first'>Contacto directo</Grid>
+                            <Grid item xs={12} className='preguntas_contacto_items'>
+                                <div className='contacto_circles'><WhatsAppIcon style={{fontSize:20}}></WhatsAppIcon></div>
+                                <div>WhatsApp 44 44 44 44 44</div>
+                            </Grid>
+                            <Grid item xs={12} className='preguntas_contacto_items'>
+                                <div className='contacto_circles'><EmailIcon style={{fontSize:20}}></EmailIcon></div>
+                                <div>E-mail corroe@ejemplo.com</div>
+                            </Grid>
+                            <div className='contacto_space'></div>
+                            <Grid item xs={12} className='preguntas_contacto'>Redes sociales</Grid>
+                            <Grid item xs={12} className='preguntas_contacto_items'>
+                                <div className='contacto_circles'><FacebookIcon style={{fontSize:20}}></FacebookIcon></div>
+                                <div>Facebook @comepasto</div>
+                            </Grid>
+                            <Grid item xs={12} className='preguntas_contacto_items'>
+                                <div className='contacto_circles'><InstagramIcon style={{fontSize:20}}></InstagramIcon></div>
+                                <div>Instagram @comepasto</div>
+                            </Grid>
+                            <div style={{display:'flex',width:'100%',height:20, backgroundColor:'transparent'}}></div>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Container>

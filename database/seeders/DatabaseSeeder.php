@@ -34,6 +34,9 @@ class DatabaseSeeder extends Seeder
             RecipeSeeder::class,
             ImgSeeder::class,
             ProductRecipeSeeder::class,
+
+            //preguntas
+            QuestionSeeder::class,
         ]);
     }
 }

@@ -54,6 +54,49 @@
     justify-content: space-between;
 }
 
+.preguntas_contacto{
+    font-family: 'Atma';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    color: #535353;
+}
+
+.contacto_space{
+    display: flex;
+    background-color: transparent;
+    width: 100%;
+    height: 55px;
+}
+
+.preguntas_contacto_items{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: #7E7E7E;
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.contacto_circles{
+    border: 2px #7E7E7E solid;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+@media(max-width:900px){
+    .preguntas_first{
+        padding-top: 20px;
+    }
+}
+
 @media (max-width:785px){
     .preguntas_seleccionar{
         justify-content: center;
@@ -64,7 +107,7 @@
     }
 }
 
-@media (max-width:600px){
+@media (max-width:599px){
     .pregunta_svg{
         display: none;
     }
@@ -74,6 +117,15 @@
 
     .preguntas_tipo_container, .preguntas_sel_container{
         width: 30%;
+    }
+    .preguntas_contacto{
+        text-align: center;
+    }
+
+    .preguntas_contacto_items{
+        text-align: center;
+        display: flex;
+        justify-content: center;
     }
 }
 
