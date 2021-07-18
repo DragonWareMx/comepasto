@@ -36,7 +36,7 @@ export default function CarruselBanners({banners}) {
     return (
         <div style={{marginBottom:30}}>
             <OwlCarousel responsive={responsive}   
-                loop 
+                rewind
                 dots={false}
                 autoplay 
                 autoplayTimeout={10000} 

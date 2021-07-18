@@ -9,9 +9,17 @@ use App\Models\Question;
 
 class QuestionController extends Controller
 {
-    public function preguntas(){
-        $questions=Question::where('type','productos')->get();
-        $tipo='productos';
+    public function preguntas(Request $request){
+
+        if($request->tipo){
+            $questions=Question::where('type',$request->tipo)->get();
+            $tipo=$request->tipo;
+        }
+        else{
+            $questions=Question::where('type','productos')->get();
+            $tipo='productos'; 
+        }
+        
         return Inertia::render('Preguntas',
         [
             'questions'=>$questions,

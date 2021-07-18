@@ -23,6 +23,7 @@ import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import EmailIcon from '@material-ui/icons/Email';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
+import { InertiaLink } from '@inertiajs/inertia-react';
 
 const Preguntas = ({tipo, questions}) => {
     const [values, setValues] = React.useState({
@@ -55,18 +56,18 @@ const Preguntas = ({tipo, questions}) => {
                         </FormControl>
                         {/* tarjetitas de tipo de pregunta */}
                         <Grid container className='preguntas_seleccionar'>
-                            <Grid item className={!tipo  || tipo=='productos' ? 'preguntas_sel_container' : 'preguntas_tipo_container' }>
+                            <InertiaLink href={route('preguntas')} data={{ tipo: 'productos' }} style={{textDecoration: "none"}} preserveScroll preserveState item className={!tipo  || tipo=='productos' ? 'preguntas_sel_container' : 'preguntas_tipo_container' }>
                                 <FastfoodOutlinedIcon className={!tipo  || tipo=='productos' ? 'preguntas_sel' : 'preguntas_tipo'} style={{fontSize:47}}></FastfoodOutlinedIcon>
                                 <div className={!tipo  || tipo=='productos' ? 'preguntas_sel' : 'preguntas_tipo'} style={{fontSize:16}}>Sobre nuestros productos</div>
-                            </Grid>
-                            <Grid item className={tipo=='pagos' ? 'preguntas_sel_container' : 'preguntas_tipo_container'}>
+                            </InertiaLink>
+                            <InertiaLink href={route('preguntas')} data={{ tipo: 'pagos' }} style={{textDecoration: "none"}} preserveScroll preserveState item className={tipo=='pagos' ? 'preguntas_sel_container' : 'preguntas_tipo_container'}>
                                 <PaymentIcon className={tipo=='pagos' ? 'preguntas_sel' : 'preguntas_tipo'} style={{fontSize:47}}></PaymentIcon>
                                 <div className={tipo=='pagos' ? 'preguntas_sel' : 'preguntas_tipo'} style={{fontSize:16}}>Pagos y proceso</div>
-                            </Grid>
-                            <Grid item className={tipo=='envios' ? 'preguntas_sel_container' : 'preguntas_tipo_container'}>
+                            </InertiaLink>
+                            <InertiaLink href={route('preguntas')} data={{ tipo: 'envios' }} style={{textDecoration: "none"}} preserveScroll preserveState item className={tipo=='envios' ? 'preguntas_sel_container' : 'preguntas_tipo_container'}>
                                 <LocalShippingOutlinedIcon className={tipo=='envios' ? 'preguntas_sel' : 'preguntas_tipo'} style={{fontSize:47}}></LocalShippingOutlinedIcon>
                                 <div className={tipo=='envios' ? 'preguntas_sel' : 'preguntas_tipo'} style={{fontSize:16}}>Sobre nuestros envios y servicios</div>
-                            </Grid>
+                            </InertiaLink>
                         </Grid>
                     </Grid>
                     <Grid item xs={12} sm={4}>
