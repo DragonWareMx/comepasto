@@ -148,7 +148,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Product({img, name, price, discount, brand, logo, link, id, glutenFree, soyaFree, cantidad}){
+export default function Product({img, name, price, discount, brand, logo, link, id, uuid, glutenFree, soyaFree, cantidad}){
     const classes = useStyles();
 
     function limitString(string, length){
@@ -202,7 +202,7 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                         {/* IMAGEN */}
                         <Grid item>
                             {/* LINK DEL PRODUCTO */}
-                            <InertiaLink href="#">
+                            <InertiaLink href={route('product.show', uuid)} >
                                 <AsyncImage 
                                     src={"/storage/products/" + img}
                                     imageComponent={imageC}
@@ -214,7 +214,7 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                         {/* NOMBRE */}
                         <Grid item className={classes.name}>
                             {/* LINK DEL PRODUCTO */}
-                            <InertiaLink href="#" style={{textDecoration: "none", color:"#474747"}}>
+                            <InertiaLink href={route('product.show', uuid)} style={{textDecoration: "none", color:"#474747"}}>
                                 {limitString(name, 46)}
                             </InertiaLink>
                         </Grid>

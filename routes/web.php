@@ -45,5 +45,8 @@ Route::name('cart.')->group(function () {
     Route::patch('/producto/{id}', [App\Http\Controllers\CartController::class, 'update'])->name('update');
 });
 
+//PRODUCTO
+Route::get('/producto/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
+
 // PREGUNTAS
 Route::get('/preguntas', [App\Http\Controllers\QuestionController::class, 'preguntas'])->name('preguntas');

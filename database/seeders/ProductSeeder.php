@@ -4,6 +4,7 @@ namespace Database\Seeders;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
@@ -29,6 +30,7 @@ class ProductSeeder extends Seeder
             'trigoFree' => false,
             'descuento' => '10.00',
             'foto' => '1.png',
+            'uuid' => Str::uuid(),
         ]);
 
         //ESTOS SIDERS QUITENLOS XD
@@ -46,6 +48,7 @@ class ProductSeeder extends Seeder
             'trigoFree' => false,
             'descuento' => '0.00',
             'foto' => '2.png',
+            'uuid' => Str::uuid(),
         ]);
 
         DB::table('products')->insert([
@@ -62,6 +65,7 @@ class ProductSeeder extends Seeder
             'trigoFree' => true,
             'descuento' => '0.00',
             'foto' => '3.png',
+            'uuid' => Str::uuid(),
         ]);
 
         DB::table('products')->insert([
@@ -78,6 +82,7 @@ class ProductSeeder extends Seeder
             'trigoFree' => true,
             'descuento' => '0.00',
             'foto' => '4.png',
+            'uuid' => Str::uuid(),
         ]);
     }
 }

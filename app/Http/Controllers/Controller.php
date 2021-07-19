@@ -23,8 +23,8 @@ class Controller extends BaseController
         //TIENDA
         $products = Product::with('brand:id,name,logo,link')
                             ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
-                            ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, products.trigoFree, products.soyaFree, COALESCE(sum(product_sale.cantidad),0) total, (`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)) AS precio_descuento')
-                            ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree')
+                            ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, products.trigoFree, products.soyaFree, products.uuid, COALESCE(sum(product_sale.cantidad),0) total, (`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)) AS precio_descuento')
+                            ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree', 'products.uuid')
                             ->when($request->categoria, function ($query, $categoria) {
                                 switch ($categoria) {
                                     case 'SIN SOYA':

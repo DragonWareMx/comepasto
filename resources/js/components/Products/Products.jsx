@@ -164,7 +164,7 @@ const Products = ({products, categories, request}) => {
     const classes = useStyles();
     const [dialog, setDialog] = React.useState(false);
     const [order, setOrder] = React.useState(
-        (request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn') ? request.order : ''
+        (request && (request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn')) ? request.order : ''
     );
     const [filter, setFilter] = React.useState(
         request.filter ? exist(request.filter) : ''
@@ -464,7 +464,7 @@ const Products = ({products, categories, request}) => {
 
                     <Grid item xs={12} container direction="row" spacing={3} style={{marginBottom: "40px"}}>
                         {(products && products.data && products.data.length > 0) ? products.data.map((product) => (
-                            <Product key={product.id} 
+                            <Product key={product.id + product.name} 
                                 name={product.name} 
                                 img={product.foto} 
                                 price={product.precio} 
@@ -473,6 +473,7 @@ const Products = ({products, categories, request}) => {
                                 logo={product.brand ? product.brand.logo : "Logo_color_Mesa-de-trabajo-1.png"} 
                                 link={product.brand ? product.brand.link ?? "#" : "#"} 
                                 id={product.id}
+                                uuid={product.uuid}
                                 glutenFree={product.trigoFree}
                                 soyaFree={product.soyaFree}
                                 cantidad={cantidadProducto(product.id)}
