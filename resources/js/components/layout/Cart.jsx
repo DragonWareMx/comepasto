@@ -269,7 +269,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export default function Footer() {
+export default function Cart({ bDialog }) {
     const { auth, flash } = usePage().props
 
     const classes = useStyles();
@@ -343,7 +343,7 @@ export default function Footer() {
     }
 
     useEffect(() => {
-        if(flash.info){
+        if(flash.info && bDialog){
             setDialog(true)
         }
     }, [flash])

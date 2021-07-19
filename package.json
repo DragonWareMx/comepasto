@@ -33,6 +33,7 @@
         "@types/ziggy-js": "^0.9.0",
         "react-loading-skeleton": "^2.2.0",
         "react-owl-carousel": "^2.3.3",
+        "simple-react-lightbox": "^3.6.6",
         "ziggy-js": "^0.9.4"
     }
 }

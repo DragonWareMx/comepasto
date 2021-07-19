@@ -2,22 +2,26 @@ import React from 'react';
 import Layout from '../../layouts/Layout';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import Products from '../../components/Products/Products';
-import { Hidden, IconButton, Paper } from '@material-ui/core';
+import { Divider, Hidden, IconButton, Paper, OutlinedInput, InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import OwlCarousel from 'react-owl-carousel'; 
-import AsyncImage from '../../components/common/AsyncImage';
 import Skeleton from 'react-loading-skeleton'; 
+import Button from "@material-ui/core/Button";
+import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 
 import route from 'ziggy-js';
 
 //iconos
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 //css
 import 'owl.carousel/dist/assets/owl.carousel.css';  
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+
+//componentes
+import ImageCarousel from '../../components/Products/ImageCarousel'
 
 const useStyles = makeStyles((theme) => ({
     name: {
@@ -33,20 +37,135 @@ const useStyles = makeStyles((theme) => ({
         border: "1px solid #E3E3E3",
         backgroundColor: "transparent",
 
+        width: "100%",
         '&:hover':{
             border: "1px solid #1DA3A8",
         }
+    },
+    price:{
+        fontFamily: "Oxygen",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: "20px",
+        lineHeight: "25px",
+
+        color: "#1DA3A8",
+    },
+    discount:{
+        fontFamily: "Oxygen",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: "16px",
+        lineHeight: "20px",
+        textDecorationLine: "line-through",
+
+        color: "#9C9C9C",
+    },
+    text: {
+        fontFamily: "Oxygen",
+        fontStyle: "normal",
+        fontWeight: "normal",
+        fontSize: "17px",
+        lineHeight: "21px",
+
+        color: "#595959",
+
+        width: "fit-content",
+    },
+    iconoFree:{
+        width: "40px",
+        height: "40px",
+        filter: "invert(46%) sepia(20%) saturate(2938%) hue-rotate(142deg) brightness(104%) contrast(77%)",
+    },
+    textFree: {
+        fontFamily: "Atma",
+        fontStyle: "normal",
+        fontWeight: "normal",
+        fontSize: "14px",
+        lineHeight: "15px",
+
+        color: "#A7A7A7",
+        maxWidth: "135px",
+        textAlign: "center",      
+    },
+    logo:{
+        width: "89px",
+        height: "62px",
+        marginTop: "4px"
+    },
+    inputSinFlechasProduct: {
+        "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+            display: "none"
+        },
+        "& input:focus": {
+            outline: "none"
+        },
+        "& input":{
+            width: "auto",
+            textAlign: "center"
+        },
+        '& fieldset': {
+            border: "1px solid #E3E3E3",
+        },
+        
+        width: '150px',
+        height: '38px',
+        
+        paddingLeft: 0,
+        paddingRight: 0,
+        marginTop: "30px",
+        marginBottom: "20px",
+        
+        fontFamily: 'Oxygen',
+        fontStyle: 'normal',
+        fontWeight: 'bold',
+        fontSize: '14px',
+        lineHeight: '18px',
+        color: "#595959",
+    },
+
+    inertiaButtonPlusRemove: {
+        width: "fit-content",
+        height: "fit-content",
+        backgroundColor: "transparent",
+        padding: "0px",
+        border: "none"
+    },
+
+    button: {
+        background: 'transparent',
+        color: '#9F9F9F',
+
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontSize: '13px',
+        lineHeight: '21px',
+
+        width: '220px',
+        height: '38px',
+
+        border: "1px solid #E3E3E3",
+
+        '&:hover': {
+            background: '#1DA3A8',
+            color: '#FFFFFF',
+        },
+    },
+    inertiaButton: {
+        width: "fit-content",
+        height: "fit-content",
+        backgroundColor: "transparent",
+        marginTop: "30px",
+        marginBottom: "20px",
+        padding: "0px",
+        border: "none"
     },
 }));
 
 const Inicio = ({ product }) => {
     const classes = useStyles();
-
-    const responsive = {
-        0: {
-            items: 1,
-        }   
-    }
+    const { flash,auth } = usePage().props
 
     const skeleton = <div style={{margin: "auto"}}>
         <Skeleton width="100%" 
@@ -54,6 +173,40 @@ const Inicio = ({ product }) => {
             style={{maxHeight: "440px"}}
         />
     </div>
+
+    //muestra el precio del producto con o sin descuento
+    function showPrice(precio, descuento){
+        if(descuento){
+            var fPrecio = parseFloat(precio);
+            var fDescuento = parseFloat(descuento)
+
+            var nPrecio = fPrecio - (fPrecio * (fDescuento/100))
+
+            if(nPrecio < 0)
+                nPrecio = 0
+
+            return nPrecio.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
+        else{
+            return parseFloat(precio).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
+    }
+
+    //devuelve la cantidad de un producto en el carrito
+    function cantidadProducto(id){
+        if(auth && auth.cart && auth.cart.length > 0){
+            var cantidad = 0
+            auth.cart.forEach(productInCart => {
+                if(productInCart.id == id){
+                    cantidad = productInCart.pivot.cantidad
+                    return
+                }
+            });
+            return cantidad
+        }
+
+        return 0
+    }
 
     return (
         <>
@@ -67,39 +220,10 @@ const Inicio = ({ product }) => {
                 style={{paddingTop: "43px"}}
             >
                     {/* imagenes del producto */}
-                    <Hidden mdDown>
-                        <Grid item style={{width: "30%"}}>
+                    <Hidden smDown>
+                        <Grid item style={{width: "30%", marginRight: "61px"}}>
                             <Paper variant="outlined" className={classes.paper}>
-                                <OwlCarousel responsive={responsive}   
-                                    rewind
-                                    dots={false}
-                                    autoplay 
-                                    autoplayTimeout={10000} 
-                                    autoplayHoverPause
-                                    margin={8}
-                                >  
-                                    <div>
-                                        <AsyncImage
-                                            src={"/storage/products/1.png"}
-                                            imageComponent={<img src={"/storage/products/1.png"}/>}
-                                            loadingComponent={skeleton}
-                                        />
-                                    </div>
-                                    <div>
-                                        <AsyncImage
-                                            src={"/storage/products/2.png"}
-                                            imageComponent={<img src={"/storage/products/2.png"}/>}
-                                            loadingComponent={skeleton}
-                                        />
-                                    </div>
-                                    <div>
-                                        <AsyncImage
-                                            src={"/storage/products/3.png"}
-                                            imageComponent={<img src={"/storage/products/3.png"}/>}
-                                            loadingComponent={skeleton}
-                                        />
-                                    </div>
-                                </OwlCarousel> 
+                                <ImageCarousel />
                             </Paper>
                         </Grid>
                     </Hidden>
@@ -122,6 +246,181 @@ const Inicio = ({ product }) => {
                                     </IconButton>
                                 </InertiaLink>
                             </Grid>
+                        </Grid>
+
+                        {/* precio */}
+                        <Grid
+                            item
+                            container
+                            direction="row"
+                            alignItems="center"
+                        >
+                            <Grid item className={classes.discount} style={{marginRight: product.descuento > 0 ? "16px" : "0px"}}>
+                                {product.descuento > 0 &&
+                                "$ " + showPrice(product.precio, null) + " MXN"
+                                }
+                            </Grid>
+                            <Grid item className={classes.price}>
+                                $ {showPrice(product.precio, product.descuento)} MXN
+                            </Grid>
+                        </Grid>
+
+                        {/* carrusel responsivo */}
+                        <Hidden mdUp>
+                            <Grid item style={{width: "100%", maxWidth: "500px", margin: "auto"}}>
+                                <Paper variant="outlined" className={classes.paper}>
+                                    <ImageCarousel />
+                                </Paper>
+                            </Grid>
+                        </Hidden>
+
+                        {/* informacion del producto */}
+                        <Grid 
+                            item
+                            container
+                            direction="row"
+                            justify="space-between"
+                            alignItems="center"
+                        >
+                            <Grid item className={classes.text} 
+                                container 
+                                direction="column"
+                                justify="center"
+                                alignItems="flex-start"
+                                xs
+                            >
+                                <Grid item>
+                                    <p style={{marginBottom: "0px"}}><b>Categoría:</b>Lácteos</p>
+                                </Grid>
+                                <Grid item>
+                                    <p style={{marginBottom: "0px"}}><b>Tipo:</b>Lácteos</p>
+                                </Grid>
+                                <Grid item>
+                                    <p style={{marginBottom: "0px"}}><b>Marca:</b>Lácteos</p>
+                                </Grid>
+                                <Grid item>
+                                    <a href={product.brand ? product.brand.link ? product.brand.link : "#" : "#"} target="_blank">
+                                        <div className={classes.logo} style={{
+                                                backgroundImage: product.brand ? product.brand.logo ? 'url("/storage/logos/'+ product.brand.logo +'")' : 'url("/storage/logos/default.jpg")' : 'url("/storage/logos/default.jpg")',
+                                                backgroundRepeat: "no-repeat",
+                                                backgroundPosition: "center center",
+                                                backgroundSize: "100%"
+                                            }}
+                                        >
+                                        </div>
+                                    </a>
+                                </Grid>
+                                <Grid item>
+                                    <p style={{marginBottom: "0px"}}><b>Presentación:</b>Lácteos</p>
+                                </Grid>
+                            </Grid>
+
+                            {/* sin soya/sin gluten */}
+                            <Grid 
+                                item 
+                                container
+                                direction="row"
+                                justify="flex-end"
+                                alignItems="flex-start"
+                                xs
+                                style={{height: "100%"}}
+                            >
+                                {/* libre de soya */}
+                                <Grid 
+                                    item 
+                                    container 
+                                    direction="column"
+                                    alignItems="center"
+                                    justify="center"
+                                    style={{width: "fit-content"}}
+                                >
+                                    <Grid item>
+                                        <img src="/img/CATEGORIAS/icons/soya3.png" className={classes.iconoFree} />
+                                    </Grid>
+                                    <Grid item className={classes.textFree}>
+                                        Este producto está libre de soya
+                                    </Grid>
+                                </Grid>
+                                {/* libre de gluten */}
+                                <Grid 
+                                    item 
+                                    container 
+                                    direction="column"
+                                    alignItems="center"
+                                    justify="center"
+                                    style={{width: "fit-content"}}
+                                >
+                                    <Grid item>
+                                        <img src="/img/CATEGORIAS/icons/gluten3.png" className={classes.iconoFree} />
+                                    </Grid>
+                                    <Grid item className={classes.textFree}>
+                                        Este producto está libre de gluten
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+                        {/* ingredientes */}
+                        <Grid item className={classes.text}>
+                            <p style={{marginBottom: "0px"}}><b>Ingredientes:</b> Aceite de coco, vino blanco, agua, almidón modificado, almidón, saborizante natural y artificial, sal, goma de celulosa, sorbato de potasio, achiote, betacaroteno, ácido cítrico, vitamina B12.</p>
+                        </Grid>
+
+                        <Grid item style={{width: "100%", marginTop: "30px"}}>
+                            <Divider />
+                        </Grid>
+
+                        <Grid 
+                        item 
+                        container 
+                        direction="row" 
+                        justify="flex-start"
+                        alignItems="center"
+                        style={{width:"100%"}}
+                        >
+                            {cantidadProducto(product.id) > 0 ?
+                            <>
+                                <Grid item className={classes.text}>
+                                    <b style={{marginRight: "20px"}}>Cantidad</b>
+                                </Grid>
+                                <Grid item>
+                                    <OutlinedInput type="number"
+                                        className={classes.inputSinFlechasProduct}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <InertiaLink href={route('cart.store', product.id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
+                                                    <IconButton
+                                                        aria-label="add"
+                                                        component="div"
+                                                    >
+                                                        <AddIcon fontSize="small" />
+                                                    </IconButton>
+                                                </InertiaLink>
+                                            </InputAdornment>
+                                        }
+                                        startAdornment={
+                                            <InputAdornment position="start">
+                                                <InertiaLink href={route('cart.update', product.id)} method="patch" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
+                                                    <IconButton
+                                                        aria-label="remove"
+                                                    >
+                                                        <RemoveIcon fontSize="small" />
+                                                    </IconButton>
+                                                </InertiaLink>
+                                            </InputAdornment>
+                                        }
+                                        
+                                        value={cantidadProducto(product.id)} 
+                                    />
+                                </Grid>
+                            </>
+                            :
+                                <InertiaLink href={route('cart.store', product.id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
+                                    <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
+                                        AGREGAR AL CARRITO
+                                        <ShoppingCartOutlinedIcon fontSize="small" style={{marginLeft: "6px"}} />
+                                    </Button>
+                                </InertiaLink>
+                            }
                         </Grid>
                     </Grid>
                 </Grid>

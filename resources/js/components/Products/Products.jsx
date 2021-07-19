@@ -15,7 +15,7 @@ import '/css/QuienesSomos.css';
 import Paginacion from '../common/paginacion';
 import Product from './Product'
 import route from 'ziggy-js';
-import { CircularProgress, Dialog, Select } from '@material-ui/core';
+import { CircularProgress, Select } from '@material-ui/core';
 import AsyncImage from '../common/AsyncImage';
 
 const useStyles = makeStyles((theme) => ({
@@ -162,7 +162,6 @@ const Products = ({products, categories, request}) => {
     const { flash,auth } = usePage().props
     
     const classes = useStyles();
-    const [dialog, setDialog] = React.useState(false);
     const [order, setOrder] = React.useState(
         (request && (request.order == 'ascp' || request.order == 'descp' || request.order == 'ascn' || request.order == 'descn')) ? request.order : ''
     );
@@ -194,11 +193,6 @@ const Products = ({products, categories, request}) => {
             },
         })
     }
-
-    //onClose del dialog para iniciar sesion
-    const handleDialogClose = () => {
-        setDialog(false);
-    };
 
     //devuelve la cantidad de un producto en el carrito
     function cantidadProducto(id){
@@ -509,32 +503,6 @@ const Products = ({products, categories, request}) => {
                     </Grid>
                 </Grid>
             </Container>
-
-            <Dialog 
-                open={dialog}
-                onClose={handleDialogClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <div className={classes.cardInicioSesion}>
-                    <div className={classes.cardText} style={{marginTop: "30px"}}>
-                        Inicia sesión en comepasto para comenzar a añadir productos a tu carrito
-                    </div>
-
-                    <InertiaLink href={route('login')} as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
-                        <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
-                            INICIAR SESIÓN
-                        </Button>
-                    </InertiaLink>
-
-                    <div className={classes.cardText} style={{marginBottom: "30px"}}>
-                        <InertiaLink href={route("register")} className={classes.cardLink}>
-                            ¿Deseas registrarte?
-                        </InertiaLink>
-                        Esto agilizará tus procesos de compra
-                    </div>
-                </div>
-            </Dialog>
         </>
     )
 }

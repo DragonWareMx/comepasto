@@ -51,7 +51,7 @@ class ProductController extends Controller
     public function show($id)
     {
         //
-        $product = Product::select('id','name')->where('uuid', '=', $id)->firstOrFail();
+        $product = Product::with('brand:id,name,logo,link')->select('id','name', 'precio', 'descuento','brand_id')->where('uuid', '=', $id)->firstOrFail();
 
         return Inertia::render('Products/Product',['product' => $product]); 
     }

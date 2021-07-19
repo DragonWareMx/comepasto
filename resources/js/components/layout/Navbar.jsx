@@ -64,7 +64,7 @@ export default function Navbar() {
                     </div>
                     <div className="div-iconos">
                         <SearchIcon fontSize="large" style={{ color: '#1DA3A8' }} />
-                        <Cart />
+                        <Cart bDialog={true} />
                     </div>
                 </div>
                 <div className="navbar-inf">
@@ -95,7 +95,7 @@ export default function Navbar() {
                 <div className="right">
                     <div className="div-iconos">
                         <SearchIcon fontSize="large" style={{ color: '#1DA3A8' }} />
-                        <Cart />
+                        <Cart bDialog={false} />
                     </div>
                 </div>
             </header>
