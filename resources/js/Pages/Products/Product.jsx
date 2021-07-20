@@ -22,6 +22,7 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 //componentes
 import ImageCarousel from '../../components/Products/ImageCarousel'
+import '../../../../public/css/owlProduct.css'
 
 const useStyles = makeStyles((theme) => ({
     name: {
@@ -40,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         '&:hover':{
             border: "1px solid #1DA3A8",
-        }
+        },
+        position: "relative"
     },
     price:{
         fontFamily: "Oxygen",
@@ -208,6 +210,11 @@ const Inicio = ({ product }) => {
         return 0
     }
 
+    function capitalize(word){
+        const lower = word.toLowerCase()
+        return word.charAt(0).toUpperCase() + lower.slice(1)
+    }
+
     return (
         <>
             {/* PRODUCTO */}
@@ -216,14 +223,14 @@ const Inicio = ({ product }) => {
                 container
                 direction="row"
                 justify="center"
-                alignItems="center"
+                alignItems="flex-start"
                 style={{paddingTop: "43px"}}
             >
                     {/* imagenes del producto */}
                     <Hidden smDown>
-                        <Grid item style={{width: "30%", marginRight: "61px"}}>
+                        <Grid item style={{width: "30%", marginRight: "61px", height: "100%"}} container direction="row" justify="center" alignItems="flex-start" >
                             <Paper variant="outlined" className={classes.paper}>
-                                <ImageCarousel />
+                                <ImageCarousel img={product.foto} images={product.img} />
                             </Paper>
                         </Grid>
                     </Hidden>
@@ -267,9 +274,9 @@ const Inicio = ({ product }) => {
 
                         {/* carrusel responsivo */}
                         <Hidden mdUp>
-                            <Grid item style={{width: "100%", maxWidth: "500px", margin: "auto"}}>
+                            <Grid item style={{width: "100%", maxWidth: "500px", margin: "auto", marginTop: "20px", marginBottom: "20px"}}>
                                 <Paper variant="outlined" className={classes.paper}>
-                                    <ImageCarousel />
+                                    <ImageCarousel img={product.foto} images={null} />
                                 </Paper>
                             </Grid>
                         </Hidden>
@@ -290,13 +297,13 @@ const Inicio = ({ product }) => {
                                 xs
                             >
                                 <Grid item>
-                                    <p style={{marginBottom: "0px"}}><b>Categoría:</b>Lácteos</p>
+                                    <p style={{marginBottom: "0px"}}><b>Categoría:</b> {product.category ? capitalize(product.category.name) : "Sin categoría"}</p>
                                 </Grid>
                                 <Grid item>
-                                    <p style={{marginBottom: "0px"}}><b>Tipo:</b>Lácteos</p>
+                                    <p style={{marginBottom: "0px"}}><b>Tipo:</b> {product.type ? capitalize(product.type.name) : "No especificado"}</p>
                                 </Grid>
                                 <Grid item>
-                                    <p style={{marginBottom: "0px"}}><b>Marca:</b>Lácteos</p>
+                                    <p style={{marginBottom: "0px"}}><b>Marca:</b> {product.brand ? product.brand.name : "Sin marca"}</p>
                                 </Grid>
                                 <Grid item>
                                     <a href={product.brand ? product.brand.link ? product.brand.link : "#" : "#"} target="_blank">
@@ -310,9 +317,11 @@ const Inicio = ({ product }) => {
                                         </div>
                                     </a>
                                 </Grid>
+                                {product.presentacion &&
                                 <Grid item>
-                                    <p style={{marginBottom: "0px"}}><b>Presentación:</b>Lácteos</p>
+                                    <p style={{marginBottom: "0px", marginTop: "5px"}}><b>Presentación:</b> {product.presentacion}</p>
                                 </Grid>
+                                }
                             </Grid>
 
                             {/* sin soya/sin gluten */}
@@ -326,44 +335,51 @@ const Inicio = ({ product }) => {
                                 style={{height: "100%"}}
                             >
                                 {/* libre de soya */}
-                                <Grid 
-                                    item 
-                                    container 
-                                    direction="column"
-                                    alignItems="center"
-                                    justify="center"
-                                    style={{width: "fit-content"}}
-                                >
-                                    <Grid item>
-                                        <img src="/img/CATEGORIAS/icons/soya3.png" className={classes.iconoFree} />
+                                {product.soyaFree == true &&
+                                    <Grid 
+                                        item 
+                                        container 
+                                        direction="column"
+                                        alignItems="center"
+                                        justify="center"
+                                        style={{width: "fit-content", marginRight: product.trigoFree ? "5px" : "0px"}}
+                                    >
+                                        <Grid item>
+                                            <img src="/img/CATEGORIAS/icons/soya3.png" className={classes.iconoFree} />
+                                        </Grid>
+                                        <Grid item className={classes.textFree}>
+                                            Este producto está libre de soya
+                                        </Grid>
                                     </Grid>
-                                    <Grid item className={classes.textFree}>
-                                        Este producto está libre de soya
-                                    </Grid>
-                                </Grid>
+                                }
+
                                 {/* libre de gluten */}
-                                <Grid 
-                                    item 
-                                    container 
-                                    direction="column"
-                                    alignItems="center"
-                                    justify="center"
-                                    style={{width: "fit-content"}}
-                                >
-                                    <Grid item>
-                                        <img src="/img/CATEGORIAS/icons/gluten3.png" className={classes.iconoFree} />
+                                {product.trigoFree == true &&
+                                    <Grid 
+                                        item 
+                                        container 
+                                        direction="column"
+                                        alignItems="center"
+                                        justify="center"
+                                        style={{width: "fit-content"}}
+                                    >
+                                        <Grid item>
+                                            <img src="/img/CATEGORIAS/icons/gluten3.png" className={classes.iconoFree} />
+                                        </Grid>
+                                        <Grid item className={classes.textFree}>
+                                            Este producto está libre de gluten
+                                        </Grid>
                                     </Grid>
-                                    <Grid item className={classes.textFree}>
-                                        Este producto está libre de gluten
-                                    </Grid>
-                                </Grid>
+                                }
                             </Grid>
                         </Grid>
 
                         {/* ingredientes */}
-                        <Grid item className={classes.text}>
-                            <p style={{marginBottom: "0px"}}><b>Ingredientes:</b> Aceite de coco, vino blanco, agua, almidón modificado, almidón, saborizante natural y artificial, sal, goma de celulosa, sorbato de potasio, achiote, betacaroteno, ácido cítrico, vitamina B12.</p>
-                        </Grid>
+                        {product.ingredientes &&
+                            <Grid item className={classes.text}>
+                                <p style={{marginBottom: "0px"}}><b>Ingredientes:</b> {product.ingredientes}</p>
+                            </Grid>
+                        }
 
                         <Grid item style={{width: "100%", marginTop: "30px"}}>
                             <Divider />

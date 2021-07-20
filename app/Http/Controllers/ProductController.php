@@ -51,7 +51,10 @@ class ProductController extends Controller
     public function show($id)
     {
         //
-        $product = Product::with('brand:id,name,logo,link')->select('id','name', 'precio', 'descuento','brand_id')->where('uuid', '=', $id)->firstOrFail();
+        $product = Product::with('brand:id,name,logo,link', 'category:id,name', 'type:id,name', 'img:product_id,url,descripcion')
+                        ->select('id','name', 'precio', 'descuento','brand_id','category_id', 'type_id', 'presentacion', 'ingredientes', 'trigoFree', 'soyaFree', 'foto')
+                        ->where('uuid', '=', $id)
+                        ->firstOrFail();
 
         return Inertia::render('Products/Product',['product' => $product]); 
     }

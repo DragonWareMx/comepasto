@@ -11,4 +11,8 @@ class Type extends Model
     public function type(){
         return $this->hasMany('App\Models\Type');
     }
+
+    public function products(){
+        return $this->hasMany('App\Models\Product');
+    }
 }
