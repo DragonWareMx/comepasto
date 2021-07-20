@@ -594,9 +594,11 @@ export default function Cart({ bDialog }) {
                         Inicia sesión en comepasto para comenzar a añadir productos a tu carrito
                     </div>
 
-                    <Button variant="contained" color="primary" component="div" disableElevation className={classes.buttonDial} onClick={handleOpenLogin}>
-                        INICIAR SESIÓN
-                    </Button>
+                    <div className={classes.inertiaButton} >
+                        <Button variant="contained" color="primary" component="div" disableElevation className={classes.buttonDial} onClick={handleOpenLogin}>
+                            INICIAR SESIÓN
+                        </Button>
+                    </div>
 
                     <div className={classes.cardText} style={{ marginBottom: "30px" }}>
                         <InertiaLink href={route("register")} className={classes.cardLink}>

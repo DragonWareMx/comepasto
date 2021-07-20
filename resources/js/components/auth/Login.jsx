@@ -1,7 +1,8 @@
 import { React, useState } from 'react';
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Dialog, Button, TextField } from '@material-ui/core';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { InertiaLink, usePage } from '@inertiajs/inertia-react'
+import { Inertia } from '@inertiajs/inertia'
 
 import teal from '@material-ui/core/colors/teal';
 
@@ -136,10 +137,16 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '14px',
         lineHeight: '19.5px',
         color: '#9E9E9E'
+    },
+    helperText: {
+        marginTop: '-12px',
+        fontFamily: 'Atma',
+        fontSize: '14px',
     }
 }));
 
 export default function Login({ dialog, handleClose }) {
+    const { errors } = usePage().props
     const classes = useStyles();
     const [values, setValues] = useState({
         email: '',
@@ -153,6 +160,11 @@ export default function Login({ dialog, handleClose }) {
             ...values,
             [key]: value,
         }))
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.post('/login', values)
     }
 
     return (
@@ -170,7 +182,7 @@ export default function Login({ dialog, handleClose }) {
                     Agiliza tus procesos de compra
                 </div>
 
-                <form className={classes.formulario}>
+                <form className={classes.formulario} onSubmit={handleSubmit} id="login-form">
                     <MuiThemeProvider theme={theme}>
                         <TextField required id="email" label="Correo electrónico"
                             InputProps={{
@@ -181,9 +193,14 @@ export default function Login({ dialog, handleClose }) {
                                     root: classes.formTextLabel
                                 }
                             }}
+                            FormHelperTextProps={{
+                                className: classes.helperText
+                            }}
                             fullWidth={true}
                             value={values.email}
                             onChange={handleChange}
+                            error={errors.email && true}
+                            helperText={errors.email}
                         />
 
                         <TextField required id="password" label="Contraseña"
@@ -201,13 +218,13 @@ export default function Login({ dialog, handleClose }) {
                             onChange={handleChange}
                         />
                     </MuiThemeProvider>
-                </form>
 
-                <InertiaLink href={route('login')} as="button" style={{ textDecoration: "none" }} className={classes.inertiaButton} preserveScroll>
-                    <Button variant="contained" color="primary" component="div" disableElevation className={classes.buttonDial}>
-                        ACCEDER
-                    </Button>
-                </InertiaLink>
+                    <div style={{ textDecoration: "none" }} className={classes.inertiaButton} >
+                        <Button variant="contained" color="primary" type="submit" disableElevation className={classes.buttonDial}>
+                            ACCEDER
+                        </Button>
+                    </div>
+                </form>
 
                 <div className={classes.cardText} style={{ marginBottom: "3px" }}>
                     <InertiaLink href={route("register")} className={classes.cardLink}>

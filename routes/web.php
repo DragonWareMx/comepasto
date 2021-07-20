@@ -26,7 +26,13 @@ Route::get('/inertia', function () {
     return Inertia::render('Ejemplo');
 });
 
+// RUTAS DE AUTH
 Auth::routes();
+// Route::post('login', 'App\Http\Controllers\Auth\LoginController@login');
+// Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+// Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+// Route::post('register', 'Auth\RegisterController@register');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
