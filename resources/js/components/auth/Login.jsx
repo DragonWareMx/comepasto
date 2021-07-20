@@ -1,7 +1,30 @@
-import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { React, useState } from 'react';
+import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Dialog, Button, TextField } from '@material-ui/core';
 import { InertiaLink } from '@inertiajs/inertia-react';
+
+import teal from '@material-ui/core/colors/teal';
+
+const theme = createMuiTheme({
+    palette: {
+        secondary: {
+            // light: will be calculated from palette.primary.main,
+            main: '#ff4400',
+            // dark: will be calculated from palette.primary.main,
+            // contrastText: will be calculated to contrast with palette.primary.main
+        },
+        primary: {
+            light: '#0066ff',
+            main: teal[500],
+            // dark: will be calculated from palette.secondary.main,
+            contrastText: '#ffcc00',
+        },
+        // error: will use the default color
+    },
+    status: {
+        danger: 'orange',
+    },
+});
 
 const useStyles = makeStyles((theme) => ({
     cardInicioSesion: {
@@ -88,29 +111,50 @@ const useStyles = makeStyles((theme) => ({
     },
     formulario: {
         padding: "0px",
-        marginBottom: "20px"
+        marginBottom: "20px",
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap'
     },
     textField: {
-        width: "280px",
+        minWidth: '250px',
+        maxWidth: '319px',
         fontFamily: "Atma",
         fontStyle: 'normal',
         fontWeight: '400',
-        fontSize: '14px',
+        fontSize: '15px',
         lineHeight: '23px',
         color: '#333333',
-        '& label.Mui-focused': {
-            color: '#9E9E9E',
-            fontSize: '12px',
-            lineHeight: '19.5px'
-        },
-        '& .MuiInput-underline:after': {
-            borderBottomColor: 'green',
-        },
+        marginTop: '20px',
+        marginBottom: '20px',
+        "&:not(.Mui-disabled):hover::before": {
+            borderColor: "#1DA3A8"
+        }
+    },
+    formTextLabel: {
+        fontFamily: 'Atma',
+        fontSize: '14px',
+        lineHeight: '19.5px',
+        color: '#9E9E9E'
     }
 }));
 
 export default function Login({ dialog, handleClose }) {
     const classes = useStyles();
+    const [values, setValues] = useState({
+        email: '',
+        password: ''
+    });
+
+    function handleChange(e) {
+        const key = e.target.id;
+        const value = e.target.value
+        setValues(values => ({
+            ...values,
+            [key]: value,
+        }))
+    }
+
     return (
         <Dialog
             open={dialog}
@@ -122,12 +166,41 @@ export default function Login({ dialog, handleClose }) {
                 <div className={classes.cardTitle} style={{ marginTop: "15px" }}>
                     INICIAR SESIÓN
                 </div>
-                <div className={classes.cardText} style={{ marginTop: "2px" }}>
+                <div className={classes.cardText} style={{ marginTop: "2px", marginBottom: "15px" }}>
                     Agiliza tus procesos de compra
                 </div>
 
                 <form className={classes.formulario}>
-                    <TextField required id="email" label="Correo electrónico" className={classes.textField} />
+                    <MuiThemeProvider theme={theme}>
+                        <TextField required id="email" label="Correo electrónico"
+                            InputProps={{
+                                className: classes.textField,
+                            }}
+                            InputLabelProps={{
+                                classes: {
+                                    root: classes.formTextLabel
+                                }
+                            }}
+                            fullWidth={true}
+                            value={values.email}
+                            onChange={handleChange}
+                        />
+
+                        <TextField required id="password" label="Contraseña"
+                            InputProps={{
+                                className: classes.textField,
+                            }}
+                            InputLabelProps={{
+                                classes: {
+                                    root: classes.formTextLabel
+                                }
+                            }}
+                            fullWidth={true}
+                            type="password"
+                            value={values.password}
+                            onChange={handleChange}
+                        />
+                    </MuiThemeProvider>
                 </form>
 
                 <InertiaLink href={route('login')} as="button" style={{ textDecoration: "none" }} className={classes.inertiaButton} preserveScroll>
