@@ -1,10 +1,15 @@
 import { React, useState } from 'react';
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Dialog, Button, TextField } from '@material-ui/core';
+import { Dialog, Button, TextField, Snackbar } from '@material-ui/core';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
+import MuiAlert from '@material-ui/lab/Alert';
 
 import teal from '@material-ui/core/colors/teal';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const theme = createMuiTheme({
     palette: {
@@ -150,8 +155,23 @@ export default function Login({ dialog, handleClose }) {
     const classes = useStyles();
     const [values, setValues] = useState({
         email: '',
-        password: ''
+        password: '',
+        error: false
     });
+
+    const [open, setOpen] = useState(false);
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleCloseSnack = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
 
     function handleChange(e) {
         const key = e.target.id;
@@ -164,79 +184,108 @@ export default function Login({ dialog, handleClose }) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post('/login', values)
+        Inertia.post('/login', values, {
+            preserveScroll: true,
+            onSuccess: () => {
+                handleClick();
+                handleCerrar();
+            },
+            onError: () => {
+                setValues(values => ({
+                    ...values,
+                    error: true
+                }));
+            }
+        })
+    }
+
+    function handleCerrar() {
+        setValues(values => ({
+            email: '',
+            password: '',
+            error: false
+        }))
+        handleClose();
     }
 
     return (
-        <Dialog
-            open={dialog}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <div className={classes.cardInicioSesion}>
-                <div className={classes.cardTitle} style={{ marginTop: "15px" }}>
-                    INICIAR SESIÓN
-                </div>
-                <div className={classes.cardText} style={{ marginTop: "2px", marginBottom: "15px" }}>
-                    Agiliza tus procesos de compra
-                </div>
-
-                <form className={classes.formulario} onSubmit={handleSubmit} id="login-form">
-                    <MuiThemeProvider theme={theme}>
-                        <TextField required id="email" label="Correo electrónico"
-                            InputProps={{
-                                className: classes.textField,
-                            }}
-                            InputLabelProps={{
-                                classes: {
-                                    root: classes.formTextLabel
-                                }
-                            }}
-                            FormHelperTextProps={{
-                                className: classes.helperText
-                            }}
-                            fullWidth={true}
-                            value={values.email}
-                            onChange={handleChange}
-                            error={errors.email && true}
-                            helperText={errors.email}
-                        />
-
-                        <TextField required id="password" label="Contraseña"
-                            InputProps={{
-                                className: classes.textField,
-                            }}
-                            InputLabelProps={{
-                                classes: {
-                                    root: classes.formTextLabel
-                                }
-                            }}
-                            fullWidth={true}
-                            type="password"
-                            value={values.password}
-                            onChange={handleChange}
-                        />
-                    </MuiThemeProvider>
-
-                    <div style={{ textDecoration: "none" }} className={classes.inertiaButton} >
-                        <Button variant="contained" color="primary" type="submit" disableElevation className={classes.buttonDial}>
-                            ACCEDER
-                        </Button>
+        <>
+            <Dialog
+                open={dialog}
+                onClose={handleCerrar}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <div className={classes.cardInicioSesion}>
+                    <div className={classes.cardTitle} style={{ marginTop: "15px" }}>
+                        INICIAR SESIÓN
                     </div>
-                </form>
+                    <div className={classes.cardText} style={{ marginTop: "2px", marginBottom: "15px" }}>
+                        Agiliza tus procesos de compra
+                    </div>
 
-                <div className={classes.cardText} style={{ marginBottom: "3px" }}>
-                    <InertiaLink href={route("register")} className={classes.cardLink}>
-                        ¿Deseas registrarte?
-                    </InertiaLink>
+                    <form className={classes.formulario} onSubmit={handleSubmit} id="login-form">
+                        <MuiThemeProvider theme={theme}>
+                            <TextField required id="email" label="Correo electrónico"
+                                InputProps={{
+                                    className: classes.textField,
+                                }}
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.formTextLabel
+                                    }
+                                }}
+                                FormHelperTextProps={{
+                                    className: classes.helperText
+                                }}
+                                fullWidth={true}
+                                value={values.email}
+                                onChange={handleChange}
+                                error={errors.email && values.error == true && true}
+                                helperText={values.error == true && errors.email}
+                            />
+
+                            <TextField required id="password" label="Contraseña"
+                                InputProps={{
+                                    className: classes.textField,
+                                }}
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.formTextLabel
+                                    }
+                                }}
+                                fullWidth={true}
+                                type="password"
+                                value={values.password}
+                                onChange={handleChange}
+                            />
+                        </MuiThemeProvider>
+
+                        <div style={{ textDecoration: "none" }} className={classes.inertiaButton} >
+                            <Button variant="contained" color="primary" type="submit" disableElevation className={classes.buttonDial}>
+                                ACCEDER
+                            </Button>
+                        </div>
+                    </form>
+
+                    <div className={classes.cardText} style={{ marginBottom: "3px" }}>
+                        <InertiaLink href={route("register")} className={classes.cardLink}>
+                            ¿Deseas registrarte?
+                        </InertiaLink>
+                    </div>
+                    <div className={classes.cardText}>
+                        <InertiaLink href={route("register")} className={classes.cardLink}>
+                            ¿Olvidaste tu contraseña?
+                        </InertiaLink>
+                    </div>
                 </div>
-                <div className={classes.cardText}>
-                    <InertiaLink href={route("register")} className={classes.cardLink}>
-                        ¿Olvidaste tu contraseña?
-                    </InertiaLink>
-                </div>
-            </div>
-        </Dialog>
+            </Dialog>
+
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleCloseSnack} severity="success">
+                    Sesión iniciada con éxito!
+                </Alert>
+            </Snackbar>
+        </>
     )
 }
