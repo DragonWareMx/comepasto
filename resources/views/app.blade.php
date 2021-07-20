@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <link rel="shortcut icon" href="{{ asset('/img/favicon.jpg') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('/img/favicon.png') }}" type="image/x-icon">
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet" />
     <link href="{{ asset('/css/main.css') }}" rel="stylesheet" />
     <script src="{{ mix('/js/app.js') }}" defer></script>
