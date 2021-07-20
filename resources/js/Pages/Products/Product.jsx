@@ -2,11 +2,13 @@ import React from 'react';
 import Layout from '../../layouts/Layout';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import { Divider, Hidden, IconButton, Paper, OutlinedInput, InputAdornment } from '@material-ui/core';
+import { CircularProgress, Divider, Hidden, IconButton, Paper, OutlinedInput, InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Skeleton from 'react-loading-skeleton'; 
 import Button from "@material-ui/core/Button";
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
+import OwlCarousel from 'react-owl-carousel'; 
+import { renderToString } from 'react-dom/server'
 
 import route from 'ziggy-js';
 
@@ -15,14 +17,19 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+
 
 //css
 import 'owl.carousel/dist/assets/owl.carousel.css';  
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+import '../../../../public/css/owlProduct.css'
 
 //componentes
 import ImageCarousel from '../../components/Products/ImageCarousel'
-import '../../../../public/css/owlProduct.css'
+import AsyncImage from '../../components/common/AsyncImage';
+import ProductComponent from '../../components/Products/Product'
+
 
 const useStyles = makeStyles((theme) => ({
     name: {
@@ -165,14 +172,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Inicio = ({ product }) => {
+const Product = ({ product, products }) => {
     const classes = useStyles();
     const { flash,auth } = usePage().props
 
-    const skeleton = <div style={{margin: "auto"}}>
-        <Skeleton width="100%" 
-            height={window.screen.width > 1265 ? "405px" : window.screen.width > 700 ? "30vw" : window.screen.width > 600 ? "45vw" : "92vw"}
-            style={{maxHeight: "440px"}}
+    const skeletonLogo = <div style={{margin: "auto"}}>
+        <Skeleton width={89} 
+            height={62}
         />
     </div>
 
@@ -215,17 +221,23 @@ const Inicio = ({ product }) => {
         return word.charAt(0).toUpperCase() + lower.slice(1)
     }
 
+    const responsive = {
+        0: {
+            items: 3,
+        }   
+    }
+
     return (
         <>
             {/* PRODUCTO */}
             <Container>
-            <Grid
-                container
-                direction="row"
-                justify="center"
-                alignItems="flex-start"
-                style={{paddingTop: "43px"}}
-            >
+                <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="flex-start"
+                    style={{paddingTop: "43px"}}
+                >
                     {/* imagenes del producto */}
                     <Hidden smDown>
                         <Grid item style={{width: "30%", marginRight: "61px", height: "100%"}} container direction="row" justify="center" alignItems="flex-start" >
@@ -248,7 +260,7 @@ const Inicio = ({ product }) => {
 
                             <Grid item>
                                 <InertiaLink href={route('inicio')}>
-                                    <IconButton aria-label="regresar">
+                                    <IconButton aria-label="regresar" >
                                         <ChevronLeftIcon />
                                     </IconButton>
                                 </InertiaLink>
@@ -276,7 +288,7 @@ const Inicio = ({ product }) => {
                         <Hidden mdUp>
                             <Grid item style={{width: "100%", maxWidth: "500px", margin: "auto", marginTop: "20px", marginBottom: "20px"}}>
                                 <Paper variant="outlined" className={classes.paper}>
-                                    <ImageCarousel img={product.foto} images={null} />
+                                    <ImageCarousel img={product.foto} images={product.img} />
                                 </Paper>
                             </Grid>
                         </Hidden>
@@ -307,14 +319,22 @@ const Inicio = ({ product }) => {
                                 </Grid>
                                 <Grid item>
                                     <a href={product.brand ? product.brand.link ? product.brand.link : "#" : "#"} target="_blank">
-                                        <div className={classes.logo} style={{
-                                                backgroundImage: product.brand ? product.brand.logo ? 'url("/storage/logos/'+ product.brand.logo +'")' : 'url("/storage/logos/default.jpg")' : 'url("/storage/logos/default.jpg")',
-                                                backgroundRepeat: "no-repeat",
-                                                backgroundPosition: "center center",
-                                                backgroundSize: "100%"
-                                            }}
+                                        <AsyncImage
+                                            src={product.brand ? product.brand.logo ? '/storage/logos/'+ product.brand.logo : '/storage/logos/default.jpg' : '/storage/logos/default.jpg'}
+                                            imageComponent={
+                                                <div className={classes.logo} style={{
+                                                        backgroundImage: product.brand ? product.brand.logo ? 'url("/storage/logos/'+ product.brand.logo +'")' : 'url("/storage/logos/default.jpg")' : 'url("/storage/logos/default.jpg")',
+                                                        backgroundRepeat: "no-repeat",
+                                                        backgroundPosition: "center center",
+                                                        backgroundSize: "100%"
+                                                    }}
+                                                >
+                                                </div>
+                                            }
+                                            loadingComponent={skeletonLogo}
                                         >
-                                        </div>
+
+                                        </AsyncImage>
                                     </a>
                                 </Grid>
                                 {product.presentacion &&
@@ -345,7 +365,11 @@ const Inicio = ({ product }) => {
                                         style={{width: "fit-content", marginRight: product.trigoFree ? "5px" : "0px"}}
                                     >
                                         <Grid item>
-                                            <img src="/img/CATEGORIAS/icons/soya3.png" className={classes.iconoFree} />
+                                            <AsyncImage 
+                                                src="/img/CATEGORIAS/icons/soya3.png"
+                                                imageComponent={<img src="/img/CATEGORIAS/icons/soya3.png" className={classes.iconoFree} />}
+                                                loadingComponent={<CircularProgress style={{width: 40, height: 40, color: "#1DA3A8"}} />}
+                                            />
                                         </Grid>
                                         <Grid item className={classes.textFree}>
                                             Este producto está libre de soya
@@ -364,7 +388,11 @@ const Inicio = ({ product }) => {
                                         style={{width: "fit-content"}}
                                     >
                                         <Grid item>
-                                            <img src="/img/CATEGORIAS/icons/gluten3.png" className={classes.iconoFree} />
+                                            <AsyncImage 
+                                                src="/img/CATEGORIAS/icons/gluten3.png"
+                                                imageComponent={<img src="/img/CATEGORIAS/icons/gluten3.png" className={classes.iconoFree} />}
+                                                loadingComponent={<CircularProgress style={{width: 40, height: 40, color: "#1DA3A8"}} />}
+                                            />
                                         </Grid>
                                         <Grid item className={classes.textFree}>
                                             Este producto está libre de gluten
@@ -418,6 +446,7 @@ const Inicio = ({ product }) => {
                                                 <InertiaLink href={route('cart.update', product.id)} method="patch" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
                                                     <IconButton
                                                         aria-label="remove"
+                                                        component="div"
                                                     >
                                                         <RemoveIcon fontSize="small" />
                                                     </IconButton>
@@ -440,12 +469,53 @@ const Inicio = ({ product }) => {
                         </Grid>
                     </Grid>
                 </Grid>
+
+                {/* PRODUCTOS RELACIONADOS */}
+                {products && products.length > 0 &&
+                    <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                        alignItems="center"
+                        style={{paddingTop: "43px"}}
+                    >
+                        <OwlCarousel responsive={responsive}   
+                            rewind
+                            dots={false}
+                            autoplay 
+                            autoplayTimeout={10000} 
+                            autoplayHoverPause
+                            margin={8}
+                            autoWidth={true}
+                        > 
+                        {products.map((producto) => (
+                            <div key={producto.id + producto.name + "carrusel"} style={{width: "100%"}}>
+                                <ProductComponent 
+                                    name={producto.name} 
+                                    img={producto.foto} 
+                                    price={producto.precio} 
+                                    discount={producto.descuento} 
+                                    brand={producto.brand ? producto.brand.name : "Sin marca"} 
+                                    logo={producto.brand ? producto.brand.logo : "Logo_color_Mesa-de-trabajo-1.png"} 
+                                    link={producto.brand ? producto.brand.link ?? "#" : "#"} 
+                                    id={producto.id}
+                                    uuid={producto.uuid}
+                                    glutenFree={producto.trigoFree}
+                                    soyaFree={producto.soyaFree}
+                                    cantidad={cantidadProducto(producto.id)}
+                                />
+                            </div>
+                         ))
+                        }
+                        </OwlCarousel>
+                    </Grid>
+                }
             </Container>
         </>
     )
 }
 
 
-Inicio.layout = page => <Layout children={page} title="Comepasto - Producto" pageTitle="Producto" />
+Product.layout = page => <Layout children={page} title="Comepasto - Producto" pageTitle="Producto" />
 
-export default Inicio
+export default Product

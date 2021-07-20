@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
         border: "none"
     },
     iconoFree:{
-        width: "35px",
+        width: "35px !important",
         height: "35px",
         filter: "invert(46%) sepia(20%) saturate(2938%) hue-rotate(142deg) brightness(104%) contrast(77%)",
     },

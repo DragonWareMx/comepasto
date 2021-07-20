@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import AsyncImage from '../common/AsyncImage';
 import Skeleton from 'react-loading-skeleton';
 import OwlCarousel from 'react-owl-carousel'; 
@@ -7,20 +6,10 @@ import { SRLWrapper } from "simple-react-lightbox";
 import { renderToString } from 'react-dom/server'
 
 //iconos
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { IconButton } from '@material-ui/core';
-
-const useStyles = makeStyles((theme) => ({
-   
-}));
 
 export default function Product({ img, images }){
-    const classes = useStyles();
-
     const responsive = {
         0: {
             items: 1,

@@ -406,7 +406,7 @@ export default function Cart({ bDialog }) {
                         {auth.cart.length > 0 ?
                             <>
                                 {auth.cart.map(producto => (
-                                    <>
+                                    <div key={producto.id + "carrito"}>
                                         {/* PRODUCTO */}
                                         <Grid container style={{ maxWidth: 320, margin: 10 }}>
                                             {/* Imagen del producto */}
@@ -513,7 +513,7 @@ export default function Cart({ bDialog }) {
                                         </Grid>
 
                                         <Divider variant="middle" />
-                                    </>
+                                    </div>
                                 ))}
                                 {/* TOTAL */}
                                 <Grid item xs={12} container justify="space-between">
