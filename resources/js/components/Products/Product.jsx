@@ -283,6 +283,7 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                                     <InertiaLink href={route('cart.update', id)} method="patch" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
                                         <IconButton
                                             aria-label="remove"
+                                            component="div"
                                         >
                                             <RemoveIcon fontSize="small" />
                                         </IconButton>

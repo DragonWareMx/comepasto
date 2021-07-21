@@ -8,7 +8,6 @@ import Skeleton from 'react-loading-skeleton';
 import Button from "@material-ui/core/Button";
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import OwlCarousel from 'react-owl-carousel'; 
-import { renderToString } from 'react-dom/server'
 
 import route from 'ziggy-js';
 
@@ -17,7 +16,6 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 
 //css
@@ -186,7 +184,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Product = ({ product, products, recipes }) => {
     const classes = useStyles();
-    const { flash,auth } = usePage().props
+    const { auth } = usePage().props
 
     const skeletonLogo = <div style={{margin: "auto"}}>
         <Skeleton width={89} 
@@ -306,11 +304,11 @@ const Product = ({ product, products, recipes }) => {
                             </Grid>
 
                             <Grid item>
-                                <a href="javascript:history.back()">
-                                    <IconButton aria-label="regresar" >
+                                <div onClick={() => {history.back()}}>
+                                    <IconButton aria-label="regresar">
                                         <ChevronLeftIcon />
                                     </IconButton>
-                                </a>
+                                </div>
                             </Grid>
                         </Grid>
 
@@ -531,15 +529,13 @@ const Product = ({ product, products, recipes }) => {
 
                             <Divider />
                         </Grid>
-                        <OwlCarousel 
+                        <OwlCarousel
                             responsive={responsiveProducto}   
                             rewind
                             dots={true}
-                            autoplay 
-                            autoplayTimeout={10000} 
-                            autoplayHoverPause
                             margin={10}
                             className='owl-theme'
+                            key={`carousel_${products.length}`}
                         > 
                         {products.map((producto) => (
                             <div key={producto.id + producto.name + "carrusel"} style={{width: "100%"}}>
