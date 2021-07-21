@@ -29,6 +29,7 @@ import '../../../../public/css/owlProduct.css'
 import ImageCarousel from '../../components/Products/ImageCarousel'
 import AsyncImage from '../../components/common/AsyncImage';
 import ProductComponent from '../../components/Products/Product'
+import Receta from '../../components/Recetas/Receta';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -249,6 +250,27 @@ const Product = ({ product, products, recipes }) => {
         },
         1100: {
             items: 4,
+        } 
+    }
+
+    const responsiveRecetas = {
+        0: {
+            items: 1,
+        },
+        600: {
+            items: 2,
+        },
+        800: {
+            items: 2,
+            margin: 70
+        },
+        980: {
+            items: 3,
+            margin: 10
+        },
+        1120: {
+            items: 3,
+            margin: 50
         } 
     }
 
@@ -557,7 +579,7 @@ const Product = ({ product, products, recipes }) => {
                             <Divider />
                         </Grid>
                         <OwlCarousel 
-                            responsive={responsiveProducto}   
+                            responsive={responsiveRecetas}   
                             rewind
                             dots={true}
                             autoplay 
@@ -566,21 +588,13 @@ const Product = ({ product, products, recipes }) => {
                             margin={10}
                             className='owl-theme'
                         > 
-                        {products.map((producto) => (
-                            <div key={producto.id + producto.name + "carrusel"} style={{width: "100%"}}>
-                                <ProductComponent 
-                                    name={producto.name} 
-                                    img={producto.foto} 
-                                    price={producto.precio} 
-                                    discount={producto.descuento} 
-                                    brand={producto.brand ? producto.brand.name : "Sin marca"} 
-                                    logo={producto.brand ? producto.brand.logo : "Logo_color_Mesa-de-trabajo-1.png"} 
-                                    link={producto.brand ? producto.brand.link ?? "#" : "#"} 
-                                    id={producto.id}
-                                    uuid={producto.uuid}
-                                    glutenFree={producto.trigoFree}
-                                    soyaFree={producto.soyaFree}
-                                    cantidad={cantidadProducto(producto.id)}
+                        {recipes.map((recipe) => (
+                            <div key={recipe.id + "receta"}>
+                                <Receta
+                                    img={recipe.img.length > 0 ? recipe.img[0].url : "default.jpg"}
+                                    nombre={recipe.nombre}
+                                    id={recipe.id}
+                                    descripcion={recipe.img[0].descripcion}
                                 />
                             </div>
                          ))

@@ -74,7 +74,7 @@ class ProductController extends Controller
         ->take(8)
         ->get();
 
-        $recipes = Recipe::with('img')
+        $recipes = Recipe::with('img:descripcion,url,recipe_id')
                         ->whereHas('img')
                         ->whereHas('product', function($query) use ($product){
                             return $query->where('products.id', $product->id);

@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Inertia } from '@inertiajs/inertia';
-import route from 'ziggy-js';
-import { InertiaLink } from '@inertiajs/inertia-react';
 import '/css/QuienesSomos.css';
 import '/css/recetas.css';
 import Layout from '../../layouts/Layout';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import Icon from '@material-ui/core/Icon';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
-import Zoom from '@material-ui/core/Zoom';
-import Link from '@material-ui/core/Link';
+import Receta from '../../components/Recetas/Receta';
 
 const Recetas = ({recetas}) => {
     return (
@@ -41,22 +32,15 @@ const Recetas = ({recetas}) => {
                 <Grid container direction="row" justify="flex-start" alignItems="stretch" style={{marginTop:30, marginBottom:50}} spacing={3}>
                     
                     {recetas && recetas.map(receta=>(
-                        <Grid item xs={12} sm={4} id={receta.id}>
-                            <img className="receta-image" src={"/storage/recetas/" + receta.url} alt="" />
-                            <Tooltip title={receta.nombre} arrow TransitionComponent={Zoom} placement="top-start">
-                                <Link href="#!" style={{textDecoration:'none'}}><Typography item xs={12} className="receta-name" noWrap>{receta.nombre}</Typography></Link>
-                            </Tooltip>
-                            {/* Maximo 100 caracteres de descripción, then ... */}
-                            <Typography item xs={12} className="receta-desc" noWrap>{receta.descripcion}</Typography>
-                            <InertiaLink href={route('ver-receta', receta.recipe_id)} style={{textDecoration:'none'}}>
-                                <Button size="large" className="button-receta" endIcon={<ArrowForwardIcon>send</ArrowForwardIcon>}>
-                                    LEER MÁS
-                                </Button>
-                            </InertiaLink>
+                        <Grid item xs={12} sm={4} id={receta.id} key={receta.id + "receta"}>
+                            <Receta 
+                                img={ receta.url}
+                                nombre={receta.nombre}
+                                id={receta.recipe_id}
+                                descripcion={receta.descripcion}
+                            />
                         </Grid>
-                    ))}
-
-                    
+                    ))}       
                 </Grid>
             </Container>
         </>

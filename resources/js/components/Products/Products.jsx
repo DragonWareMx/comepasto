@@ -293,7 +293,7 @@ const Products = ({products, categories, request}) => {
                     {/* CATEGORIAS */}
                     <Grid container justify="center" spacing={3} style={{marginTop: "36px", marginBottom: "50px"}}>
                         {categories && categories.length > 0 && categories.map(category => (
-                            <Grid item key={category.id + category.name}>
+                            <Grid item key={category.id + category.name + "categoria"}>
                                 <InertiaLink href={route('inicio')} data={{ categoria: category.name }} style={{textDecoration: "none"}} preserveScroll preserveState>
                                     <Paper className={classes.paper} elevation={0} square >
                                         <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
@@ -415,7 +415,7 @@ const Products = ({products, categories, request}) => {
                                         [
                                             <MenuItem value="sg">Sin gluten</MenuItem>,
                                             categories && categories.length > 0 && categories.map(category => (
-                                                <MenuItem value={category.name} key={category.id + category.name + "filter"}>{capitalize(category.name)}</MenuItem>
+                                                <MenuItem value={category.name} key={category.id + category.name + "filter2"}>{capitalize(category.name)}</MenuItem>
                                             ))
                                         ]
                                     :
@@ -458,8 +458,8 @@ const Products = ({products, categories, request}) => {
 
                     <Grid item xs={12} container direction="row" spacing={3} style={{marginBottom: "40px"}}>
                         {(products && products.data && products.data.length > 0) ? products.data.map((product) => (
-                            <Grid item  xs={12} sm={6} md={4} lg={3}>
-                                <Product key={product.id + product.name} 
+                            <Grid item  xs={12} sm={6} md={4} lg={3} key={product.id + product.name + "productoTienda"}>
+                                <Product 
                                     name={product.name} 
                                     img={product.foto} 
                                     price={product.precio} 
