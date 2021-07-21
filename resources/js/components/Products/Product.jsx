@@ -196,114 +196,112 @@ export default function Product({img, name, price, discount, brand, logo, link, 
 
     return (
         <>
-            <Grid item  xs={12} sm={6} md={4} lg={3}>
-                <Paper variant="outlined" className={classes.paper}>
-                    <Grid container direction="column" justify="center" alignItems="center">
-                        {/* IMAGEN */}
-                        <Grid item>
-                            {/* LINK DEL PRODUCTO */}
-                            <InertiaLink href={route('product.show', uuid)} >
-                                <AsyncImage 
-                                    src={"/storage/products/" + img}
-                                    imageComponent={imageC}
-                                    loadingComponent={skeleton}
-                                />
-                            </InertiaLink>
-                        </Grid>
+            <Paper variant="outlined" className={classes.paper}>
+                <Grid container direction="column" justify="center" alignItems="center">
+                    {/* IMAGEN */}
+                    <Grid item>
+                        {/* LINK DEL PRODUCTO */}
+                        <InertiaLink href={route('product.show', uuid)} >
+                            <AsyncImage 
+                                src={"/storage/products/" + img}
+                                imageComponent={imageC}
+                                loadingComponent={skeleton}
+                            />
+                        </InertiaLink>
+                    </Grid>
 
-                        {/* NOMBRE */}
-                        <Grid item className={classes.name}>
-                            {/* LINK DEL PRODUCTO */}
-                            <InertiaLink href={route('product.show', uuid)} style={{textDecoration: "none", color:"#474747"}}>
-                                {limitString(name, 46)}
-                            </InertiaLink>
-                        </Grid>
+                    {/* NOMBRE */}
+                    <Grid item className={classes.name}>
+                        {/* LINK DEL PRODUCTO */}
+                        <InertiaLink href={route('product.show', uuid)} style={{textDecoration: "none", color:"#474747"}}>
+                            {limitString(name, 46)}
+                        </InertiaLink>
+                    </Grid>
 
-                        <Grid item container direction="row" justify="center" style={{width:"220px"}}>
-                            {/* PRECIO Y MARCA */}
-                            <Grid item xs={6} container direction="column">
-                                <Grid item className={classes.price}>
-                                    $ {showPrice(price, discount)} MXN
-                                </Grid>
-                                <Grid item className={classes.discount}>
-                                    {discount > 0 &&
-                                    "$ " + showPrice(price, null) + " MXN"
+                    <Grid item container direction="row" justify="center" style={{width:"220px"}}>
+                        {/* PRECIO Y MARCA */}
+                        <Grid item xs={6} container direction="column">
+                            <Grid item className={classes.price}>
+                                $ {showPrice(price, discount)} MXN
+                            </Grid>
+                            <Grid item className={classes.discount}>
+                                {discount > 0 &&
+                                "$ " + showPrice(price, null) + " MXN"
+                                }
+                            </Grid>
+                            <Grid item className={classes.brand} container direction="row" justify="flex-start" spacing={2} style={{marginBottom: "1px"}}>
+                                {/* SIN GLUTEN */}
+                                <Grid item style={{paddingTop: "0px", paddingBottom: "0px", paddingRight: soyaFree ? "8px" : "0px"}}>
+                                    {soyaFree == true &&
+                                        <img src="/img/CATEGORIAS/icons/soya3.png" className={classes.iconoFree} />
                                     }
                                 </Grid>
-                                <Grid item className={classes.brand} container direction="row" justify="flex-start" spacing={2} style={{marginBottom: "1px"}}>
-                                    {/* SIN GLUTEN */}
-                                    <Grid item style={{paddingTop: "0px", paddingBottom: "0px", paddingRight: soyaFree ? "8px" : "0px"}}>
-                                        {soyaFree == true &&
-                                            <img src="/img/CATEGORIAS/icons/soya3.png" className={classes.iconoFree} />
-                                        }
-                                    </Grid>
-                                    {/* SIN SOYA */}
-                                    <Grid item style={{paddingTop: "0px", paddingBottom: "0px", paddingLeft: soyaFree ? "8px" : "0px"}}>
-                                        {glutenFree == true &&
-                                            <img src="/img/CATEGORIAS/icons/gluten3.png" className={classes.iconoFree} />
-                                        }
-                                    </Grid>
+                                {/* SIN SOYA */}
+                                <Grid item style={{paddingTop: "0px", paddingBottom: "0px", paddingLeft: soyaFree ? "8px" : "0px"}}>
+                                    {glutenFree == true &&
+                                        <img src="/img/CATEGORIAS/icons/gluten3.png" className={classes.iconoFree} />
+                                    }
                                 </Grid>
                             </Grid>
-
-                            {/* LOGO MARCA */}
-                            <Grid item xs={6} container direction="column">
-                                <Tooltip title={"Marca: " + brand} placement="right">
-                                    <a href={link} target="_blank">
-                                        <div className={classes.logo} style={{
-                                                backgroundImage: logo ? 'url("/storage/logos/'+ logo +'")' : 'url("/storage/logos/default.jpg")',
-                                                backgroundRepeat: "no-repeat",
-                                                backgroundPosition: "center center",
-                                                backgroundSize: "100%"
-                                            }}
-                                        >
-                                        </div>
-                                    </a>
-                                </Tooltip>
-                            </Grid>
                         </Grid>
 
-                        <Grid item container justify="center" style={{width:"220px"}}>
-                            {cantidad > 0 ?
-                                <OutlinedInput type="number"
-                                className={classes.inputSinFlechasProduct}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
-                                            <IconButton
-                                                aria-label="add"
-                                                component="div"
-                                            >
-                                                <AddIcon fontSize="small" />
-                                            </IconButton>
-                                        </InertiaLink>
-                                    </InputAdornment>
-                                }
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <InertiaLink href={route('cart.update', id)} method="patch" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
-                                            <IconButton
-                                                aria-label="remove"
-                                            >
-                                                <RemoveIcon fontSize="small" />
-                                            </IconButton>
-                                        </InertiaLink>
-                                    </InputAdornment>
-                                }
-                                
-                                value={cantidad} />
-                            :
-                                <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
-                                    <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
-                                        AGREGAR AL CARRITO
-                                        <ShoppingCartOutlinedIcon fontSize="small" style={{marginLeft: "6px"}} />
-                                    </Button>
-                                </InertiaLink>
-                            }
+                        {/* LOGO MARCA */}
+                        <Grid item xs={6} container direction="column">
+                            <Tooltip title={"Marca: " + brand} placement="right">
+                                <a href={link} target="_blank">
+                                    <div className={classes.logo} style={{
+                                            backgroundImage: logo ? 'url("/storage/logos/'+ logo +'")' : 'url("/storage/logos/default.jpg")',
+                                            backgroundRepeat: "no-repeat",
+                                            backgroundPosition: "center center",
+                                            backgroundSize: "100%"
+                                        }}
+                                    >
+                                    </div>
+                                </a>
+                            </Tooltip>
                         </Grid>
                     </Grid>
-                </Paper>
-            </Grid>
+
+                    <Grid item container justify="center" style={{width:"220px"}}>
+                        {cantidad > 0 ?
+                            <OutlinedInput type="number"
+                            className={classes.inputSinFlechasProduct}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
+                                        <IconButton
+                                            aria-label="add"
+                                            component="div"
+                                        >
+                                            <AddIcon fontSize="small" />
+                                        </IconButton>
+                                    </InertiaLink>
+                                </InputAdornment>
+                            }
+                            startAdornment={
+                                <InputAdornment position="start">
+                                    <InertiaLink href={route('cart.update', id)} method="patch" as="button" style={{textDecoration: "none"}} className={classes.inertiaButtonPlusRemove} preserveScroll>
+                                        <IconButton
+                                            aria-label="remove"
+                                        >
+                                            <RemoveIcon fontSize="small" />
+                                        </IconButton>
+                                    </InertiaLink>
+                                </InputAdornment>
+                            }
+                            
+                            value={cantidad} />
+                        :
+                            <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
+                                <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
+                                    AGREGAR AL CARRITO
+                                    <ShoppingCartOutlinedIcon fontSize="small" style={{marginLeft: "6px"}} />
+                                </Button>
+                            </InertiaLink>
+                        }
+                    </Grid>
+                </Grid>
+            </Paper>
         </>
     );
 }

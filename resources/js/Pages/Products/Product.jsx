@@ -170,6 +170,17 @@ const useStyles = makeStyles((theme) => ({
         padding: "0px",
         border: "none"
     },
+    carouselTittle: {
+        fontFamily: "Atma",
+        fontStyle: "normal",
+        fontWeight: "600",
+        fontSize: "20px",
+        lineHeight: "32px",
+
+        color: "#1DA3A8",
+
+        marginBottom: "30px"
+    },
 }));
 
 const Product = ({ product, products }) => {
@@ -221,10 +232,24 @@ const Product = ({ product, products }) => {
         return word.charAt(0).toUpperCase() + lower.slice(1)
     }
 
-    const responsive = {
+    const responsiveProducto = {
         0: {
+            items: 1,
+        },
+        520: {
+            items: 2,
+        },
+        700: {
+            items: 2,
+            margin: 70
+        },
+        900: {
             items: 3,
-        }   
+            margin: 30
+        },
+        1100: {
+            items: 4,
+        } 
     }
 
     return (
@@ -475,18 +500,24 @@ const Product = ({ product, products }) => {
                     <Grid
                         container
                         direction="row"
-                        justify="center"
+                        justify="flex-start"
                         alignItems="center"
-                        style={{paddingTop: "43px"}}
+                        style={{paddingTop: "0px", marginBottom: "30px"}}
                     >
-                        <OwlCarousel responsive={responsive}   
+                        <Grid item className={classes.carouselTittle} xs={12}>
+                            PRODUCTOS RELACIONADOS
+
+                            <Divider />
+                        </Grid>
+                        <OwlCarousel 
+                            responsive={responsiveProducto}   
                             rewind
-                            dots={false}
+                            dots={true}
                             autoplay 
                             autoplayTimeout={10000} 
                             autoplayHoverPause
-                            margin={8}
-                            autoWidth={true}
+                            margin={10}
+                            className='owl-theme'
                         > 
                         {products.map((producto) => (
                             <div key={producto.id + producto.name + "carrusel"} style={{width: "100%"}}>

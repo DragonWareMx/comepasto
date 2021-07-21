@@ -458,20 +458,22 @@ const Products = ({products, categories, request}) => {
 
                     <Grid item xs={12} container direction="row" spacing={3} style={{marginBottom: "40px"}}>
                         {(products && products.data && products.data.length > 0) ? products.data.map((product) => (
-                            <Product key={product.id + product.name} 
-                                name={product.name} 
-                                img={product.foto} 
-                                price={product.precio} 
-                                discount={product.descuento} 
-                                brand={product.brand ? product.brand.name : "Sin marca"} 
-                                logo={product.brand ? product.brand.logo : "Logo_color_Mesa-de-trabajo-1.png"} 
-                                link={product.brand ? product.brand.link ?? "#" : "#"} 
-                                id={product.id}
-                                uuid={product.uuid}
-                                glutenFree={product.trigoFree}
-                                soyaFree={product.soyaFree}
-                                cantidad={cantidadProducto(product.id)}
-                            />
+                            <Grid item  xs={12} sm={6} md={4} lg={3}>
+                                <Product key={product.id + product.name} 
+                                    name={product.name} 
+                                    img={product.foto} 
+                                    price={product.precio} 
+                                    discount={product.descuento} 
+                                    brand={product.brand ? product.brand.name : "Sin marca"} 
+                                    logo={product.brand ? product.brand.logo : "Logo_color_Mesa-de-trabajo-1.png"} 
+                                    link={product.brand ? product.brand.link ?? "#" : "#"} 
+                                    id={product.id}
+                                    uuid={product.uuid}
+                                    glutenFree={product.trigoFree}
+                                    soyaFree={product.soyaFree}
+                                    cantidad={cantidadProducto(product.id)}
+                                />
+                            </Grid>
                          ))
                         :
                         <>
