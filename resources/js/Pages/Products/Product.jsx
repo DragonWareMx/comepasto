@@ -306,11 +306,11 @@ const Product = ({ product, products, recipes }) => {
                             </Grid>
 
                             <Grid item>
-                                <InertiaLink href={route('inicio')}>
+                                <a href="javascript:history.back()">
                                     <IconButton aria-label="regresar" >
                                         <ChevronLeftIcon />
                                     </IconButton>
-                                </InertiaLink>
+                                </a>
                             </Grid>
                         </Grid>
 
