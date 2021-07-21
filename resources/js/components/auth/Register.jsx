@@ -35,7 +35,7 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles((theme) => ({
-    cardInicioSesion: {
+    cardRegistro: {
         width: "100%",
         maxWidth: "400px",
         height: "fit-content",
@@ -99,8 +99,8 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '500',
         fontSize: '18px',
         lineHeight: '29px',
-        width: "90%",
-        textAlign: "center"
+        width: "100%",
+        textAlign: "left"
     },
     cardLink: {
         color: '#1DA3A8',
@@ -158,7 +158,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Login({ dialog, handleClose }) {
+export default function Register({ dialog, handleClose }) {
     const { errors } = usePage().props
     const classes = useStyles();
     const [values, setValues] = useState({
@@ -224,9 +224,9 @@ export default function Login({ dialog, handleClose }) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <div className={classes.cardInicioSesion}>
-                    <div className={classes.cardTitle} style={{ marginTop: "15px" }}>
-                        INICIAR SESIÓN
+                <div className={classes.cardRegistro}>
+                    <div className={classes.cardTitle} style={{ marginTop: "10px" }}>
+                        REGISTRARSE
                     </div>
                     <IconButton aria-label="close" className={classes.closeButton} onClick={handleCerrar}>
                         <CloseIcon />

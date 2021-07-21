@@ -6,6 +6,7 @@ import Popper from '@material-ui/core/Popper';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 
 import Login from '../auth/Login'
+import Register from '../auth/Register'
 
 //iconos
 import RemoveIcon from '@material-ui/icons/Remove';
@@ -212,7 +213,8 @@ const useStyles = makeStyles((theme) => ({
         lineHeight: '23px',
         textAlign: "center",
         textDecoration: "none",
-        marginRight: "2px"
+        marginRight: "2px",
+        cursor: 'pointer'
     },
     inertiaButtonPlusRemove: {
         width: "fit-content",
@@ -279,6 +281,7 @@ export default function Cart({ bDialog }) {
     const [dialog, setDialog] = React.useState(false);
 
     const [dialogLogin, setDialogLogin] = React.useState(false);
+    const [dialogRegister, setDialogRegister] = React.useState(false);
 
     //CLICK EN EL ICONO DEL CARRITO, si el usuario inicio sesion se muestra el contenido del carrito, si no se abre el dialog
     function handleClick(event) {
@@ -301,6 +304,15 @@ export default function Cart({ bDialog }) {
     const handleOpenLogin = () => {
         handleDialogClose();
         setDialogLogin(true);
+    }
+
+    const handleDialogRegisterClose = () => {
+        setDialogRegister(false);
+    };
+
+    const handleOpenRegister = () => {
+        handleDialogClose();
+        setDialogRegister(true);
     }
 
     const toggleDrawer = (open) => (event) => {
@@ -601,16 +613,16 @@ export default function Cart({ bDialog }) {
                     </div>
 
                     <div className={classes.cardText} style={{ marginBottom: "30px" }}>
-                        <InertiaLink href={route("register")} className={classes.cardLink}>
+                        <a className={classes.cardLink} onClick={handleOpenRegister}>
                             ¿Deseas registrarte?
-                        </InertiaLink>
+                        </a>
                         Esto agilizará tus procesos de compra
                     </div>
                 </div>
             </Dialog>
 
             <Login dialog={dialogLogin} handleClose={handleDialogLoginClose} />
-
+            <Register dialog={dialogRegister} handleClose={handleDialogRegisterClose} />
         </>
     );
 }
