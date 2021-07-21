@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import route from 'ziggy-js';
 import Zoom from '@material-ui/core/Zoom';
 import Tooltip from '@material-ui/core/Tooltip';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import '/css/recetas.css';
 import Skeleton from 'react-loading-skeleton'; 
@@ -23,7 +22,7 @@ export default function Receta({img, nombre, id, descripcion}){
                 loadingComponent={<Skeleton width="100%" height={180} />}
             />
             <Tooltip title={nombre} arrow TransitionComponent={Zoom} placement="top-start">
-                <Link href={route('ver-receta', id)} style={{textDecoration:'none'}}><Typography xs={12} className="receta-name" noWrap>{nombre}</Typography></Link>
+                <InertiaLink href={route('ver-receta', id)} style={{textDecoration:'none'}}><Typography xs={12} className="receta-name" noWrap>{nombre}</Typography></InertiaLink>
             </Tooltip>
             {/* Maximo 100 caracteres de descripción, then ... */}
             <Typography xs={12} className="receta-desc" noWrap>{descripcion}</Typography>

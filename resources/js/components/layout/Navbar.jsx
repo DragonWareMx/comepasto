@@ -60,7 +60,7 @@ export default function Navbar() {
                             QUIÉNES SOMOS
                         </InertiaLink>
 
-                        <a href="#">PREGUNTAS FRECUENTES</a>
+                        <a href={route('preguntas')}>PREGUNTAS FRECUENTES</a>
                     </div>
                     <div className="div-iconos">
                         <SearchIcon fontSize="large" style={{ color: '#1DA3A8' }} />
@@ -81,7 +81,7 @@ export default function Navbar() {
                             QUIÉNES SOMOS
                         </InertiaLink>
 
-                        <a href="#">PREGUNTAS FRECUENTES</a>
+                        <a href={route('preguntas')}>PREGUNTAS FRECUENTES</a>
                     </div>
                 </div>
             </nav>
