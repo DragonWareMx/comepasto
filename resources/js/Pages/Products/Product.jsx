@@ -183,7 +183,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Product = ({ product, products }) => {
+const Product = ({ product, products, recipes }) => {
     const classes = useStyles();
     const { flash,auth } = usePage().props
 
@@ -506,6 +506,53 @@ const Product = ({ product, products }) => {
                     >
                         <Grid item className={classes.carouselTittle} xs={12}>
                             PRODUCTOS RELACIONADOS
+
+                            <Divider />
+                        </Grid>
+                        <OwlCarousel 
+                            responsive={responsiveProducto}   
+                            rewind
+                            dots={true}
+                            autoplay 
+                            autoplayTimeout={10000} 
+                            autoplayHoverPause
+                            margin={10}
+                            className='owl-theme'
+                        > 
+                        {products.map((producto) => (
+                            <div key={producto.id + producto.name + "carrusel"} style={{width: "100%"}}>
+                                <ProductComponent 
+                                    name={producto.name} 
+                                    img={producto.foto} 
+                                    price={producto.precio} 
+                                    discount={producto.descuento} 
+                                    brand={producto.brand ? producto.brand.name : "Sin marca"} 
+                                    logo={producto.brand ? producto.brand.logo : "Logo_color_Mesa-de-trabajo-1.png"} 
+                                    link={producto.brand ? producto.brand.link ?? "#" : "#"} 
+                                    id={producto.id}
+                                    uuid={producto.uuid}
+                                    glutenFree={producto.trigoFree}
+                                    soyaFree={producto.soyaFree}
+                                    cantidad={cantidadProducto(producto.id)}
+                                />
+                            </div>
+                         ))
+                        }
+                        </OwlCarousel>
+                    </Grid>
+                }
+
+                {/* RECETAS RELACIONADAS */}
+                {recipes && recipes.length > 0 &&
+                    <Grid
+                        container
+                        direction="row"
+                        justify="flex-start"
+                        alignItems="center"
+                        style={{paddingTop: "0px", marginBottom: "30px"}}
+                    >
+                        <Grid item className={classes.carouselTittle} xs={12}>
+                            RECETAS CON ESTE PRODUCTO
 
                             <Divider />
                         </Grid>

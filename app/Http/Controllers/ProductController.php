@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Recipe;
 
 class ProductController extends Controller
 {
@@ -57,11 +58,35 @@ class ProductController extends Controller
                         ->firstOrFail();
                     
         $products = Product::with('brand:id,name,logo,link')
-                        ->get(['name', 'foto', 'precio', 'brand_id', 'id', 'descuento', 'trigoFree', 'soyaFree', 'uuid']);
+        ->where('products.id', '!=',$product->id)
+        ->where(function ($query) use ($product) {
+            $query->whereHas('brand', function($query) use ($product) {
+                $query->where('id', $product->brand->id);
+            })
+            ->orWhereHas('category', function($query) use ($product) {
+                $query->where('id', $product->category->id);
+            })
+            ->orWhereHas('type', function($query) use ($product) {
+                $query->where('id', $product->type->id);
+            });
+        })
+        ->select('name', 'foto', 'precio', 'brand_id', 'id', 'descuento', 'trigoFree', 'soyaFree', 'uuid', 'id')
+        ->take(8)
+        ->get();
+
+        $recipes = Recipe::with('img')
+                        ->whereHas('img')
+                        ->whereHas('product', function($query) use ($product){
+                            return $query->where('products.id', $product->id);
+                        })
+                        ->select('id', 'nombre')
+                        ->take(8)
+                        ->get();
 
         return Inertia::render('Products/Product',[
             'product' => $product,
-            'products' => $products
+            'products' => $products,
+            'recipes' => $recipes
         ]); 
     }
 
