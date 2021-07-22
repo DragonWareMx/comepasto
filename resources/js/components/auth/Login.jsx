@@ -126,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
     },
     textField: {
         minWidth: '250px',
-        maxWidth: '319px',
+        maxWidth: '350px',
         fontFamily: "Atma",
         fontStyle: 'normal',
         fontWeight: '400',
