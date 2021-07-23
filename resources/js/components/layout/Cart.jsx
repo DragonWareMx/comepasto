@@ -312,6 +312,7 @@ export default function Cart({ bDialog }) {
 
     const handleOpenRegister = () => {
         handleDialogClose();
+        setDialogLogin(false);
         setDialogRegister(true);
     }
 
@@ -621,7 +622,7 @@ export default function Cart({ bDialog }) {
                 </div>
             </Dialog>
 
-            <Login dialog={dialogLogin} handleClose={handleDialogLoginClose} />
+            <Login dialog={dialogLogin} handleClose={handleDialogLoginClose} openRegister={handleOpenRegister} />
             <Register dialog={dialogRegister} handleClose={handleDialogRegisterClose} />
         </>
     );

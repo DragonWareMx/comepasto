@@ -158,7 +158,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Login({ dialog, handleClose }) {
+export default function Login({ dialog, handleClose, openRegister }) {
     const { errors } = usePage().props
     const classes = useStyles();
     const [values, setValues] = useState({
@@ -280,9 +280,9 @@ export default function Login({ dialog, handleClose }) {
                     </form>
 
                     <div className={classes.cardText} style={{ marginBottom: "3px" }}>
-                        <InertiaLink href={route("register")} className={classes.cardLink}>
+                        <Button type='button' className={classes.cardLink} onClick={openRegister}>
                             ¿Deseas registrarte?
-                        </InertiaLink>
+                        </Button>
                     </div>
                     <div className={classes.cardText}>
                         <InertiaLink href={route("register")} className={classes.cardLink}>

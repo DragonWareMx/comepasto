@@ -277,7 +277,7 @@ export default function Register({ dialog, handleClose }) {
             phone: '',
             direction: '',
             step: 0,
-            percent: 50,
+            percent: 1,
             error: false
         }))
         handleClose();
@@ -395,6 +395,9 @@ export default function Register({ dialog, handleClose }) {
                                         classes: {
                                             root: classes.formTextLabel
                                         }
+                                    }}
+                                    FormHelperTextProps={{
+                                        className: classes.helperText
                                     }}
                                     fullWidth={true}
                                     type="password"
