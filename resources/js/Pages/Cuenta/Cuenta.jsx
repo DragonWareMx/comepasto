@@ -6,12 +6,9 @@ import '/css/cuenta.css';
 import '/css/QuienesSomos.css';
 // import '/css/recetas.css';
 import Layout from '../../layouts/Layout';
+import BlueInformation from '../../components/common/BlueInformation';
 import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 
-import PlaceIcon from '@material-ui/icons/Place';
 import LocalShippingOutlinedIcon from '@material-ui/icons/LocalShippingOutlined';
 import LockIcon from '@material-ui/icons/Lock';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
@@ -19,12 +16,10 @@ import PaymentIcon from '@material-ui/icons/Payment';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const Cuenta = () => {
-    return (
+    return ( 
         <>
-            <Grid container direction="row" flexwrap="wrap" className="grid-blue">
-                <Grid className="grid-info">José Agustín Aguilar Solórzano</Grid>
-                <Grid className="grid-info"><PlaceIcon style={{marginRight:5,fontSize:18}}></PlaceIcon>Morelia, Colonia Centro, #134</Grid>
-            </Grid>
+            <BlueInformation></BlueInformation>
+
             <Grid container direction="row" flexwrap="wrap">
                 <Grid item xs={12} style={{padding:'25px',display:'flex',alignItems:'baseline',flexWrap:'wrap'}}>
                     <Grid item xs={12} className="title-section">
@@ -32,7 +27,7 @@ const Cuenta = () => {
                     </Grid>
                 
                     <Grid container direction="row" justify="space-between" style={{marginTop:20}}>
-                        <InertiaLink href="#!" item className="quienes_card link-option-cuenta">
+                        <InertiaLink href={route('misPedidos')} item className="quienes_card link-option-cuenta">
                                 <Grid container item justify="center" alignItems="center" xs={4}>
                                     <Grid className="quienes_card_circle"><LocalShippingOutlinedIcon style={{fontSize:40}} className="quienes_card_icon"></LocalShippingOutlinedIcon></Grid>
                                 </Grid>
@@ -43,7 +38,7 @@ const Cuenta = () => {
                         </InertiaLink>
 
                         <div className="quienes_cards_spaces">{/*esto funciona como un espacio*/}</div>
-                        <InertiaLink href="#!" item className="quienes_card link-option-cuenta">
+                        <InertiaLink href={route('informacion')} item className="quienes_card link-option-cuenta">
                                 <Grid container item justify="center" alignItems="center" xs={4}>
                                     <Grid className="quienes_card_circle"><LockIcon style={{fontSize:40}} className="quienes_card_icon"></LockIcon></Grid>
                                 </Grid>
@@ -54,7 +49,7 @@ const Cuenta = () => {
                         </InertiaLink>
 
                         <div className="quienes_cards_spaces">{/*esto funciona como un espacio*/}</div>
-                        <InertiaLink href="#!" item className="quienes_card link-option-cuenta">
+                        <InertiaLink href={route('direcciones')} item className="quienes_card link-option-cuenta">
                                 <Grid container item justify="center" alignItems="center" xs={4}>
                                     <Grid className="quienes_card_circle"><HomeWorkIcon style={{fontSize:40}} className="quienes_card_icon"></HomeWorkIcon></Grid>
                                 </Grid>
@@ -66,7 +61,7 @@ const Cuenta = () => {
 
                         <div className="quienes_cards_spaces">{/*esto funciona como un espacio*/}</div>
                         
-                        <InertiaLink href="#!" item className="quienes_card last-card-cuenta link-option-cuenta">
+                        <InertiaLink href={route('misPagos')} item className="quienes_card last-card-cuenta link-option-cuenta">
                                 <Grid container item justify="center" alignItems="center" xs={4}>
                                     <Grid className="quienes_card_circle"><PaymentIcon style={{fontSize:40}} className="quienes_card_icon"></PaymentIcon></Grid>
                                 </Grid>

@@ -19,8 +19,9 @@
     font-weight: 600;
     font-size: 30px;
     line-height: 49px;
-    color: #1DA3A8;
-    margin-bottom: 50px;
+    color: #1DA3A8 !important;
+    margin-bottom: 40px;
+    display: flex;
 }
 .last-card-cuenta{
     margin-top:30px !important;
@@ -30,12 +31,19 @@
     transition:all ease-in-out 0.25s;
 }
 .link-option-cuenta:hover, .link-option-cuenta:focus{
-    /* width:31%; */
     border: 1px solid #1DA3A8;
     transition:all ease-in-out 0.25s;
 }
 @media(max-width:850px){
     .last-card-cuenta{
         margin-top:0px !important;
+    }
+}
+@media(max-width:600px){
+    .grid-blue{
+        font-size: 12px !important;
+    }
+    .grid-info:nth-child(1){
+        display: none !important;
     }
 }
