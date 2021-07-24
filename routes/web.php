@@ -56,3 +56,6 @@ Route::get('/producto/{id}', [App\Http\Controllers\ProductController::class, 'sh
 
 // PREGUNTAS
 Route::get('/preguntas', [App\Http\Controllers\QuestionController::class, 'preguntas'])->name('preguntas');
+
+// CUENTA-----
+Route::get('/cuenta', [App\Http\Controllers\CuentaController::class, 'index'])->name('cuenta');

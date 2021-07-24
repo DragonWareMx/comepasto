@@ -1,0 +1,41 @@
+.grid-blue{
+    background-color: #1DA3A8;
+    color:white;
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px !important;
+    line-height: 18px;
+    padding:10px;
+}
+.grid-info{
+    padding-left:20px !important;
+    display: flex;
+    align-items: center;
+}
+.title-section{
+    font-family: Atma;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 49px;
+    color: #1DA3A8;
+    margin-bottom: 50px;
+}
+.last-card-cuenta{
+    margin-top:30px !important;
+}
+.link-option-cuenta{
+    text-decoration: none !important;
+    transition:all ease-in-out 0.25s;
+}
+.link-option-cuenta:hover, .link-option-cuenta:focus{
+    /* width:31%; */
+    border: 1px solid #1DA3A8;
+    transition:all ease-in-out 0.25s;
+}
+@media(max-width:850px){
+    .last-card-cuenta{
+        margin-top:0px !important;
+    }
+}
