@@ -34,6 +34,62 @@
     border: 1px solid #1DA3A8;
     transition:all ease-in-out 0.25s;
 }
+
+/* MIS PEDIDOS */
+.grid-container-pedido{
+    border: 1px solid #D3D3D3;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+.grid-gray-info{
+    background: #EAEAEA;
+    border-radius: 4px;
+    padding:10px;
+    display:flex;
+    flex-wrap: wrap !important;
+}
+.header-title{
+    font-family: Atma;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 19px;
+    color: #9B9B9B;
+}
+.header-info{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 25px;
+    color: #707070;
+}
+.grid-child-gray{
+    width: 16.6%;
+}
+.grid-white{
+    display:flex;
+    flex-wrap: wrap;
+    padding:10px;
+}
+.status-pedido{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 25px;
+    color: #707070;
+}
+
+
+
+
+
+@media(max-width:800px){
+    .grid-child-gray{
+        width:25%;
+    }
+}
 @media(max-width:850px){
     .last-card-cuenta{
         margin-top:0px !important;
@@ -45,5 +101,9 @@
     }
     .grid-info:nth-child(1){
         display: none !important;
+    }
+    .grid-child-gray{
+        margin-bottom: 10px !important;
+        width:150px;
     }
 }
