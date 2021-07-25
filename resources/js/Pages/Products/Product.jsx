@@ -551,7 +551,7 @@ const Product = ({ product, products, recipes }) => {
                                     uuid={producto.uuid}
                                     glutenFree={producto.trigoFree}
                                     soyaFree={producto.soyaFree}
-                                    cantidad={cantidadProducto(producto.id)}
+                                    carrusel
                                 />
                             </div>
                          ))

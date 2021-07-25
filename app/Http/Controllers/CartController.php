@@ -49,6 +49,11 @@ class CartController extends Controller
 
         //si no hay producto se manda el mensaje de error
         if(!$product || $product->stock == 0){
+            //si el producto existe en el carrito se elimina
+            if(!is_null(\Auth::user()->cart()->where('product_id', $product->id)->first())){
+                \Auth::user()->cart()->detach($product->id);
+            }
+            
             return \Redirect::back()->with('error','El producto solicitado no se encuentra disponible.');
         }
 
@@ -126,6 +131,11 @@ class CartController extends Controller
 
         //si no hay producto se manda el mensaje de error
         if(!$product || $product->stock == 0){
+            //si el producto existe en el carrito se elimina
+            if(!is_null(\Auth::user()->cart()->where('product_id', $product->id)->first())){
+                \Auth::user()->cart()->detach($product->id);
+            }
+
             return \Redirect::back()->with('error','El producto solicitado no se encuentra disponible.');
         }
 

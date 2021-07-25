@@ -148,7 +148,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Product({img, name, price, discount, brand, logo, link, id, uuid, glutenFree, soyaFree, cantidad}){
+export default function Product({img, name, price, discount, brand, logo, link, id, uuid, glutenFree, soyaFree, cantidad, carrusel}){
     const classes = useStyles();
 
     function limitString(string, length){
@@ -262,9 +262,14 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                         </Grid>
                     </Grid>
 
+                    {carrusel ?
+                    <Grid item style={{marginBottom:"20px"}} >
+
+                    </Grid>
+                    : 
                     <Grid item container justify="center" style={{width:"220px"}}>
-                        {cantidad > 0 ?
-                            <OutlinedInput type="number"
+                    {cantidad > 0 ?
+                        <OutlinedInput type="number"
                             className={classes.inputSinFlechasProduct}
                             endAdornment={
                                 <InputAdornment position="end">
@@ -301,6 +306,7 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                             </InertiaLink>
                         }
                     </Grid>
+                }
                 </Grid>
             </Paper>
         </>
