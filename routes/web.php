@@ -31,7 +31,7 @@ Route::get('/inertia', function () {
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-Route::post('register',  [App\Http\Controllers\Auth\RegisterController::class, 'register']);
+Route::post('register',  [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
