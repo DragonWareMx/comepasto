@@ -31,7 +31,7 @@ Route::get('/inertia', function () {
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-Route::post('register',  [App\Http\Controllers\Auth\RegisterController::class, 'register']);
+Route::post('register',  [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
 
 Route::post('password/email', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('password/reset/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset');
