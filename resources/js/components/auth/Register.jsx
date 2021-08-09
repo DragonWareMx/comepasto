@@ -305,6 +305,11 @@ export default function Register({ dialog, handleClose }) {
         }));
     }
 
+    function closeSnackSuccess() {
+        handleClose();
+        setTimeout(handleCloseSnack, 4000);
+    }
+
     return (
         <>
             <Dialog
@@ -478,7 +483,7 @@ export default function Register({ dialog, handleClose }) {
 
 
             <Portal>
-                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Snackbar open={open} autoHideDuration={2000} onClose={closeSnackSuccess}>
                     <Alert onClose={handleCloseSnack} severity="success">
                         Te has registrado con éxito!
                     </Alert>

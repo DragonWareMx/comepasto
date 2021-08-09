@@ -1,12 +1,11 @@
 import { React, useState } from 'react';
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Dialog, Button, TextField, Snackbar } from '@material-ui/core';
+import { Dialog, Button, TextField, Snackbar, Portal } from '@material-ui/core';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import MuiAlert from '@material-ui/lab/Alert';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import Forget from './Forget';
 
 import teal from '@material-ui/core/colors/teal';
 
@@ -159,8 +158,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Login({ dialog, handleClose, openRegister, openLogin }) {
-    const { errors } = usePage().props
+export default function Forget({ dialog, handleClose, openLogin }) {
+    const { errors, flash } = usePage().props
     const classes = useStyles();
     const [values, setValues] = useState({
         email: '',
@@ -168,17 +167,7 @@ export default function Login({ dialog, handleClose, openRegister, openLogin }) 
         error: false
     });
 
-    const [open, setOpen] = useState(false);
-
-    //esto de aqui es para abrir el dialog de Forget
-    const [dialogForget, setDialogForget] = useState(false);
-    const handleDialogForgetClose = () => {
-        setDialogForget(false);
-    };
-    const handleDialogForgetOpen = () => {
-        handleCerrar();
-        setDialogForget(true);
-    };
+    const [open, setOpen] = useState(true);
 
     const handleClick = () => {
         setOpen(true);
@@ -203,11 +192,10 @@ export default function Login({ dialog, handleClose, openRegister, openLogin }) 
 
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post('/login', values, {
+        Inertia.post('/password/email', values, {
             preserveScroll: true,
             onSuccess: () => {
-                handleClick();
-                handleCerrar();
+
             },
             onError: () => {
                 setValues(values => ({
@@ -221,15 +209,9 @@ export default function Login({ dialog, handleClose, openRegister, openLogin }) 
     function handleCerrar() {
         setValues(values => ({
             email: '',
-            password: '',
             error: false
         }))
         handleClose();
-    }
-
-    function closeSnackSuccess() {
-        handleClose();
-        setTimeout(handleCloseSnack, 4000);
     }
 
     return (
@@ -242,13 +224,13 @@ export default function Login({ dialog, handleClose, openRegister, openLogin }) 
             >
                 <div className={classes.cardInicioSesion}>
                     <div className={classes.cardTitle} style={{ marginTop: "15px" }}>
-                        INICIAR SESIÓN
+                        ¿Olvidaste tu contraseña?
                     </div>
                     <IconButton aria-label="close" className={classes.closeButton} onClick={handleCerrar}>
                         <CloseIcon />
                     </IconButton>
                     <div className={classes.cardText} style={{ marginTop: "2px", marginBottom: "15px" }}>
-                        Agiliza tus procesos de compra
+                        Ingresa tu correo electrónico y en breve recibirás un email con instrucciones para recuperar tu contraseña.
                     </div>
 
                     <form className={classes.formulario} onSubmit={handleSubmit} id="login-form">
@@ -271,50 +253,32 @@ export default function Login({ dialog, handleClose, openRegister, openLogin }) 
                                 error={errors.email && values.error == true && true}
                                 helperText={values.error == true && errors.email}
                             />
-
-                            <TextField required id="password" label="Contraseña"
-                                InputProps={{
-                                    className: classes.textField,
-                                }}
-                                InputLabelProps={{
-                                    classes: {
-                                        root: classes.formTextLabel
-                                    }
-                                }}
-                                fullWidth={true}
-                                type="password"
-                                value={values.password}
-                                onChange={handleChange}
-                            />
                         </MuiThemeProvider>
 
                         <div style={{ textDecoration: "none" }} className={classes.inertiaButton} >
                             <Button variant="contained" color="primary" type="submit" disableElevation className={classes.buttonDial}>
-                                ACCEDER
+                                ENVIAR
                             </Button>
                         </div>
                     </form>
 
-                    <div className={classes.cardText} style={{ marginBottom: "3px" }}>
-                        <Button type='button' className={classes.cardLink} onClick={openRegister}>
-                            ¿Deseas registrarte?
-                        </Button>
-                    </div>
                     <div className={classes.cardText}>
-                        <Button type='button' className={classes.cardLink} onClick={handleDialogForgetOpen}>
-                            ¿Olvidaste tu contraseña?
+                        <Button type='button' className={classes.cardLink} onClick={openLogin}>
+                            Iniciar sesión
                         </Button>
                     </div>
                 </div>
             </Dialog>
 
-            <Forget dialog={dialogForget} handleClose={handleDialogForgetClose} openLogin={openLogin} />
-
-            <Snackbar open={open} autoHideDuration={2000} onClose={closeSnackSuccess}>
-                <Alert onClose={handleCloseSnack} severity="success">
-                    Sesión iniciada con éxito!
-                </Alert>
-            </Snackbar>
+            {flash.status && flash.status.length > 0 &&
+                <Portal>
+                    <Snackbar open={open} autoHideDuration={6000} onClose={handleCloseSnack}>
+                        <Alert onClose={handleCloseSnack} severity="success">
+                            {flash.status}
+                        </Alert>
+                    </Snackbar>
+                </Portal>
+            }
         </>
     )
 }

@@ -622,7 +622,7 @@ export default function Cart({ bDialog }) {
                 </div>
             </Dialog>
 
-            <Login dialog={dialogLogin} handleClose={handleDialogLoginClose} openRegister={handleOpenRegister} />
+            <Login dialog={dialogLogin} handleClose={handleDialogLoginClose} openRegister={handleOpenRegister} openLogin={handleOpenLogin} />
             <Register dialog={dialogRegister} handleClose={handleDialogRegisterClose} />
         </>
     );
