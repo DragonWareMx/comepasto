@@ -35,6 +35,7 @@ Route::post('register',  [App\Http\Controllers\Auth\RegisterController::class, '
 
 Route::post('password/email', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('password/reset/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
