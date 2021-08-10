@@ -37,16 +37,18 @@
 
 /* MIS PEDIDOS */
 .grid-container-pedido{
-    border: 1px solid #D3D3D3;
-    box-sizing: border-box;
     border-radius: 4px;
 }
+.MuiAccordionSummary-content{
+    flex-wrap: wrap !important;
+}
 .grid-gray-info{
-    background: #EAEAEA;
+    background: #EAEAEA !important;
     border-radius: 4px;
     padding:10px;
     display:flex;
     flex-wrap: wrap !important;
+    box-shadow: none !important;
 }
 .header-title{
     font-family: Atma;
@@ -70,7 +72,7 @@
 .grid-white{
     display:flex;
     flex-wrap: wrap;
-    padding:10px;
+    /* padding:10px; */
 }
 .status-pedido{
     font-family: Oxygen;
@@ -79,7 +81,61 @@
     font-size: 13px;
     line-height: 25px;
     color: #707070;
+    margin-bottom: 16px !important;
 }
+.item-pedido{
+    width: 90%;
+}
+.img-item-pedido{
+    width: 100%;
+    max-height:90px;
+    object-fit: cover;
+}
+.grid-info-pedido{
+    padding:8px !important;
+}
+.txt-title-pedido-p{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 19px;
+    color: #474747;
+}
+.txt-price-pedido{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 18px;
+    color: #1DA3A8;
+    margin-top: 10px !important;
+}
+.txt-cantidad-pedido{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+    color: #595959;
+    text-align: right;
+    margin-top: 5px !important;
+    margin-bottom: 16px !important;
+}
+
+
+
+
+.info-little-envio{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #707070;
+    margin-top: 30px !important;
+}
+
 
 
 
@@ -105,5 +161,8 @@
     .grid-child-gray{
         margin-bottom: 10px !important;
         width:150px;
+    }
+    .item-pedido{
+        width: 100%;
     }
 }
