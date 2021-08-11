@@ -59,3 +59,10 @@ Route::get('/producto/{id}', [App\Http\Controllers\ProductController::class, 'sh
 
 // PREGUNTAS
 Route::get('/preguntas', [App\Http\Controllers\QuestionController::class, 'preguntas'])->name('preguntas');
+
+// CUENTA-----
+Route::get('/cuenta', [App\Http\Controllers\CuentaController::class, 'index'])->name('cuenta');
+Route::get('/mispedidos', [App\Http\Controllers\CuentaController::class, 'misPedidos'])->name('misPedidos');
+Route::get('/informacion', [App\Http\Controllers\CuentaController::class, 'informacion'])->name('informacion');
+Route::get('/direcciones', [App\Http\Controllers\CuentaController::class, 'direcciones'])->name('direcciones');
+Route::get('/mispagos', [App\Http\Controllers\CuentaController::class, 'misPagos'])->name('misPagos');
