@@ -135,7 +135,7 @@
 /* VISTA INFORMACION-------- */
 .info-txt-datos{
     margin-top: 0px !important;
-    font-size: 13px;
+    font-size: 14px;
 }
 .info-txt-datos a{
     color:#1DA3A8 !important;
@@ -184,7 +184,7 @@
     font-family: Atma;
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 21px;
     color: #1DA3A8;
     margin-top: 12px !important;
@@ -230,6 +230,22 @@
 .button-cancel:hover{
     color: #5f5f5f;
     transition: all ease-in-out 0.25s;
+}
+.dialog-content{
+    font-family: Oxygen !important;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #707070;
+}
+.title-dialog{
+    font-family: Atma !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 15px;
+    color: #1DA3A8;
 }
 
 
