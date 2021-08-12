@@ -7,6 +7,7 @@ import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 
 import Login from '../auth/Login'
 import Register from '../auth/Register'
+import Pago from '../common/Pago'
 
 //iconos
 import RemoveIcon from '@material-ui/icons/Remove';
@@ -282,6 +283,7 @@ export default function Cart({ bDialog }) {
 
     const [dialogLogin, setDialogLogin] = React.useState(false);
     const [dialogRegister, setDialogRegister] = React.useState(false);
+    const [dialogPago, setDialogPago] = React.useState(false);
 
     //CLICK EN EL ICONO DEL CARRITO, si el usuario inicio sesion se muestra el contenido del carrito, si no se abre el dialog
     function handleClick(event) {
@@ -314,6 +316,14 @@ export default function Cart({ bDialog }) {
         handleDialogClose();
         setDialogLogin(false);
         setDialogRegister(true);
+    }
+
+    const handleDialogPagoClose = () => {
+        setDialogPago(false);
+    };
+
+    const handleOpenPago = () => {
+        setDialogPago(true);
     }
 
     const toggleDrawer = (open) => (event) => {
@@ -545,17 +555,17 @@ export default function Cart({ bDialog }) {
 
                                 <Grid container justify="center" direction="column">
                                     <Grid container item justify="center" xs={12}>
-                                        <InertiaLink href="/ejemplo" style={{ textDecoration: "none" }} className={classes.buttonGrid}>
-                                            <Button variant="contained" color="primary" disableElevation className={classes.button}>
+                                        <div style={{ textDecoration: "none" }} className={classes.buttonGrid}>
+                                            <Button variant="contained" color="primary" disableElevation className={classes.button} onClick={handleOpenPago}>
                                                 Proceder pago
                                             </Button>
-                                        </InertiaLink>
+                                        </div>
                                     </Grid>
 
                                     <Grid container item className={classes.linkcotizar} justify="center">
-                                        <InertiaLink style={{ color: "#595959" }} href="/ejemplo">
+                                        {/* <InertiaLink style={{ color: "#595959" }} href="/ejemplo">
                                             Cotizar costo de envío
-                                        </InertiaLink>
+                                        </InertiaLink> */}
                                     </Grid>
                                 </Grid>
                             </>
@@ -624,6 +634,7 @@ export default function Cart({ bDialog }) {
 
             <Login dialog={dialogLogin} handleClose={handleDialogLoginClose} openRegister={handleOpenRegister} openLogin={handleOpenLogin} />
             <Register dialog={dialogRegister} handleClose={handleDialogRegisterClose} />
+            <Pago dialog={dialogPago} handleClose={handleDialogPagoClose} />
         </>
     );
 }
