@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Dialog, Button, TextField, Snackbar, Portal } from '@material-ui/core';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react'
@@ -11,6 +11,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+
+import MapPicker from 'react-google-map-picker'
 
 import StepBarPago from '../auth/StepBarPago';
 
@@ -44,7 +46,7 @@ const theme = createMuiTheme({
 const useStyles = makeStyles((theme) => ({
     cardRegistro: {
         width: "100%",
-        maxWidth: "400px",
+        maxWidth: "600px",
         height: "fit-content",
 
         display: "flex",
@@ -98,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
     inertiaButton: {
         width: "90%",
         minWidth: '220px',
-        maxWidth: '319px',
+        maxWidth: '600px',
 
         height: "fit-content",
         backgroundColor: "transparent",
@@ -155,8 +157,6 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
     },
     textField: {
-        minWidth: '250px',
-        maxWidth: '350px',
         fontFamily: "Atma",
         fontStyle: 'normal',
         fontWeight: '400',
@@ -304,6 +304,7 @@ export default function Pago({ dialog, handleClose }) {
                     percent: 50,
                     step: 1
                 }));
+                getDirection(defaultLocation.lat, defaultLocation.lng);
             }
             else {
                 setValues(values => ({
@@ -316,14 +317,6 @@ export default function Pago({ dialog, handleClose }) {
         else {
             handleClick2();
         }
-    }
-
-    function nextStep2() {
-        setValues(values => ({
-            ...values,
-            percent: 100,
-            step: 2
-        }));
     }
 
     function backStep() {
@@ -346,6 +339,70 @@ export default function Pago({ dialog, handleClose }) {
             tipo_de_pago: event.target.value,
         }));
     };
+
+    //esto de abajo es para el mapa
+    const DefaultZoom = 12;
+    const [defaultLocation, setDefaultLocation] = useState({ lat: 19.705914384350006, lng: -101.19273489110634 });
+
+    useEffect(() => {
+        // Actualiza el título del documento usando la API del navegador
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(successFunction);
+        } else {
+            alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
+        }
+    }, []);
+
+    function successFunction(position) {
+        var lat = position.coords.latitude;
+        var long = position.coords.longitude;
+        setDefaultLocation({
+            lat: lat, lng: long
+        })
+    }
+
+    function getDirection(lat, long) {
+        var uri = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&key=AIzaSyDAsRsMlBifyC8uKaJMAskmREIdfLqBYyA';
+        console.log(uri);
+        fetch(uri)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    setValues(values => ({
+                        ...values,
+                        direction: result.results[0].formatted_address,
+                    }))
+                },
+                // Nota: es importante manejar errores aquí y no en
+                // un bloque catch() para que no interceptemos errores
+                // de errores reales en los componentes.
+                (error) => {
+                    console.log(error)
+                }
+            )
+
+    }
+
+    const [location, setLocation] = useState(defaultLocation);
+    const [zoom, setZoom] = useState(DefaultZoom);
+
+    function handleChangeLocation(lat, lng) {
+        setLocation({ lat: lat, lng: lng });
+        getDirection(lat, lng);
+    }
+
+    function handleChangeZoom(newZoom) {
+        setZoom(newZoom);
+    }
+
+    function handleResetLocation() {
+        setDefaultLocation({ ...DefaultLocation });
+        setZoom(DefaultZoom);
+    }
+
+    function cotizarEnvio() {
+
+    }
 
     return (
         <>
@@ -425,7 +482,7 @@ export default function Pago({ dialog, handleClose }) {
                     {values.step == 1 &&
                         <form className={classes.formulario} onSubmit={handleSubmit} id="login-form">
                             <div className={classes.textDireccion} style={{ color: '#7C7C7C' }}>
-                                Ingresa tu dirección para solicitar los datos del costo de envío en futuras compras.
+                                Ingresa tu dirección para poder calcular el costo de envío
                             </div>
                             <div className={classes.textDireccion} style={{ color: '#d1d1d1', fontSize: '12px' }}>
                                 Si deseas recoger tu producto podrás seleccionarlo antes de concluir tu compra.
@@ -434,6 +491,7 @@ export default function Pago({ dialog, handleClose }) {
                                 <TextField required id="direction" label="Dirección"
                                     InputProps={{
                                         className: classes.textField,
+                                        readOnly: true,
                                     }}
                                     InputLabelProps={{
                                         classes: {
@@ -451,12 +509,21 @@ export default function Pago({ dialog, handleClose }) {
                                 />
                             </MuiThemeProvider>
 
-                            <div style={{ textDecoration: "none", marginTop: '120px' }} className={classes.inertiaButton} >
+                            <MapPicker defaultLocation={defaultLocation}
+                                zoom={zoom}
+                                mapTypeId="roadmap"
+                                style={{ height: '400px' }}
+                                onChangeLocation={handleChangeLocation}
+                                onChangeZoom={handleChangeZoom}
+                                apiKey='AIzaSyDAsRsMlBifyC8uKaJMAskmREIdfLqBYyA' />
+
+
+                            <div style={{ textDecoration: "none", marginTop: '20px' }} className={classes.inertiaButton} >
                                 <Button variant="text" color="primary" type="button" disableElevation className={classes.buttonText} onClick={backStep}>
                                     VOLVER
                                 </Button>
-                                <Button variant="contained" color="primary" type="submit" disableElevation className={classes.buttonDial} onClick={nextStep2}>
-                                    SIGUIENTE
+                                <Button variant="contained" color="primary" type="button" disableElevation className={classes.buttonDial} onClick={cotizarEnvio}>
+                                    COTIZAR ENVÍO
                                 </Button>
                             </div>
                         </form>
