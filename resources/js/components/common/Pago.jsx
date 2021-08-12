@@ -423,45 +423,6 @@ export default function Pago({ dialog, handleClose }) {
                             </div>
                         </form>
                     }
-                    {values.step == 2 &&
-                        <form className={classes.formulario} onSubmit={handleSubmit} id="login-form">
-                            <div className={classes.textDireccion} style={{ color: '#7C7C7C' }}>
-                                Selecciona tu método de pago
-                            </div>
-                            <div className={classes.textDireccion} style={{ color: '#d1d1d1', fontSize: '12px' }}>
-                                Si deseas recoger tu producto podrás seleccionarlo antes de concluir tu compra.
-                            </div>
-                            <MuiThemeProvider theme={theme}>
-                                <TextField required id="direction" label="Dirección"
-                                    InputProps={{
-                                        className: classes.textField,
-                                    }}
-                                    InputLabelProps={{
-                                        classes: {
-                                            root: classes.formTextLabel
-                                        }
-                                    }}
-                                    FormHelperTextProps={{
-                                        className: classes.helperText
-                                    }}
-                                    fullWidth={true}
-                                    value={values.direction}
-                                    onChange={handleChange}
-                                    error={errors.direction && values.error == true && true}
-                                    helperText={values.error == true && errors.direction}
-                                />
-                            </MuiThemeProvider>
-
-                            <div style={{ textDecoration: "none", marginTop: '120px' }} className={classes.inertiaButton} >
-                                <Button variant="text" color="primary" type="button" disableElevation className={classes.buttonText} onClick={backStep}>
-                                    VOLVER
-                                </Button>
-                                <Button variant="contained" color="primary" type="submit" disableElevation className={classes.buttonDial} onClick={nextStep}>
-                                    REGISTRARME
-                                </Button>
-                            </div>
-                        </form>
-                    }
                     {values.step == 1 &&
                         <form className={classes.formulario} onSubmit={handleSubmit} id="login-form">
                             <div className={classes.textDireccion} style={{ color: '#7C7C7C' }}>
@@ -497,6 +458,45 @@ export default function Pago({ dialog, handleClose }) {
                                 </Button>
                                 <Button variant="contained" color="primary" type="submit" disableElevation className={classes.buttonDial} onClick={nextStep2}>
                                     SIGUIENTE
+                                </Button>
+                            </div>
+                        </form>
+                    }
+                    {values.step == 2 &&
+                        <form className={classes.formulario} onSubmit={handleSubmit} id="login-form">
+                            <div className={classes.textDireccion} style={{ color: '#7C7C7C' }}>
+                                Selecciona tu método de pago
+                            </div>
+                            <div className={classes.textDireccion} style={{ color: '#d1d1d1', fontSize: '12px' }}>
+                                Si deseas recoger tu producto podrás seleccionarlo antes de concluir tu compra.
+                            </div>
+                            <MuiThemeProvider theme={theme}>
+                                <TextField required id="direction" label="Dirección"
+                                    InputProps={{
+                                        className: classes.textField,
+                                    }}
+                                    InputLabelProps={{
+                                        classes: {
+                                            root: classes.formTextLabel
+                                        }
+                                    }}
+                                    FormHelperTextProps={{
+                                        className: classes.helperText
+                                    }}
+                                    fullWidth={true}
+                                    value={values.direction}
+                                    onChange={handleChange}
+                                    error={errors.direction && values.error == true && true}
+                                    helperText={values.error == true && errors.direction}
+                                />
+                            </MuiThemeProvider>
+
+                            <div style={{ textDecoration: "none", marginTop: '120px' }} className={classes.inertiaButton} >
+                                <Button variant="text" color="primary" type="button" disableElevation className={classes.buttonText} onClick={backStep}>
+                                    VOLVER
+                                </Button>
+                                <Button variant="contained" color="primary" type="submit" disableElevation className={classes.buttonDial} onClick={nextStep}>
+                                    REGISTRARME
                                 </Button>
                             </div>
                         </form>
