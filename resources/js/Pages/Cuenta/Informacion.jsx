@@ -237,7 +237,7 @@ const Informacion = () => {
                 <DialogActions>
                     <Grid style={{display:'flex', justifyContent:'flex-end', flexWrap:'wrap', alignItems:'center',margin:15}}>
                         <Button className="button-cancel" onClick={handleClose}>CANCELAR</Button>
-                        <Button variant="contained" className="button-ok" onClick={handleClose}>ELIMINAR</Button>
+                        <InertiaLink className="button-ok" onClick={handleClose} method="delete" href="#!" as="button">ELIMINAR</InertiaLink>
                     </Grid>
                 </DialogActions>
             </Dialog>
