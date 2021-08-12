@@ -43,7 +43,7 @@ const Recetas = ({receta, productos}) => {
                     <Grid container direction="row" justify="flex-start" alignItems="center" spacing={0} style={{display:'flex',flexWrap:'wrap'}}>
                         
                         {productos && productos.map(producto=>(
-                        <Grid  className="grid-img-producto" id={producto.id}><a href="#!"><Tooltip title={producto.name}><img src={"/storage/productos/" + producto.foto}></img></Tooltip></a></Grid>
+                        <Grid  className="grid-img-producto" id={producto.id}><InertiaLink href={route('product.show', producto.uuid)}><Tooltip title={producto.name}><img src={"/storage/productos/" + producto.foto}></img></Tooltip></InertiaLink></Grid>
                         ))}
                         
                         <a href="#!" style={{textDecoration:'none', margin:'25px', marginBottom:'0px'}}>
