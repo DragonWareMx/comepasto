@@ -252,6 +252,21 @@
     font-family: Atma !important;
 }
 
+/* DIRECCIONAES----- */
+.grid-add{
+    margin-left: 30px !important;
+    border-radius: 4px !important;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-family: Atma;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 19px;
+    color: #707070;
+}
 
 
 
@@ -284,5 +299,8 @@
     }
     .input-50{
         width: 100%;
+    }
+    .grid-add{
+        margin-left: 0px !important;
     }
 }

@@ -134,7 +134,7 @@ const Informacion = () => {
                             <a href="#!" target="_blank">Aviso de privacidad</a> y <a href="#!" target="_blank">Términos y Condiciones</a> de Comepasto.
                         </Grid>
 
-                        <Grid item xs={12} sm={6} style={{marginTop:26}} id="info-grid">
+                        <Grid item xs={12} sm={9} md={6} style={{marginTop:26}} id="info-grid">
                             <Grid item xs={12} className="grid-gray-name">JOSÉ AGUSTÍN AGUILAR SOLÓRZANO</Grid>
                             <Grid item xs={12} className="grid-white-info">
                                 <Grid item xs={12} className="title-info-data">CORREO ELECTRÓNICO</Grid>
