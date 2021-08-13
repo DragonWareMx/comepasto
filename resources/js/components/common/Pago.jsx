@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Dialog, Button, TextField, Snackbar, Portal, Radio } from '@material-ui/core';
+import { Dialog, Button, TextField, Snackbar, Portal, Radio, Grid } from '@material-ui/core';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import MuiAlert from '@material-ui/lab/Alert';
@@ -237,10 +237,15 @@ const useStyles = makeStyles((theme) => ({
         color: '#1DA3A8',
         marginLeft: '0px',
         marginRight: 'auto'
-    }
+    },
+    pagoImg: {
+        width:'100%',
+        minWidth:'40px',
+        maxWidth:'76px',
+    },
 }));
 
-export default function Pago({ dialog, handleClose }) {
+export default function Pago({ dialog, handleClose, subtotal }) {
     const { errors } = usePage().props
     const classes = useStyles();
     const [values, setValues] = useState({
@@ -421,12 +426,12 @@ export default function Pago({ dialog, handleClose }) {
 
     function getDirection(lat, long) {
         var uri = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&key=AIzaSyDAsRsMlBifyC8uKaJMAskmREIdfLqBYyA';
-        console.log(uri);
+        // console.log(uri);
         fetch(uri)
             .then(res => res.json())
             .then(
                 (result) => {
-                    console.log(result);
+                    // console.log(result);
                     setValues(values => ({
                         ...values,
                         direction: result.results[0].formatted_address,
@@ -476,6 +481,10 @@ export default function Pago({ dialog, handleClose }) {
                 console.log('Intentalo mas tarde');
             }
         })
+    }
+
+    function sacarSubtotal(subtotal){
+        return parseFloat(subtotal.substring(1))
     }
 
     return (
@@ -622,38 +631,64 @@ export default function Pago({ dialog, handleClose }) {
                             <div className={classes.textDireccion} style={{ color: '#7C7C7C' }}>
                                 Selecciona tu método de pago
                             </div>
-                            <MuiThemeProvider theme={theme}>
-                                <Radio
-                                    checked={values.tipo_de_pago === 'paypal'}
-                                    onChange={handleChangeRadio}
-                                    value="paypal"
-                                    name="radio-button-demo"
-                                    inputProps={{ 'aria-label': 'A' }}
-                                />
-                                <Radio
-                                    checked={values.tipo_de_pago === 'stripe'}
-                                    onChange={handleChangeRadio}
-                                    value="stripe"
-                                    name="radio-button-demo"
-                                    inputProps={{ 'aria-label': 'A' }}
-                                />
-                                <Radio
-                                    checked={values.tipo_de_pago === 'transferencia'}
-                                    onChange={handleChangeRadio}
-                                    value="transferencia"
-                                    name="radio-button-demo"
-                                    inputProps={{ 'aria-label': 'A' }}
-                                />
-                                <Radio
-                                    checked={values.tipo_de_pago === 'efectivo'}
-                                    onChange={handleChangeRadio}
-                                    value="efectivo"
-                                    name="radio-button-demo"
-                                    inputProps={{ 'aria-label': 'A' }}
-                                />
-                            </MuiThemeProvider>
+                            <Grid container alignItems='center' spacing={2}>
+                                <MuiThemeProvider theme={theme}>
+                                    <Grid item sm={6} md={3} style={{alignItems:'center', display:'flex'}}>
+                                        <Radio
+                                            checked={values.tipo_de_pago === 'paypal'}
+                                            onChange={handleChangeRadio}
+                                            value="paypal"
+                                            name="radio-button-demo"
+                                            inputProps={{ 'aria-label': 'A' }}
+                                        />
+                                        <img
+                                            src='/img/pago/paypal.png'
+                                            className={classes.pagoImg}
+                                        />
+                                    </Grid>
+                                    <Grid item sm={6} md={3} style={{alignItems:'center', display:'flex'}}>
+                                        <Radio
+                                            checked={values.tipo_de_pago === 'stripe'}
+                                            onChange={handleChangeRadio}
+                                            value="stripe"
+                                            name="radio-button-demo"
+                                            inputProps={{ 'aria-label': 'A' }}
+                                        />
+                                        <img 
+                                            src='/img/pago/stripe.png'
+                                            className={classes.pagoImg}
+                                        />
+                                    </Grid>
+                                    <Grid item sm={6} md={3} style={{alignItems:'center', display:'flex'}}>
+                                        <Radio
+                                            checked={values.tipo_de_pago === 'transferencia'}
+                                            onChange={handleChangeRadio}
+                                            value="transferencia"
+                                            name="radio-button-demo"
+                                            inputProps={{ 'aria-label': 'A' }}
+                                        />
+                                        <div style={{fontFamily:'Atma', fontSize:13, color:'#333333', marginTop:3}}>Transferencia</div>
+                                    </Grid>
+                                    <Grid item sm={6} md={3} style={{alignItems:'center', display:'flex'}}>
+                                        <Radio
+                                            checked={values.tipo_de_pago === 'efectivo'}
+                                            onChange={handleChangeRadio}
+                                            value="efectivo"
+                                            name="radio-button-demo"
+                                            inputProps={{ 'aria-label': 'A' }}
+                                        />
+                                        <div style={{fontFamily:'Atma', fontSize:13, color:'#333333', marginTop:3}}>Efectivo</div>
+                                    </Grid>
+                                </MuiThemeProvider>
+                            </Grid>
 
-                            <div style={{ textDecoration: "none", marginTop: '120px' }} className={classes.inertiaButton} >
+                            <Grid container style={{marginTop:33}}>
+                                <Grid item xs={12} style={{fontFamily:'Oxygen', fontSize:14, color:'#595959', fontWeight:400}}> Costo del pedido: {subtotal && subtotal} MXN</Grid>
+                                <Grid item xs={12} style={{fontFamily:'Oxygen', fontSize:14, color:'#595959', marginTop:10, fontWeight:400}}> Costo del envio: ${values.costoEnvio && values.costoEnvio}.00 MXN</Grid>
+                                <Grid item xs={12} style={{fontFamily:'Oxygen', fontSize:15, color:'#1DA3A8', marginTop:10, fontWeight:700}}> TOTAL: ${values.costoEnvio + sacarSubtotal(subtotal)} MXN</Grid>
+                            </Grid>
+
+                            <div style={{ textDecoration: "none", marginTop: '30px' }} className={classes.inertiaButton} >
                                 <Button variant="text" color="primary" type="button" disableElevation className={classes.buttonText} onClick={backStep2}>
                                     VOLVER
                                 </Button>

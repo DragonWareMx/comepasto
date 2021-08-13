@@ -634,7 +634,7 @@ export default function Cart({ bDialog }) {
 
             <Login dialog={dialogLogin} handleClose={handleDialogLoginClose} openRegister={handleOpenRegister} openLogin={handleOpenLogin} />
             <Register dialog={dialogRegister} handleClose={handleDialogRegisterClose} />
-            <Pago dialog={dialogPago} handleClose={handleDialogPagoClose} />
+            <Pago dialog={dialogPago} handleClose={handleDialogPagoClose} subtotal={calcularTotal(auth.cart)}/>
         </>
     );
 }
