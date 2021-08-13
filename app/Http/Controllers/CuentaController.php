@@ -29,6 +29,14 @@ class CuentaController extends Controller
         return Inertia::render('Cuenta/Direcciones');
     }
 
+    public function direccionesAdd(){
+        return Inertia::render('Cuenta/Direcciones/AgregarDireccion');
+    }
+
+    public function direccionesEdit($id){
+        return Inertia::render('Cuenta/Direcciones/EditarDireccion');
+    }
+
     public function misPagos()
     {
         return Inertia::render('Cuenta/MisPagos');
