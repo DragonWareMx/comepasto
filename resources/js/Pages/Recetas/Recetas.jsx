@@ -5,6 +5,7 @@ import Layout from '../../layouts/Layout';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Receta from '../../components/Recetas/Receta';
+import Paginacion from '../../components/common/paginacion';
 
 const Recetas = ({recetas}) => {
     return (
@@ -43,6 +44,10 @@ const Recetas = ({recetas}) => {
                     ))}       
                 </Grid>
             </Container>
+
+            {/* <Grid item xs={12} container direction="row" spacing={3}>
+                <Paginacion links={recetas.links}/> 
+            </Grid> */}
         </>
     )
 }
