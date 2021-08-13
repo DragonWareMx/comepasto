@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -20,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'tel',
+        'direccion'
     ];
 
     /**
@@ -41,11 +44,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function sale(){
+    public function sale()
+    {
         return $this->hasMany('App\Models\Sale');
     }
 
-    public function cart(){
-        return $this->belongsToMany('App\Models\Product', 'product_user')->withPivot('estatus','cantidad')->withTimestamps();
+    public function cart()
+    {
+        return $this->belongsToMany('App\Models\Product', 'product_user')->withPivot('estatus', 'cantidad')->withTimestamps();
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

@@ -45,7 +45,7 @@ export default function Navbar() {
                         </a>
                     </div>
                     <div className="div-logo">
-                        Comepasto
+                        <InertiaLink href={route('inicio')}>Comepasto</InertiaLink>
                     </div>
                     <div className="links-hide">
                         <InertiaLink href={route('inicio')}>
@@ -94,7 +94,7 @@ export default function Navbar() {
                     <MenuIcon fontSize="large" style={{ color: '#1DA3A8' }} onClick={handleClick} />
                 </div>
                 <div className="div-logo-m">
-                    Comepasto
+                    <InertiaLink href={route('inicio')}>Comepasto</InertiaLink>
                 </div>
                 <div className="right">
                     <div className="div-iconos">
@@ -106,10 +106,10 @@ export default function Navbar() {
             <Slide in={NavDialog} direction="down" mountOnEnter unmountOnExit>
                 <nav className="navigation">
                     <ul>
-                        <li><a href="#">TIENDA</a></li>
-                        <li><a href={route('recetas')}>RECETAS</a></li>
-                        <li><a href="#">QUIÉNES SOMOS</a></li>
-                        <li><a href="#">PREGUNTAS FRECUENTES</a></li>
+                        <li><InertiaLink href={route('inicio')}>TIENDA</InertiaLink></li>
+                        <li><InertiaLink href={route('recetas')}>RECETAS</InertiaLink></li>
+                        <li><InertiaLink href={route('quienesSomos')}>QUIÉNES SOMOS</InertiaLink></li>
+                        <li><InertiaLink href={route('preguntas')}>PREGUNTAS FRECUENTES</InertiaLink></li>
                     </ul>
                 </nav>
             </Slide>

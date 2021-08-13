@@ -149,6 +149,11 @@
     left: calc((100% / 2) - 108.5px);
   }
 
+  .div-logo a{
+    text-decoration: none;
+    color: #FFDE59;
+  }
+
   .div-iconos{
     display: flex;
     align-items: center;
@@ -315,6 +320,11 @@
     position: absolute;
     top: 7.5px;
     left: calc((100% / 2) - 73.615px);
+  }
+
+  .div-logo-m a{
+    text-decoration: none;
+    color: #FFDE59;
   }
 
  .navigation{

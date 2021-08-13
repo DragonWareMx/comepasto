@@ -44,16 +44,18 @@ class HandleInertiaRequests extends Middleware
                 : null,
 
             // Lazily
-            'auth.cart' => 
-                fn () => $request->user() ? 
-                    $request->user()->cart()->select('products.id','precio','descuento','foto','name')->get()
-                    : 
-                    null,
+            'auth.cart' =>
+            fn () => $request->user() ?
+                $request->user()->cart()->select('products.id', 'precio', 'descuento', 'foto', 'name')->get()
+                :
+                null,
             'flash' => [
                 'message' => fn () => $request->session()->get('message'),
                 'error' => fn () => $request->session()->get('error'),
                 'success' => fn () => $request->session()->get('success'),
-                'info' => fn () => $request->session()->get('info')
+                'info' => fn () => $request->session()->get('info'),
+                'status' => fn () => $request->session()->get('status'),
+                'data' => fn () => $request->session()->get('data'),
             ],
         ]);
     }

@@ -27,14 +27,20 @@ Route::get('/inertia', function () {
 });
 
 // RUTAS DE AUTH
-Auth::routes();
-// Route::post('login', 'App\Http\Controllers\Auth\LoginController@login');
-// Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+//Auth::routes();
+Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-// Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-// Route::post('register', 'Auth\RegisterController@register');
+Route::post('register',  [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
+
+Route::post('password/email', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//PAGOS
+Route::post('/cotizar', [App\Http\Controllers\PaymentController::class, 'cotizar'])->name('cotizar');
 
 //INICIO
 Route::get('/inicio', [App\Http\Controllers\Controller::class, 'inicio'])->name('inicio');
