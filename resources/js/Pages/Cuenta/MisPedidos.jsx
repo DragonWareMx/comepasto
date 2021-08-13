@@ -41,7 +41,7 @@ const MisPedidos = () => {
                     </Grid>
                 
                     <Grid container direction="row" style={{marginTop:20}}>
-
+                        {/* PEDIDO */}
                         <Grid item xs={12} className="grid-container-pedido">
                             <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} className="grid-container-pedido">
                                 <AccordionSummary
@@ -50,22 +50,22 @@ const MisPedidos = () => {
                                 id="panel1bh-header"
                                 className="grid-gray-info"
                                 >
-                                        <Grid item className="grid-child-gray" direction="column" alignItems="center">
+                                        <Grid item className="grid-child-gray">
                                             <Grid className="header-title">PEDIDO REALIZADO</Grid>
                                             <Grid className="header-info">24 Mayo 2021</Grid>
                                         </Grid>
 
-                                        <Grid item className="grid-child-gray" direction="column" alignItems="center">
+                                        <Grid item className="grid-child-gray">
                                             <Grid className="header-title">TOTAL</Grid>
                                             <Grid className="header-info"><b>$7005.58 MXN</b></Grid>
                                         </Grid>
 
-                                        <Grid item className="grid-child-gray" direction="column" alignItems="center">
+                                        <Grid item className="grid-child-gray">
                                             <Grid className="header-title">TIPO DE ENTREGA</Grid>
                                             <Grid className="header-info">Envío a domicilio</Grid>
                                         </Grid>
 
-                                        <Grid item className="grid-child-gray" direction="column" alignItems="center">
+                                        <Grid item className="grid-child-gray">
                                             <Grid className="header-title">TIPO DE PAGO</Grid>
                                             <Grid className="header-info">Pago en efectivo</Grid>
                                         </Grid>
@@ -80,52 +80,10 @@ const MisPedidos = () => {
                                                 <Grid item xs={12} sm={6} md={4} style={{display:'flex'}}>
                                                     <Grid style={{display:'flex', flexWrap:'wrap'}} className="item-pedido">
                                                         <Grid item xs={2}>
-                                                            <img src="/img/PRODUCTOS/1.png" className="img-item-pedido" />
+                                                            <InertiaLink href="#!"> <img src="/img/PRODUCTOS/1.png" className="img-item-pedido" /> </InertiaLink>
                                                         </Grid>
                                                         <Grid item xs={12} sm={10} className="grid-info-pedido">
-                                                            <Grid item xs={12} className="txt-title-pedido-p">Harina para Hotcakes con proteína, avena y coco</Grid>
-                                                            <Grid item xs={12} className="txt-price-pedido">$55.00 MXN</Grid>
-                                                            <Grid item xs={12} className="txt-cantidad-pedido"><b>Cantidad: 2</b> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  2 x $110.00</Grid>
-                                                            <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
-                                                                <a href="#!" style={{textDecoration:'none', marginBottom:'0px'}}>
-                                                                    <Button  size="large" className="button-receta" endIcon={<ShoppingCartOutlinedIcon>send</ShoppingCartOutlinedIcon>}>
-                                                                        AGREGAR AL CARRITO
-                                                                    </Button>
-                                                                </a>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </Grid>
-                                                </Grid>
-                                                
-                                                {/* ITEM PEDIDO  */}
-                                                <Grid item xs={12} sm={6} md={4} style={{display:'flex'}}>
-                                                    <Grid style={{display:'flex', flexWrap:'wrap'}} className="item-pedido">
-                                                        <Grid item xs={2}>
-                                                            <img src="/img/PRODUCTOS/2.png" className="img-item-pedido" />
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={10} className="grid-info-pedido">
-                                                            <Grid item xs={12} className="txt-title-pedido-p">Harina para Hotcakes con proteína, avena y coco</Grid>
-                                                            <Grid item xs={12} className="txt-price-pedido">$55.00 MXN</Grid>
-                                                            <Grid item xs={12} className="txt-cantidad-pedido"><b>Cantidad: 2</b> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  2 x $110.00</Grid>
-                                                            <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
-                                                                <a href="#!" style={{textDecoration:'none', marginBottom:'0px'}}>
-                                                                    <Button  size="large" className="button-receta" endIcon={<ShoppingCartOutlinedIcon>send</ShoppingCartOutlinedIcon>}>
-                                                                        AGREGAR AL CARRITO
-                                                                    </Button>
-                                                                </a>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </Grid>
-                                                </Grid>
-
-                                                {/* ITEM PEDIDO  */}
-                                                <Grid item xs={12} sm={6} md={4} style={{display:'flex'}}>
-                                                    <Grid style={{display:'flex', flexWrap:'wrap'}} className="item-pedido">
-                                                        <Grid item xs={2}>
-                                                            <img src="/img/PRODUCTOS/3.png" className="img-item-pedido" />
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={10} className="grid-info-pedido">
-                                                            <Grid item xs={12} className="txt-title-pedido-p">Harina para Hotcakes con proteína, avena y coco</Grid>
+                                                            <Grid item xs={12} className="txt-title-pedido-p"><InertiaLink href="#!" style={{textDecoration:'none', color:'#474747'}}>Harina para Hotcakes con proteína, avena y coco</InertiaLink></Grid>
                                                             <Grid item xs={12} className="txt-price-pedido">$55.00 MXN</Grid>
                                                             <Grid item xs={12} className="txt-cantidad-pedido"><b>Cantidad: 2</b> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  2 x $110.00</Grid>
                                                             <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
@@ -143,7 +101,68 @@ const MisPedidos = () => {
                                     </Grid>
                                 </AccordionDetails>
                             </Accordion>
+                        </Grid>
 
+
+                        <Grid item xs={12} className="grid-container-pedido">
+                            <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')} className="grid-container-pedido">
+                                <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel2bh-content"
+                                id="panel1bh-header"
+                                className="grid-gray-info"
+                                >
+                                        <Grid item className="grid-child-gray">
+                                            <Grid className="header-title">PEDIDO REALIZADO</Grid>
+                                            <Grid className="header-info">24 Mayo 2021</Grid>
+                                        </Grid>
+
+                                        <Grid item className="grid-child-gray">
+                                            <Grid className="header-title">TOTAL</Grid>
+                                            <Grid className="header-info"><b>$7005.58 MXN</b></Grid>
+                                        </Grid>
+
+                                        <Grid item className="grid-child-gray">
+                                            <Grid className="header-title">TIPO DE ENTREGA</Grid>
+                                            <Grid className="header-info">Envío a domicilio</Grid>
+                                        </Grid>
+
+                                        <Grid item className="grid-child-gray">
+                                            <Grid className="header-title">TIPO DE PAGO</Grid>
+                                            <Grid className="header-info">Pago en efectivo</Grid>
+                                        </Grid>
+                                    
+                                </AccordionSummary>
+                                
+                                <AccordionDetails>
+                                    <Grid item xs={12} className="grid-white">
+                                        <Grid item xs={12} className="status-pedido">En espera de entrega</Grid>
+                                            <Grid container>
+                                                {/* ITEM PEDIDO  */}
+                                                <Grid item xs={12} sm={6} md={4} style={{display:'flex'}}>
+                                                    <Grid style={{display:'flex', flexWrap:'wrap'}} className="item-pedido">
+                                                        <Grid item xs={2}>
+                                                            <InertiaLink href="#!"> <img src="/img/PRODUCTOS/1.png" className="img-item-pedido" /> </InertiaLink>
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={10} className="grid-info-pedido">
+                                                            <Grid item xs={12} className="txt-title-pedido-p"><InertiaLink href="#!" style={{textDecoration:'none', color:'#474747'}}>Harina para Hotcakes con proteína, avena y coco</InertiaLink></Grid>
+                                                            <Grid item xs={12} className="txt-price-pedido">$55.00 MXN</Grid>
+                                                            <Grid item xs={12} className="txt-cantidad-pedido"><b>Cantidad: 2</b> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  2 x $110.00</Grid>
+                                                            <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
+                                                                <a href="#!" style={{textDecoration:'none', marginBottom:'0px'}}>
+                                                                    <Button  size="large" className="button-receta" endIcon={<ShoppingCartOutlinedIcon>send</ShoppingCartOutlinedIcon>}>
+                                                                        AGREGAR AL CARRITO
+                                                                    </Button>
+                                                                </a>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                        <Grid item xs={12} className="info-little-envio">Costos de envío a Dirección completa lorem ipsum dolor sit amet consecteur <b>$90.00 MXN</b></Grid>
+                                    </Grid>
+                                </AccordionDetails>
+                            </Accordion>
                         </Grid>
 
                     </Grid>
