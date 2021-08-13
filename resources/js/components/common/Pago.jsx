@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Dialog, Button, TextField, Snackbar, Portal } from '@material-ui/core';
+import { Dialog, Button, TextField, Snackbar, Portal, Radio } from '@material-ui/core';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import MuiAlert from '@material-ui/lab/Alert';
@@ -40,6 +40,18 @@ const theme = createMuiTheme({
     },
     status: {
         danger: 'orange',
+    },
+    overrides: {
+        MuiRadio: {
+            root: {
+                color: teal[100],
+            },
+            colorSecondary: {
+                '&$checked': {
+                    color: teal[500],
+                },
+            },
+        },
     },
 });
 
@@ -216,15 +228,27 @@ const useStyles = makeStyles((theme) => ({
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
+    costo: {
+        fontFamily: 'Oxygen',
+        fontStyle: 'normal',
+        fontWeight: 'bold',
+        fontSize: '15px',
+        lineHeight: '19px',
+        color: '#1DA3A8',
+        marginLeft: '0px',
+        marginRight: 'auto'
+    }
 }));
 
 export default function Pago({ dialog, handleClose }) {
     const { errors } = usePage().props
     const classes = useStyles();
     const [values, setValues] = useState({
-        tipo_de_pago: '',
+        tipo_de_envio: '',
         phone: '',
         direction: '',
+        costoEnvio: 0,
+        tipo_de_pago: '',
         step: 0,
         percent: 1,
         error: false
@@ -297,14 +321,16 @@ export default function Pago({ dialog, handleClose }) {
     }
 
     function nextStep() {
-        if (values.tipo_de_pago != '' && values.step == 0) {
-            if (values.tipo_de_pago == 'domicilio') {
+        if (values.tipo_de_envio != '' && values.step == 0) {
+            if (values.tipo_de_envio == 'domicilio') {
                 setValues(values => ({
                     ...values,
                     percent: 50,
                     step: 1
                 }));
-                getDirection(defaultLocation.lat, defaultLocation.lng);
+                if (values.direction == '') {
+                    getDirection(defaultLocation.lat, defaultLocation.lng);
+                }
             }
             else {
                 setValues(values => ({
@@ -319,12 +345,37 @@ export default function Pago({ dialog, handleClose }) {
         }
     }
 
+    function nextStep2() {
+        setValues(values => ({
+            ...values,
+            percent: 100,
+            step: 2
+        }));
+    }
+
     function backStep() {
         setValues(values => ({
             ...values,
             percent: 1,
             step: values.step - 1,
         }));
+    }
+
+    function backStep2() {
+        if (values.tipo_de_pago == 'domicilio') {
+            setValues(values => ({
+                ...values,
+                percent: 50,
+                step: 1
+            }));
+        }
+        else {
+            setValues(values => ({
+                ...values,
+                percent: 0,
+                step: 0
+            }));
+        }
     }
 
     function closeSnackSuccess() {
@@ -336,12 +387,19 @@ export default function Pago({ dialog, handleClose }) {
     const handleChangeSelect = (event) => {
         setValues(values => ({
             ...values,
+            tipo_de_envio: event.target.value,
+        }));
+    };
+
+    const handleChangeRadio = (event) => {
+        setValues(values => ({
+            ...values,
             tipo_de_pago: event.target.value,
         }));
     };
 
     //esto de abajo es para el mapa
-    const DefaultZoom = 12;
+    const DefaultZoom = 14;
     const [defaultLocation, setDefaultLocation] = useState({ lat: 19.705914384350006, lng: -101.19273489110634 });
 
     useEffect(() => {
@@ -368,6 +426,7 @@ export default function Pago({ dialog, handleClose }) {
             .then(res => res.json())
             .then(
                 (result) => {
+                    console.log(result);
                     setValues(values => ({
                         ...values,
                         direction: result.results[0].formatted_address,
@@ -380,7 +439,6 @@ export default function Pago({ dialog, handleClose }) {
                     console.log(error)
                 }
             )
-
     }
 
     const [location, setLocation] = useState(defaultLocation);
@@ -389,6 +447,10 @@ export default function Pago({ dialog, handleClose }) {
     function handleChangeLocation(lat, lng) {
         setLocation({ lat: lat, lng: lng });
         getDirection(lat, lng);
+        setValues(values => ({
+            ...values,
+            costoEnvio: 0,
+        }))
     }
 
     function handleChangeZoom(newZoom) {
@@ -400,8 +462,20 @@ export default function Pago({ dialog, handleClose }) {
         setZoom(DefaultZoom);
     }
 
-    function cotizarEnvio() {
-
+    function cotizarEnvio(e) {
+        e.preventDefault()
+        Inertia.post('/cotizar', location, {
+            preserveScroll: true,
+            onSuccess: (data) => {
+                setValues(values => ({
+                    ...values,
+                    costoEnvio: data.props.flash.data,
+                }))
+            },
+            onError: () => {
+                console.log('Intentalo mas tarde');
+            }
+        })
     }
 
     return (
@@ -437,7 +511,7 @@ export default function Pago({ dialog, handleClose }) {
                                     <Select
                                         labelId="demo-simple-select-placeholder-label-label"
                                         id="demo-simple-select-placeholder-label"
-                                        value={values.tipo_de_pago}
+                                        value={values.tipo_de_envio}
                                         onChange={handleChangeSelect}
                                         displayEmpty
                                         className={classes.textField}
@@ -480,85 +554,107 @@ export default function Pago({ dialog, handleClose }) {
                         </form>
                     }
                     {values.step == 1 &&
-                        <form className={classes.formulario} onSubmit={handleSubmit} id="login-form">
-                            <div className={classes.textDireccion} style={{ color: '#7C7C7C' }}>
-                                Ingresa tu dirección para poder calcular el costo de envío
-                            </div>
-                            <div className={classes.textDireccion} style={{ color: '#d1d1d1', fontSize: '12px' }}>
-                                Si deseas recoger tu producto podrás seleccionarlo antes de concluir tu compra.
-                            </div>
-                            <MuiThemeProvider theme={theme}>
-                                <TextField required id="direction" label="Dirección"
-                                    InputProps={{
-                                        className: classes.textField,
-                                        readOnly: true,
-                                    }}
-                                    InputLabelProps={{
-                                        classes: {
-                                            root: classes.formTextLabel
-                                        }
-                                    }}
-                                    FormHelperTextProps={{
-                                        className: classes.helperText
-                                    }}
-                                    fullWidth={true}
-                                    value={values.direction}
-                                    onChange={handleChange}
-                                    error={errors.direction && values.error == true && true}
-                                    helperText={values.error == true && errors.direction}
-                                />
-                            </MuiThemeProvider>
+                        <>
+                            <form className={classes.formulario} onSubmit={handleSubmit} id="login-form" style={{ marginBottom: 0 }}>
+                                <div className={classes.cardTitle} style={{ marginTop: "10px" }}>
+                                    COTIZAR COSTO DEL ENVÍO
+                                </div>
+                                <div className={classes.textDireccion} style={{ color: '#7C7C7C' }}>
+                                    Ingresa tu dirección para poder calcular el costo de envío
+                                </div>
+                                <div className={classes.textDireccion} style={{ color: '#d1d1d1', fontSize: '12px' }}>
+                                    Más tarde nos contactaremos contigo para verificar la dirección de envío
+                                </div>
+                                <MuiThemeProvider theme={theme}>
+                                    <TextField required id="direction" label="Dirección"
+                                        InputProps={{
+                                            className: classes.textField,
+                                            readOnly: true,
+                                        }}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
+                                        FormHelperTextProps={{
+                                            className: classes.helperText
+                                        }}
+                                        fullWidth={true}
+                                        value={values.direction}
+                                        onChange={handleChange}
+                                        error={errors.direction && values.error == true && true}
+                                        helperText={values.error == true && errors.direction}
+                                    />
+                                </MuiThemeProvider>
 
-                            <MapPicker defaultLocation={defaultLocation}
-                                zoom={zoom}
-                                mapTypeId="roadmap"
-                                style={{ height: '400px' }}
-                                onChangeLocation={handleChangeLocation}
-                                onChangeZoom={handleChangeZoom}
-                                apiKey='AIzaSyDAsRsMlBifyC8uKaJMAskmREIdfLqBYyA' />
+                                <MapPicker defaultLocation={defaultLocation}
+                                    zoom={zoom}
+                                    mapTypeId="roadmap"
+                                    style={{ height: '400px' }}
+                                    onChangeLocation={handleChangeLocation}
+                                    onChangeZoom={handleChangeZoom}
+                                    apiKey='AIzaSyDAsRsMlBifyC8uKaJMAskmREIdfLqBYyA' />
 
-
-                            <div style={{ textDecoration: "none", marginTop: '20px' }} className={classes.inertiaButton} >
-                                <Button variant="text" color="primary" type="button" disableElevation className={classes.buttonText} onClick={backStep}>
-                                    VOLVER
-                                </Button>
-                                <Button variant="contained" color="primary" type="button" disableElevation className={classes.buttonDial} onClick={cotizarEnvio}>
-                                    COTIZAR ENVÍO
-                                </Button>
-                            </div>
-                        </form>
+                                <div style={{ textDecoration: "none", marginTop: '20px', marginBottom: '5px' }} className={classes.inertiaButton} >
+                                    <Button variant="text" color="primary" type="button" disableElevation className={classes.buttonText} onClick={backStep}>
+                                        VOLVER
+                                    </Button>
+                                    {values.costoEnvio && (values.costoEnvio > 0 && values.costoEnvio < 145) ?
+                                        <Button variant="contained" color="primary" type="button" disableElevation className={classes.buttonDial} onClick={nextStep2}>
+                                            SIGUIENTE
+                                        </Button>
+                                        :
+                                        <Button variant="contained" color="primary" type="button" disableElevation className={classes.buttonDial} onClick={cotizarEnvio}>
+                                            COTIZAR ENVÍO
+                                        </Button>
+                                    }
+                                </div>
+                            </form>
+                            {values.costoEnvio < 145 ?
+                                <div className={classes.costo}>Costo del envío: ${values.costoEnvio}.00 MXN </div>
+                                :
+                                <div className={classes.costo}>Estás muy lejos de Comepasto, ponte en contacto con nosotros para encontrar una solución para tu envío </div>
+                            }
+                        </>
                     }
                     {values.step == 2 &&
                         <form className={classes.formulario} onSubmit={handleSubmit} id="login-form">
                             <div className={classes.textDireccion} style={{ color: '#7C7C7C' }}>
                                 Selecciona tu método de pago
                             </div>
-                            <div className={classes.textDireccion} style={{ color: '#d1d1d1', fontSize: '12px' }}>
-                                Si deseas recoger tu producto podrás seleccionarlo antes de concluir tu compra.
-                            </div>
                             <MuiThemeProvider theme={theme}>
-                                <TextField required id="direction" label="Dirección"
-                                    InputProps={{
-                                        className: classes.textField,
-                                    }}
-                                    InputLabelProps={{
-                                        classes: {
-                                            root: classes.formTextLabel
-                                        }
-                                    }}
-                                    FormHelperTextProps={{
-                                        className: classes.helperText
-                                    }}
-                                    fullWidth={true}
-                                    value={values.direction}
-                                    onChange={handleChange}
-                                    error={errors.direction && values.error == true && true}
-                                    helperText={values.error == true && errors.direction}
+                                <Radio
+                                    checked={values.tipo_de_pago === 'paypal'}
+                                    onChange={handleChangeRadio}
+                                    value="paypal"
+                                    name="radio-button-demo"
+                                    inputProps={{ 'aria-label': 'A' }}
+                                />
+                                <Radio
+                                    checked={values.tipo_de_pago === 'stripe'}
+                                    onChange={handleChangeRadio}
+                                    value="stripe"
+                                    name="radio-button-demo"
+                                    inputProps={{ 'aria-label': 'A' }}
+                                />
+                                <Radio
+                                    checked={values.tipo_de_pago === 'transferencia'}
+                                    onChange={handleChangeRadio}
+                                    value="transferencia"
+                                    name="radio-button-demo"
+                                    inputProps={{ 'aria-label': 'A' }}
+                                />
+                                <Radio
+                                    checked={values.tipo_de_pago === 'efectivo'}
+                                    onChange={handleChangeRadio}
+                                    value="efectivo"
+                                    name="radio-button-demo"
+                                    inputProps={{ 'aria-label': 'A' }}
                                 />
                             </MuiThemeProvider>
 
                             <div style={{ textDecoration: "none", marginTop: '120px' }} className={classes.inertiaButton} >
-                                <Button variant="text" color="primary" type="button" disableElevation className={classes.buttonText} onClick={backStep}>
+                                <Button variant="text" color="primary" type="button" disableElevation className={classes.buttonText} onClick={backStep2}>
                                     VOLVER
                                 </Button>
                                 <Button variant="contained" color="primary" type="submit" disableElevation className={classes.buttonDial} onClick={nextStep}>

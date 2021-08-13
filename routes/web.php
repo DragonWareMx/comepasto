@@ -40,7 +40,7 @@ Route::post('password/reset', [App\Http\Controllers\Auth\ResetPasswordController
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //PAGOS
-Route::post('cotizar', [App\Http\Controllers\PaymentController::class, 'cotizar'])->name('cotizar');
+Route::post('/cotizar', [App\Http\Controllers\PaymentController::class, 'cotizar'])->name('cotizar');
 
 //INICIO
 Route::get('/inicio', [App\Http\Controllers\Controller::class, 'inicio'])->name('inicio');
