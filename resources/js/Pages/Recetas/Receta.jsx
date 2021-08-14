@@ -19,8 +19,42 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import YouTubeIcon from '@material-ui/icons/YouTube';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    button: {
+        background: 'transparent',
+        color: '#9F9F9F',
+
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontSize: '13px',
+        lineHeight: '21px',
+
+        width: '220px',
+        height: '38px',
+
+        border: "1px solid #E3E3E3",
+
+        '&:hover': {
+            background: '#1DA3A8',
+            color: '#FFFFFF',
+        },
+    },
+    inertiaButton: {
+        width: "fit-content",
+        height: "fit-content",
+        backgroundColor: "transparent",
+        marginTop: "12px",
+        marginBottom: "20px",
+        padding: "0px",
+        border: "none"
+    },
+}));
 
 const Recetas = ({receta, productos}) => {
+    const classes = useStyles();
     return (
         <>
             <Grid container direction="row" flexwrap="wrap">
@@ -43,14 +77,14 @@ const Recetas = ({receta, productos}) => {
                     <Grid container direction="row" justify="flex-start" alignItems="center" spacing={0} style={{display:'flex',flexWrap:'wrap'}}>
                         
                         {productos && productos.map(producto=>(
-                        <Grid  className="grid-img-producto" id={producto.id}><InertiaLink href={route('product.show', producto.uuid)}><Tooltip title={producto.name}><img src={"/storage/productos/" + producto.foto}></img></Tooltip></InertiaLink></Grid>
+                        <Grid  className="grid-img-producto" key={producto.id + "producto"} id={producto.id}><InertiaLink href={route('product.show', producto.uuid)}><Tooltip title={producto.name}><img src={"/storage/productos/" + producto.foto}></img></Tooltip></InertiaLink></Grid>
                         ))}
                         
-                        <a href="#!" style={{textDecoration:'none', margin:'25px', marginBottom:'0px'}}>
+                        <InertiaLink href={route('cart.store', 1)} method="post" as="button" style={{textDecoration:'none', margin:'25px', marginBottom:'0px'}} className={classes.inertiaButton} preserveScroll>
                             <Button  size="large" className="button-receta" endIcon={<ShoppingCartOutlinedIcon>send</ShoppingCartOutlinedIcon>}>
                                 AGREGAR AL CARRITO
                             </Button>
-                        </a>
+                        </InertiaLink>
                     </Grid>
                 </Grid>
                 <Grid id="ingredientes_preparacion"></Grid>
