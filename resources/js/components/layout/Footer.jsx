@@ -36,7 +36,7 @@ export default function Footer() {
                     <div>Morelia, Michoacán, México</div>
                 </div>
                 <div className="footer-right">
-                    <a href="www.dragonware.com.mx" target="_blank"> Desarrollado por DragonWare <img src={Logo} alt="logo" style={{ width: "20px", height: "14px" }} /></a>
+                    <a href="https://www.dragonware.com.mx" target="_blank"> Desarrollado por DragonWare <img src={Logo} alt="logo" style={{ width: "20px", height: "14px" }} /></a>
                 </div>
             </div>
         </div>
