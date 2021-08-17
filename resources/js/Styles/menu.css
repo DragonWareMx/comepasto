@@ -242,7 +242,8 @@
   }
 
   .content{
-    margin-top: 137px;
+    padding-top: 137px;
+    min-height: calc(100vh - 131px);
     /* transition: height 0.2s; */
   }
 /*Aqui empiezan los estilos para que se vea chida la navbar chiquita*/
@@ -377,7 +378,7 @@
 
 @media (max-width: 850px) {
   .content {
-    margin-top: 60px !important;
+    padding-top: 60px !important;
   }
 
   header.mobile{
