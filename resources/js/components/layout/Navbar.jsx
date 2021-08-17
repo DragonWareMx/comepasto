@@ -35,11 +35,11 @@ export default function Navbar() {
             <nav className="main-navbar" id="main-navbar" style={{ zIndex: 999 }}>
                 <div className="navbar-sup">
                     <div className="div-redes">
-                        <a className="icono" href="http://facebook.com/comepastov">
+                        <a className="icono" href="http://facebook.com/comepastov" target='_blank'>
                             <img src="/img/icons/fb.png" alt="Facebok" width={"25px"} height={"25px"} />
                             Facebook
                         </a>
-                        <a className="icono" href="https://instagram.com/comepastov/" style={{ marginLeft: "15px" }}>
+                        <a className="icono" href="https://instagram.com/comepastov/" style={{ marginLeft: "15px" }} target='_blank'>
                             <img src="/img/icons/ig.png" alt="Instagram" width={"25px"} height={"25px"} />
                             Instagram
                         </a>
