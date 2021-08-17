@@ -98,21 +98,25 @@ const Preguntas = ({tipo, questions, pregunta}) => {
                             <Grid item xs={12} className='preguntas_contacto preguntas_first'>Contacto directo</Grid>
                             <Grid item xs={12} className='preguntas_contacto_items'>
                                 <div className='contacto_circles'><WhatsAppIcon style={{fontSize:20}}></WhatsAppIcon></div>
-                                <div>WhatsApp 44 44 44 44 44</div>
+                                <a href='https://api.whatsapp.com/send?phone=524432431668' target='_blank' style={{textDecoration:'none',color:'#7e7e7e'}}>WhatsApp 44 32 43 16 68</a>
                             </Grid>
                             <Grid item xs={12} className='preguntas_contacto_items'>
                                 <div className='contacto_circles'><EmailIcon style={{fontSize:20}}></EmailIcon></div>
-                                <div>E-mail corroe@ejemplo.com</div>
+                                <a href='mailto:comepastov@gmail.com' target='_blank' style={{textDecoration:'none',color:'#7e7e7e'}}>E-mail comepastov@gmail.com</a>
                             </Grid>
                             <div className='contacto_space'></div>
                             <Grid item xs={12} className='preguntas_contacto'>Redes sociales</Grid>
                             <Grid item xs={12} className='preguntas_contacto_items'>
                                 <div className='contacto_circles'><FacebookIcon style={{fontSize:20}}></FacebookIcon></div>
-                                <div>Facebook @comepasto</div>
+                                <a href='https://www.facebook.com/Comepastovegano' target='_blank' style={{textDecoration:'none',color:'#7e7e7e'}}>Facebook@comepastovegano</a>
                             </Grid>
                             <Grid item xs={12} className='preguntas_contacto_items'>
                                 <div className='contacto_circles'><InstagramIcon style={{fontSize:20}}></InstagramIcon></div>
-                                <div>Instagram @comepasto</div>
+                                <a href='https://www.instagram.com/comepastov/?hl=es-la' target='_blank' style={{textDecoration:'none',color:'#7e7e7e'}}>Instagram@comepasto</a>
+                            </Grid>
+                            <Grid item xs={12} className='preguntas_contacto_items'>
+                                <div className='contacto_circles'><img src='/images/iconos/tiktok.svg' style={{fill:'#7e7e7e'}}></img></div>
+                                <a href='https://www.tiktok.com/@comepastov?lang=es' target='_blank' style={{textDecoration:'none',color:'#7e7e7e'}}>TikTok@comepastov</a>
                             </Grid>
                             <div style={{display:'flex',width:'100%',height:20, backgroundColor:'transparent'}}></div>
                         </Grid>
