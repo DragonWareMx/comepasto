@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Recipe;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -46,7 +47,7 @@ class CartController extends Controller
 
         //se encuentra el producto
         $product = Product::find($id);
-
+        
         //si no hay producto se manda el mensaje de error
         if(!$product || $product->stock == 0){
             //si el producto existe en el carrito se elimina
@@ -176,5 +177,71 @@ class CartController extends Controller
     public function destroy(Cart $cart)
     {
         //
+    }
+
+
+    public function recipe($id, Request $request)
+    {
+        //si está loggeado
+        if(!\Auth::user()){
+            return \Redirect::back()->with('info','Inicia sesión.');
+        }
+
+        $recipe=Recipe::with('products:id')->findOrFail($id);
+
+        //contador para wachar los productos que no se puedan agregar
+        $cont=0;
+
+        foreach ($recipe->products as $product) {
+            //se encuentra el producto
+            $product = Product::find($product->id);
+            
+            //si no hay producto se manda el mensaje de error
+            if(!$product || $product->stock == 0){
+                //si el producto existe en el carrito se elimina
+                if(!is_null(\Auth::user()->cart()->where('product_id', $product->id)->first())){
+                    \Auth::user()->cart()->detach($product->id);
+                }
+                $cont++;
+                continue;
+                // return \Redirect::back()->with('error','El producto solicitado no se encuentra disponible.');
+            }
+
+            // checa si existe el producto en el carrito
+            $productInCart = \Auth::user()->cart()->where('product_id', $product->id)->first();
+
+            //si existe se suma la cantidad
+            if($productInCart) {
+                $cantidad = $productInCart->pivot->cantidad + 1;
+                $mensaje = true;
+                //si la cantidad no excede el stock
+                if($cantidad > $productInCart->stock){
+                    $cantidad = $productInCart->stock;
+                    $mensaje = false;
+                }
+                if($cantidad < 1){
+                    $cantidad = 1;
+                }
+                
+                \Auth::user()->cart()->sync([$product->id => ['cantidad' => $cantidad, 'estatus' => 'ready']], false);
+                
+                if(!$mensaje){
+                    // return \Redirect::back();
+                    $cont++;
+                }
+
+                //si excede el stock
+                // return \Redirect::back()->with('message','Ya no puede agregar más cantidad de este producto.');
+            }
+            else{
+                //si no existe el producto en el carrito se agrega
+                \Auth::user()->cart()->sync([$product->id => ['cantidad' => 1, 'estatus' => 'ready']], false);
+            }
+        }
+
+        if($cont>0){
+            return \Redirect::back()->with('message',$cont.' producto(s) no están disponibles, revisa el carrito.');
+        }
+        return \Redirect::back()->with('success','Productos agregados al carrito.');
     }
 }

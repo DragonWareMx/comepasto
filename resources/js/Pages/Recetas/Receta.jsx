@@ -80,7 +80,7 @@ const Recetas = ({receta, productos}) => {
                         <Grid  className="grid-img-producto" key={producto.id + "producto"} id={producto.id}><InertiaLink href={route('product.show', producto.uuid)}><Tooltip title={producto.name}><img src={"/storage/productos/" + producto.foto}></img></Tooltip></InertiaLink></Grid>
                         ))}
                         
-                        <InertiaLink href={route('cart.store', 1)} method="post" as="button" style={{textDecoration:'none', margin:'25px', marginBottom:'0px'}} className={classes.inertiaButton} preserveScroll>
+                        <InertiaLink href={route('cart.recipe', receta.id)} method="post" as="button" style={{textDecoration:'none', margin:'25px', marginBottom:'0px'}} className={classes.inertiaButton} preserveScroll>
                             <Button  size="large" className="button-receta" endIcon={<ShoppingCartOutlinedIcon>send</ShoppingCartOutlinedIcon>}>
                                 AGREGAR AL CARRITO
                             </Button>
