@@ -68,4 +68,6 @@ Route::get('/cuenta', [App\Http\Controllers\CuentaController::class, 'index'])->
 Route::get('/mispedidos', [App\Http\Controllers\CuentaController::class, 'misPedidos'])->name('misPedidos');
 Route::get('/informacion', [App\Http\Controllers\CuentaController::class, 'informacion'])->name('informacion');
 Route::get('/direcciones', [App\Http\Controllers\CuentaController::class, 'direcciones'])->name('direcciones');
+Route::get('/direcciones/agregar', [App\Http\Controllers\CuentaController::class, 'direccionesAdd'])->name('direcciones.agregar');
+Route::get('/direcciones/editar/{id}', [App\Http\Controllers\CuentaController::class, 'direccionesEdit'])->name('direcciones.editar');
 Route::get('/mispagos', [App\Http\Controllers\CuentaController::class, 'misPagos'])->name('misPagos');
