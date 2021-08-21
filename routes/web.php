@@ -41,7 +41,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //PAGOS
 Route::post('/cotizar', [App\Http\Controllers\PaymentController::class, 'cotizar'])->name('cotizar');
-Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'payment'])->name('cotizar');
+Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'payment'])->name('payment');
+Route::get('/payment/stripe', [App\Http\Controllers\PaymentController::class, 'stripe'])->name('stripe.index');
+Route::post('/payment/stripe/pay', [App\Http\Controllers\PaymentController::class, 'stripePay'])->name('stripe.pay');
 
 //INICIO
 Route::get('/inicio', [App\Http\Controllers\Controller::class, 'inicio'])->name('inicio');

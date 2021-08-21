@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Cartalyst\Stripe\Laravel\Facades\Stripe;
+use Cartalyst\Stripe\Exception\CardErrorException;
 
 class PaymentController extends Controller
 {
@@ -23,8 +26,38 @@ class PaymentController extends Controller
         return redirect()->back()->with('data', $costoEnvio);
     }
 
-    private function payment(Request $request)
+    public function payment(Request $request)
     {
+        if ($request->tipo_de_pago == 'stripe') {
+            return redirect()->route('stripe.index');
+        }
         dd($request->all());
+    }
+
+    public function stripe()
+    {
+        return Inertia::render('Stripe');
+    }
+
+    public function stripePay(Request $request)
+    {
+        try {
+            $charge = Stripe::charges()->create([
+                'amount' => 100,
+                'currency' => 'MXN',
+                'source' => $request->token,
+                'description' => 'Esta es la primera prueba',
+                'receipt_email' => 'inherentejohn@gmail.com',
+                'metadata' => [
+                    'contents' => 'Order id: 5',
+                    'quantity' => 1,
+                ]
+            ]);
+            //Successfull
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd($th);
+        }
     }
 }
