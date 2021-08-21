@@ -1,11 +1,12 @@
 import { React, useState, useEffect } from 'react';
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Dialog, Button, TextField, Snackbar, Portal, Radio, Grid } from '@material-ui/core';
+import { Dialog, Button, TextField, Snackbar, Portal, Radio, Grid, InputAdornment } from '@material-ui/core';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import MuiAlert from '@material-ui/lab/Alert';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import SearchIcon from '@material-ui/icons/Search';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -239,9 +240,9 @@ const useStyles = makeStyles((theme) => ({
         marginRight: 'auto'
     },
     pagoImg: {
-        width:'100%',
-        minWidth:'40px',
-        maxWidth:'76px',
+        width: '100%',
+        minWidth: '40px',
+        maxWidth: '76px',
     },
 }));
 
@@ -253,7 +254,7 @@ export default function Pago({ dialog, handleClose, subtotal }) {
         phone: '',
         direction: '',
         costoEnvio: 0,
-        tipo_de_pago: '',
+        tipo_de_pago: 'paypal',
         step: 0,
         percent: 1,
         error: false
@@ -261,6 +262,7 @@ export default function Pago({ dialog, handleClose, subtotal }) {
 
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
+    const [openInfo, setOpenInfo] = useState(false);
 
     const handleClick = () => {
         setOpen(true);
@@ -272,6 +274,17 @@ export default function Pago({ dialog, handleClose, subtotal }) {
         }
         handleClose();
         setOpen(false);
+    };
+
+    const handleClickInfo = () => {
+        setOpenInfo(true);
+    };
+
+    const handleCloseSnackInfo = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenInfo(false);
     };
 
     const handleClick2 = () => {
@@ -297,7 +310,7 @@ export default function Pago({ dialog, handleClose, subtotal }) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post('/register', values, {
+        Inertia.post('/payment', values, {
             preserveScroll: true,
             onSuccess: () => {
                 handleClick();
@@ -341,7 +354,8 @@ export default function Pago({ dialog, handleClose, subtotal }) {
                 setValues(values => ({
                     ...values,
                     percent: 100,
-                    step: 2
+                    step: 2,
+                    costoEnvio: 0,
                 }));
             }
         }
@@ -367,7 +381,7 @@ export default function Pago({ dialog, handleClose, subtotal }) {
     }
 
     function backStep2() {
-        if (values.tipo_de_pago == 'domicilio') {
+        if (values.tipo_de_envio == 'domicilio') {
             setValues(values => ({
                 ...values,
                 percent: 50,
@@ -404,7 +418,7 @@ export default function Pago({ dialog, handleClose, subtotal }) {
     };
 
     //esto de abajo es para el mapa
-    const DefaultZoom = 14;
+    const DefaultZoom = 16;
     const [defaultLocation, setDefaultLocation] = useState({ lat: 19.705914384350006, lng: -101.19273489110634 });
 
     useEffect(() => {
@@ -412,13 +426,14 @@ export default function Pago({ dialog, handleClose, subtotal }) {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(successFunction);
         } else {
-            alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
+            handleClickInfo();
         }
     }, []);
 
     function successFunction(position) {
         var lat = position.coords.latitude;
         var long = position.coords.longitude;
+        console.log('mi posicion: ', lat, long);
         setDefaultLocation({
             lat: lat, lng: long
         })
@@ -431,7 +446,7 @@ export default function Pago({ dialog, handleClose, subtotal }) {
             .then(res => res.json())
             .then(
                 (result) => {
-                    // console.log(result);
+                    console.log(result);
                     setValues(values => ({
                         ...values,
                         direction: result.results[0].formatted_address,
@@ -462,9 +477,41 @@ export default function Pago({ dialog, handleClose, subtotal }) {
         setZoom(newZoom);
     }
 
+    function handleChangeDirection(e) {
+        const key = e.target.id;
+        const value = e.target.value
+        setValues(values => ({
+            ...values,
+            costoEnvio: 0,
+            [key]: value,
+        }))
+    }
+
     function handleResetLocation() {
-        setDefaultLocation({ ...DefaultLocation });
-        setZoom(DefaultZoom);
+        // setDefaultLocation({ ...DefaultLocation });
+        // setZoom(DefaultZoom);
+        var uri = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURIComponent(values.direction) + '&key=AIzaSyDAsRsMlBifyC8uKaJMAskmREIdfLqBYyA';
+        // console.log(uri);
+        fetch(uri)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    var latitud = result.results[0].geometry.location.lat;
+                    var longitud = result.results[0].geometry.location.lng;
+                    setDefaultLocation({ lat: latitud, lng: longitud });
+                    setZoom(DefaultZoom);
+                    setValues(values => ({
+                        ...values,
+                        costoEnvio: 0,
+                    }));
+                },
+                // Nota: es importante manejar errores aquí y no en
+                // un bloque catch() para que no interceptemos errores
+                // de errores reales en los componentes.
+                (error) => {
+                    console.log(error)
+                }
+            )
     }
 
     function cotizarEnvio(e) {
@@ -483,7 +530,7 @@ export default function Pago({ dialog, handleClose, subtotal }) {
         })
     }
 
-    function sacarSubtotal(subtotal){
+    function sacarSubtotal(subtotal) {
         return parseFloat(subtotal.substring(1))
     }
 
@@ -578,7 +625,15 @@ export default function Pago({ dialog, handleClose, subtotal }) {
                                     <TextField required id="direction" label="Dirección"
                                         InputProps={{
                                             className: classes.textField,
-                                            readOnly: true,
+                                            endAdornment:
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        aria-label="Cambiar direccion"
+                                                        onClick={handleResetLocation}
+                                                    >
+                                                        <SearchIcon />
+                                                    </IconButton>
+                                                </InputAdornment>
                                         }}
                                         InputLabelProps={{
                                             classes: {
@@ -590,7 +645,7 @@ export default function Pago({ dialog, handleClose, subtotal }) {
                                         }}
                                         fullWidth={true}
                                         value={values.direction}
-                                        onChange={handleChange}
+                                        onChange={handleChangeDirection}
                                         error={errors.direction && values.error == true && true}
                                         helperText={values.error == true && errors.direction}
                                     />
@@ -633,7 +688,7 @@ export default function Pago({ dialog, handleClose, subtotal }) {
                             </div>
                             <Grid container alignItems='center' spacing={2}>
                                 <MuiThemeProvider theme={theme}>
-                                    <Grid item sm={6} md={3} style={{alignItems:'center', display:'flex'}}>
+                                    <Grid item sm={6} md={3} style={{ alignItems: 'center', display: 'flex' }}>
                                         <Radio
                                             checked={values.tipo_de_pago === 'paypal'}
                                             onChange={handleChangeRadio}
@@ -646,7 +701,7 @@ export default function Pago({ dialog, handleClose, subtotal }) {
                                             className={classes.pagoImg}
                                         />
                                     </Grid>
-                                    <Grid item sm={6} md={3} style={{alignItems:'center', display:'flex'}}>
+                                    <Grid item sm={6} md={3} style={{ alignItems: 'center', display: 'flex' }}>
                                         <Radio
                                             checked={values.tipo_de_pago === 'stripe'}
                                             onChange={handleChangeRadio}
@@ -654,12 +709,12 @@ export default function Pago({ dialog, handleClose, subtotal }) {
                                             name="radio-button-demo"
                                             inputProps={{ 'aria-label': 'A' }}
                                         />
-                                        <img 
+                                        <img
                                             src='/img/pago/stripe.png'
                                             className={classes.pagoImg}
                                         />
                                     </Grid>
-                                    <Grid item sm={6} md={3} style={{alignItems:'center', display:'flex'}}>
+                                    <Grid item sm={6} md={3} style={{ alignItems: 'center', display: 'flex' }}>
                                         <Radio
                                             checked={values.tipo_de_pago === 'transferencia'}
                                             onChange={handleChangeRadio}
@@ -667,9 +722,9 @@ export default function Pago({ dialog, handleClose, subtotal }) {
                                             name="radio-button-demo"
                                             inputProps={{ 'aria-label': 'A' }}
                                         />
-                                        <div style={{fontFamily:'Atma', fontSize:13, color:'#333333', marginTop:3}}>Transferencia</div>
+                                        <div style={{ fontFamily: 'Atma', fontSize: 13, color: '#333333', marginTop: 3 }}>Transferencia</div>
                                     </Grid>
-                                    <Grid item sm={6} md={3} style={{alignItems:'center', display:'flex'}}>
+                                    <Grid item sm={6} md={3} style={{ alignItems: 'center', display: 'flex' }}>
                                         <Radio
                                             checked={values.tipo_de_pago === 'efectivo'}
                                             onChange={handleChangeRadio}
@@ -677,23 +732,23 @@ export default function Pago({ dialog, handleClose, subtotal }) {
                                             name="radio-button-demo"
                                             inputProps={{ 'aria-label': 'A' }}
                                         />
-                                        <div style={{fontFamily:'Atma', fontSize:13, color:'#333333', marginTop:3}}>Efectivo</div>
+                                        <div style={{ fontFamily: 'Atma', fontSize: 13, color: '#333333', marginTop: 3 }}>Efectivo</div>
                                     </Grid>
                                 </MuiThemeProvider>
                             </Grid>
 
-                            <Grid container style={{marginTop:33}}>
-                                <Grid item xs={12} style={{fontFamily:'Oxygen', fontSize:14, color:'#595959', fontWeight:400}}> Costo del pedido: {subtotal && subtotal} MXN</Grid>
-                                <Grid item xs={12} style={{fontFamily:'Oxygen', fontSize:14, color:'#595959', marginTop:10, fontWeight:400}}> Costo del envio: ${values.costoEnvio && values.costoEnvio}.00 MXN</Grid>
-                                <Grid item xs={12} style={{fontFamily:'Oxygen', fontSize:15, color:'#1DA3A8', marginTop:10, fontWeight:700}}> TOTAL: ${values.costoEnvio + sacarSubtotal(subtotal)} MXN</Grid>
+                            <Grid container style={{ marginTop: 33 }}>
+                                <Grid item xs={12} style={{ fontFamily: 'Oxygen', fontSize: 14, color: '#595959', fontWeight: 400 }}> Costo del pedido: {subtotal && subtotal} MXN</Grid>
+                                <Grid item xs={12} style={{ fontFamily: 'Oxygen', fontSize: 14, color: '#595959', marginTop: 10, fontWeight: 400 }}> Costo del envio: ${values.costoEnvio && values.costoEnvio}.00 MXN</Grid>
+                                <Grid item xs={12} style={{ fontFamily: 'Oxygen', fontSize: 15, color: '#1DA3A8', marginTop: 10, fontWeight: 700 }}> TOTAL: ${values.costoEnvio + sacarSubtotal(subtotal)} MXN</Grid>
                             </Grid>
 
                             <div style={{ textDecoration: "none", marginTop: '30px' }} className={classes.inertiaButton} >
                                 <Button variant="text" color="primary" type="button" disableElevation className={classes.buttonText} onClick={backStep2}>
                                     VOLVER
                                 </Button>
-                                <Button variant="contained" color="primary" type="submit" disableElevation className={classes.buttonDial} onClick={nextStep}>
-                                    REGISTRARME
+                                <Button variant="contained" color="primary" type="submit" disableElevation className={classes.buttonDial}>
+                                    {values.tipo_de_pago == 'stripe' ? 'SIGUIENTE' : 'FINALIZAR COMPRA'}
                                 </Button>
                             </div>
                         </form>
@@ -712,6 +767,11 @@ export default function Pago({ dialog, handleClose, subtotal }) {
                 <Snackbar open={open2} autoHideDuration={6000} onClose={handleCloseSnack2}>
                     <Alert onClose={handleCloseSnack2} severity="error">
                         Por favor llena todos los campos antes de continuar.
+                    </Alert>
+                </Snackbar>
+                <Snackbar open={openInfo} autoHideDuration={4000} onClose={handleCloseSnackInfo}>
+                    <Alert onClose={handleCloseSnackInfo} severity="info">
+                        Para tener una mejor experiencia por favor activa tu ubicación y recarga la página.
                     </Alert>
                 </Snackbar>
             </Portal>

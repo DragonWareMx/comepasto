@@ -22,4 +22,9 @@ class PaymentController extends Controller
         $costoEnvio = $costoEnvio + 25;
         return redirect()->back()->with('data', $costoEnvio);
     }
+
+    private function payment(Request $request)
+    {
+        dd($request->all());
+    }
 }
