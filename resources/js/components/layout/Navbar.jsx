@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import route from 'ziggy-js';
+import { makeStyles, createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
 
 import Cart from '../layout/Cart'
 import SearchIcon from '@material-ui/icons/Search';
@@ -7,9 +8,65 @@ import { InertiaLink } from '@inertiajs/inertia-react';
 import MenuIcon from '@material-ui/icons/Menu';
 import Slide from '@material-ui/core/Slide';
 
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import teal from '@material-ui/core/colors/teal';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 
+
+const useStyles = makeStyles((theme) => ({
+    input: {
+        minWidth: '250px',
+        maxWidth: '350px',
+        fontFamily: "Atma",
+        fontStyle: 'normal',
+        fontWeight: '400',
+        fontSize: '15px',
+        lineHeight: '23px',
+        color: '#333333',
+        marginTop: '20px',
+        marginBottom: '20px',
+      "&:not(.Mui-disabled):hover::before": {
+        borderColor: "#1DA3A8"
+        },
+    },
+    formTextLabel: {
+        fontFamily: 'Atma',
+        fontSize: '14px',
+        lineHeight: '19.5px',
+        color: '#9E9E9E'
+    },
+  }));
+
+const theme = createMuiTheme({
+    palette: {
+        secondary: {
+            // light: will be calculated from palette.primary.main,
+            main: '#ff4400',
+            // dark: will be calculated from palette.primary.main,
+            // contrastText: will be calculated to contrast with palette.primary.main
+        },
+        primary: {
+            light: '#1DA3A8',
+            main: teal[500],
+            // dark: will be calculated from palette.secondary.main,
+            contrastText: '#ffcc00',
+        },
+        // error: will use the default color
+    },
+    status: {
+        danger: 'orange',
+    },
+});
 
 export default function Navbar() {
+
+    const classes = useStyles();
+
     useEffect(() => {
         window.addEventListener('scroll', (e) => {
             var navbar = document.getElementById('main-navbar');
@@ -28,6 +85,45 @@ export default function Navbar() {
 
     function handleClick() {
         setNavDialog((prev) => !prev)
+    }
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    function handleChange(e) {
+        const key = e.target.id;
+        const value = e.target.value
+        setValues(values => ({
+            ...values,
+            [key]: value,
+        }))
+    }
+
+    const [values, setValues] = useState({
+        busqueda: '',
+    });
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.post('/buscar', values, {
+            preserveScroll: true,
+            onSuccess: () => {
+
+            },
+            onError: () => {
+                setValues(values => ({
+                    ...values,
+                    error: true
+                }));
+            }
+        })
     }
 
     return (
@@ -65,7 +161,7 @@ export default function Navbar() {
                         </InertiaLink>
                     </div>
                     <div className="div-iconos">
-                        <SearchIcon fontSize="large" style={{ color: '#1DA3A8' }} />
+                        <SearchIcon fontSize="large" style={{ color: '#1DA3A8',cursor:'pointer'}}  onClick={handleClickOpen} />
                         <Cart bDialog={true} />
                     </div>
                 </div>
@@ -98,7 +194,7 @@ export default function Navbar() {
                 </div>
                 <div className="right">
                     <div className="div-iconos">
-                        <SearchIcon fontSize="large" style={{ color: '#1DA3A8' }} />
+                        <SearchIcon fontSize="large" style={{ color: '#1DA3A8' }}  onClick={handleClickOpen}/>
                         <Cart bDialog={false} />
                     </div>
                 </div>
@@ -123,6 +219,43 @@ export default function Navbar() {
                     </ul>
                 </nav>
             } */}
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <form onSubmit={handleSubmit}>
+                    {/* <DialogTitle className='busqueda_title'>Búscar</DialogTitle> */}
+                    <DialogContent>
+                    <DialogContentText style={{fontFamily:'Oxygen', fontSize:15, color:'#7c7c7c'}}>
+                        Busca tu producto favorito en comepasto.
+                    </DialogContentText>
+                        <MuiThemeProvider theme={theme}>
+                        <TextField
+                            autoFocus
+                            id="busqueda"
+                            type="text"
+                            fullWidth
+                            required
+                            InputProps={{
+                                className: classes.input,
+                            }}
+                            InputLabelProps={{
+                                classes: {
+                                    root: classes.formTextLabel
+                                }
+                            }}
+                            value={values.busqueda}
+                            onChange={handleChange}
+                        />
+                        </MuiThemeProvider>
+                    </DialogContent>
+                    <DialogActions>
+                    <Button onClick={handleClose} color="primary" style={{fontFamily:'Atma', fontSize:14, color:'#7E7E7E', textDecoration:'none'}}>
+                        Cancelar
+                    </Button>
+                    <Button type='submit' color="primary" style={{fontFamily:'Atma', fontSize:14,color: '#FFFFFF', textDecoration:'none',backgroundColor:'#1DA3A8',paddingLeft:15,paddingRight:15,marginRight:15}}>
+                        Buscar
+                    </Button>
+                    </DialogActions>
+                </form>
+            </Dialog>
         </div>
     );
 }

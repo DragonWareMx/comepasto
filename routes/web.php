@@ -58,6 +58,7 @@ Route::name('cart.')->group(function () {
     //agrega al carrito
     Route::post('/producto/{id}', [App\Http\Controllers\CartController::class, 'store'])->name('store');
     Route::patch('/producto/{id}', [App\Http\Controllers\CartController::class, 'update'])->name('update');
+    Route::post('/recetaCarrito/{id}', [App\Http\Controllers\CartController::class, 'recipe'])->name('recipe');
 });
 
 //PRODUCTO
@@ -71,4 +72,6 @@ Route::get('/cuenta', [App\Http\Controllers\CuentaController::class, 'index'])->
 Route::get('/mispedidos', [App\Http\Controllers\CuentaController::class, 'misPedidos'])->name('misPedidos');
 Route::get('/informacion', [App\Http\Controllers\CuentaController::class, 'informacion'])->name('informacion');
 Route::get('/direcciones', [App\Http\Controllers\CuentaController::class, 'direcciones'])->name('direcciones');
+Route::get('/direcciones/agregar', [App\Http\Controllers\CuentaController::class, 'direccionesAdd'])->name('direcciones.agregar');
+Route::get('/direcciones/editar/{id}', [App\Http\Controllers\CuentaController::class, 'direccionesEdit'])->name('direcciones.editar');
 Route::get('/mispagos', [App\Http\Controllers\CuentaController::class, 'misPagos'])->name('misPagos');

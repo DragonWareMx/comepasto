@@ -154,6 +154,7 @@
     font-size: 15px;
     line-height: 19px;
     color: #707070;
+    text-transform: uppercase !important;
 }
 .grid-white-info{
     border: 1px solid #D3D3D3;
@@ -256,16 +257,38 @@
 .grid-add{
     margin-left: 30px !important;
     border-radius: 4px !important;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
     font-family: Atma;
     font-style: normal;
     font-weight: 500;
     font-size: 12px;
     line-height: 19px;
+    
+    padding: 0px !important;
+}
+.link-add{
     color: #707070;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 18px;
+    transition: all ease-in-out 0.25s;
+}
+.link-add:hover, .link-add:focus{
+    color:#1DA3A8;
+    transition: all ease-in-out 0.25s;
+}
+.check-pre{
+    color:#1DA3A8 !important;
+}
+.label-check{
+    color:#707070 !important;
+}
+.MuiTypography-body1{
+    font-size: 14px !important;
+    font-family: Atma !important;
 }
 
 
@@ -302,5 +325,9 @@
     }
     .grid-add{
         margin-left: 0px !important;
+    }
+    .grid-primer-dir{
+        display: flex;
+        flex-wrap: wrap-reverse !important;
     }
 }
