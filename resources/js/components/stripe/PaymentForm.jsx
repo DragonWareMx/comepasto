@@ -1,22 +1,45 @@
 import React, { useState } from 'react'
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import { Button, TextField, Grid } from '@material-ui/core';
 import axios from 'axios';
 import { Inertia } from '@inertiajs/inertia'
-
+import { InertiaLink, usePage } from '@inertiajs/inertia-react'
+import teal from '@material-ui/core/colors/teal';
 
 import '../../Styles/stripe.css';
+
+const theme = createMuiTheme({
+    palette: {
+        secondary: {
+            // light: will be calculated from palette.primary.main,
+            main: '#ff4400',
+            // dark: will be calculated from palette.primary.main,
+            // contrastText: will be calculated to contrast with palette.primary.main
+        },
+        primary: {
+            light: '#0066ff',
+            main: teal[500],
+            // dark: will be calculated from palette.secondary.main,
+            contrastText: '#ffcc00',
+        },
+        // error: will use the default color
+    },
+    status: {
+        danger: 'orange',
+    },
+});
 
 const useStyles = makeStyles((theme) => ({
     formGroup: {
         margin: '0 15px 20px',
         padding: 0,
         borderStyle: 'none',
-        backgroundColor: '#7795f8',
+        borderBottom: '2px solid #C5C5C5',
+        backgroundColor: 'transparent',
         willChange: 'opacity, transform',
-        boxShadow: '0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #829fff',
-        borderRadius: '4px',
+        //boxShadow: '0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #829fff',
+        borderRadius: '1px',
     },
     formRow: {
         display: '-ms-flexbox',
@@ -24,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
         "-ms-flex-align": 'center',
         alignItems: 'center',
         marginLeft: '15px',
-        borderTop: '1px solid #819efc',
+        // borderTop: '1px solid #819efc',
     },
     buttonDial: {
         background: '#1DA3A8',
@@ -35,9 +58,6 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 'normal',
         fontSize: '13px',
         lineHeight: '21px',
-
-        minWidth: '220px',
-        maxWidth: '319px',
         height: '45px',
         width: "100%",
 
@@ -49,9 +69,8 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     inertiaButton: {
-        width: "90%",
-        minWidth: '220px',
-        maxWidth: '319px',
+        width: "100%",
+
 
         height: "fit-content",
         backgroundColor: "transparent",
@@ -62,20 +81,51 @@ const useStyles = makeStyles((theme) => ({
         padding: "0px",
         border: "none",
     },
+    formulario: {
+        padding: "0px 2%",
+        marginBottom: "20px",
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap'
+    },
+    textField: {
+        fontFamily: "Atma",
+        fontStyle: 'normal',
+        fontWeight: '400',
+        fontSize: '15px',
+        lineHeight: '23px',
+        color: '#333333',
+        marginTop: '10px',
+        marginBottom: '10px',
+        "&:not(.Mui-disabled):hover::before": {
+            borderColor: "#1DA3A8"
+        }
+    },
+    formTextLabel: {
+        fontFamily: 'Atma',
+        fontSize: '14px',
+        lineHeight: '19.5px',
+        color: '#9E9E9E'
+    },
+    helperText: {
+        marginTop: '-12px',
+        fontFamily: 'Atma',
+        fontSize: '14px',
+    },
 }));
 
 const CARD_OPTIONS = {
     iconStyle: 'solid',
     style: {
         base: {
-            iconColor: '#c4f0ff',
-            color: '#fff',
-            fontWeight: 500,
+            iconColor: '#1DA3A8',
+            color: '#0e0e0e',
+            fontWeight: 400,
             fontFamily: "Monsterrat, Roboto, Open Sans, Segoe UI, sans-serif",
             fontSize: "16px",
-            fontSmoothing: 'antialiased',
-            ":-webkit-autofill": { color: "#fce883" },
-            "::placeholder": { color: "#87bbfd" }
+            fontSmoothing: 'auto',
+            ":-webkit-autofill": { color: "#9E9E9E" },
+            "::placeholder": { color: "#9E9E9E" }
         },
         invalid: {
             iconColor: "#FFC7EE",
@@ -90,6 +140,25 @@ export default function PaymentForm() {
     const stripe = useStripe();
     const elements = useElements();
     const classes = useStyles();
+    const { errors, flash } = usePage().props
+
+    const [values, setValues] = useState({
+        name: '',
+        address_line1: '',
+        address_line2: '',
+        address_city: '',
+        address_state: '',
+        address_zip: '',
+    });
+
+    function handleChange(e) {
+        const key = e.target.id;
+        const value = e.target.value
+        setValues(values => ({
+            ...values,
+            [key]: value,
+        }))
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -140,6 +209,120 @@ export default function PaymentForm() {
         <>
             {!success ?
                 <form onSubmit={handleSubmit}>
+                    <div className={classes.formulario}>
+                        <MuiThemeProvider theme={theme}>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} >
+                                    <TextField required id="name" label="Nombre en tarjeta"
+                                        InputProps={{
+                                            className: classes.textField,
+                                        }}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
+                                        FormHelperTextProps={{
+                                            className: classes.helperText
+                                        }}
+                                        fullWidth={true}
+                                        value={values.name}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <TextField required id="address_line1" label="Calle y número"
+                                        InputProps={{
+                                            className: classes.textField,
+                                        }}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
+                                        FormHelperTextProps={{
+                                            className: classes.helperText
+                                        }}
+                                        fullWidth={true}
+                                        value={values.address_line1}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <TextField required id="address_line2" label="Colonia"
+                                        InputProps={{
+                                            className: classes.textField,
+                                        }}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
+                                        FormHelperTextProps={{
+                                            className: classes.helperText
+                                        }}
+                                        fullWidth={true}
+                                        value={values.address_line2}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <TextField required id="address_city" label="Ciudad"
+                                        InputProps={{
+                                            className: classes.textField,
+                                        }}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
+                                        FormHelperTextProps={{
+                                            className: classes.helperText
+                                        }}
+                                        fullWidth={true}
+                                        value={values.address_city}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <TextField required id="address_state" label="Estado"
+                                        InputProps={{
+                                            className: classes.textField,
+                                        }}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
+                                        FormHelperTextProps={{
+                                            className: classes.helperText
+                                        }}
+                                        fullWidth={true}
+                                        value={values.address_state}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <TextField required id="address_zip" label="Código Postal"
+                                        InputProps={{
+                                            className: classes.textField,
+                                        }}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
+                                        FormHelperTextProps={{
+                                            className: classes.helperText
+                                        }}
+                                        fullWidth={true}
+                                        value={values.address_zip}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </MuiThemeProvider>
+                    </div>
                     <fieldset className={classes.formGroup}>
                         <div className={classes.formRow}>
                             <CardElement options={CARD_OPTIONS}></CardElement>
