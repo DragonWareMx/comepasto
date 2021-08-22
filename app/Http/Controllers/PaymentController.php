@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Cartalyst\Stripe\Exception\CardErrorException;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -36,6 +37,9 @@ class PaymentController extends Controller
 
     public function stripe()
     {
+        if (Auth::guest()) {
+            return redirect()->route('inicio')->with('info', 'Por favor primero inicia sesión.');
+        }
         return Inertia::render('Stripe');
     }
 
