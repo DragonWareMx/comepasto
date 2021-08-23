@@ -112,6 +112,43 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Atma',
         fontSize: '14px',
     },
+    inertiaButtonCart: {
+        width: "fit-content",
+        height: "fit-content",
+        backgroundColor: "transparent",
+        marginTop: "12px",
+        marginBottom: "20px",
+        padding: "0px",
+        border: "none"
+    },
+    buttonCart: {
+        background: 'transparent',
+        color: '#9F9F9F',
+
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontSize: '13px',
+        lineHeight: '21px',
+
+        width: '100%',
+        height: '38px',
+
+        border: "1px solid #E3E3E3",
+
+        '&:hover': {
+            background: '#1DA3A8',
+            color: '#FFFFFF',
+        },
+    },
+    mensaje: {
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: 400,
+        fontSize: '18px',
+        lineHeight: '25px',
+        color: '#1e1e1e',
+    }
 }));
 
 const CARD_OPTIONS = {
@@ -167,11 +204,10 @@ export default function PaymentForm() {
         //     card: elements.getElement(CardElement),
         // });
 
-        const { error, token } = await stripe.createToken(elements.getElement(CardElement));
+        const { error, token } = await stripe.createToken(elements.getElement(CardElement), values);
 
         if (!error) {
             try {
-                // const { id } = paymentMethod;
                 const { id } = token;
                 //aqui deberia de ir axios
                 console.log(id);
@@ -184,14 +220,13 @@ export default function PaymentForm() {
                 Inertia.post('/payment/stripe/pay', { token: id }, {
                     preserveScroll: true,
                     onSuccess: () => {
-                        console.log('funcionó prrin')
+                        setSuccess(true);
                     },
                     onError: () => {
-                        console.log('no jaló prrin')
+                        var div = document.getElementById('stripe-error');
+                        div.innerText = 'Ocurrió un error inesperado, intentalo más tarde.';
                     }
                 })
-
-                setSuccess(true);
             } catch (error) {
                 console.log("Error", error)
                 var div = document.getElementById('stripe-error');
@@ -335,7 +370,16 @@ export default function PaymentForm() {
                 </form>
                 :
                 <div>
-                    <h4>Gracias por tu compra prrin</h4>
+                    <h4 className={classes.mensaje}>Comepasto te agradece tu compra, en tu correo electrónico recibirás los detalles de tu compra. Conoce más productos en nuestra tienda.</h4>
+                    <Grid container direction="column"
+                        justifyContent="center"
+                        alignItems="center">
+                        <InertiaLink href={route('inicio') + '#tienda'} as="button" style={{ textDecoration: "none" }} className={classes.inertiaButtonCart} preserveScroll>
+                            <Button variant="contained" color="primary" component="div" disableElevation className={classes.buttonCart}>
+                                IR A LA TIENDA
+                            </Button>
+                        </InertiaLink>
+                    </Grid>
                 </div>
             }
         </>
