@@ -351,7 +351,7 @@ const Products = ({products, categories, request}) => {
                             </InertiaLink>
                         </Grid>
 
-                        <Grid item>
+                        <Grid item id="productos">
                             <InertiaLink href={route('inicio')} data={{ categoria: "DESTACADOS" }} style={{textDecoration: "none"}} preserveScroll preserveState>
                                 <Paper className={classes.paper} elevation={0} square>
                                     <Grid container direction="column" justify="center" alignItems="center" style={{height: "100%"}}>
@@ -377,7 +377,7 @@ const Products = ({products, categories, request}) => {
                             NUESTROS PRODUCTOS
                         </Grid>
                         <Grid item className="quienes_marcas_title" style={{fontWeight: 100}}>
-                            {request.categoria ?? "DESTACADOS"}
+                            {request.busqueda ? "BÚSQUEDA" : request.categoria ?? "DESTACADOS"}
                         </Grid>
                     </Grid>
 
