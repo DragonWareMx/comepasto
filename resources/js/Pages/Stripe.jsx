@@ -215,7 +215,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Stripe = () => {
+const Stripe = ({ costoEnvio }) => {
     const classes = useStyles();
     const { auth, flash } = usePage().props
 
@@ -261,6 +261,10 @@ const Stripe = () => {
             precioDescuento = 0
 
         return "$" + parseFloat(precioDescuento).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " MXN"
+    }
+
+    function sacarSubtotal(subtotal) {
+        return parseFloat(subtotal.substring(1))
     }
 
     return (
@@ -380,7 +384,7 @@ const Stripe = () => {
 
                                     <Grid item>
                                         <Typography gutterBottom className={classes.precioTotal} align="right">
-                                            {'$0.00'}
+                                            {'$'}{costoEnvio}{'.00'}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -394,7 +398,7 @@ const Stripe = () => {
 
                                     <Grid item>
                                         <Typography gutterBottom className={classes.precioTotal} align="right">
-                                            {calcularTotal(auth.cart)}
+                                            ${costoEnvio + sacarSubtotal(calcularTotal(auth.cart))}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -406,7 +410,7 @@ const Stripe = () => {
                                     direction="column"
                                     justifyContent="center"
                                     alignItems="center"
-                                    style={{ width: 250, margin: 10 }}
+                                    style={{ marginTop: 30 }}
                                 >
                                     <Grid item>
                                         <ShoppingCartOutlinedIcon style={{ fontSize: 50, color: "#1DA3A8" }} />
@@ -440,7 +444,7 @@ const Stripe = () => {
 };
 
 Stripe.layout = (page) => (
-    <Layout children={page} title="Pago con Stripe" pageTitle="Pago con Stripe" />
+    <Layout children={page} title="Comepasto - Finalizar Compra" pageTitle="" />
 );
 
 export default Stripe;

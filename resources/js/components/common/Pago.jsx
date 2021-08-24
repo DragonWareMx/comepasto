@@ -313,7 +313,7 @@ export default function Pago({ dialog, handleClose, subtotal }) {
         Inertia.post('/payment', values, {
             preserveScroll: true,
             onSuccess: () => {
-                handleClick();
+                //aqui debería ir para cerrar el carrito xd
             },
             onError: () => {
                 setValues(values => ({
