@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ReceiptComepasto;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\User;
@@ -152,10 +153,11 @@ class PaymentController extends Controller
         $var = config('app.env');
         if ($var == 'production') {
             Mail::to(Auth::user()->email)->send(new ReceiptSale($id_sale));
-            //Mail::to('joseagustinsolorzano@gmail.com')->send(new ReceiptSale($id_sale));
-            //Mail::to('comepastov@gmail.com')->send(new ReceiptSale($id_sale));
+            Mail::to('joseagustinsolorzano@gmail.com')->send(new ReceiptComepasto($id_sale));
+            Mail::to('comepastov@gmail.com')->send(new ReceiptComepasto($id_sale));
         } else {
             Mail::to(Auth::user()->email)->send(new ReceiptSale($id_sale));
+            Mail::to(Auth::user()->email)->send(new ReceiptComepasto($id_sale));
         }
     }
 }
