@@ -9,11 +9,13 @@ class Sale extends Model
 {
     use HasFactory;
 
-    public function client(){
+    public function client()
+    {
         return $this->belongsTo('App\Models\User');
     }
 
-    public function product(){
-        return $this->belongsToMany('App\Models\Product');
+    public function product()
+    {
+        return $this->belongsToMany('App\Models\Product')->withPivot('precio', 'descuento', 'cantidad');
     }
 }

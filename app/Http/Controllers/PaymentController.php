@@ -11,6 +11,8 @@ use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Cartalyst\Stripe\Exception\CardErrorException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReceiptSale;
 
 class PaymentController extends Controller
 {
@@ -36,6 +38,7 @@ class PaymentController extends Controller
     {
         if ($request->tipo_de_pago == 'stripe') {
             session()->put('tipo_de_envio', $request->tipo_de_envio);
+            session()->put('direccion', $request->direction);
             return redirect()->route('stripe.index');
         }
         dd($request->all());
@@ -92,6 +95,8 @@ class PaymentController extends Controller
             $venta->formaPago = 'stripe';
             $venta->total = $total;
             $venta->ganancia = 0;
+            $venta->tipo_entrega = session()->get('tipo_de_envio');
+            $venta->direccion = session()->get('direccion');
             $venta->save();
 
             foreach ($compras as $item) {
@@ -110,9 +115,12 @@ class PaymentController extends Controller
             }
             //Se vacía el carrito
             $cart = User::findOrFail(Auth::id())->cart()->detach();
+            //Se envía el correo electronico
+            $this->mandarCorreo($venta->id);
             //se vacía la sesión
             session()->forget('tipo_de_envio');
             session()->forget('costoEnvio');
+            session()->forget('direccion');
             DB::commit();
             return redirect()->back()->with('success', 'Compra realizada con éxito!');
         } catch (CardErrorException $e) {
@@ -136,6 +144,18 @@ class PaymentController extends Controller
             dd($th);
             DB::rollback();
             return redirect()->route('stripe.index')->with('error', 'Algo salió mal, por favor intentalo más tarde.');
+        }
+    }
+
+    private function mandarCorreo($id_sale)
+    {
+        $var = config('app.env');
+        if ($var == 'production') {
+            Mail::to(Auth::user()->email)->send(new ReceiptSale($id_sale));
+            //Mail::to('joseagustinsolorzano@gmail.com')->send(new ReceiptSale($id_sale));
+            //Mail::to('comepastov@gmail.com')->send(new ReceiptSale($id_sale));
+        } else {
+            Mail::to(Auth::user()->email)->send(new ReceiptSale($id_sale));
         }
     }
 }

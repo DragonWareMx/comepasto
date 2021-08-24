@@ -45,6 +45,9 @@ Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'payment
 Route::get('/payment/stripe', [App\Http\Controllers\PaymentController::class, 'stripe'])->name('stripe.index');
 Route::post('/payment/stripe/pay', [App\Http\Controllers\PaymentController::class, 'stripePay'])->name('stripe.pay');
 
+// Route::get('/payment/test', [App\Http\Controllers\PaymentController::class, 'mandarCorreo']);
+
+
 //INICIO
 Route::get('/inicio', [App\Http\Controllers\Controller::class, 'inicio'])->name('inicio');
 
