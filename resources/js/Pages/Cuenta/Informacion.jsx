@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Inertia } from '@inertiajs/inertia'
 import route from 'ziggy-js';
-import { InertiaLink, usePage } from '@inertiajs/inertia-react'
+import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import '/css/cuenta.css';
 
