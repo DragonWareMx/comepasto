@@ -23,6 +23,9 @@ class Controller extends BaseController
         //TIENDA
         $products = Product::with('brand:id,name,logo,link')
                             ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
+                            // ->leftJoin('categories', 'categories.id', '=', 'products.category_id')
+                            // ->leftJoin('types', 'types.id', '=', 'products.type_id')
+                            // ->leftJoin('brands', 'brands.id', '=', 'products.brand_id')
                             ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, products.trigoFree, products.soyaFree, products.uuid, COALESCE(sum(product_sale.cantidad),0) total, (`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)) AS precio_descuento')
                             ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree', 'products.uuid')
                             ->when($request->categoria, function ($query, $categoria) {
@@ -147,6 +150,57 @@ class Controller extends BaseController
                                 return $query;
                             }, function ($query) {
                                 return $query;
+                            })
+                            ->when($request->busqueda, function ($query, $busqueda) use ($request) {                                
+                                $searchValues = preg_split('/\s+/', $busqueda, -1, PREG_SPLIT_NO_EMPTY);
+                                
+                                $query->where(function ($q) use ($searchValues) {
+                                    foreach ($searchValues as $value) {
+                                        $q->orWhere('products.name', 'LIKE', '%'. $value .'%')
+                                        ->orWhereHas('category', function ($query) use ($value) {
+                                            $query->where('name', 'LIKE', '%' . $value . '%');
+                                        })
+                                        ->orWhereHas('type', function ($query) use ($value) {
+                                            $query->where('name', 'LIKE', '%' . $value . '%');
+                                        })
+                                        ->orWhereHas('brand', function ($query) use ($value) {
+                                            $query->where('name', 'LIKE', '%' . $value . '%');
+                                        });
+                                    }
+                                })
+                                ->when(stripos($busqueda, 'sin') === TRUE || stripos($busqueda, 'no') === TRUE, function ($querySin){
+                                    dd("a");
+                                    if(stripos($busqueda, 'soya') === TRUE){
+                                        return $querySin->where('soyaFree', true);
+                                    }
+                                    if(stripos($busqueda, 'gluten') === TRUE || stripos($busqueda, 'trigo') === TRUE || stripos($busqueda, 'glúten') === TRUE){
+                                        return $querySin->where('trigoFree', true);
+                                    }
+                                });
+                                    // $query->where('products.name', 'LIKE', '%'. $value .'%')
+                                    //     ->orWhereHas('category', function ($query) use ($value) {
+                                    //         $query->where('name', 'LIKE', '%' . $value . '%');
+                                    //     })
+                                    //     ->orWhereHas('type', function ($query) use ($value) {
+                                    //         $query->where('name', 'LIKE', '%' . $value . '%');
+                                    //     })
+                                    //     ->orWhereHas('brand', function ($query) use ($value) {
+                                    //         $query->where('name', 'LIKE', '%' . $value . '%');
+                                    //     });
+
+                                // return $query->where('products.name', 'LIKE', '%'. $busqueda .'%')
+                                //             ->orWhere('categories.name', 'LIKE', '%'. $busqueda .'%')
+                                //             ->orWhere('types.name', 'LIKE', '%'. $busqueda .'%')
+                                //             ->orWhere('brands.name', 'LIKE', '%'. $busqueda .'%')
+                                //             ->when(stripos($busqueda, 'sin') === TRUE || stripos($busqueda, 'no') === TRUE, function ($querySin){
+                                //                 if(stripos($busqueda, 'soya') === TRUE){
+                                //                     return $querySin->where('soyaFree', true);
+                                //                 }
+                                //                 if(stripos($busqueda, 'gluten') === TRUE || stripos($busqueda, 'trigo') === TRUE || stripos($busqueda, 'glúten') === TRUE){
+                                //                     return $querySin->where('trigoFree', true);
+                                //                 }
+                                //             })
+                                //             ->where('stock','>',0);
                             })
                             ->where('stock','>',0)
                             ->paginate(8)

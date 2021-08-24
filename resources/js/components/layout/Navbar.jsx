@@ -7,6 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import MenuIcon from '@material-ui/icons/Menu';
 import Slide from '@material-ui/core/Slide';
+import { Inertia } from '@inertiajs/inertia'
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -64,8 +65,13 @@ const theme = createMuiTheme({
 });
 
 export default function Navbar() {
-
     const classes = useStyles();
+    const [values, setValues] = useState({
+        busqueda: '',
+    });
+    const [NavDialog, setNavDialog] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+
 
     useEffect(() => {
         window.addEventListener('scroll', (e) => {
@@ -81,13 +87,11 @@ export default function Navbar() {
         })
     })
 
-    const [NavDialog, setNavDialog] = React.useState(false);
 
     function handleClick() {
         setNavDialog((prev) => !prev)
     }
 
-    const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
       setOpen(true);
@@ -106,22 +110,27 @@ export default function Navbar() {
         }))
     }
 
-    const [values, setValues] = useState({
-        busqueda: '',
-    });
 
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post('/buscar', values, {
-            preserveScroll: true,
+
+        Inertia.get('/inicio#productos', values, {
+            //aqui veremos si se puede anclar el scroll :v
+            preserveScroll: false,
+
             onSuccess: () => {
 
             },
+
             onError: () => {
                 setValues(values => ({
                     ...values,
                     error: true
                 }));
+            },
+
+            onFinish: () => {
+                setOpen(false)
             }
         })
     }
