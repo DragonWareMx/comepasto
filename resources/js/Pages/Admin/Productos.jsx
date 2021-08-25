@@ -69,33 +69,40 @@ const columns = [
 // { field: 'id', headerName: 'ID', width: 90 },
 {
     field: 'firstName',
-    headerName: 'Nombre',
-    width: 150,
+    headerName: 'NOMBRE',
+    width: 350,
     editable: false,
 },
 {
     field: 'lastName',
-    headerName: 'Marca',
-    width: 150,
+    headerName: 'MARCA',
+    width: 180,
     editable: false,
 },
 {
     field: 'age',
-    headerName: 'Precio',
-    type: 'number',
-    width: 110,
+    headerName: 'PRECIO',
+    // type: 'number',
+    width: 150,
     editable: false,
 },
 {
     field: 'fullName',
-    headerName: 'Descuento',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
+    headerName: 'DESCUENTO',
+    // description: 'This column has a value getter and is not sortable.',
+    // sortable: false,
+    width: 180,
     valueGetter: (params) =>
     `${params.getValue(params.id, 'firstName') || ''} ${
         params.getValue(params.id, 'lastName') || ''
     }`,
+},
+{
+    field: 'atributps',
+    headerName: 'ATRIBUTOS',
+    // type: 'number',
+    width: 180,
+    editable: false,
 },
 ];
   
