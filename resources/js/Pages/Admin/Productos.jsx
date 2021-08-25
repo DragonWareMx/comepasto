@@ -68,54 +68,43 @@ const useStyles = makeStyles((theme) => ({
 const columns = [
 // { field: 'id', headerName: 'ID', width: 90 },
 {
-    field: 'firstName',
+    field: 'nombre',
     headerName: 'NOMBRE',
-    width: 350,
+    width: 500,
     editable: false,
+    disableColumnSelector:false,
 },
 {
-    field: 'lastName',
+    field: 'marca',
     headerName: 'MARCA',
     width: 180,
     editable: false,
 },
 {
-    field: 'age',
+    field: 'precio',
     headerName: 'PRECIO',
     // type: 'number',
     width: 150,
     editable: false,
 },
 {
-    field: 'fullName',
+    field: 'descuento',
     headerName: 'DESCUENTO',
-    // description: 'This column has a value getter and is not sortable.',
-    // sortable: false,
     width: 180,
-    valueGetter: (params) =>
-    `${params.getValue(params.id, 'firstName') || ''} ${
-        params.getValue(params.id, 'lastName') || ''
-    }`,
+    editable: false,
 },
 {
-    field: 'atributps',
+    field: 'atributos',
     headerName: 'ATRIBUTOS',
-    // type: 'number',
+    description: 'No es posible reordenar esta columna.',
+    sortable: false,
     width: 180,
     editable: false,
 },
 ];
   
   const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+    { id: 1, nombre: 'Lorem ipsum dolor sit amet', marca: 'Lorem ipsum', precio: '$ 250.00 MXN', descuento:'- 10%', atributos:'soya free, gluten free' },
   ];
 
 
@@ -223,6 +212,7 @@ const Productos = () => {
                             </Menu>
                         </Grid>
                     </Grid>
+                    {/* Este height es provisional */}
                     <Grid item xs={12} style={{height:'300px'}}>
                     <DataGrid
                         rows={rows}

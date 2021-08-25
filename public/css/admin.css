@@ -68,3 +68,16 @@
 .button-filter:hover{
     background-color: transparent !important;
 }
+.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus{
+    outline: none !important;
+}
+.MuiDataGrid-columnHeaderTitleContainer{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 11px;
+    color: #7E7E7E;
+}
+.MuiDataGrid-columnHeaderWrapper {
+    background-color: #F3F4F7;
+}
