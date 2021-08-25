@@ -113,7 +113,7 @@ const Gracias = ({ token, email }) => {
                                     :
                                     <>
                                         <div className={classes.cardTitle} style={{ marginTop: "15px" }}>
-                                            Comepasto te agradece tu compra. Conoce más productos en nuestra tienda.
+                                            Comepasto te agradece tu compra, en tu correo electrónico recibirás los detalles de tu compra. Conoce más productos en nuestra tienda.
                                         </div>
                                         <InertiaLink href={route('inicio')} as="button" style={{ textDecoration: "none" }} className={classes.inertiaButtonCart} preserveScroll>
                                             <Button variant="contained" color="primary" component="div" disableElevation className={classes.buttonCart}>
