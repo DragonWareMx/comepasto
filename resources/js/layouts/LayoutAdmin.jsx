@@ -16,9 +16,9 @@ export default function LayoutAdmin({ title, pageTitle, children }) {
             {/* Navbar */}
             <Navbar />
 
-            <div style={{width:'250px', position:'sticky', borderRight:'1px solid #E1E3EA',height:'593px'}}>
+            {/* <div style={{width:'250px', position:'sticky', borderRight:'1px solid #E1E3EA',height:'593px'}}>
                 MENU LATERAL
-            </div>
+            </div> */}
 
 
 
