@@ -246,7 +246,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Pago({ dialog, handleClose, subtotal }) {
+export default function Pago({ dialog, handleClose, subtotal, handleCloseCarrito }) {
     const { errors } = usePage().props
     const classes = useStyles();
     const [values, setValues] = useState({
@@ -314,6 +314,8 @@ export default function Pago({ dialog, handleClose, subtotal }) {
             preserveScroll: true,
             onSuccess: () => {
                 //aqui debería ir para cerrar el carrito xd
+                handleCerrar();
+                handleCloseCarrito();
             },
             onError: () => {
                 setValues(values => ({
@@ -531,7 +533,12 @@ export default function Pago({ dialog, handleClose, subtotal }) {
     }
 
     function sacarSubtotal(subtotal) {
-        return parseFloat(subtotal.substring(1))
+        try {
+            var numero = parseFloat(subtotal.substring(1));
+        } catch (error) {
+            var numero = 0
+        }
+        return numero;
     }
 
     return (

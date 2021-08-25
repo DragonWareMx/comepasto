@@ -44,7 +44,7 @@ Route::post('/cotizar', [App\Http\Controllers\PaymentController::class, 'cotizar
 Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'payment'])->name('payment');
 Route::get('/payment/stripe', [App\Http\Controllers\PaymentController::class, 'stripe'])->name('stripe.index');
 Route::post('/payment/stripe/pay', [App\Http\Controllers\PaymentController::class, 'stripePay'])->name('stripe.pay');
-
+Route::get('/payment/gracias/{id}', [App\Http\Controllers\PaymentController::class, 'showGreetings'])->name('gracias');
 // Route::get('/payment/test', [App\Http\Controllers\PaymentController::class, 'mandarCorreo']);
 
 
