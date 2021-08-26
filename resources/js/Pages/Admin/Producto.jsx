@@ -9,14 +9,14 @@ import '/css/adminProductos.css';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import OwlCarousel from 'react-owl-carousel'; 
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-import InputBase from '@material-ui/core/InputBase';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import {DataGrid}  from '@material-ui/data-grid';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -35,6 +35,18 @@ const Producto = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    // MODAL
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpenModal = () => {
+        setOpen(true);
+        setAnchorEl(null);
+    };
+
+    const handleCloseModal = () => {
+        setOpen(false);
     };
 
     const responsiveRecetas = {
@@ -71,7 +83,7 @@ const Producto = () => {
                     <Grid item xs={12} sm={12} md={8} className="grid-section">
                         <Grid item xs={12} className="section-top-grid">
                             <Grid>Información general</Grid>
-                            <MoreVertIcon onClick={handleClick} />
+                            <MoreVertIcon onClick={handleClick} style={{cursor:'pointer'}} />
                             <Menu
                                 id="options-menu"
                                 anchorEl={anchorEl}
@@ -80,7 +92,7 @@ const Producto = () => {
                                 onClose={handleClose}
                             >
                                 <InertiaLink href="#!" style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
-                                <MenuItem onClick={handleClose} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
+                                <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
                             </Menu>
                         </Grid>
                         {/* contenido */}
@@ -205,6 +217,34 @@ const Producto = () => {
 
             </Grid>
         </Container>
+
+        <Dialog
+            open={open}
+            onClose={handleCloseModal}
+            // aria-labelledby="alert-dialog-title"
+            // aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas eliminar este producto?"}</DialogTitle>
+            <DialogContent>
+            <DialogContentText id="alert-dialog-description" className="dialog-content">
+                Toda la información relacionada con este producto se verá afectada por esta acción.
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <form noValidate autoComplete="off">
+                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
+                    <Grid className="btn-cancelar-op" onClick={handleCloseModal}>CANCELAR</Grid>
+                    <Button
+                        className="button-filter button-update btn-second"
+                        type="submit"
+                        startIcon={<DeleteOutlineIcon />}
+                    >
+                        Eliminar
+                    </Button>
+                </Grid>
+                </form>
+            </DialogActions>
+        </Dialog>
     </>
     )
 }
