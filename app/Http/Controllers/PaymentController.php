@@ -50,6 +50,11 @@ class PaymentController extends Controller
                 $subtotal = 0;
                 foreach ($compras as $item) {
                     $subtotal += ($item->precio * ((100 - $item->descuento) / 100)) * $item->pivot->cantidad;
+                    if ($item->pivot->cantidad > $item->stock) {
+                        //Se vacía el carrito
+                        $cart = User::findOrFail(Auth::id())->cart()->detach();
+                        return redirect()->back()->with('error', 'Un producto ya no se encuentra disponible, revisa tu carrito!');
+                    }
                 }
                 if ($request->tipo_de_envio  == 'domicilio') {
                     $envio = session()->get('costoEnvio');
@@ -98,7 +103,11 @@ class PaymentController extends Controller
             }
         }
         //Aqui va lo de paypal
-        dd($request->all());
+        if ($request->tipo_de_pago == 'paypal') {
+            $paypal = new PaypalController();
+            return $paypal->payment($request);
+        }
+        return redirect()->back()->with('error', 'Ocurrió un error inesperado, por favor intentalo más tarde.');
     }
 
     public function stripe()
@@ -126,6 +135,11 @@ class PaymentController extends Controller
             foreach ($compras as $item) {
                 $subtotal += ($item->precio * ((100 - $item->descuento) / 100)) * $item->pivot->cantidad;
                 $metadata[] = $item->name . ' cantidad= ' . $item->pivot->cantidad;
+                if ($item->pivot->cantidad > $item->stock) {
+                    //Se vacía el carrito
+                    $cart = User::findOrFail(Auth::id())->cart()->detach();
+                    return redirect()->back()->with('error', 'Un producto ya no se encuentra disponible, revisa tu carrito!');
+                }
             }
             if (session()->get('tipo_de_envio')  == 'domicilio') {
                 $envio = session()->get('costoEnvio');
@@ -203,7 +217,7 @@ class PaymentController extends Controller
         }
     }
 
-    private function mandarCorreo($id_sale)
+    public function mandarCorreo($id_sale)
     {
         $var = config('app.env');
         if ($var == 'production') {
