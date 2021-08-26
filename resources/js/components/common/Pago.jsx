@@ -410,7 +410,10 @@ export default function Pago({ dialog, handleClose, subtotal, handleCloseCarrito
             ...values,
             tipo_de_envio: event.target.value,
         }));
+        setTimeout(() => { setBloqueado(false); }, 2000);
     };
+
+    const [bloqueado, setBloqueado] = useState(true)
 
     const handleChangeRadio = (event) => {
         setValues(values => ({
@@ -436,6 +439,7 @@ export default function Pago({ dialog, handleClose, subtotal, handleCloseCarrito
         var lat = position.coords.latitude;
         var long = position.coords.longitude;
         console.log('mi posicion: ', lat, long);
+        getDirection(lat, long);
         setDefaultLocation({
             lat: lat, lng: long
         })
@@ -479,6 +483,8 @@ export default function Pago({ dialog, handleClose, subtotal, handleCloseCarrito
         setZoom(newZoom);
     }
 
+    const [cotizar, setCotizar] = useState(false);
+
     function handleChangeDirection(e) {
         const key = e.target.id;
         const value = e.target.value
@@ -487,6 +493,7 @@ export default function Pago({ dialog, handleClose, subtotal, handleCloseCarrito
             costoEnvio: 0,
             [key]: value,
         }))
+        setCotizar(true);
     }
 
     function handleResetLocation() {
@@ -514,6 +521,8 @@ export default function Pago({ dialog, handleClose, subtotal, handleCloseCarrito
                     console.log(error)
                 }
             )
+
+        setCotizar(false);
     }
 
     function cotizarEnvio(e) {
@@ -610,7 +619,7 @@ export default function Pago({ dialog, handleClose, subtotal, handleCloseCarrito
                                 <Button variant="text" color="primary" type="button" disableElevation className={classes.buttonText} onClick={handleCerrar}>
                                     CANCELAR
                                 </Button>
-                                <Button variant="contained" color="primary" type="button" disableElevation className={classes.buttonDial} onClick={nextStep}>
+                                <Button variant="contained" disabled={bloqueado} id='bloqueado' color="primary" type="button" disableElevation className={classes.buttonDial} onClick={nextStep}>
                                     SIGUIENTE
                                 </Button>
                             </div>
@@ -675,7 +684,7 @@ export default function Pago({ dialog, handleClose, subtotal, handleCloseCarrito
                                             SIGUIENTE
                                         </Button>
                                         :
-                                        <Button variant="contained" color="primary" type="button" disableElevation className={classes.buttonDial} onClick={cotizarEnvio}>
+                                        <Button variant="contained" color="primary" disabled={cotizar} type="button" disableElevation className={classes.buttonDial} onClick={cotizarEnvio}>
                                             COTIZAR ENVÍO
                                         </Button>
                                     }
