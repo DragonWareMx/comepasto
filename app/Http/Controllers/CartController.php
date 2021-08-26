@@ -192,7 +192,7 @@ class CartController extends Controller
         //contador para wachar los productos que no se puedan agregar
         $cont=0;
 
-        foreach ($recipe->products as $product) {
+        foreach ($recipe->product as $product) {
             //se encuentra el producto
             $product = Product::find($product->id);
             
