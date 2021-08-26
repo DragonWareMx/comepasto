@@ -200,7 +200,7 @@ const Productos = () => {
                                 Filtrar
                             </Button>
                             <Menu
-                                id="simple-menu"
+                                id="filter-menu"
                                 anchorEl={anchorEl}
                                 keepMounted
                                 open={Boolean(anchorEl)}
@@ -232,6 +232,6 @@ const Productos = () => {
 }
 
 
-Productos.layout = page => <Layout children={page} title="Comepasto - Productos" pageTitle="Producto" />
+Productos.layout = page => <Layout children={page} title="Comepasto - Productos" pageTitle="Productos" />
 
 export default Productos
