@@ -4,6 +4,7 @@ import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@mater
 import route from 'ziggy-js';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import Layout from '../../layouts/LayoutAdmin';
+import ModalConfirmacion from '../../components/common/modalConfirmacion';
 import '/css/admin.css';
 import '/css/adminProductos.css';
 
@@ -352,38 +353,13 @@ const EditarProducto = () => {
                         
                     </Grid>
 
-
+                    <ModalConfirmacion></ModalConfirmacion>
 
                 </Grid>
             </Grid>
         </Container>
-        <Dialog
-            open={open}
-            onClose={handleCloseModal}
-            // aria-labelledby="alert-dialog-title"
-            // aria-describedby="alert-dialog-description"
-        >
-            <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas eliminar este producto?"}</DialogTitle>
-            <DialogContent>
-            <DialogContentText id="alert-dialog-description" className="dialog-content">
-                Toda la información relacionada con este producto se verá afectada por esta acción.
-            </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <form noValidate autoComplete="off">
-                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
-                    <Grid className="btn-cancelar-op" onClick={handleCloseModal}>CANCELAR</Grid>
-                    <Button
-                        className="button-filter button-update btn-second"
-                        type="submit"
-                        startIcon={<DeleteOutlineIcon />}
-                    >
-                        Eliminar
-                    </Button>
-                </Grid>
-                </form>
-            </DialogActions>
-        </Dialog>
+        
+        
         </>
     )
 }
