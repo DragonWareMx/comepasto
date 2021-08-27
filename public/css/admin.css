@@ -100,6 +100,10 @@
     font-family: Atma !important;
 } */
 
+.MuiTypography-body1{
+    font-family: Atma !important;
+}
+
 .section-top-grid{
     display: flex;
     justify-content: space-between;
@@ -208,9 +212,8 @@
     transition: all ease-in-out 0.25s;
 }
 .checkbox-label{
-    font-family: Atma !important;
     font-size: 14px !important;
-    color: #707070;
+    color: #505050;
 }
 .checkbox-admin{
     color: #1DA3A8 !important;
