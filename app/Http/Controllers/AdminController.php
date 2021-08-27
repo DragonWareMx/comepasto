@@ -18,4 +18,8 @@ class AdminController extends Controller
     public function productoEditar($id){
         return Inertia::render('Admin/EditarProducto');
     }
+
+    public function pedidos(){
+        return Inertia::render('Admin/Pedidos');
+    }
 }
