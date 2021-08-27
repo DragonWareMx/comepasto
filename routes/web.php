@@ -82,3 +82,4 @@ Route::get('/mispagos', [App\Http\Controllers\CuentaController::class, 'misPagos
 // ADMIN ---------
 Route::get('/admin/productos', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.productos');
 Route::get('/admin/productos/{id}', [App\Http\Controllers\AdminController::class, 'producto'])->name('admin.producto');
+Route::get('/admin/productos/editar/{id}', [App\Http\Controllers\AdminController::class, 'productoEditar'])->name('admin.producto.editar');

@@ -82,7 +82,7 @@
     background-color: transparent !important;
 }
 
-
+/* OJO --------------------- */
 .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus{
     outline: none !important;
 }
@@ -96,9 +96,9 @@
 .MuiDataGrid-columnHeaderWrapper {
     background-color: #F3F4F7;
 }
-.MuiTypography-h6{
+/* .MuiTypography-h6{
     font-family: Atma !important;
-}
+} */
 
 .section-top-grid{
     display: flex;
@@ -173,13 +173,59 @@
     color: #7E7E7E;
     margin-right: 35px;
     cursor: pointer;
+    text-decoration: none;
 }
 .btn-second{
     margin: 0px !important;
 }
+.btn-file-input{
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+.container-inputs{
+    padding-left: 20px;
+}
+.input-admin-100{
+    width:95%;
+    margin-bottom: 20px !important;
+}
+.input-admin-50{
+    width: 90%;
+}
+.link-add-bd{
+    width: 90%;
+    text-align: end;
+    text-decoration: none;
+    font-family: Atma;
+    color: #707070;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    transition: all ease-in-out 0.25s;
+}
+.link-add-bd:hover, .link-add-bd:focus, .link-add-bd:active{
+    color: #1DA3A8;
+    transition: all ease-in-out 0.25s;
+}
+.checkbox-label{
+    font-family: Atma !important;
+    font-size: 14px !important;
+    color: #707070;
+}
+.checkbox-admin{
+    color: #1DA3A8 !important;
+}
 
 @media(max-width:960px){
     .grid-spacing-20{
+        padding-left: 0px;
+    }
+}
+@media(max-width:600px){
+    .input-admin-50, .link-add-bd, .input-admin-100{
+        width: 100% !important;
+    }
+    .container-inputs{
         padding-left: 0px;
     }
 }

@@ -91,7 +91,7 @@ const Producto = () => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <InertiaLink href="#!" style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
+                                <InertiaLink href={route('admin.producto.editar',1)} style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
                                 <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
                             </Menu>
                         </Grid>
@@ -119,7 +119,7 @@ const Producto = () => {
 
                                 <Grid item xs={12} className="item-product-data">
                                     <Grid item xs={4}xs={12} sm={10} sm={2} className="title-item-info">ATRIBUTOS</Grid>
-                                    <Grid item xs={12} sm={10} className="item-info-txt">1223881</Grid>
+                                    <Grid item xs={12} sm={10} className="item-info-txt">Gluten free, Soya free</Grid>
                                 </Grid>
                                 
                                 <Grid item xs={12} className="item-product-data">
