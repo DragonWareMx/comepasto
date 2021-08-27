@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Inertia } from '@inertiajs/inertia'
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import route from 'ziggy-js';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import Layout from '../../layouts/LayoutAdmin';
@@ -27,6 +27,45 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import PublishIcon from '@material-ui/icons/Publish';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+
+const useStyles = makeStyles((theme) => ({
+    input: {
+        fontFamily: "Oxygen",
+        fontStyle: 'normal',
+        fontSize: '15px',
+        color: '#333333',
+        borderColor: "#1DA3A8",
+        "&:not(.Mui-disabled):hover::before": {
+            borderColor: "#1DA3A8"
+        }
+    },
+    formTextLabel: {
+        fontFamily: 'Atma',
+        fontSize: '15px',
+        color: '#9E9E9E'
+    }
+}));
+
+const theme = createMuiTheme({
+    palette: {
+        secondary: {
+            // light: will be calculated from palette.primary.main,
+            main: '#ff4400',
+            // dark: will be calculated from palette.primary.main,
+            // contrastText: will be calculated to contrast with palette.primary.main
+        },
+        primary: {
+            light: '#0066ff',
+            main: '#9c9c9c',
+            // dark: will be calculated from palette.secondary.main,
+            contrastText: '#ffcc00',
+        },
+        // error: will use the default color
+    },
+    status: {
+        danger: 'orange',
+    },
+});
 
 const currencies = [
     {
@@ -86,6 +125,8 @@ const EditarProducto = () => {
 
     };
 
+    const classes = useStyles();
+
     return ( 
         <>
         <Container> 
@@ -126,12 +167,20 @@ const EditarProducto = () => {
                             </label>
                         </Grid>
                         <Grid item xs={12} sm={10} className="container-inputs">
+                        <form noValidate autoComplete="off">
+                        <MuiThemeProvider theme={theme}>
                             <Grid item xs={12}>
                                 <TextField 
                                     id="nombre" 
                                     type="text"
                                     label="Nombre" 
                                     className="input-admin-100"
+                                    InputProps={{className: classes.input,}}
+                                    InputLabelProps={{
+                                        classes: {
+                                            root: classes.formTextLabel
+                                        }
+                                    }}
                                 />
                             </Grid>
 
@@ -143,6 +192,12 @@ const EditarProducto = () => {
                                         label="Marca"
                                         placeholder="Selecciona una opción"
                                         className="input-admin-50"
+                                        InputProps={{className: classes.input,}}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
                                         >
                                         {currencies.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
@@ -158,6 +213,12 @@ const EditarProducto = () => {
                                         select
                                         label="Tipo"
                                         className="input-admin-50"
+                                        InputProps={{className: classes.input,}}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
                                         >
                                         {currencies.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
@@ -176,6 +237,12 @@ const EditarProducto = () => {
                                         select
                                         label="Categorías"
                                         className="input-admin-50"
+                                        InputProps={{className: classes.input,}}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
                                         >
                                         {currencies.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
@@ -186,6 +253,7 @@ const EditarProducto = () => {
                                     
                                     <Chip onDelete={handleDelete} label="Categoría 1" className="chip-categoria" />
                                     <Chip onDelete={handleDelete} label="Categoría 2" className="chip-categoria" />
+                                    
                                     <InertiaLink className="link-add-bd">Agregar categoría</InertiaLink>
                                 </Grid>
                                 <Grid item xs={12} sm={6} style={{marginBottom:'20px'}}>
@@ -194,6 +262,12 @@ const EditarProducto = () => {
                                         type="text"
                                         label="Presentación"
                                         className="input-admin-50"
+                                        InputProps={{className: classes.input,}}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
                                         >
                                     </TextField>
                                 </Grid>
@@ -206,6 +280,12 @@ const EditarProducto = () => {
                                         type="number"
                                         label="Precio"
                                         className="input-admin-50"
+                                        InputProps={{className: classes.input,}}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
                                         >
                                     </TextField>
                                 </Grid>
@@ -215,6 +295,12 @@ const EditarProducto = () => {
                                         type="number"
                                         label="Descuento (%)"
                                         className="input-admin-50"
+                                        InputProps={{className: classes.input,}}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel
+                                            }
+                                        }}
                                         >
                                     </TextField>
                                 </Grid>
@@ -226,6 +312,12 @@ const EditarProducto = () => {
                                     multiline
                                     label="Ingredientes" 
                                     className="input-admin-100"
+                                    InputProps={{className: classes.input,}}
+                                    InputLabelProps={{
+                                    classes: {
+                                        root: classes.formTextLabel
+                                    }
+                                    }}
                                 />
                             </Grid>
 
@@ -254,6 +346,8 @@ const EditarProducto = () => {
                                     Guardar
                                 </Button>
                             </Grid>
+                        </MuiThemeProvider>
+                        </form>
                         </Grid>
                         
                     </Grid>
