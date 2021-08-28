@@ -85,3 +85,4 @@ Route::get('/admin/productos/{id}', [App\Http\Controllers\AdminController::class
 Route::get('/admin/productos/editar/{id}', [App\Http\Controllers\AdminController::class, 'productoEditar'])->name('admin.producto.editar');
 
 Route::get('/admin/pedidos', [App\Http\Controllers\AdminController::class, 'pedidos'])->name('admin.pedidos');
+Route::get('/admin/pedidos/{id}', [App\Http\Controllers\AdminController::class, 'pedido'])->name('admin.pedido');

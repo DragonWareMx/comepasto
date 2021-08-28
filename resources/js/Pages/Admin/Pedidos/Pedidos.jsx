@@ -4,7 +4,7 @@ import { Inertia } from '@inertiajs/inertia'
 import { makeStyles } from '@material-ui/core/styles';
 import route from 'ziggy-js';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
-import Layout from '../../layouts/LayoutAdmin';
+import Layout from '../../../layouts/LayoutAdmin';
 import '/css/admin.css';
 
 import Container from '@material-ui/core/Container';
@@ -104,7 +104,7 @@ const columns = [
 ];
   
   const rows = [
-    { id: 1, fecha: '20/08/2021 09:32 pm', cliente: 'Lorem ipsum dolor sit amet', estatus: 'En camino', entrega:'A domicilio', total:'$240.00 MXN' },
+    { id: 1, fecha: '20/08/2021 09:32', cliente: 'Lorem ipsum dolor sit amet', estatus: 'En camino', entrega:'A domicilio', total:'$240.00 MXN' },
   ];
 
 

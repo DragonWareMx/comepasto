@@ -3,7 +3,7 @@ import { Inertia } from '@inertiajs/inertia'
 import { makeStyles } from '@material-ui/core/styles';
 import route from 'ziggy-js';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
-import Layout from '../../layouts/LayoutAdmin';
+import Layout from '../../../layouts/LayoutAdmin';
 import '/css/admin.css';
 import '/css/adminProductos.css';
 
@@ -24,7 +24,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import UpdateIcon from '@material-ui/icons/Update';
 
-import Receta from '../../components/Recetas/Receta';
+import Receta from '../../../components/Recetas/Receta';
 
 const Producto = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);

@@ -3,8 +3,8 @@ import { Inertia } from '@inertiajs/inertia'
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import route from 'ziggy-js';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
-import Layout from '../../layouts/LayoutAdmin';
-import ModalConfirmacion from '../../components/common/modalConfirmacion';
+import Layout from '../../../layouts/LayoutAdmin';
+import ModalConfirmacion from '../../../components/common/modalConfirmacion';
 import '/css/admin.css';
 import '/css/adminProductos.css';
 
