@@ -18,12 +18,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import TimelineConnector from '@material-ui/lab/TimelineConnector';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -88,85 +88,114 @@ const Pedido = () => {
 
                 <Grid item xs={12} style={{marginBottom:'25px',display:'flex',flexWrap:'wrap',justifyContent:'space-between',alignItems:'flex-start'}}>
                     <Grid item xs={12} sm={12} md={8}>
-                    
-                    <Grid item xs={12} className="grid-section">
-                        <Grid item xs={12} className="section-top-grid">
-                            <Grid>Información del pedido</Grid>
-                            <MoreVertIcon onClick={handleClick} style={{cursor:'pointer'}} />
-                            <Menu
-                                id="options-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <InertiaLink href="#!" style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
-                                <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
-                            </Menu>
+                        <Grid item xs={12} className="grid-section">
+                            <Grid item xs={12} className="section-top-grid">
+                                <Grid>Información del pedido</Grid>
+                                <MoreVertIcon onClick={handleClick} style={{cursor:'pointer'}} />
+                                <Menu
+                                    id="options-menu"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleClose}
+                                >
+                                    <InertiaLink href="#!" style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
+                                    <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
+                                </Menu>
+                            </Grid>
+                            {/* contenido */}
+                            <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
+                                <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">ID</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>#1223881</Grid>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">PEDIDO REALIZADO DESDE</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Página web</Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">CLIENTE</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Lorem ipsum dolor sit amet</Grid>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">TELÉFONO</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>44 44 44 44 44</Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">DIRECCIÓN</Grid>
+                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</Grid>
+                                </Grid>
+                            </Grid>
+
+
                         </Grid>
-                        {/* contenido */}
-                        <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
-                            <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
-                                <Grid item xs={12} sm={6}>
-                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">ID</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>#1223881</Grid>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">PEDIDO REALIZADO DESDE</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Página web</Grid>
-                                </Grid>
+                        
+                        <Grid item xs={12} className="grid-section">
+                            <Grid item xs={12} className="section-top-grid">
+                                <Grid>Información de pago y entrega</Grid>
                             </Grid>
-                            <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
-                                <Grid item xs={12} sm={6}>
-                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">CLIENTE</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Lorem ipsum dolor sit amet</Grid>
+                            {/* contenido */}
+                            <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
+                                <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">TIPO DE PAGOx</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Efectivo</Grid>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">ESTATUS DEL PAGO</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Página web</Grid>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">TELÉFONO</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>44 44 44 44 44</Grid>
+                                <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">TIPO DE ENTREGA</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Lorem ipsum dolor sit</Grid>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">COSTOS DE ENVÍO</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>No aplica</Grid>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Grid item xs={12} className="title-item-info t-i-i-pedidos">DIRECCIÓN</Grid>
-                                <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</Grid>
+                                <Grid item xs={12}>
+                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">OBSERVACIONES</Grid>
+                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
 
-
-                    </Grid>
-                    
-                    <Grid item xs={12} className="grid-section">
-                        <Grid item xs={12} className="section-top-grid">
-                            <Grid>Información de pago y entrega</Grid>
+                        <Grid item xs={12} className="grid-section">
+                            <Grid item xs={12} className="section-top-grid">
+                                <Grid>Items del pedido</Grid>
+                            </Grid>
+                            {/* contenido */}
+                            <TableContainer >
+                                <Table  aria-label="simple table">
+                                    <TableHead>
+                                    <TableRow>
+                                        <TableCell>PRODUCTO</TableCell>
+                                        <TableCell align="right">PRECIO</TableCell>
+                                        <TableCell align="right">CANTIDAD</TableCell>
+                                        <TableCell align="right">TOTAL</TableCell>
+                                    </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        <TableRow >
+                                        <TableCell component="th" scope="row">
+                                            name
+                                        </TableCell>
+                                        <TableCell align="right">sfs</TableCell>
+                                        <TableCell align="right">sfsf</TableCell>
+                                        <TableCell align="right">gfdg</TableCell>
+                                        <TableCell align="right">fgfd</TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                                </TableContainer>
                         </Grid>
-                        {/* contenido */}
-                        <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
-                            <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
-                                <Grid item xs={12} sm={6}>
-                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">TIPO DE PAGOx</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Efectivo</Grid>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">ESTATUS DEL PAGO</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Página web</Grid>
-                                </Grid>
-                            </Grid>
-                            <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
-                                <Grid item xs={12} sm={6}>
-                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">TIPO DE ENTREGA</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Lorem ipsum dolor sit</Grid>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">COSTOS DE ENVÍO</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>No aplica</Grid>
-                                </Grid>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Grid item xs={12} className="title-item-info t-i-i-pedidos">OBSERVACIONES</Grid>
-                                <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
                     </Grid>
                     <Grid item xs={12} sm={12} md={4}>
                     {/* GRID CONFIG STOCK */}
