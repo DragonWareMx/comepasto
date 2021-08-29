@@ -4,7 +4,7 @@ import { Inertia } from '@inertiajs/inertia'
 import { makeStyles } from '@material-ui/core/styles';
 import route from 'ziggy-js';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
-import Layout from '../../layouts/LayoutAdmin';
+import Layout from '../../../layouts/LayoutAdmin';
 import '/css/admin.css';
 
 import Container from '@material-ui/core/Container';

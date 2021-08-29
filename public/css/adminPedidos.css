@@ -1,0 +1,55 @@
+.t-i-i-pedidos{
+    margin-bottom: 8px !important;
+}
+.i-i-t-pedidos{
+    margin-bottom: 35px !important;
+}
+.mg-0{
+    margin-bottom: 0px !important;
+}
+.update-text{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    color: #7E7E7E;
+    margin-top: 8px;
+    margin-left: 2px;
+}
+.button-pay{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+    color: #545454;
+    background: #F3F4F7;
+    cursor: pointer;
+    padding: 16px 23px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #DDDDDD;
+    transition: all ease-in-out 0.25s;
+}
+.button-pay:hover, .button-pay:focus, .button-pay:active{
+    background: #f1f1f1;
+    transition: all ease-in-out 0.25s;
+}
+.item-timeline{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #03060B;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.hr-timeline{
+    height: 25px;
+    border:none;
+    border-left: 2px solid #DCDCDC;
+    margin-left: 18px;
+}

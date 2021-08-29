@@ -4,7 +4,7 @@ import { Inertia } from '@inertiajs/inertia'
 import { makeStyles } from '@material-ui/core/styles';
 import route from 'ziggy-js';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
-import Layout from '../../layouts/LayoutAdmin';
+import Layout from '../../../layouts/LayoutAdmin';
 import '/css/admin.css';
 
 import Container from '@material-ui/core/Container';
@@ -66,36 +66,36 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const columns = [
-// { field: 'id', headerName: 'ID', width: 90 },
+{ field: 'id', headerName: 'ID', width: 90 },
 {
-    field: 'nombre',
-    headerName: 'NOMBRE',
-    width: 500,
+    field: 'fecha',
+    headerName: 'FECHA',
+    width: 200,
     editable: false,
     disableColumnSelector:false,
 },
 {
-    field: 'marca',
-    headerName: 'MARCA',
-    width: 180,
+    field: 'cliente',
+    headerName: 'CLIENTE',
+    width: 350,
     editable: false,
 },
 {
-    field: 'precio',
-    headerName: 'PRECIO',
+    field: 'estatus',
+    headerName: 'ESTATUS',
     // type: 'number',
-    width: 150,
+    width: 200,
     editable: false,
 },
 {
-    field: 'descuento',
-    headerName: 'DESCUENTO',
-    width: 180,
+    field: 'entrega',
+    headerName: 'TIPO DE ENTREGA',
+    width: 200,
     editable: false,
 },
 {
-    field: 'atributos',
-    headerName: 'ATRIBUTOS',
+    field: 'total',
+    headerName: 'TOTAL',
     description: 'No es posible reordenar esta columna.',
     sortable: false,
     width: 180,
@@ -104,7 +104,7 @@ const columns = [
 ];
   
   const rows = [
-    { id: 1, nombre: 'Lorem ipsum dolor sit amet', marca: 'Lorem ipsum', precio: '$ 250.00 MXN', descuento:'- 10%', atributos:'soya free, gluten free' },
+    { id: 1, fecha: '20/08/2021 09:32', cliente: 'Lorem ipsum dolor sit amet', estatus: 'En camino', entrega:'A domicilio', total:'$240.00 MXN' },
   ];
 
 
@@ -206,9 +206,9 @@ const Pedidos = () => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>Nombre</MenuItem>
-                                <MenuItem onClick={handleClose}>Marca</MenuItem>
-                                <MenuItem onClick={handleClose}>Atributos</MenuItem>
+                                <MenuItem onClick={handleClose}>Cliente</MenuItem>
+                                <MenuItem onClick={handleClose}>Estatus</MenuItem>
+                                <MenuItem onClick={handleClose}>Tipo de entrega</MenuItem>
                             </Menu>
                         </Grid>
                     </Grid>
