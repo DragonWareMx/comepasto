@@ -47,14 +47,23 @@ const Pedido = () => {
 
     // MODAL
     const [open, setOpen] = React.useState(false);
+    const [openConfirmacion, setOpenConfirmacion] = React.useState(false);
 
     const handleClickOpenModal = () => {
         setOpen(true);
         setAnchorEl(null);
     };
 
+    const handleClickOpenModalConfirmacion = () => {
+        setOpenConfirmacion(true);
+    }
+
     const handleCloseModal = () => {
         setOpen(false);
+    };
+
+    const handleCloseModalConfirmacion = () => {
+        setOpenConfirmacion(false);
     };
 
     const responsiveRecetas = {
@@ -100,7 +109,6 @@ const Pedido = () => {
                                     open={Boolean(anchorEl)}
                                     onClose={handleClose}
                                 >
-                                    <InertiaLink href="#!" style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
                                     <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
                                 </Menu>
                             </Grid>
@@ -263,7 +271,7 @@ const Pedido = () => {
                                 <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#CCCCCC',fontSize:'38px',marginRight:'16px'}} /> COMPLETADO</Grid>
                             </Grid>
 
-                            <Grid item xs={12} className="button-pay"><CheckCircleOutlineIcon style={{marginRight:'25px'}} />Marcar como pagado</Grid>
+                            <Grid item xs={12} onClick={handleClickOpenModalConfirmacion} className="button-pay"><CheckCircleOutlineIcon style={{marginRight:'25px'}} />Marcar como pagado</Grid>
                         </Grid>
                     </Grid>
                     </Grid>
@@ -279,7 +287,7 @@ const Pedido = () => {
             <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas eliminar este pedido?"}</DialogTitle>
             <DialogContent>
             <DialogContentText id="alert-dialog-description" className="dialog-content">
-                Toda la información relacionada con este pedidos se verá afectada por esta acción.
+                Toda la información relacionada con este pedido se verá afectada por esta acción.
             </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -292,6 +300,32 @@ const Pedido = () => {
                         startIcon={<DeleteOutlineIcon />}
                     >
                         Eliminar
+                    </Button>
+                </Grid>
+                </form>
+            </DialogActions>
+        </Dialog>
+
+        <Dialog
+            open={openConfirmacion}
+            onClose={handleCloseModalConfirmacion}
+        >
+            <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas marcar este pedido como pagado?"}</DialogTitle>
+            <DialogContent>
+            <DialogContentText id="alert-dialog-description" className="dialog-content">
+                Está acción no podrá ser revertida.
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <form noValidate autoComplete="off">
+                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
+                    <Grid className="btn-cancelar-op" onClick={handleCloseModalConfirmacion}>CANCELAR</Grid>
+                    <Button
+                        className="button-filter button-update btn-second"
+                        type="submit"
+                        startIcon={<CheckCircleOutlineIcon />}
+                    >
+                        Marcar
                     </Button>
                 </Grid>
                 </form>
