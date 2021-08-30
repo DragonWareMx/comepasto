@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const columns = [
-// { field: 'id', headerName: 'ID', width: 90 },
+{ field: 'id', headerName: 'ID', width: 90 },
 {
     field: 'nombre',
     headerName: 'NOMBRE',
@@ -93,22 +93,26 @@ const columns = [
     width: 180,
     editable: false,
 },
-{
-    field: 'atributos',
-    headerName: 'ATRIBUTOS',
-    description: 'No es posible reordenar esta columna.',
-    sortable: false,
-    width: 180,
-    editable: false,
-},
+// {
+//     field: 'atributos',
+//     headerName: 'ATRIBUTOS',
+//     description: 'No es posible reordenar esta columna.',
+//     sortable: false,
+//     width: 180,
+//     editable: false,
+// },
 ];
   
-  const rows = [
-    { id: 1, nombre: 'Lorem ipsum dolor sit amet', marca: 'Lorem ipsum', precio: '$ 250.00 MXN', descuento:'- 10%', atributos:'soya free, gluten free' },
-  ];
+  
 
 
-const Productos = () => {
+const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
+
+    // const rows = [
+    //     {id: 1, nombre: 'Lorem ipsum dolor sit amet', marca: 'Lorem ipsum', precio: '$ 250.00 MXN', descuento:'- 10%', atributos:'soya free, gluten free' },
+    // ];
+    const rows =productos;
+
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -143,7 +147,7 @@ const Productos = () => {
                         <Grid item xs={2}><ShoppingCartOutlinedIcon style={{color:'#1DA3A8'}} /></Grid>
                         <Grid item xs={10}>
                             <Tooltip title="Total de productos registrados"><Grid item={12} className="title-item-resume">TOTAL DE PRODUCTOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">100</Grid>
+                            <Grid item={12} className="txt-item-resume">{total && total}</Grid>
                         </Grid>
                     </Grid>
 
@@ -151,7 +155,7 @@ const Productos = () => {
                         <Grid item xs={2}><MonetizationOnOutlinedIcon style={{color:'#1DA3A8'}} /></Grid>
                         <Grid item xs={10}>
                         <Tooltip title="Valor total de los productos disponibles"><Grid item={12} className="title-item-resume">TOTAL EN PRODUCTOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">$ 12,000 MXN</Grid>
+                            <Grid item={12} className="txt-item-resume">$ {totalProductos} MXN</Grid>
                         </Grid>
                     </Grid>
 
@@ -159,7 +163,7 @@ const Productos = () => {
                         <Grid item xs={2}><CheckCircleOutlineOutlinedIcon style={{color:'#27AB6E'}} /></Grid>
                         <Grid item xs={10}>
                         <Tooltip title="Total de productos disponibles en stock"><Grid item={12} className="title-item-resume">TOTAL DE STOCK</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">241</Grid>
+                            <Grid item={12} className="txt-item-resume">{stock && stock}</Grid>
                         </Grid>
                     </Grid>
 
@@ -167,7 +171,7 @@ const Productos = () => {
                         <Grid item xs={2}><HighlightOffOutlinedIcon style={{color:'#D9822B'}} /></Grid>
                         <Grid item xs={10}>
                         <Tooltip title="Total de productos fuera de stock"><Grid item={12} className="title-item-resume">FUERA DE STOCK</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">5</Grid>
+                            <Grid item={12} className="txt-item-resume">{sinStock && sinStock}</Grid>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -213,7 +217,7 @@ const Productos = () => {
                         </Grid>
                     </Grid>
                     {/* Este height es provisional */}
-                    <Grid item xs={12} style={{height:'300px'}}>
+                    <Grid item xs={12} style={{height:350}}>
                     <DataGrid
                         rows={rows}
                         columns={columns}

@@ -26,7 +26,7 @@ import UpdateIcon from '@material-ui/icons/Update';
 
 import Receta from '../../../components/Recetas/Receta';
 
-const Producto = () => {
+const Producto = ({producto}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -70,6 +70,14 @@ const Producto = () => {
         } 
     }
 
+    const [values, setValues] = React.useState({
+        stock: producto.stock || 0,
+      });
+      const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+        console.log(event)
+      };
+
     return ( 
         <>
         <Container> 
@@ -98,58 +106,60 @@ const Producto = () => {
                         {/* contenido */}
                         <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                             <Grid item xs={4} sm={1} style={{marginRight:'20px',marginBottom:'20px'}}>
-                                <img src="/img/PRODUCTOS/1.png" className="img-product-view" />
+                                <img src={producto.img[0] && '/img/PRODUCTOS/'+producto.img[0].url} className="img-product-view" />
                             </Grid>
                             <Grid item xs={12} sm={10}>
                                 {/* ITEM DE INFO */}
                                 <Grid item xs={12} className="item-product-data">
                                     <Grid item xs={4} sm={2} className="title-item-info">ID</Grid>
-                                    <Grid item xs={12} sm={10} className="item-info-txt">1223881</Grid>
+                                    <Grid item xs={12} sm={10} className="item-info-txt">{producto.id}</Grid>
                                 </Grid>
 
                                 <Grid item xs={12} className="item-product-data">
                                     <Grid item xs={4} sm={2} className="title-item-info">NOMBRE</Grid>
-                                    <Grid item xs={12} sm={10} className="item-info-txt"><b>Nombre del producto Lorem ipsum dolor sit amet consectetur adipiscing</b></Grid>
+                                    <Grid item xs={12} sm={10} className="item-info-txt"><b>{producto.name}</b></Grid>
                                 </Grid>
 
                                 <Grid item xs={12} className="item-product-data">
                                     <Grid item xs={4} sm={2} className="title-item-info">MARCA</Grid>
-                                    <Grid item xs={12} sm={10} className="item-info-txt">Beyond Meat</Grid>
+                                    <Grid item xs={12} sm={10} className="item-info-txt">{producto.brand.name}</Grid>
                                 </Grid>
 
                                 <Grid item xs={12} className="item-product-data">
                                     <Grid item xs={4}xs={12} sm={10} sm={2} className="title-item-info">ATRIBUTOS</Grid>
-                                    <Grid item xs={12} sm={10} className="item-info-txt">Gluten free, Soya free</Grid>
+                                    <Grid item xs={12} sm={10} className="item-info-txt">{producto.soyaFree == 1 && 'Soya free '}{producto.trigoFree == 1 && ' Gluten Free'}</Grid>
                                 </Grid>
                                 
                                 <Grid item xs={12} className="item-product-data">
                                     <Grid item xs={4} sm={2} className="title-item-info">CATEGORÍAS</Grid>
-                                    <Grid item xs={12} sm={10} className="item-info-txt">Embutidos, carnícos</Grid>
+                                    <Grid item xs={12} sm={10} className="item-info-txt">{producto.category && producto.category.name}</Grid>
                                 </Grid>
 
                                 <Grid item xs={12} className="item-product-data">
                                     <Grid item xs={4} sm={2} className="title-item-info">TIPO</Grid>
-                                    <Grid item xs={12} sm={10} className="item-info-txt">Lorem ipsum</Grid>
+                                    <Grid item xs={12} sm={10} className="item-info-txt">{producto.type && producto.type.name}</Grid>
                                 </Grid>
 
-                                <Grid item xs={12} className="item-product-data">
-                                    <Grid item xs={4} sm={2} className="title-item-info">PRESENTACIÓN</Grid>
-                                    <Grid item xs={12} sm={10} className="item-info-txt">250 gr</Grid>
-                                </Grid>
+                                {producto.presentacion &&
+                                    <Grid item xs={12} className="item-product-data">
+                                        <Grid item xs={4} sm={2} className="title-item-info">PRESENTACIÓN</Grid>
+                                        <Grid item xs={12} sm={10} className="item-info-txt">{producto.presentacion}</Grid>
+                                    </Grid>
+                                }
 
                                 <Grid item xs={12} className="item-product-data">
                                     <Grid item xs={4} sm={2} className="title-item-info">PRECIO</Grid>
-                                    <Grid item xs={12} sm={10} className="item-info-txt">$ 250.00 MXN</Grid>
+                                    <Grid item xs={12} sm={10} className="item-info-txt">$ {producto.precio} MXN</Grid>
                                 </Grid>
 
                                 <Grid item xs={12} className="item-product-data">
                                     <Grid item xs={4} sm={2} className="title-item-info">DESCUENTO</Grid>
-                                    <Grid item xs={12} sm={10} className="item-info-txt">-0%</Grid>
+                                    <Grid item xs={12} sm={10} className="item-info-txt">-{producto.descuento}%</Grid>
                                 </Grid>
 
                                 <Grid item xs={12} className="item-product-data">
                                     <Grid item xs={12} sm={2} className="title-item-info">INGREDIENTES</Grid>
-                                    <Grid item xs={12} sm={10} className="item-info-txt">Aceite de coco, vino blanco, agua, almidón modificado, almidón, saborizante natural y artificial, sal, goma de celulosa, sorbato de potasio, achiote, betacaroteno, ácido cítrico, vitamina B12.</Grid>
+                                    <Grid item xs={12} sm={10} className="item-info-txt">{producto.ingredientes}</Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -167,7 +177,7 @@ const Producto = () => {
                                 {/* <TextField className="input-stock" id="stock-product" label="Stock" type="number" InputLabelProps={{ shrink: true }} variant="outlined" /> */}
                                 <Grid item xs={12} style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                                     <Grid className="label-input-custom">STOCK</Grid>
-                                    <input type="number" className="input-stock" />
+                                    <input type="number" className="input-stock" value={values.stock} onChange={handleChange('stock')}/>
                                 </Grid>
                                 <Grid item xs={12} style={{display:'flex', justifyContent:'flex-end'}}>
                                     <Button
