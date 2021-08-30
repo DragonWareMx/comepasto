@@ -98,7 +98,7 @@ const EditarProducto = () => {
         setAnchorEl(null);
     };
 
-    // MODAL
+    // MODAL ELIMINAR
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpenModal = () => {
@@ -108,6 +108,39 @@ const EditarProducto = () => {
 
     const handleCloseModal = () => {
         setOpen(false);
+    };
+
+    // MODAL AGREGAR MARCA
+    const [openMarca, setOpenMarca] = React.useState(false);
+
+    const handleClickOpenModalMarca = () => {
+        setOpenMarca(true);
+    };
+
+    const handleCloseModalMarca = () => {
+        setOpenMarca(false);
+    };
+
+    // MODAL AGREGAR TIPO
+    const [openTipo, setOpenTipo] = React.useState(false);
+
+    const handleClickOpenModalTipo = () => {
+        setOpenTipo(true);
+    };
+
+    const handleCloseModalTipo = () => {
+        setOpenTipo(false);
+    };
+
+    // MODAL AGREGAR CATEGORIA
+    const [openCat, setOpenCat] = React.useState(false);
+
+    const handleClickOpenModalCat = () => {
+        setOpenCat(true);
+    };
+
+    const handleCloseModalCat = () => {
+        setOpenCat(false);
     };
 
     // Select
@@ -206,7 +239,7 @@ const EditarProducto = () => {
                                             </MenuItem>
                                         ))}
                                     </TextField>
-                                    <InertiaLink className="link-add-bd">Agregar marca</InertiaLink>
+                                    <Grid className="link-add-bd" onClick={handleClickOpenModalMarca}>Agregar marca</Grid>
                                 </Grid>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
                                     <TextField
@@ -227,7 +260,7 @@ const EditarProducto = () => {
                                             </MenuItem>
                                         ))}
                                     </TextField>
-                                    <InertiaLink className="link-add-bd">Agregar tipo</InertiaLink>
+                                    <Grid className="link-add-bd" onClick={handleClickOpenModalTipo}>Agregar tipo</Grid>
                                 </Grid>
                             </Grid>
 
@@ -255,7 +288,7 @@ const EditarProducto = () => {
                                     <Chip onDelete={handleDelete} label="Categoría 1" className="chip-categoria" />
                                     <Chip onDelete={handleDelete} label="Categoría 2" className="chip-categoria" />
                                     
-                                    <InertiaLink className="link-add-bd">Agregar categoría</InertiaLink>
+                                    <Grid className="link-add-bd" onClick={handleClickOpenModalCat}>Agregar categoría</Grid>
                                 </Grid>
                                 <Grid item xs={12} sm={6} style={{marginBottom:'20px'}}>
                                     <TextField
@@ -358,6 +391,7 @@ const EditarProducto = () => {
                 </Grid>
             </Grid>
         </Container>
+        {/* MODAL ELIMINAR */}
         <Dialog
             open={open}
             onClose={handleCloseModal}
@@ -382,6 +416,165 @@ const EditarProducto = () => {
                 </Grid>
                 </form>
             </DialogActions>
+        </Dialog>
+
+
+        {/* MODAL AGREGAR MARCA */}
+        <Dialog
+            open={openMarca}
+            onClose={handleCloseModalMarca}
+        >
+        <form noValidate autoComplete="off">
+            <DialogTitle  className="title-dialog">{"Agregar marca"}</DialogTitle>
+            <DialogContent>
+            <DialogContentText id="alert-dialog-description" className="dialog-content">
+                <MuiThemeProvider>
+                <Grid item xs={12} style={{marginBottom:'20px'}}>
+                    <TextField 
+                        id="newMarca" 
+                        type="text"
+                        label="Nombre" 
+                        style={{width:'100%'}}
+                        InputProps={{className: classes.input,}}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.formTextLabel
+                            }
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={12} style={{display:'flex',alignItems:'center',marginBottom:'15px'}}>
+                    <img src="/img/icons/imgDefault.png" style={{marginRight:'15px',width:'30%',minWidth:'80px',maxHeight:'150px',objectFit:'cover'}} />
+                    <input
+                        accept="image/*"
+                        id="imgNewMarca"
+                        type="file"
+                        style={{display:'none'}}
+                    />
+                    <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                        <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
+                        Subir img
+                        </Button>
+                    </label>
+                </Grid>
+                </MuiThemeProvider>
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
+                    <Grid className="btn-cancelar-op" onClick={handleCloseModalMarca}>CANCELAR</Grid>
+                    <Button
+                        className="button-filter button-update btn-second"
+                        type="submit"
+                        startIcon={<ArrowRightAltIcon />}
+                    >
+                        Agregar
+                    </Button>
+                </Grid>
+            </DialogActions>
+        </form>
+        </Dialog>
+
+
+        {/* MODAL AGREGAR TIPO */}
+        <Dialog
+            open={openTipo}
+            onClose={handleCloseModalTipo}
+        >
+        <form noValidate autoComplete="off">
+            <DialogTitle  className="title-dialog">{"Agregar tipo"}</DialogTitle>
+            <DialogContent>
+            <DialogContentText id="alert-dialog-description" className="dialog-content">
+                <MuiThemeProvider>
+                <Grid item xs={12} style={{marginBottom:'20px'}}>
+                    <TextField 
+                        id="newTipo" 
+                        type="text"
+                        label="Nombre" 
+                        style={{width:'100%'}}
+                        InputProps={{className: classes.input,}}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.formTextLabel
+                            }
+                        }}
+                    />
+                </Grid>
+                </MuiThemeProvider>
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
+                    <Grid className="btn-cancelar-op" onClick={handleCloseModalTipo}>CANCELAR</Grid>
+                    <Button
+                        className="button-filter button-update btn-second"
+                        type="submit"
+                        startIcon={<ArrowRightAltIcon />}
+                    >
+                        Agregar
+                    </Button>
+                </Grid>
+            </DialogActions>
+        </form>
+        </Dialog>
+
+        {/* MODAL AGREGAR CATEGORIA */}
+        <Dialog
+            open={openCat}
+            onClose={handleCloseModalCat}
+        >   
+        <form noValidate autoComplete="off">
+            <DialogTitle  className="title-dialog">{"Agregar categoría"}</DialogTitle>
+            <DialogContent>
+            <DialogContentText id="alert-dialog-description" className="dialog-content">
+                
+                <MuiThemeProvider>
+                <Grid item xs={12} style={{marginBottom:'20px'}}>
+                    <TextField 
+                        id="newCat" 
+                        type="text"
+                        label="Nombre" 
+                        style={{width:'100%'}}
+                        InputProps={{className: classes.input,}}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.formTextLabel
+                            }
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={12} style={{display:'flex',alignItems:'center',marginBottom:'15px'}}>
+                    <img src="/img/icons/imgDefault.png" style={{marginRight:'15px',width:'30%',minWidth:'80px',maxHeight:'150px',objectFit:'cover'}} />
+                    <input
+                        accept="image/*"
+                        id="imgNewCat"
+                        type="file"
+                        style={{display:'none'}}
+                    />
+                    <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                        <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
+                        Subir img
+                        </Button>
+                    </label>
+                </Grid>
+                </MuiThemeProvider>
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                
+                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
+                    <Grid className="btn-cancelar-op" onClick={handleCloseModalCat}>CANCELAR</Grid>
+                    <Button
+                        className="button-filter button-update btn-second"
+                        type="submit"
+                        startIcon={<ArrowRightAltIcon />}
+                    >
+                        Agregar
+                    </Button>
+                </Grid>
+                
+            </DialogActions>
+        </form>
         </Dialog>
         </>
     )
