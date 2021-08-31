@@ -24,6 +24,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -46,14 +47,23 @@ const Pedido = () => {
 
     // MODAL
     const [open, setOpen] = React.useState(false);
+    const [openConfirmacion, setOpenConfirmacion] = React.useState(false);
 
     const handleClickOpenModal = () => {
         setOpen(true);
         setAnchorEl(null);
     };
 
+    const handleClickOpenModalConfirmacion = () => {
+        setOpenConfirmacion(true);
+    }
+
     const handleCloseModal = () => {
         setOpen(false);
+    };
+
+    const handleCloseModalConfirmacion = () => {
+        setOpenConfirmacion(false);
     };
 
     const responsiveRecetas = {
@@ -99,7 +109,6 @@ const Pedido = () => {
                                     open={Boolean(anchorEl)}
                                     onClose={handleClose}
                                 >
-                                    <InertiaLink href="#!" style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
                                     <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
                                 </Menu>
                             </Grid>
@@ -157,7 +166,7 @@ const Pedido = () => {
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <Grid item xs={12} className="title-item-info t-i-i-pedidos">COSTOS DE ENVÍO</Grid>
-                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>No aplica</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>$90.00</Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12}>
@@ -174,23 +183,50 @@ const Pedido = () => {
                             {/* contenido */}
                             <TableContainer >
                                 <Table  aria-label="simple table">
-                                    <TableHead>
+                                    <TableHead style={{backgroundColor:'#F3F4F7'}}>
                                     <TableRow>
-                                        <TableCell>PRODUCTO</TableCell>
-                                        <TableCell align="right">PRECIO</TableCell>
-                                        <TableCell align="right">CANTIDAD</TableCell>
-                                        <TableCell align="right">TOTAL</TableCell>
+                                        <TableCell className="head-column-txt">PRODUCTO</TableCell>
+                                        <TableCell align="right" className="head-column-txt">PRECIO</TableCell>
+                                        <TableCell align="right" className="head-column-txt">CANTIDAD</TableCell>
+                                        <TableCell align="right" className="head-column-txt">TOTAL</TableCell>
                                     </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         <TableRow >
-                                        <TableCell component="th" scope="row">
-                                            name
-                                        </TableCell>
-                                        <TableCell align="right">sfs</TableCell>
-                                        <TableCell align="right">sfsf</TableCell>
-                                        <TableCell align="right">gfdg</TableCell>
-                                        <TableCell align="right">fgfd</TableCell>
+                                            <TableCell component="th" scope="row" className="body-row-txt" style={{display:'flex',alignItems:'center'}}>
+                                                <Grid style={{width:'max-content'}} >
+                                                    <InertiaLink href={route('admin.producto',1)}>
+                                                        <img src="/img/PRODUCTOS/1.png" className="img-product-pedido" />
+                                                    </InertiaLink>
+                                                </Grid>
+                                                <Grid>
+                                                    {/* Max, 50 caracteres */}
+                                                    <Tooltip title="Nombre completo del producto" placement="top-start">
+                                                        <Grid item xs={12}>
+                                                            <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none',color:'#474747'}}>
+                                                                Lorem ipsum dolor sit amet consectetur adipisicing...
+                                                            </InertiaLink>
+                                                        </Grid>
+                                                    </Tooltip>
+                                                    <Grid item xs={12} className="txt-descuento">DESCUENTO 0%</Grid>
+                                                </Grid>
+                                                
+                                            </TableCell>
+                                            <TableCell align="right" className="body-row-txt">$55.00</TableCell>
+                                            <TableCell align="right" className="body-row-txt">2</TableCell>
+                                            <TableCell align="right" className="body-row-txt">$110.00</TableCell>
+                                        </TableRow>
+                                        <TableRow >
+                                            <TableCell component="th" scope="row" className="body-row-txt">Costos de envío</TableCell>
+                                            <TableCell align="right" className="body-row-txt"> </TableCell>
+                                            <TableCell align="right" className="body-row-txt"> </TableCell>
+                                            <TableCell align="right" className="body-row-txt">$90.00</TableCell>
+                                        </TableRow>
+                                        <TableRow >
+                                            <TableCell component="th" scope="row" className="body-row-txt">Total</TableCell>
+                                            <TableCell align="right" className="body-row-txt"> </TableCell>
+                                            <TableCell align="right" className="body-row-txt"> </TableCell>
+                                            <TableCell align="right" className="body-row-txt"><b>$200.00</b></TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -235,7 +271,7 @@ const Pedido = () => {
                                 <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#CCCCCC',fontSize:'38px',marginRight:'16px'}} /> COMPLETADO</Grid>
                             </Grid>
 
-                            <Grid item xs={12} className="button-pay"><CheckCircleOutlineIcon style={{marginRight:'25px'}} />Marcar como pagado</Grid>
+                            <Grid item xs={12} onClick={handleClickOpenModalConfirmacion} className="button-pay"><CheckCircleOutlineIcon style={{marginRight:'25px'}} />Marcar como pagado</Grid>
                         </Grid>
                     </Grid>
                     </Grid>
@@ -251,7 +287,7 @@ const Pedido = () => {
             <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas eliminar este pedido?"}</DialogTitle>
             <DialogContent>
             <DialogContentText id="alert-dialog-description" className="dialog-content">
-                Toda la información relacionada con este pedidos se verá afectada por esta acción.
+                Toda la información relacionada con este pedido se verá afectada por esta acción.
             </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -264,6 +300,32 @@ const Pedido = () => {
                         startIcon={<DeleteOutlineIcon />}
                     >
                         Eliminar
+                    </Button>
+                </Grid>
+                </form>
+            </DialogActions>
+        </Dialog>
+
+        <Dialog
+            open={openConfirmacion}
+            onClose={handleCloseModalConfirmacion}
+        >
+            <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas marcar este pedido como pagado?"}</DialogTitle>
+            <DialogContent>
+            <DialogContentText id="alert-dialog-description" className="dialog-content">
+                Está acción no podrá ser revertida.
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <form noValidate autoComplete="off">
+                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
+                    <Grid className="btn-cancelar-op" onClick={handleCloseModalConfirmacion}>CANCELAR</Grid>
+                    <Button
+                        className="button-filter button-update btn-second"
+                        type="submit"
+                        startIcon={<CheckCircleOutlineIcon />}
+                    >
+                        Marcar
                     </Button>
                 </Grid>
                 </form>
