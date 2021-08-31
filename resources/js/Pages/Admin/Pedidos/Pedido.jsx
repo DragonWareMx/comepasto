@@ -66,27 +66,6 @@ const Pedido = ({pedido}) => {
         setOpenConfirmacion(false);
     };
 
-    const responsiveRecetas = {
-        0: {
-            items: 1,
-        },
-        600: {
-            items: 2,
-        },
-        800: {
-            items: 2,
-            margin: 70
-        },
-        980: {
-            items: 3,
-            margin: 10
-        },
-        1120: {
-            items: 3,
-            margin: 50
-        } 
-    }
-
     return ( 
         <>
         <Container> 

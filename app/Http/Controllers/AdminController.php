@@ -66,4 +66,8 @@ class AdminController extends Controller
             'pedido'=>$pedido,
         ]);
     }
+
+    public function pedidosAgregar(){
+        return Inertia::render('Admin/Pedidos/AgregarPedido');
+    }
 }

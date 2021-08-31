@@ -130,6 +130,7 @@ const Pedidos = ({total,ganancias, pedidos}) => {
                 {/* TOP PAGE, TITTLE AND ADD BUTTON */}
                 <Grid item xs={12} className="top-admin">
                     <Grid className="title-page">Pedidos</Grid>
+                    <InertiaLink href={route('admin.pedidos.agregar')} style={{textDecoration:'none'}}>
                     <Button
                         variant="contained"
                         className="button-add"
@@ -137,6 +138,7 @@ const Pedidos = ({total,ganancias, pedidos}) => {
                     >
                         Agregar
                     </Button>
+                    </InertiaLink>
                 </Grid>
 
                 {/* Grids de resumen */}
