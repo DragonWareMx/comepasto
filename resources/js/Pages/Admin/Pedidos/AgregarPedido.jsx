@@ -11,13 +11,13 @@ import '/css/adminPedidos.css';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import Menu from '@material-ui/core/Menu';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -34,7 +34,7 @@ import UpdateIcon from '@material-ui/icons/Update';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
-const Pedido = () => {
+const AgregarPedido = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -43,27 +43,6 @@ const Pedido = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
-    };
-
-    // MODAL
-    const [open, setOpen] = React.useState(false);
-    const [openConfirmacion, setOpenConfirmacion] = React.useState(false);
-
-    const handleClickOpenModal = () => {
-        setOpen(true);
-        setAnchorEl(null);
-    };
-
-    const handleClickOpenModalConfirmacion = () => {
-        setOpenConfirmacion(true);
-    }
-
-    const handleCloseModal = () => {
-        setOpen(false);
-    };
-
-    const handleCloseModalConfirmacion = () => {
-        setOpenConfirmacion(false);
     };
 
     return ( 
@@ -79,17 +58,7 @@ const Pedido = () => {
                     <Grid item xs={12} sm={12} md={8}>
                         <Grid item xs={12} className="grid-section">
                             <Grid item xs={12} className="section-top-grid">
-                                <Grid>Información del pedido</Grid>
-                                <MoreVertIcon onClick={handleClick} style={{cursor:'pointer'}} />
-                                <Menu
-                                    id="options-menu"
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    open={Boolean(anchorEl)}
-                                    onClose={handleClose}
-                                >
-                                    <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
-                                </Menu>
+                                <Grid>Agregar pedido</Grid>
                             </Grid>
                             {/* contenido */}
                             <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
@@ -214,106 +183,42 @@ const Pedido = () => {
                     </Grid>
                     <Grid item xs={12} sm={12} md={4}>
                     {/* GRID CONFIG STOCK */}
-                    <Grid item xs={12}  className="grid-spacing-20">
-                        <Grid className="grid-section">
-                            <Grid item xs={12} className="section-top-grid" style={{padding:'23px'}}>
-                                <Grid>Estatus del producto</Grid>
-                            </Grid>
-                            {/* FORM DE ACTUALIZACION DE STOCK */}
-                            <form noValidate autoComplete="off" style={{padding:'20px 23px'}}>
-                                <Grid item xs={12}>
-                                    <select type="number" className="input-stock" style={{width:'100%'}}>
-                                        <option value="pendiente" selected>Pendiente</option>
-                                        <option value="camino">En camino</option>
-                                        <option value="entregado">Entregado</option>
-                                    </select>
+                        <Grid item xs={12}  className="grid-spacing-20">
+                            <Grid className="grid-section">
+                                <Grid item xs={12} className="section-top-grid" style={{padding:'23px'}}>
+                                    <Grid>Estatus del producto</Grid>
                                 </Grid>
-                                <Grid className="update-text">Última actualización: 20/08/2021  10:05</Grid>
-                                <Grid item xs={12} style={{display:'flex', justifyContent:'flex-end'}}>
-                                    <Button
-                                        className="button-filter button-update"
-                                        type="submit"
-                                        startIcon={<UpdateIcon />}
-                                    >
-                                        Actualizar
-                                    </Button>
-                                </Grid>
-                            </form >
-                            <Grid item xs={12} style={{borderTop:'1px solid #DDDDDD',padding:'20px 23px'}}>
-                                
-                                <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#1DA3A8',fontSize:'38px',marginRight:'16px'}} /> PEDIDO EL 21/08/2021 14:59</Grid>
-                                <hr className="hr-timeline" />
-                                <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#1DA3A8',fontSize:'38px',marginRight:'16px'}} /> PROCESADO</Grid>
-                                <hr className="hr-timeline" />
-                                <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#1DA3A8',fontSize:'38px',marginRight:'16px'}} /> EN CAMINO</Grid>
-                                <hr className="hr-timeline" />
-                                <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#CCCCCC',fontSize:'38px',marginRight:'16px'}} /> COMPLETADO</Grid>
+                                {/* FORM DE ACTUALIZACION DE STOCK */}
+                                <form noValidate autoComplete="off" style={{padding:'20px 23px'}}>
+                                    <Grid item xs={12}>
+                                        <select type="number" className="input-stock" style={{width:'100%'}}>
+                                            <option value="pendiente" selected>Pendiente</option>
+                                            <option value="camino">En camino</option>
+                                            <option value="entregado">Entregado</option>
+                                        </select>
+                                    </Grid>
+                                    <Grid item xs={12} style={{display:'flex', justifyContent:'flex-end'}}>
+                                        <Button
+                                            className="button-filter button-update"
+                                            type="submit"
+                                            startIcon={<UpdateIcon />}
+                                        >
+                                            Actualizar
+                                        </Button>
+                                    </Grid>
+                                </form >
                             </Grid>
-
-                            <Grid item xs={12} onClick={handleClickOpenModalConfirmacion} className="button-pay"><CheckCircleOutlineIcon style={{marginRight:'25px'}} />Marcar como pagado</Grid>
                         </Grid>
-                    </Grid>
                     </Grid>
                 </Grid>
 
             </Grid>
         </Container>
 
-        <Dialog
-            open={open}
-            onClose={handleCloseModal}
-        >
-            <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas eliminar este pedido?"}</DialogTitle>
-            <DialogContent>
-            <DialogContentText id="alert-dialog-description" className="dialog-content">
-                Toda la información relacionada con este pedido se verá afectada por esta acción.
-            </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <form noValidate autoComplete="off">
-                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
-                    <Grid className="btn-cancelar-op" onClick={handleCloseModal}>CANCELAR</Grid>
-                    <Button
-                        className="button-filter button-update btn-second"
-                        type="submit"
-                        startIcon={<DeleteOutlineIcon />}
-                    >
-                        Eliminar
-                    </Button>
-                </Grid>
-                </form>
-            </DialogActions>
-        </Dialog>
-
-        <Dialog
-            open={openConfirmacion}
-            onClose={handleCloseModalConfirmacion}
-        >
-            <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas marcar este pedido como pagado?"}</DialogTitle>
-            <DialogContent>
-            <DialogContentText id="alert-dialog-description" className="dialog-content">
-                Está acción no podrá ser revertida.
-            </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <form noValidate autoComplete="off">
-                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
-                    <Grid className="btn-cancelar-op" onClick={handleCloseModalConfirmacion}>CANCELAR</Grid>
-                    <Button
-                        className="button-filter button-update btn-second"
-                        type="submit"
-                        startIcon={<CheckCircleOutlineIcon />}
-                    >
-                        Marcar
-                    </Button>
-                </Grid>
-                </form>
-            </DialogActions>
-        </Dialog>
     </>
     )
 }
 
-Pedido.layout = page => <Layout children={page} title="Comepasto - Pedidos" pageTitle="Pedidos" />
+AgregarPedido.layout = page => <Layout children={page} title="Comepasto - Pedidos" pageTitle="Pedidos" />
 
-export default Pedido
+export default AgregarPedido
