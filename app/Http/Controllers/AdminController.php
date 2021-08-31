@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Product;
+use App\Models\Sale;
 use Illuminate\Support\Facades\DB; 
 
 class AdminController extends Controller
@@ -43,10 +44,26 @@ class AdminController extends Controller
     }
 
     public function pedidos(){
-        return Inertia::render('Admin/Pedidos/Pedidos');
+        $pedidos=Sale::
+            leftJoin('users','sales.client_id','=','users.id')
+            ->select('sales.id','sales.created_at as fecha','users.name as cliente', 'sales.total as total','tipo_entrega as entrega')
+            ->orderBy('id','DESC')
+        ->get();
+        $total=$pedidos->count();
+        $ganancias=$pedidos->sum('total');
+        return Inertia::render('Admin/Pedidos/Pedidos',[
+            'total'=>$total,
+            'ganancias'=>$ganancias,
+            'pedidos'=>$pedidos,
+        ]);
     }
 
     public function pedido($id){
-        return Inertia::render('Admin/Pedidos/Pedido');
+        $pedido=Sale::
+            with('client','product')
+        ->findOrFail($id);
+        return Inertia::render('Admin/Pedidos/Pedido',[
+            'pedido'=>$pedido,
+        ]);
     }
 }
