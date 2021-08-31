@@ -16,11 +16,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {DataGrid}  from '@material-ui/data-grid';
 
-import LocalShippingIcon from '@material-ui/icons/LocalShipping';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
-import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
-import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
@@ -68,47 +63,46 @@ const useStyles = makeStyles((theme) => ({
 const columns = [
 { field: 'id', headerName: 'ID', width: 90 },
 {
-    field: 'fecha',
-    headerName: 'FECHA',
-    width: 200,
+    field: 'nombre',
+    headerName: 'NOMBRE',
+    width: 350,
     editable: false,
     disableColumnSelector:false,
 },
 {
-    field: 'cliente',
-    headerName: 'CLIENTE',
-    width: 350,
+    field: 'telefono',
+    headerName: 'TELÉFONO',
+    width: 200,
     editable: false,
 },
 {
-    field: 'estatus',
-    headerName: 'ESTATUS',
+    field: 'correo',
+    headerName: 'CORREO',
     // type: 'number',
     width: 200,
     editable: false,
 },
 {
-    field: 'entrega',
-    headerName: 'TIPO DE ENTREGA',
+    field: 'registro',
+    headerName: 'FECHA DE REGISTRO',
     width: 200,
     editable: false,
 },
 {
     field: 'total',
     headerName: 'TOTAL',
-    description: 'No es posible reordenar esta columna.',
-    sortable: false,
+    description: 'PEDIDOS REALIZADOS',
     width: 180,
     editable: false,
 },
 ];
   
   const rows = [
-    { id: 1, fecha: '20/08/2021 09:32', cliente: 'Lorem ipsum dolor sit amet', estatus: 'En camino', entrega:'A domicilio', total:'$240.00 MXN' },
+    { id: 1, nombre: 'Lorem ipsum dolor sit amet', telefono: '44 44 44 44 44 ', correo: 'correo@ejemplo.com', registro:'30/08/2021', total:'$240.00 MXN' },
   ];
 
 
-const Pedidos = () => {
+const Clientes = () => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -127,51 +121,7 @@ const Pedidos = () => {
             <Grid container style={{paddingTop:'34px'}}>
                 {/* TOP PAGE, TITTLE AND ADD BUTTON */}
                 <Grid item xs={12} className="top-admin">
-                    <Grid className="title-page">PEDIDOS</Grid>
-                    <InertiaLink href={route('admin.pedidos.agregar')} style={{textDecoration:'none'}}>
-                    <Button
-                        variant="contained"
-                        className="button-add"
-                        startIcon={<AddCircleOutlineIcon />}
-                    >
-                        Agregar
-                    </Button>
-                    </InertiaLink>
-                </Grid>
-
-                {/* Grids de resumen */}
-                <Grid item xs={12} className="grid-resume">
-                    <Grid item xs={12} sm={6} md={3} className="item-resume">
-                        <Grid item xs={2}><LocalShippingIcon style={{color:'#1DA3A8'}} /></Grid>
-                        <Grid item xs={10}>
-                            <Tooltip title="Total de pedidos registrados"><Grid item={12} className="title-item-resume">TOTAL DE PEDIDOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">100</Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6} md={3} className="item-resume">
-                        <Grid item xs={2}><MonetizationOnOutlinedIcon style={{color:'#1DA3A8'}} /></Grid>
-                        <Grid item xs={10}>
-                        <Tooltip title="Valor total de los pedidos realizados"><Grid item={12} className="title-item-resume">TOTAL EN PEDIDOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">$ 12,000 MXN</Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6} md={3} className="item-resume">
-                        <Grid item xs={2}><CheckCircleOutlineOutlinedIcon style={{color:'#27AB6E'}} /></Grid>
-                        <Grid item xs={10}>
-                        <Tooltip title="Total de pedidos completados exitosamente"><Grid item={12} className="title-item-resume">PEDIDOS COMPLETADOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">241</Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6} md={3} className="item-resume">
-                        <Grid item xs={2}><HighlightOffOutlinedIcon style={{color:'#D9822B'}} /></Grid>
-                        <Grid item xs={10}>
-                        <Tooltip title="Total de pedidos en espera"><Grid item={12} className="title-item-resume">PEDIDOS PENDIENTES</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">5</Grid>
-                        </Grid>
-                    </Grid>
+                    <Grid className="title-page">CLIENTES</Grid>
                 </Grid>
 
                 {/* CONTENIDO GENERAL */}
@@ -208,9 +158,9 @@ const Pedidos = () => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>Cliente</MenuItem>
-                                <MenuItem onClick={handleClose}>Estatus</MenuItem>
-                                <MenuItem onClick={handleClose}>Tipo de entrega</MenuItem>
+                                <MenuItem onClick={handleClose}>Nombre</MenuItem>
+                                <MenuItem onClick={handleClose}>Teléfono</MenuItem>
+                                <MenuItem onClick={handleClose}>Correo eletrónico</MenuItem>
                             </Menu>
                         </Grid>
                     </Grid>
@@ -234,6 +184,6 @@ const Pedidos = () => {
 }
 
 
-Pedidos.layout = page => <Layout children={page} title="Comepasto - Pedidos" pageTitle="Pedidos" />
+Clientes.layout = page => <Layout children={page} title="Comepasto - Clientes" pageTitle="Clientes" />
 
-export default Pedidos
+export default Clientes

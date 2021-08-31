@@ -34,4 +34,8 @@ class AdminController extends Controller
     public function pedidosAgregar(){
         return Inertia::render('Admin/Pedidos/AgregarPedido');
     }
+
+    public function clientes(){
+        return Inertia::render('Admin/Clientes/Clientes');
+    }
 }

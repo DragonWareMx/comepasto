@@ -127,7 +127,7 @@ const Productos = () => {
             <Grid container style={{paddingTop:'34px'}}>
                 {/* TOP PAGE, TITTLE AND ADD BUTTON */}
                 <Grid item xs={12} className="top-admin">
-                    <Grid className="title-page">Productos</Grid>
+                    <Grid className="title-page">PRODUCTOS</Grid>
                     <InertiaLink href={route('admin.producto.agregar')} style={{textDecoration:'none'}}>
                     <Button
                         variant="contained"
