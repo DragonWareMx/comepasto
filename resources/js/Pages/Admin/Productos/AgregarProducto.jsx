@@ -144,6 +144,9 @@ const AgregarProducto = () => {
 
     };
 
+    const [fullWidth, setFullWidth] = React.useState(true);
+    const [maxWidth, setMaxWidth] = React.useState('sm');
+
     const classes = useStyles();
 
     return ( 
@@ -369,6 +372,8 @@ const AgregarProducto = () => {
         <Dialog
             open={openMarca}
             onClose={handleCloseModalMarca}
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
         >
         <form noValidate autoComplete="off">
             <DialogTitle  className="title-dialog">{"Agregar marca"}</DialogTitle>
@@ -426,6 +431,8 @@ const AgregarProducto = () => {
         <Dialog
             open={openTipo}
             onClose={handleCloseModalTipo}
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
         >
         <form noValidate autoComplete="off">
             <DialogTitle  className="title-dialog">{"Agregar tipo"}</DialogTitle>
@@ -468,6 +475,8 @@ const AgregarProducto = () => {
         <Dialog
             open={openCat}
             onClose={handleCloseModalCat}
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
         >   
         <form noValidate autoComplete="off">
             <DialogTitle  className="title-dialog">{"Agregar categoría"}</DialogTitle>

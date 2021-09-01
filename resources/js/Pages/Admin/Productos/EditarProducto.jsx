@@ -161,6 +161,9 @@ const EditarProducto = () => {
 
     const classes = useStyles();
 
+    const [fullWidth, setFullWidth] = React.useState(true);
+    const [maxWidth, setMaxWidth] = React.useState('sm');
+
     return ( 
         <>
         <Container> 
@@ -423,6 +426,8 @@ const EditarProducto = () => {
         <Dialog
             open={openMarca}
             onClose={handleCloseModalMarca}
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
         >
         <form noValidate autoComplete="off">
             <DialogTitle  className="title-dialog">{"Agregar marca"}</DialogTitle>
@@ -480,6 +485,8 @@ const EditarProducto = () => {
         <Dialog
             open={openTipo}
             onClose={handleCloseModalTipo}
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
         >
         <form noValidate autoComplete="off">
             <DialogTitle  className="title-dialog">{"Agregar tipo"}</DialogTitle>
@@ -522,6 +529,8 @@ const EditarProducto = () => {
         <Dialog
             open={openCat}
             onClose={handleCloseModalCat}
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
         >   
         <form noValidate autoComplete="off">
             <DialogTitle  className="title-dialog">{"Agregar categoría"}</DialogTitle>
