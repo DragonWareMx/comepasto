@@ -38,4 +38,8 @@ class AdminController extends Controller
     public function clientes(){
         return Inertia::render('Admin/Clientes/Clientes');
     }
+
+    public function cliente(){
+        return Inertia::render('Admin/Clientes/Cliente');
+    }
 }

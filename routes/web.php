@@ -90,3 +90,4 @@ Route::get('/admin/pedidos/{id}', [App\Http\Controllers\AdminController::class, 
 Route::get('/admin/pedidos-agregar', [App\Http\Controllers\AdminController::class, 'pedidosAgregar'])->name('admin.pedidos.agregar');
 
 Route::get('/admin/clientes', [App\Http\Controllers\AdminController::class, 'clientes'])->name('admin.clientes');
+Route::get('/admin/clientes/{id}', [App\Http\Controllers\AdminController::class, 'cliente'])->name('admin.cliente');
