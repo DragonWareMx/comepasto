@@ -56,6 +56,21 @@ const theme = createMuiTheme({
     },
 });
 
+const currencies = [
+    {
+      value: '1',
+      label: 'Productos',
+    },
+    {
+      value: '2',
+      label: 'Pagos',
+    },
+    {
+      value: '3',
+      label: 'Envios',
+    },
+  ];
+
 const useStyles = makeStyles((theme) => ({
     input: {
         fontFamily: "Oxygen",
@@ -142,6 +157,9 @@ const Preguntas = () => {
     const handleCloseModalMarca = () => {
         setOpenMarca(false);
     };
+
+    const [fullWidth, setFullWidth] = React.useState(true);
+    const [maxWidth, setMaxWidth] = React.useState('sm');
     
     return ( 
         <>
@@ -267,18 +285,39 @@ const Preguntas = () => {
         <Dialog
             open={openMarca}
             onClose={handleCloseModalMarca}
-            style={{width:'50%'}}
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
         >
         <form noValidate autoComplete="off">
-            <DialogTitle  className="title-dialog">{"Agregar marca"}</DialogTitle>
+            <DialogTitle  className="title-dialog">{"Agregar pregunta"}</DialogTitle>
             <DialogContent>
             <DialogContentText id="alert-dialog-description" className="dialog-content">
                 <MuiThemeProvider>
                 <Grid item xs={12} style={{marginBottom:'20px'}}>
+                    <TextField
+                        id="categorias"
+                        select
+                        label="Categorías"
+                        style={{width:'100%'}}
+                        InputProps={{className: classes.input,}}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.formTextLabel
+                            }
+                        }}
+                        >
+                        {currencies.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Grid>
+                <Grid item xs={12} style={{marginBottom:'20px'}}>
                     <TextField 
-                        id="newMarca" 
+                        id="titulo" 
                         type="text"
-                        label="Nombre" 
+                        label="Título" 
                         style={{width:'100%'}}
                         InputProps={{className: classes.input,}}
                         InputLabelProps={{
@@ -288,19 +327,19 @@ const Preguntas = () => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} style={{display:'flex',alignItems:'center',marginBottom:'15px'}}>
-                    <img src="/img/icons/imgDefault.png" style={{marginRight:'15px',width:'30%',minWidth:'80px',maxHeight:'150px',objectFit:'cover'}} />
-                    <input
-                        accept="image/*"
-                        id="imgNewMarca"
-                        type="file"
-                        style={{display:'none'}}
+                <Grid item xs={12} style={{marginBottom:'20px'}}>
+                    <TextField 
+                        id="respuesta" 
+                        multiline
+                        label="Respuesta" 
+                        style={{width:'100%'}}
+                        InputProps={{className: classes.input,}}
+                        InputLabelProps={{
+                        classes: {
+                            root: classes.formTextLabel
+                        }
+                        }}
                     />
-                    <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
-                        <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
-                        Subir img
-                        </Button>
-                    </label>
                 </Grid>
                 </MuiThemeProvider>
             </DialogContentText>
