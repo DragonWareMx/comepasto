@@ -46,4 +46,8 @@ class AdminController extends Controller
     public function preguntas(){
         return Inertia::render('Admin/Preguntas/Preguntas');
     }
+
+    public function banners(){
+        return Inertia::render('Admin/Banners/Banners');
+    }
 }

@@ -174,7 +174,7 @@ const AgregarProducto = () => {
                             />
                             <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
                                 <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
-                                Subir imr
+                                Subir img
                                 </Button>
                             </label>
                         </Grid>
