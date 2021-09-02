@@ -95,3 +95,5 @@ Route::get('/admin/clientes/{id}', [App\Http\Controllers\AdminController::class,
 Route::get('/admin/preguntas', [App\Http\Controllers\AdminController::class, 'preguntas'])->name('admin.preguntas');
 
 Route::get('/admin/banners', [App\Http\Controllers\AdminController::class, 'banners'])->name('admin.banners');
+
+Route::get('/admin/recetas', [App\Http\Controllers\AdminController::class, 'recetas'])->name('admin.recetas');
