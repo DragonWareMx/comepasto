@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sale;
 use Illuminate\Http\Request;
-use Inertia\Inertia; 
+use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 
 class CuentaController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Cuenta/Cuenta'); 
+        return Inertia::render('Cuenta/Cuenta');
     }
 
     public function misPedidos()
     {
-        return Inertia::render('Cuenta/MisPedidos');
+        if (Auth::guest()) {
+            return redirect()->route('inicio')->with('info', 'Por favor primero inicia sesión.');
+        }
+        $compras = Sale::where('client_id', '=', Auth::id())->orderBy('created_at', 'DESC')->get();
+        return Inertia::render('Cuenta/MisPedidos', ['compras' => $compras]);
     }
 
     public function informacion()
@@ -29,11 +35,13 @@ class CuentaController extends Controller
         return Inertia::render('Cuenta/Direcciones');
     }
 
-    public function direccionesAdd(){
+    public function direccionesAdd()
+    {
         return Inertia::render('Cuenta/Direcciones/AgregarDireccion');
     }
 
-    public function direccionesEdit($id){
+    public function direccionesEdit($id)
+    {
         return Inertia::render('Cuenta/Direcciones/EditarDireccion');
     }
 
