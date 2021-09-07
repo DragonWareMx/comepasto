@@ -78,6 +78,25 @@ const Producto = ({producto}) => {
         console.log(event)
       };
 
+    function handleSubmit(e) {
+        e.preventDefault()
+
+        Inertia.post('/admin/productos/'+producto.id+'/inventario', values, {
+            onSuccess: () => {
+
+            },
+            onError: () => {
+                setValues(values => ({
+                    ...values,
+                    error: true
+                }));
+            },
+            onFinish: () => {
+                setOpen(false)
+            }
+        })
+    }
+
     return ( 
         <>
         <Container> 
@@ -173,7 +192,7 @@ const Producto = ({producto}) => {
                                 <Grid>Estatus del producto</Grid>
                             </Grid>
                             {/* FORM DE ACTUALIZACION DE STOCK */}
-                            <form noValidate autoComplete="off" style={{padding:'20px 23px'}}>
+                            <form noValidate autoComplete="off" style={{padding:'20px 23px'}} onSubmit={handleSubmit}>
                                 {/* <TextField className="input-stock" id="stock-product" label="Stock" type="number" InputLabelProps={{ shrink: true }} variant="outlined" /> */}
                                 <Grid item xs={12} style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                                     <Grid className="label-input-custom">STOCK</Grid>
