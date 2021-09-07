@@ -1,5 +1,6 @@
 // import React, { useEffect, useState } from 'react';
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { Inertia } from '@inertiajs/inertia'
 import { makeStyles } from '@material-ui/core/styles';
 import route from 'ziggy-js';
@@ -14,15 +15,26 @@ import Tooltip from '@material-ui/core/Tooltip';
 import InputBase from '@material-ui/core/InputBase';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import {DataGrid}  from '@material-ui/data-grid';
+import {
+    DataGrid,
+    GridToolbarDensitySelector,
+    GridToolbarFilterButton,
+  } from '@material-ui/data-grid';
+
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+
 
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
-import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
+
+//iconos
+import ClearIcon from '@material-ui/icons/Clear';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -103,7 +115,49 @@ const columns = [
 // },
 ];
   
+function escapeRegExp(value) {
+    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
+function QuickSearchToolbar(props) {
+    const classes = useStyles();
   
+    return (
+      <div className={classes.root}>
+        <div>
+          <GridToolbarFilterButton />
+          <GridToolbarDensitySelector />
+        </div>
+        <TextField
+          variant="standard"
+          value={props.value}
+          onChange={props.onChange}
+          placeholder="Search…"
+          className={classes.textField}
+          InputProps={{
+            startAdornment: <SearchIcon fontSize="small" />,
+            endAdornment: (
+              <IconButton
+                title="Clear"
+                aria-label="Clear"
+                size="small"
+                style={{ visibility: props.value ? 'visible' : 'hidden' }}
+                onClick={props.clearSearch}
+              >
+                <ClearIcon fontSize="small" />
+              </IconButton>
+            ),
+          }}
+        />
+      </div>
+    );
+  }
+  
+  QuickSearchToolbar.propTypes = {
+    clearSearch: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+  };
 
 
 const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
@@ -111,7 +165,6 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
     // const rows = [
     //     {id: 1, nombre: 'Lorem ipsum dolor sit amet', marca: 'Lorem ipsum', precio: '$ 250.00 MXN', descuento:'- 10%', atributos:'soya free, gluten free' },
     // ];
-    const rows =productos;
 
     const classes = useStyles();
 
@@ -124,6 +177,26 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    //buscador
+    const [searchText, setSearchText] = React.useState('');
+    const [rows, setRows] = React.useState(productos);
+
+    const requestSearch = (searchValue) => {
+        console.log(searchValue)
+        setSearchText(searchValue);
+        const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
+        const filteredRows = productos.filter((row) => {
+          return Object.keys(row).some((field) => {
+            return searchRegex.test(row[field].toString());
+          });
+        });
+        setRows(filteredRows);
+    };
+
+    React.useEffect(() => {
+        setRows(productos);
+      }, [productos]);
     
     return ( 
         <>
@@ -148,32 +221,32 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
                     <Grid item xs={12} sm={6} md={3} className="item-resume">
                         <Grid item xs={2}><ShoppingCartOutlinedIcon style={{color:'#1DA3A8'}} /></Grid>
                         <Grid item xs={10}>
-                            <Tooltip title="Total de productos registrados"><Grid item={12} className="title-item-resume">TOTAL DE PRODUCTOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">{total && total}</Grid>
+                            <Tooltip title="Total de productos registrados"><Grid item xs={12} className="title-item-resume">TOTAL DE PRODUCTOS</Grid></Tooltip>
+                            <Grid item xs={12} className="txt-item-resume">{total && total}</Grid>
                         </Grid>
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3} className="item-resume">
                         <Grid item xs={2}><MonetizationOnOutlinedIcon style={{color:'#1DA3A8'}} /></Grid>
                         <Grid item xs={10}>
-                        <Tooltip title="Valor total de los productos disponibles"><Grid item={12} className="title-item-resume">TOTAL EN PRODUCTOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">$ {totalProductos} MXN</Grid>
+                        <Tooltip title="Valor total de los productos disponibles"><Grid item xs={12} className="title-item-resume">TOTAL EN PRODUCTOS</Grid></Tooltip>
+                            <Grid item xs={12} className="txt-item-resume">$ {totalProductos} MXN</Grid>
                         </Grid>
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3} className="item-resume">
                         <Grid item xs={2}><CheckCircleOutlineOutlinedIcon style={{color:'#27AB6E'}} /></Grid>
                         <Grid item xs={10}>
-                        <Tooltip title="Total de productos disponibles en stock"><Grid item={12} className="title-item-resume">TOTAL DE STOCK</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">{stock && stock}</Grid>
+                        <Tooltip title="Total de productos disponibles en stock"><Grid item xs={12} className="title-item-resume">TOTAL DE STOCK</Grid></Tooltip>
+                            <Grid item xs={12} className="txt-item-resume">{stock && stock}</Grid>
                         </Grid>
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3} className="item-resume">
                         <Grid item xs={2}><HighlightOffOutlinedIcon style={{color:'#D9822B'}} /></Grid>
                         <Grid item xs={10}>
-                        <Tooltip title="Total de productos fuera de stock"><Grid item={12} className="title-item-resume">FUERA DE STOCK</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">{sinStock && sinStock}</Grid>
+                        <Tooltip title="Total de productos fuera de stock"><Grid item xs={12} className="title-item-resume">FUERA DE STOCK</Grid></Tooltip>
+                            <Grid item xs={12} className="txt-item-resume">{sinStock && sinStock}</Grid>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -221,11 +294,19 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
                     {/* Este height es provisional */}
                     <Grid item xs={12} style={{height:350}}>
                     <DataGrid
+                        components={{ Toolbar: QuickSearchToolbar }}
                         rows={rows}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
                         disableSelectionOnClick
+                        componentsProps={{
+                            toolbar: {
+                              value: searchText,
+                              onChange: (event) => requestSearch(event.target.value),
+                              clearSearch: () => requestSearch(''),
+                            },
+                        }}
                     />
                     </Grid>
 
