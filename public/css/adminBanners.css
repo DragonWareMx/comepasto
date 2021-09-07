@@ -1,0 +1,19 @@
+.button-banner{
+    width: 100% !important;
+    height: 240px !important;
+
+}
+.btn-delete-img{
+    color: white !important;
+    border: 1px solid white !important;
+    margin-left: 0px !important;
+}
+.banner{
+    width:100%;
+    height: 100%;
+    transition: all ease-in-out 0.25s;
+    object-fit: cover;
+}
+.banner:hover{
+    cursor: move;
+}

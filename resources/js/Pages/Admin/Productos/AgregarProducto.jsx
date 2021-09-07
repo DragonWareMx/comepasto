@@ -11,7 +11,6 @@ import '/css/adminProductos.css';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -145,6 +144,9 @@ const AgregarProducto = () => {
 
     };
 
+    const [fullWidth, setFullWidth] = React.useState(true);
+    const [maxWidth, setMaxWidth] = React.useState('sm');
+
     const classes = useStyles();
 
     return ( 
@@ -172,7 +174,7 @@ const AgregarProducto = () => {
                             />
                             <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
                                 <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
-                                Subir imr
+                                Subir img
                                 </Button>
                             </label>
                         </Grid>
@@ -370,6 +372,8 @@ const AgregarProducto = () => {
         <Dialog
             open={openMarca}
             onClose={handleCloseModalMarca}
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
         >
         <form noValidate autoComplete="off">
             <DialogTitle  className="title-dialog">{"Agregar marca"}</DialogTitle>
@@ -427,6 +431,8 @@ const AgregarProducto = () => {
         <Dialog
             open={openTipo}
             onClose={handleCloseModalTipo}
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
         >
         <form noValidate autoComplete="off">
             <DialogTitle  className="title-dialog">{"Agregar tipo"}</DialogTitle>
@@ -469,6 +475,8 @@ const AgregarProducto = () => {
         <Dialog
             open={openCat}
             onClose={handleCloseModalCat}
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
         >   
         <form noValidate autoComplete="off">
             <DialogTitle  className="title-dialog">{"Agregar categoría"}</DialogTitle>

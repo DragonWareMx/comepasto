@@ -90,3 +90,12 @@ Route::get('/admin/productos-agregar', [App\Http\Controllers\AdminController::cl
 Route::get('/admin/pedidos', [App\Http\Controllers\AdminController::class, 'pedidos'])->name('admin.pedidos');
 Route::get('/admin/pedidos/{id}', [App\Http\Controllers\AdminController::class, 'pedido'])->name('admin.pedido');
 Route::get('/admin/pedidos-agregar', [App\Http\Controllers\AdminController::class, 'pedidosAgregar'])->name('admin.pedidos.agregar');
+
+Route::get('/admin/clientes', [App\Http\Controllers\AdminController::class, 'clientes'])->name('admin.clientes');
+Route::get('/admin/clientes/{id}', [App\Http\Controllers\AdminController::class, 'cliente'])->name('admin.cliente');
+
+Route::get('/admin/preguntas', [App\Http\Controllers\AdminController::class, 'preguntas'])->name('admin.preguntas');
+
+Route::get('/admin/banners', [App\Http\Controllers\AdminController::class, 'banners'])->name('admin.banners');
+
+Route::get('/admin/recetas', [App\Http\Controllers\AdminController::class, 'recetas'])->name('admin.recetas');

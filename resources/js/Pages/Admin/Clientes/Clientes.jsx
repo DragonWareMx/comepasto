@@ -16,11 +16,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {DataGrid}  from '@material-ui/data-grid';
 
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
-import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
-import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
@@ -70,49 +65,44 @@ const columns = [
 {
     field: 'nombre',
     headerName: 'NOMBRE',
-    width: 500,
+    width: 350,
     editable: false,
     disableColumnSelector:false,
 },
 {
-    field: 'marca',
-    headerName: 'MARCA',
-    width: 180,
+    field: 'telefono',
+    headerName: 'TELÉFONO',
+    width: 200,
     editable: false,
 },
 {
-    field: 'precio',
-    headerName: 'PRECIO',
+    field: 'correo',
+    headerName: 'CORREO',
     // type: 'number',
-    width: 150,
+    width: 200,
     editable: false,
 },
 {
-    field: 'descuento',
-    headerName: 'DESCUENTO',
+    field: 'registro',
+    headerName: 'FECHA DE REGISTRO',
+    width: 200,
+    editable: false,
+},
+{
+    field: 'total',
+    headerName: 'TOTAL',
+    description: 'PEDIDOS REALIZADOS',
     width: 180,
     editable: false,
 },
-// {
-//     field: 'atributos',
-//     headerName: 'ATRIBUTOS',
-//     description: 'No es posible reordenar esta columna.',
-//     sortable: false,
-//     width: 180,
-//     editable: false,
-// },
 ];
   
-  
+  const rows = [
+    { id: 1, nombre: 'Lorem ipsum dolor sit amet', telefono: '44 44 44 44 44 ', correo: 'correo@ejemplo.com', registro:'30/08/2021', total:'$240.00 MXN' },
+  ];
 
 
-const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
-
-    // const rows = [
-    //     {id: 1, nombre: 'Lorem ipsum dolor sit amet', marca: 'Lorem ipsum', precio: '$ 250.00 MXN', descuento:'- 10%', atributos:'soya free, gluten free' },
-    // ];
-    const rows =productos;
-
+const Clientes = () => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -131,51 +121,7 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
             <Grid container style={{paddingTop:'34px'}}>
                 {/* TOP PAGE, TITTLE AND ADD BUTTON */}
                 <Grid item xs={12} className="top-admin">
-                    <Grid className="title-page">PRODUCTOS</Grid>
-                    <InertiaLink href={route('admin.producto.agregar')} style={{textDecoration:'none'}}>
-                    <Button
-                        variant="contained"
-                        className="button-add"
-                        startIcon={<AddCircleOutlineIcon />}
-                    >
-                        Agregar
-                    </Button>
-                    </InertiaLink>
-                </Grid>
-
-                {/* Grids de resumen */}
-                <Grid item xs={12} className="grid-resume">
-                    <Grid item xs={12} sm={6} md={3} className="item-resume">
-                        <Grid item xs={2}><ShoppingCartOutlinedIcon style={{color:'#1DA3A8'}} /></Grid>
-                        <Grid item xs={10}>
-                            <Tooltip title="Total de productos registrados"><Grid item={12} className="title-item-resume">TOTAL DE PRODUCTOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">{total && total}</Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6} md={3} className="item-resume">
-                        <Grid item xs={2}><MonetizationOnOutlinedIcon style={{color:'#1DA3A8'}} /></Grid>
-                        <Grid item xs={10}>
-                        <Tooltip title="Valor total de los productos disponibles"><Grid item={12} className="title-item-resume">TOTAL EN PRODUCTOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">$ {totalProductos} MXN</Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6} md={3} className="item-resume">
-                        <Grid item xs={2}><CheckCircleOutlineOutlinedIcon style={{color:'#27AB6E'}} /></Grid>
-                        <Grid item xs={10}>
-                        <Tooltip title="Total de productos disponibles en stock"><Grid item={12} className="title-item-resume">TOTAL DE STOCK</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">{stock && stock}</Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6} md={3} className="item-resume">
-                        <Grid item xs={2}><HighlightOffOutlinedIcon style={{color:'#D9822B'}} /></Grid>
-                        <Grid item xs={10}>
-                        <Tooltip title="Total de productos fuera de stock"><Grid item={12} className="title-item-resume">FUERA DE STOCK</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">{sinStock && sinStock}</Grid>
-                        </Grid>
-                    </Grid>
+                    <Grid className="title-page">CLIENTES</Grid>
                 </Grid>
 
                 {/* CONTENIDO GENERAL */}
@@ -213,13 +159,13 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
                                 onClose={handleClose}
                             >
                                 <MenuItem onClick={handleClose}>Nombre</MenuItem>
-                                <MenuItem onClick={handleClose}>Marca</MenuItem>
-                                <MenuItem onClick={handleClose}>Atributos</MenuItem>
+                                <MenuItem onClick={handleClose}>Teléfono</MenuItem>
+                                <MenuItem onClick={handleClose}>Correo eletrónico</MenuItem>
                             </Menu>
                         </Grid>
                     </Grid>
                     {/* Este height es provisional */}
-                    <Grid item xs={12} style={{height:350}}>
+                    <Grid item xs={12} style={{height:'300px'}}>
                     <DataGrid
                         rows={rows}
                         columns={columns}
@@ -238,6 +184,6 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
 }
 
 
-Productos.layout = page => <Layout children={page} title="Comepasto - Productos" pageTitle="Productos" />
+Clientes.layout = page => <Layout children={page} title="Comepasto - Clientes" pageTitle="Clientes" />
 
-export default Productos
+export default Clientes
