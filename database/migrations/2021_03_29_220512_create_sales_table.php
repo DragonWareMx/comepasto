@@ -24,8 +24,8 @@ class CreateSalesTable extends Migration
             $table->unsignedDecimal('descuento')->default(0.0);
             $table->unsignedDecimal('ganancia');
             $table->enum('tipo_entrega', ['tienda', 'domicilio']);
-            $table->boolean('statusPago');
-            $table->enum('status', ['pendiente', 'en camino', 'entregado']);
+            $table->boolean('statusPago')->default(false);
+            $table->enum('status', ['pendiente', 'en camino', 'entregado'])->default('pendiente');
             $table->text('direccion')->nullable();
 
             $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
