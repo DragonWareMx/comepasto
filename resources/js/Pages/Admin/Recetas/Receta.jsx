@@ -5,6 +5,8 @@ import route from 'ziggy-js';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import Layout from '../../../layouts/LayoutAdmin';
 import '/css/admin.css';
+import '/css/adminRecetas.css';
+import '/css/adminPedidos.css';
 import '/css/adminProductos.css';
 
 import Container from '@material-ui/core/Container';
@@ -23,6 +25,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import TuneIcon from '@material-ui/icons/Tune';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import UpdateIcon from '@material-ui/icons/Update';
+import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 const Receta = () => {
@@ -57,7 +61,7 @@ const Receta = () => {
                     <InertiaLink href={route('admin.recetas')} className="title-page subtitle-page"><ArrowBackIcon style={{marginRight:'9px'}} />Recetas</InertiaLink>
                 </Grid>
 
-                <Grid item xs={12} style={{marginBottom:'25px',display:'flex',flexWrap:'wrap',justifyContent:'space-between'}}>
+                <Grid item xs={12} style={{marginBottom:'25px',display:'flex',flexWrap:'wrap',justifyContent:'space-between',alignItems:'flex-start'}}>
                     <Grid item xs={12} sm={12} md={8} className="grid-section">
                         <Grid item xs={12} className="section-top-grid">
                             <Grid>Información general</Grid>
@@ -75,33 +79,90 @@ const Receta = () => {
                         </Grid>
                         {/* contenido */}
                         <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
-                            
+                            <Grid item xs={12} md={6}>
+                                <img src="/img/RECETAS/maruchan.jpg" className="img-receta-admin" />
+                            </Grid>
+                            <Grid item xs={12} md={6} className="grid-derecho-title-re"> 
+                                <Grid item xs={12} style={{marginBottom:'36px'}}>
+                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">NOMBRE</Grid>
+                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</Grid>
+                                </Grid>
+                                <Grid item xs={12} style={{marginBottom:'36px'}}>
+                                    <Grid item xs={12} className="title-item-info t-i-i-pedidos">DESCRIPCIÓN</Grid>
+                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12} style={{marginBottom:'36px'}}>
+                                <Grid item xs={12} className="title-item-info t-i-i-pedidos">INGREDIENTES</Grid>
+                                <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>
+                                    {/* {receta.ingredientes && <div dangerouslySetInnerHTML={{ __html: receta.ingredientes }} />} */}
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</Grid>
+                            </Grid>
+                            <Grid item xs={12} style={{marginBottom:'36px'}}>
+                                <Grid item xs={12} className="title-item-info t-i-i-pedidos">PREPARACIÓN</Grid>
+                                <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>
+                                    {/* {receta.preparacion && <div dangerouslySetInnerHTML={{ __html: receta.preparacion }} />} */}
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
 
                     {/* GRID CONFIG STOCK */}
-                    <Grid item xs={12} sm={4} className="grid-spacing-20">
+                    <Grid item xs={12} sm={6} md={4} className="grid-spacing-20">
                         <Grid className="grid-section">
                             <Grid item xs={12} className="section-top-grid" style={{padding:'23px'}}>
-                                <Grid>Estatus del producto</Grid>
+                                <Grid>Productos de comepasto</Grid>
                             </Grid>
-                            {/* FORM DE ACTUALIZACION DE STOCK */}
-                            <form noValidate autoComplete="off" style={{padding:'20px 23px'}}>
-                                {/* <TextField className="input-stock" id="stock-product" label="Stock" type="number" InputLabelProps={{ shrink: true }} variant="outlined" /> */}
-                                <Grid item xs={12} style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                                    <Grid className="label-input-custom">STOCK</Grid>
-                                    <input type="number" className="input-stock" />
+
+                            <Grid item xs={12} className="item-pro-receta">
+                                <Grid item xs={2} className="img-pro-receta">
+                                    <img src="/img/PRODUCTOS/1.png" />
                                 </Grid>
-                                <Grid item xs={12} style={{display:'flex', justifyContent:'flex-end'}}>
-                                    <Button
-                                        className="button-filter button-update"
-                                        type="submit"
-                                        startIcon={<UpdateIcon />}
-                                    >
-                                        Actualizar
-                                    </Button>
+                                <Grid item xs={10}>
+                                    <Tooltip title="Nombre completo del producto" arrow placement="top-start">
+                                        <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none'}}>
+                                            <Typography xs={12} className="title-pro-receta" noWrap>
+                                                lorem ipsum dolor sit amet consectetur...
+                                            </Typography>
+                                        </InertiaLink>
+                                    </Tooltip>
+                                    <Typography xs={12} className="type-pro-receta">Carníco, lorem ipsum</Typography>
                                 </Grid>
-                            </form >
+                            </Grid>
+
+                            <Grid item xs={12} className="item-pro-receta">
+                                <Grid item xs={2} className="img-pro-receta">
+                                    <img src="/img/PRODUCTOS/2.png" />
+                                </Grid>
+                                <Grid item xs={10}>
+                                    <Tooltip title="Nombre completo del producto" arrow placement="top-start">
+                                        <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none'}}>
+                                            <Typography xs={12} className="title-pro-receta" noWrap>
+                                                lorem ipsum dolor sit amet consectetur...
+                                            </Typography>
+                                        </InertiaLink>
+                                    </Tooltip>
+                                    <Typography xs={12} className="type-pro-receta">Carníco, lorem ipsum</Typography>
+                                </Grid>
+                            </Grid>
+
+                            <Grid item xs={12} className="item-pro-receta">
+                                <Grid item xs={2} className="img-pro-receta">
+                                    <img src="/img/PRODUCTOS/3.png" />
+                                </Grid>
+                                <Grid item xs={10}>
+                                    <Tooltip title="Nombre completo del producto" arrow placement="top-start">
+                                        <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none'}}>
+                                            <Typography xs={12} className="title-pro-receta" noWrap>
+                                                lorem ipsum dolor sit amet consectetur...
+                                            </Typography>
+                                        </InertiaLink>
+                                    </Tooltip>
+                                    <Typography xs={12} className="type-pro-receta">Carníco, lorem ipsum</Typography>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -115,12 +176,12 @@ const Receta = () => {
             // aria-labelledby="alert-dialog-title"
             // aria-describedby="alert-dialog-description"
         >
-            <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas eliminar este producto?"}</DialogTitle>
-            <DialogContent>
+            <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas eliminar esta receta?"}</DialogTitle>
+            {/* <DialogContent>
             <DialogContentText id="alert-dialog-description" className="dialog-content">
                 Toda la información relacionada con este producto se verá afectada por esta acción.
             </DialogContentText>
-            </DialogContent>
+            </DialogContent> */}
             <DialogActions>
                 <form noValidate autoComplete="off">
                 <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
