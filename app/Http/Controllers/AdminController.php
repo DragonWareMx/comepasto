@@ -67,4 +67,8 @@ class AdminController extends Controller
     public function recetaEditar($id){
         return Inertia::render('Admin/Recetas/EditarReceta');
     }
+
+    public function recetasAgregar(){
+        return Inertia::render('Admin/Recetas/AgregarReceta');
+    }
 }
