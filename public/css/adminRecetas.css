@@ -31,6 +31,12 @@
 .grid-derecho-title-re{
     padding-left: 20px;
 }
+.txt-pre-ckeditor{
+    font-family: Atma;
+    font-size: 14px;
+    color: #9E9E9E;
+    margin-bottom: 4px !important;
+}
 
 @media(max-width:960px){
     .grid-derecho-title-re{

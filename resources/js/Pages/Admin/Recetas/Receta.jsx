@@ -16,15 +16,12 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import TuneIcon from '@material-ui/icons/Tune';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import UpdateIcon from '@material-ui/icons/Update';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -73,7 +70,7 @@ const Receta = () => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <InertiaLink href={route('admin.producto.editar',1)} style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
+                                <InertiaLink href={route('admin.receta.editar',1)} style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
                                 <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
                             </Menu>
                         </Grid>
@@ -98,7 +95,7 @@ const Receta = () => {
                                     {/* {receta.ingredientes && <div dangerouslySetInnerHTML={{ __html: receta.ingredientes }} />} */}
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</Grid>
                             </Grid>
-                            <Grid item xs={12} style={{marginBottom:'36px'}}>
+                            <Grid item xs={12}>
                                 <Grid item xs={12} className="title-item-info t-i-i-pedidos">PREPARACIÓN</Grid>
                                 <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>
                                     {/* {receta.preparacion && <div dangerouslySetInnerHTML={{ __html: receta.preparacion }} />} */}
@@ -173,15 +170,8 @@ const Receta = () => {
         <Dialog
             open={open}
             onClose={handleCloseModal}
-            // aria-labelledby="alert-dialog-title"
-            // aria-describedby="alert-dialog-description"
         >
             <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas eliminar esta receta?"}</DialogTitle>
-            {/* <DialogContent>
-            <DialogContentText id="alert-dialog-description" className="dialog-content">
-                Toda la información relacionada con este producto se verá afectada por esta acción.
-            </DialogContentText>
-            </DialogContent> */}
             <DialogActions>
                 <form noValidate autoComplete="off">
                 <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
