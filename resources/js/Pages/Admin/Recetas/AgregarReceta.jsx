@@ -131,7 +131,11 @@ const AgregarReceta = () => {
                         <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                             <Grid item xs={12} style={{display:'flex',alignItems:'flex-end',flexWrap:'wrap'}}>
                                 <Grid item xs={12} md={6}>
-                                    <img src="/img/RECETAS/default.png" className="img-receta-admin" />
+                                    {/* La imagen seleccionada se carga aqui */}
+                                    {/* <img src="/img/RECETAS/default.png" className="img-receta-admin" /> */}
+                                    
+                                    {/* Cuando aun no se haya seleccionado ninguna imgagen */}
+                                    <img src="/img/icons/imgDefault.png" style={{width:'120px'}} />
                                 </Grid>
                                 <Grid className="grid-derecho-title-re" style={{paddingBottom:'5px'}}>
                                     <input
