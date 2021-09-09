@@ -13,6 +13,9 @@ class CuentaController extends Controller
 {
     public function index()
     {
+        if (Auth::guest()) {
+            return redirect()->route('inicio')->with('info', 'Por favor primero inicia sesión.');
+        }
         return Inertia::render('Cuenta/Cuenta');
     }
 
@@ -21,7 +24,7 @@ class CuentaController extends Controller
         if (Auth::guest()) {
             return redirect()->route('inicio')->with('info', 'Por favor primero inicia sesión.');
         }
-        $compras = Sale::where('client_id', '=', Auth::id())->orderBy('created_at', 'DESC')->get();
+        $compras = Sale::with('product')->where('client_id', '=', Auth::id())->orderBy('created_at', 'DESC')->get();
         return Inertia::render('Cuenta/MisPedidos', ['compras' => $compras]);
     }
 
