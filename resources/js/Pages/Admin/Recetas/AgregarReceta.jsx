@@ -12,7 +12,6 @@ import '/css/adminProductos.css';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -24,7 +23,6 @@ import '@ckeditor/ckeditor5-build-classic/build/translations/es';
 import IconButton from '@material-ui/core/IconButton';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import PublishIcon from '@material-ui/icons/Publish';
 import Typography from '@material-ui/core/Typography';
@@ -128,22 +126,12 @@ const AgregarReceta = () => {
                     <Grid item xs={12} sm={12} md={8} className="grid-section">
                         <Grid item xs={12} className="section-top-grid">
                             <Grid>Agregar receta</Grid>
-                            <MoreVertIcon onClick={handleClick} style={{cursor:'pointer'}} />
-                            <Menu
-                                id="options-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
-                            </Menu>
                         </Grid>
                         {/* contenido */}
                         <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                             <Grid item xs={12} style={{display:'flex',alignItems:'flex-end',flexWrap:'wrap'}}>
                                 <Grid item xs={12} md={6}>
-                                    <img src="/img/RECETAS/default.png" className="img-receta-admin" style={{filter: 'grayscale(50%)'}} />
+                                    <img src="/img/RECETAS/default.png" className="img-receta-admin" />
                                 </Grid>
                                 <Grid className="grid-derecho-title-re" style={{paddingBottom:'5px'}}>
                                     <input
@@ -331,7 +319,7 @@ const AgregarReceta = () => {
                             </Grid>
 
                             <Grid className="input-admin-100" style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px',paddingRight:'0px',marginTop:'20px'}}>
-                                <InertiaLink href={route('admin.receta',1)} className="btn-cancelar-op">CANCELAR</InertiaLink>
+                                <InertiaLink href={route('admin.recetas')} className="btn-cancelar-op">CANCELAR</InertiaLink>
                                 <Button
                                     className="button-filter button-update btn-second"
                                     type="submit"
