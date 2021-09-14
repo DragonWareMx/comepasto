@@ -131,7 +131,7 @@
     background-color: #FFDE59;
     padding:25px;
 }
-.list-ingredients, .MuiTypography-body1{
+.list-ingredients{
     font-family: Oxygen !important;
     font-style: normal;
     font-weight: normal;

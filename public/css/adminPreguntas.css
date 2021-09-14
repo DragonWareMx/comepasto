@@ -1,0 +1,29 @@
+.title-pregunta{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #474747;
+}
+.categoria-txt{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 14px;
+    color: #1DA3A8;
+    margin-bottom: 15px !important;
+}
+.respuesta-txt{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+    color: #7E7E7E;
+    margin-bottom: 20px !important;
+}
+.MuiPaper-elevation1{
+    box-shadow: none !important;
+}
