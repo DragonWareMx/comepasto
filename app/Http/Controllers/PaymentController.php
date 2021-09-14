@@ -168,6 +168,7 @@ class PaymentController extends Controller
             $venta->ganancia = 0;
             $venta->tipo_entrega = session()->get('tipo_de_envio');
             $venta->direccion = session()->get('direccion');
+            $venta->statusPago = true;
             $venta->save();
 
             foreach ($compras as $item) {
