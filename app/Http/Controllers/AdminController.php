@@ -44,6 +44,24 @@ class AdminController extends Controller
         return Inertia::render('Admin/Productos/AgregarProducto');
     }
 
+    public function productoInventario(Request $request, $id){
+        $validated = $request->validate([
+            'stock' => 'required|numeric',
+        ]);
+        $product=Product::findOrFail($id);
+        try {
+            DB::beginTransaction();
+            $product->stock=$request->stock;
+            $product->save();
+            DB::commit();
+            return \Redirect::back()->with('success','Stock actualizado con éxito.');
+        } catch (\Throwable $th) {
+            dd($th);
+            DB::rollback();
+            return \Redirect::back()->with('error','Ocurrió un problema, vuelva a intentarlo más tarde.');
+        }
+    }
+
     public function pedidos(){
         $pedidos=Sale::
             leftJoin('users','sales.client_id','=','users.id')
