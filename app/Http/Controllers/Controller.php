@@ -151,11 +151,15 @@ class Controller extends BaseController
                             }, function ($query) {
                                 return $query;
                             })
-                            ->when($request->busqueda, function ($query, $busqueda) use ($request) {                                
+                            //cuando hay busqueda
+                            ->when($request->busqueda, function ($query, $busqueda) use ($request) {
+                                //se separa la busqueda por palabras                            
                                 $searchValues = preg_split('/\s+/', $busqueda, -1, PREG_SPLIT_NO_EMPTY);
                                 
                                 $query->where(function ($q) use ($searchValues) {
                                     foreach ($searchValues as $value) {
+                                        $pos = strpos($value, 'sin');
+                                        
                                         $q->orWhere('products.name', 'LIKE', '%'. $value .'%')
                                         ->orWhereHas('category', function ($query) use ($value) {
                                             $query->where('name', 'LIKE', '%' . $value . '%');
@@ -166,41 +170,17 @@ class Controller extends BaseController
                                         ->orWhereHas('brand', function ($query) use ($value) {
                                             $query->where('name', 'LIKE', '%' . $value . '%');
                                         });
-                                    }
-                                })
-                                ->when(stripos($busqueda, 'sin') === TRUE || stripos($busqueda, 'no') === TRUE, function ($querySin){
-                                    dd("a");
-                                    if(stripos($busqueda, 'soya') === TRUE){
-                                        return $querySin->where('soyaFree', true);
-                                    }
-                                    if(stripos($busqueda, 'gluten') === TRUE || stripos($busqueda, 'trigo') === TRUE || stripos($busqueda, 'glúten') === TRUE){
-                                        return $querySin->where('trigoFree', true);
+                                        
                                     }
                                 });
-                                    // $query->where('products.name', 'LIKE', '%'. $value .'%')
-                                    //     ->orWhereHas('category', function ($query) use ($value) {
-                                    //         $query->where('name', 'LIKE', '%' . $value . '%');
-                                    //     })
-                                    //     ->orWhereHas('type', function ($query) use ($value) {
-                                    //         $query->where('name', 'LIKE', '%' . $value . '%');
-                                    //     })
-                                    //     ->orWhereHas('brand', function ($query) use ($value) {
-                                    //         $query->where('name', 'LIKE', '%' . $value . '%');
-                                    //     });
-
-                                // return $query->where('products.name', 'LIKE', '%'. $busqueda .'%')
-                                //             ->orWhere('categories.name', 'LIKE', '%'. $busqueda .'%')
-                                //             ->orWhere('types.name', 'LIKE', '%'. $busqueda .'%')
-                                //             ->orWhere('brands.name', 'LIKE', '%'. $busqueda .'%')
-                                //             ->when(stripos($busqueda, 'sin') === TRUE || stripos($busqueda, 'no') === TRUE, function ($querySin){
-                                //                 if(stripos($busqueda, 'soya') === TRUE){
-                                //                     return $querySin->where('soyaFree', true);
-                                //                 }
-                                //                 if(stripos($busqueda, 'gluten') === TRUE || stripos($busqueda, 'trigo') === TRUE || stripos($busqueda, 'glúten') === TRUE){
-                                //                     return $querySin->where('trigoFree', true);
-                                //                 }
-                                //             })
-                                //             ->where('stock','>',0);
+                            })
+                            ->when(stripos($request->busqueda, 'sin') !== false || stripos($request->busqueda, 'no') !== false, function ($querySin) use ($request) {
+                                if(stripos($request->busqueda, 'soya') !== false){
+                                    return $querySin->where('soyaFree', true);
+                                }
+                                if(stripos($request->busqueda, 'gluten') !== false || stripos($request->busqueda, 'trigo') !== false || stripos($request->busqueda, 'glúten') !== false){
+                                    return $querySin->where('trigoFree', true);
+                                }
                             })
                             ->where('stock','>',0)
                             ->paginate(8)
