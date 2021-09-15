@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Inertia } from '@inertiajs/inertia'
-import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import route from 'ziggy-js';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import Layout from '../../../layouts/LayoutAdmin';

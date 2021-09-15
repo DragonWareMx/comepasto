@@ -25,6 +25,8 @@
         "sass-loader": "^11.0.1"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^29.2.0",
+        "@ckeditor/ckeditor5-react": "^3.0.2",
         "@inertiajs/inertia": "^0.8.7",
         "@inertiajs/inertia-react": "^0.5.12",
         "@inertiajs/progress": "^0.2.6",

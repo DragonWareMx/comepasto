@@ -100,3 +100,8 @@ Route::get('/admin/preguntas', [App\Http\Controllers\AdminController::class, 'pr
 Route::get('/admin/banners', [App\Http\Controllers\AdminController::class, 'banners'])->name('admin.banners');
 
 Route::get('/admin/recetas', [App\Http\Controllers\AdminController::class, 'recetas'])->name('admin.recetas');
+Route::get('/admin/recetas/{id}', [App\Http\Controllers\AdminController::class, 'receta'])->name('admin.receta');
+Route::get('/admin/recetas/editar/{id}', [App\Http\Controllers\AdminController::class, 'recetaEditar'])->name('admin.receta.editar');
+Route::get('/admin/recetas-agregar', [App\Http\Controllers\AdminController::class, 'recetasAgregar'])->name('admin.recetas.agregar');
+
+

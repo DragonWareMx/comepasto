@@ -119,7 +119,7 @@ const Recetas = ({recetas}) => {
                 {/* TOP PAGE, TITTLE AND ADD BUTTON */}
                 <Grid item xs={12} className="top-admin">
                     <Grid className="title-page">RECETAS</Grid>
-                    <InertiaLink href="#!" style={{textDecoration:'none'}}>
+                    <InertiaLink href={route('admin.recetas.agregar')} style={{textDecoration:'none'}}>
                     <Button
                         variant="contained"
                         className="button-add"
