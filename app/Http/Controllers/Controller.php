@@ -26,8 +26,8 @@ class Controller extends BaseController
                             // ->leftJoin('categories', 'categories.id', '=', 'products.category_id')
                             // ->leftJoin('types', 'types.id', '=', 'products.type_id')
                             // ->leftJoin('brands', 'brands.id', '=', 'products.brand_id')
-                            ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, products.trigoFree, products.soyaFree, products.uuid, COALESCE(sum(product_sale.cantidad),0) total, (`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)) AS precio_descuento')
-                            ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree', 'products.uuid')
+                            ->selectRaw('products.name, products.foto, products.precio, products.brand_id, products.id, products.descuento, products.trigoFree, products.soyaFree, products.uuid, products.stock, COALESCE(sum(product_sale.cantidad),0) total, (`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)) AS precio_descuento')
+                            ->groupBy('products.name','products.foto','products.precio','products.brand_id','products.id','products.descuento', 'products.trigoFree', 'products.soyaFree', 'products.uuid', 'products.stock')
                             ->when($request->categoria, function ($query, $categoria) {
                                 switch ($categoria) {
                                     case 'SIN SOYA':
@@ -159,7 +159,7 @@ class Controller extends BaseController
                                 $query->where(function ($q) use ($searchValues) {
                                     foreach ($searchValues as $value) {
                                         $pos = strpos($value, 'sin');
-                                        
+
                                         $q->orWhere('products.name', 'LIKE', '%'. $value .'%')
                                         ->orWhereHas('category', function ($query) use ($value) {
                                             $query->where('name', 'LIKE', '%' . $value . '%');
@@ -182,7 +182,6 @@ class Controller extends BaseController
                                     return $querySin->where('trigoFree', true);
                                 }
                             })
-                            ->where('stock','>',0)
                             ->paginate(8)
                             ->withQueryString();
 

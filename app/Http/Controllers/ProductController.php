@@ -53,7 +53,7 @@ class ProductController extends Controller
     {
         //
         $product = Product::with('brand:id,name,logo,link', 'category:id,name', 'type:id,name', 'img:product_id,url,descripcion')
-                        ->select('id','name', 'precio', 'descuento','brand_id','category_id', 'type_id', 'presentacion', 'ingredientes', 'trigoFree', 'soyaFree', 'foto')
+                        ->select('id','name', 'precio', 'descuento','brand_id','category_id', 'type_id', 'presentacion', 'ingredientes', 'trigoFree', 'soyaFree', 'foto', 'stock')
                         ->where('uuid', '=', $id)
                         ->firstOrFail();
                     
