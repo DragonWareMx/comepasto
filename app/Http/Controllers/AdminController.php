@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Product;
 use App\Models\Sale;
-use Illuminate\Support\Facades\DB; 
 use App\Models\Recipe;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {

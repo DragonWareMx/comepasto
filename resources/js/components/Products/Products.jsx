@@ -6,7 +6,6 @@ import { Inertia } from '@inertiajs/inertia'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { usePage } from '@inertiajs/inertia-react'
-import Button from "@material-ui/core/Button";
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -471,6 +470,7 @@ const Products = ({products, categories, request}) => {
                                     uuid={product.uuid}
                                     glutenFree={product.trigoFree}
                                     soyaFree={product.soyaFree}
+                                    stock={product.stock}
                                     cantidad={cantidadProducto(product.id)}
                                 />
                             </Grid>

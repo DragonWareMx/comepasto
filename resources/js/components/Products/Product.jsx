@@ -146,9 +146,15 @@ const useStyles = makeStyles((theme) => ({
         padding: "0px",
         border: "none"
     },
+    productoNoDispoible: {
+        marginTop: "12px",
+        marginBottom: "20px",
+        width: '220px',
+        height: '38px',
+    }
 }));
 
-export default function Product({img, name, price, discount, brand, logo, link, id, uuid, glutenFree, soyaFree, cantidad, carrusel}){
+export default function Product({img, name, price, discount, brand, logo, link, id, uuid, glutenFree, soyaFree, cantidad, carrusel, stock}){
     const classes = useStyles();
 
     function limitString(string, length){
@@ -298,12 +304,19 @@ export default function Product({img, name, price, discount, brand, logo, link, 
                             
                             value={cantidad} />
                         :
-                            <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
-                                <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
-                                    AGREGAR AL CARRITO
-                                    <ShoppingCartOutlinedIcon fontSize="small" style={{marginLeft: "6px"}} />
-                                </Button>
-                            </InertiaLink>
+                            stock > 0 ?
+                                <InertiaLink href={route('cart.store', id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
+                                    <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
+                                        AGREGAR AL CARRITO
+                                        <ShoppingCartOutlinedIcon fontSize="small" style={{marginLeft: "6px"}} />
+                                    </Button>
+                                </InertiaLink>
+                            :
+                                <InertiaLink href={route('product.show', uuid)} as="button" style={{textDecoration: "none"}} className={classes.inertiaButton}>
+                                    <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
+                                        PRODUCTO NO DISPONIBLE
+                                    </Button>
+                                </InertiaLink>
                         }
                     </Grid>
                 }

@@ -8,6 +8,8 @@ import Skeleton from 'react-loading-skeleton';
 import Button from "@material-ui/core/Button";
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import OwlCarousel from 'react-owl-carousel'; 
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle  from '@material-ui/lab/AlertTitle';
 
 import route from 'ziggy-js';
 
@@ -276,6 +278,10 @@ const Product = ({ product, products, recipes }) => {
         <>
             {/* PRODUCTO */}
             <Container>
+            <Alert severity="error" style={{marginTop: "43px"}}>
+                <AlertTitle>Producto no disponible</AlertTitle>
+                De momento este producto ya no se encuentra disponible, <InertiaLink href="/preguntas#contacto" style={{textDecoration: "none", color: "rgb(97, 26, 21)", fontWeight: "bold"}}>contáctanos</InertiaLink> por disponibilidad. 
+            </Alert>
                 <Grid
                     container
                     direction="row"
@@ -454,9 +460,11 @@ const Product = ({ product, products, recipes }) => {
                             </Grid>
                         }
 
-                        <Grid item style={{width: "100%", marginTop: "30px"}}>
-                            <Divider />
-                        </Grid>
+                        {product.stock > 0 &&
+                            <Grid item style={{width: "100%", marginTop: "30px"}}>
+                                <Divider />
+                            </Grid>
+                        }
 
                         <Grid 
                         item 
@@ -504,12 +512,14 @@ const Product = ({ product, products, recipes }) => {
                                 </Grid>
                             </>
                             :
+                                product.stock > 0 &&
                                 <InertiaLink href={route('cart.store', product.id)} method="post" as="button" style={{textDecoration: "none"}} className={classes.inertiaButton} preserveScroll>
                                     <Button variant="contained" color="primary" component="div" disableElevation className={classes.button}>
                                         AGREGAR AL CARRITO
                                         <ShoppingCartOutlinedIcon fontSize="small" style={{marginLeft: "6px"}} />
                                     </Button>
                                 </InertiaLink>
+                                
                             }
                         </Grid>
                     </Grid>

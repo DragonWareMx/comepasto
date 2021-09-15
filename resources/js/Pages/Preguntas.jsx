@@ -84,7 +84,7 @@ const Preguntas = ({tipo, questions, pregunta}) => {
                             <Acordeon key={index} title={question.question} text={question.answer}></Acordeon>
                         ))}
                     </Grid>
-                    <Grid container alignItems="center" style={{justifyContent:'center'}}>
+                    <Grid container alignItems="center" style={{justifyContent:'center'}} id="contacto">
                         <Grid item xs={12} style={{color:'#1DA3A8',fontFamily:'Atma',fontSize:25,textAlign:'center'}}>¿No encuentras tu pregunta?</Grid>
                         <Grid item xs={12} style={{color:'#535353',fontFamily:'Oxygen',fontSize:17,textAlign:'center'}}>Puedes ponerte en contacto con nosotros en</Grid>
                         <Grid item xs={5} style={{marginLeft:50}}>
