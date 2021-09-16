@@ -8,6 +8,9 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Recipe;
 use Illuminate\Support\Facades\DB;
+use App\Models\Brand;
+use App\Models\Type;
+use App\Models\Category;
 
 class AdminController extends Controller
 {
@@ -41,7 +44,14 @@ class AdminController extends Controller
     }
 
     public function productoAgregar(){
-        return Inertia::render('Admin/Productos/AgregarProducto');
+        $marcas=Brand::select('id','name')->get();
+        $tipos=Type::select('id','name')->get();
+        $categorias=Category::select('id','name')->get();
+        return Inertia::render('Admin/Productos/AgregarProducto',[
+            'marcas'=>$marcas,
+            'tipos'=>$tipos,
+            'categorias'=>$categorias,
+        ]);
     }
 
     public function productoInventario(Request $request, $id){

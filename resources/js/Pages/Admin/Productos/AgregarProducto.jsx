@@ -65,26 +65,15 @@ const theme = createMuiTheme({
     },
 });
 
-const currencies = [
-    {
-      value: '1',
-      label: 'Lorem ipsum 1',
-    },
-    {
-      value: '2',
-      label: 'Lorem ipsum 2',
-    },
-    {
-      value: '3',
-      label: 'Lorem ipsum 3',
-    },
-    {
-      value: '4',
-      label: 'Lorem ipsum 4',
-    },
-  ];
 
-const AgregarProducto = () => {
+const AgregarProducto = ({marcas,tipos,categorias}) => {
+
+    const currencies = [
+        {label:'1',
+        label:'lorem ipsum'
+        },
+    ]
+
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -136,9 +125,10 @@ const AgregarProducto = () => {
         checkedB: true,
     });
 
-    const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked });
-      };
+    const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+        console.log(event)
+    };
 
     const handleDelete = () => {
 
@@ -148,6 +138,42 @@ const AgregarProducto = () => {
     const [maxWidth, setMaxWidth] = React.useState('sm');
 
     const classes = useStyles();
+
+    function readURL() {
+        var input=document.getElementById('imgProducto');
+        if (input.files && input.files[0]) {
+            setValues(values => ({
+                ...values,
+                imgProducto: input.files[0],
+            }))
+            var reader = new FileReader();
+            var preview = document.getElementById('imgContainer');
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    const addCategoria = (prop) => (event) => {
+        // setValues.categorias.push(event.target.value)
+        setValues(values => ({
+            ...values,
+            categorias: values.categorias.push(event.target.value),
+        }))
+    };
+
+    const [values, setValues] = React.useState({
+        imgProducto: null,
+        nombre: '',
+        presentacion: '',
+        precio: '',
+        descuento: '',
+        ingredientes: '',
+        marca: '',
+        tipo: '',
+        categorias: [],
+    });
 
     return ( 
         <>
@@ -165,14 +191,15 @@ const AgregarProducto = () => {
                     {/* contenido */}
                     <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                         <Grid item xs={4} sm={2} style={{marginBottom:'20px',display:'flex',justifyContent:'center',flexWrap:'wrap'}}>
-                            <img src="/img/icons/imgDefault.png" className="img-product-view" />
+                            <img id='imgContainer' src="/img/icons/imgDefault.png" className="img-product-view" style={{objectFit:'cover'}}/>
                             <input
                                 accept="image/*"
-                                id="contained-button-file"
+                                id="imgProducto"
                                 type="file"
                                 style={{display:'none'}}
+                                onChange={readURL}
                             />
-                            <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                            <label htmlFor="imgProducto" style={{marginTop:'20px'}}>
                                 <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
                                 Subir img
                                 </Button>
@@ -193,6 +220,7 @@ const AgregarProducto = () => {
                                             root: classes.formTextLabel
                                         }
                                     }}
+                                    onChange={handleChange('nombre')} 
                                 />
                             </Grid>
 
@@ -210,10 +238,11 @@ const AgregarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={handleChange('marca')} 
                                         >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
+                                        {marcas.map((marca, index) => (
+                                            <MenuItem key={index} value={marca.id}>
+                                            {marca.name}
                                             </MenuItem>
                                         ))}
                                     </TextField>
@@ -231,10 +260,11 @@ const AgregarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={handleChange('tipo')} 
                                         >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
+                                        {tipos.map((tipo,index) => (
+                                            <MenuItem key={index} value={tipo.id}>
+                                            {tipo.name}
                                             </MenuItem>
                                         ))}
                                     </TextField>
@@ -255,10 +285,11 @@ const AgregarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={addCategoria('categorias')}
                                         >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
+                                        {categorias.map((categoria,index) => (
+                                            <MenuItem key={index} value={categoria.id}>
+                                            {categoria.name}
                                             </MenuItem>
                                         ))}
                                     </TextField>
@@ -280,6 +311,7 @@ const AgregarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={handleChange('presentacion')}
                                         >
                                     </TextField>
                                 </Grid>
@@ -298,6 +330,7 @@ const AgregarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={handleChange('precio')}
                                         >
                                     </TextField>
                                 </Grid>
@@ -313,6 +346,7 @@ const AgregarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={handleChange('descuento')}
                                         >
                                     </TextField>
                                 </Grid>
@@ -330,6 +364,7 @@ const AgregarProducto = () => {
                                         root: classes.formTextLabel
                                     }
                                     }}
+                                    onChange={handleChange('ingredientes')}
                                 />
                             </Grid>
 
@@ -402,7 +437,7 @@ const AgregarProducto = () => {
                         type="file"
                         style={{display:'none'}}
                     />
-                    <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                    <label htmlFor="imgNewMarca" style={{marginTop:'20px'}}>
                         <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
                         Subir img
                         </Button>
@@ -506,7 +541,7 @@ const AgregarProducto = () => {
                         type="file"
                         style={{display:'none'}}
                     />
-                    <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                    <label htmlFor="imgNewCat" style={{marginTop:'20px'}}>
                         <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
                         Subir img
                         </Button>
