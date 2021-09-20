@@ -6,6 +6,7 @@ import route from 'ziggy-js';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import Layout from '../../../layouts/LayoutAdmin';
 import '/css/admin.css';
+import PropTypes from 'prop-types';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -14,10 +15,19 @@ import Tooltip from '@material-ui/core/Tooltip';
 import InputBase from '@material-ui/core/InputBase';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import {DataGrid}  from '@material-ui/data-grid';
+import {
+    DataGrid,
+    GridToolbarDensitySelector,
+    GridToolbarFilterButton,
+  } from '@material-ui/data-grid';
 
+//iconos
 import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import ClearIcon from '@material-ui/icons/Clear';
+
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -60,6 +70,30 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+const useStylesSearch = makeStyles(
+    (theme) => ({
+        root: {
+        padding: theme.spacing(0.5, 0.5, 0),
+        justifyContent: 'space-between',
+        display: 'flex',
+        alignItems: 'flex-start',
+        flexWrap: 'wrap',
+        },
+        textField: {
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+        },
+        margin: theme.spacing(1, 0.5, 1.5),
+        '& .MuiSvgIcon-root': {
+            marginRight: theme.spacing(0.5),
+        },
+        '& .MuiInput-underline:before': {
+            borderBottom: `1px solid ${theme.palette.divider}`,
+        },
+        },
+    }),
+);
+
 const columns = [
 { field: 'id', headerName: 'ID', width: 90 },
 {
@@ -101,6 +135,49 @@ const columns = [
     { id: 1, nombre: 'Lorem ipsum dolor sit amet', telefono: '44 44 44 44 44 ', correo: 'correo@ejemplo.com', registro:'30/08/2021', total:'$240.00 MXN' },
   ];
 
+  function escapeRegExp(value) {
+    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
+function QuickSearchToolbar(props) {
+    const classes = useStylesSearch();
+  
+    return (
+      <div className={classes.root}>
+        <div>
+          <GridToolbarFilterButton />
+          <GridToolbarDensitySelector />
+        </div>
+        <TextField
+          variant="standard"
+          value={props.value}
+          onChange={props.onChange}
+          placeholder="Search…"
+          className={classes.textField}
+          InputProps={{
+            startAdornment: <SearchIcon fontSize="small" />,
+            endAdornment: (
+              <IconButton
+                title="Clear"
+                aria-label="Clear"
+                size="small"
+                style={{ visibility: props.value ? 'visible' : 'hidden' }}
+                onClick={props.clearSearch}
+              >
+                <ClearIcon fontSize="small" />
+              </IconButton>
+            ),
+          }}
+        />
+      </div>
+    );
+  }
+  
+QuickSearchToolbar.propTypes = {
+    clearSearch: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+};
 
 const Clientes = () => {
     const classes = useStyles();
@@ -113,6 +190,21 @@ const Clientes = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    //buscador
+    const [searchText, setSearchText] = React.useState('');
+
+    const requestSearch = (searchValue) => {
+        console.log(searchValue)
+        setSearchText(searchValue);
+        const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
+        const filteredRows = productos.filter((row) => {
+          return Object.keys(row).some((field) => {
+            return searchRegex.test(row[field].toString());
+          });
+        });
+        setRows(filteredRows);
     };
     
     return ( 
@@ -167,11 +259,19 @@ const Clientes = () => {
                     {/* Este height es provisional */}
                     <Grid item xs={12} style={{height:'300px'}}>
                     <DataGrid
+                        components={{ Toolbar: QuickSearchToolbar }}
                         rows={rows}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
                         disableSelectionOnClick
+                        componentsProps={{
+                            toolbar: {
+                              value: searchText,
+                              onChange: (event) => requestSearch(event.target.value),
+                              clearSearch: () => requestSearch(''),
+                            },
+                        }}
                     />
                     </Grid>
 
