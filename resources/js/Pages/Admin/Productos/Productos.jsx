@@ -77,6 +77,31 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+//BUSQUEDA
+const useStylesSearch = makeStyles(
+  (theme) => ({
+    root: {
+      padding: theme.spacing(0.5, 0.5, 0),
+      justifyContent: 'space-between',
+      display: 'flex',
+      alignItems: 'flex-start',
+      flexWrap: 'wrap',
+    },
+    textField: {
+      [theme.breakpoints.down('xs')]: {
+        width: '100%',
+      },
+      margin: theme.spacing(1, 0.5, 1.5),
+      '& .MuiSvgIcon-root': {
+        marginRight: theme.spacing(0.5),
+      },
+      '& .MuiInput-underline:before': {
+        borderBottom: `1px solid ${theme.palette.divider}`,
+      },
+    },
+  }),
+);
+
 const columns = [
 { field: 'id', headerName: 'ID', width: 90 },
 {
@@ -120,7 +145,7 @@ function escapeRegExp(value) {
 }
 
 function QuickSearchToolbar(props) {
-    const classes = useStyles();
+    const classes = useStylesSearch();
   
     return (
       <div className={classes.root}>
@@ -252,47 +277,7 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
                 </Grid>
 
                 {/* CONTENIDO GENERAL */}
-                <Grid item xs={12} style={{marginBottom:'25px', borderRadius:'4px', border:'1px solid #E1E3EA'}}>
-                    <Grid item xs={12} style={{padding:'26px',display:'flex',alignItems:'stretch',justifyContent:'space-between'}}>
-                        <Grid item xs={10}>     
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon style={{fontSize:'22px'}} />
-                                </div>
-                                <InputBase
-                                placeholder="Buscar..."
-                                className="input-search"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'search' }}
-                                />
-                            </div>
-                        </Grid>
-                        <Grid>
-                            <Button
-                                className="button-filter"
-                                onClick={handleClick}
-                                startIcon={<FilterListIcon />}
-                            >
-                                Filtrar
-                            </Button>
-                            <Menu
-                                id="filter-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Nombre</MenuItem>
-                                <MenuItem onClick={handleClose}>Marca</MenuItem>
-                                <MenuItem onClick={handleClose}>Atributos</MenuItem>
-                            </Menu>
-                        </Grid>
-                    </Grid>
-                    {/* Este height es provisional */}
-                    <Grid item xs={12} style={{height:350}}>
+                <Grid item xs={12} style={{height:400}}>
                     <DataGrid
                         components={{ Toolbar: QuickSearchToolbar }}
                         rows={rows}
@@ -308,8 +293,6 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
                             },
                         }}
                     />
-                    </Grid>
-
                 </Grid>
             </Grid>
         </Container>
