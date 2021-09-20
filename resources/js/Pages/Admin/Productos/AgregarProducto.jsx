@@ -77,6 +77,17 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
+    //CHIPS
+    const [inputValue, setInputValue] = React.useState('');
+    const [autoCompleteValue, setAutoCompleteValue] = React.useState(null);
+
+    const handleDelete = (chipToDelete) => () => {
+        setValues({
+            ...values, 
+            categorias: values.categorias.filter((chip) => chip.id !== chipToDelete.id)
+        });
+    };
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -121,18 +132,18 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
     // Select
     const [currency, setCurrency] = React.useState('1');
 
-    const [state, setState] = React.useState({
-        checkedA: true,
-        checkedB: true,
-    });
-
     const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
+        if(prop == 'soyaFree' || prop == 'trigoFree'){
+            setValues({ ...values, [prop]: event.target.checked });
+        }
+        else{
+            setValues({ ...values, [prop]: event.target.value });
+        }
     };
 
-    const handleDelete = () => {
+    // const handleDelete = () => {
 
-    };
+    // };
 
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
@@ -173,6 +184,8 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
         marca: '',
         tipo: '',
         categorias: [],
+        soyaFree: false,
+        trigoFree: false
     });
 
     return ( 
@@ -244,76 +257,69 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                         />
                                     }
                                 />
-                                    <TextField
-                                        id="marca"
-                                        select
-                                        label="Marca"
-                                        placeholder="Selecciona una opción"
-                                        className="input-admin-50"
-                                        InputProps={{className: classes.input,}}
-                                        InputLabelProps={{
-                                            classes: {
-                                                root: classes.formTextLabel
-                                            }
-                                        }}
-                                        onChange={handleChange('marca')} 
-                                        >
-                                        {marcas.map((marca, index) => (
-                                            <MenuItem key={index} value={marca.id}>
-                                            {marca.name}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
                                     <Grid className="link-add-bd" onClick={handleClickOpenModalMarca}>Agregar marca</Grid>
                                 </Grid>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
-                                    <TextField
+                                    <Autocomplete
                                         id="tipo"
-                                        select
-                                        label="Tipo"
-                                        className="input-admin-50"
-                                        InputProps={{className: classes.input,}}
-                                        InputLabelProps={{
-                                            classes: {
-                                                root: classes.formTextLabel
-                                            }
+                                        options={tipos}
+                                        getOptionLabel={(option) => option.name}
+                                        style={{ width: 300 }}
+                                        onChange={(event, newValue) => {
+                                            setValues({ ...values, tipo: newValue ? newValue.id : null });
                                         }}
-                                        onChange={handleChange('tipo')} 
-                                        >
-                                        {tipos.map((tipo,index) => (
-                                            <MenuItem key={index} value={tipo.id}>
-                                            {tipo.name}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
+                                        renderInput={
+                                            (params) => 
+                                            <TextField {...params}
+                                                label="Tipo"
+                                                placeholder="Selecciona una opción"
+                                                variant="outlined"
+                                                className="input-admin-50" 
+                                            />
+                                        }
+                                    />
                                     <Grid className="link-add-bd" onClick={handleClickOpenModalTipo}>Agregar tipo</Grid>
                                 </Grid>
                             </Grid>
 
                             <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
-                                    <TextField
+                                    <Autocomplete
                                         id="categorias"
-                                        select
-                                        label="Categorías"
-                                        className="input-admin-50"
-                                        InputProps={{className: classes.input,}}
-                                        InputLabelProps={{
-                                            classes: {
-                                                root: classes.formTextLabel
+                                        options={categorias}
+                                        value={autoCompleteValue}
+                                        getOptionLabel={(option) => option.name}
+                                        style={{ width: 300 }}
+                                        onChange={(event, newValue) => {
+                                            if(newValue){
+                                                setInputValue("");
+                                                setAutoCompleteValue(null)
+                                                if(!values.categorias.some(item => newValue.id === item.id))
+                                                    setValues({ ...values, categorias: [...values.categorias, {id: newValue.id, name: newValue.name}] });
                                             }
                                         }}
-                                        onChange={addCategoria('categorias')}
-                                        >
-                                        {categorias.map((categoria,index) => (
-                                            <MenuItem key={index} value={categoria.id}>
-                                            {categoria.name}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
+                                        inputValue={inputValue}
+                                        onInputChange={(event, newInputValue) => {
+                                            setInputValue(newInputValue);
+                                        }}
+                                        renderInput={
+                                            (params) => 
+                                            <TextField {...params}
+                                                label="Categorías"
+                                                placeholder="Selecciona una opción"
+                                                variant="outlined"
+                                                className="input-admin-50" 
+                                            />
+                                        }
+                                    />
                                     
-                                    <Chip onDelete={handleDelete} label="Categoría 1" className="chip-categoria" />
-                                    <Chip onDelete={handleDelete} label="Categoría 2" className="chip-categoria" />
+                                    {values.categorias.map((data) => {
+                                        return(<Chip
+                                            label={data.name}
+                                            onDelete={handleDelete(data)}
+                                            className="chip-categoria"
+                                        />)
+                                    })}
                                     
                                     <Grid className="link-add-bd" onClick={handleClickOpenModalCat}>Agregar categoría</Grid>
                                 </Grid>
@@ -388,14 +394,14 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
 
                             <Grid item xs={12}>
                                 <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} className="checkbox-admin" onChange={handleChange} name="checkedA" />}
-                                    id="soya"
+                                    control={<Checkbox checked={values.soyaFree} className="checkbox-admin" onChange={handleChange('soyaFree')} name="checkedA" />}
+                                    id="soyaFree"
                                     label="Producto libre de soya"
                                     className="checkbox-label"
                                 />
                                 <FormControlLabel
-                                    control={<Checkbox checked={state.checkedB} className="checkbox-admin" onChange={handleChange} name="checkedB" />}
-                                    id="gluten"
+                                    control={<Checkbox checked={values.trigoFree} className="checkbox-admin" onChange={handleChange('trigoFree')} name="checkedB" />}
+                                    id="trigoFree"
                                     label="Producto libre de gluten"
                                     className="checkbox-label"
                                 />
