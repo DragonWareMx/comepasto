@@ -21,6 +21,7 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -127,7 +128,6 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
-        console.log(event)
     };
 
     const handleDelete = () => {
@@ -226,6 +226,24 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
 
                             <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
+                                <Autocomplete
+                                    id="marca"
+                                    options={marcas}
+                                    getOptionLabel={(option) => option.name}
+                                    style={{ width: 300 }}
+                                    onChange={(event, newValue) => {
+                                        setValues({ ...values, marca: newValue ? newValue.id : null });
+                                    }}
+                                    renderInput={
+                                        (params) => 
+                                        <TextField {...params}
+                                            label="Marca"
+                                            placeholder="Selecciona una opción"
+                                            variant="outlined"
+                                            className="input-admin-50" 
+                                        />
+                                    }
+                                />
                                     <TextField
                                         id="marca"
                                         select
