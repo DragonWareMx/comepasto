@@ -116,11 +116,24 @@ class AdminController extends Controller
         return Inertia::render('Admin/Banners/Banners');
     }
 
-    public function recetas(){
-        $recetas=Recipe::join('imgs','recipes.id', '=', 'imgs.recipe_id')
-            ->select('recipes.*', 'imgs.*')->orderBy('recipes.created_at','desc')->get();
+    public function recetas(Request $request){
+        if($request->busqueda){
+            $recetas=Recipe::where('recipes.nombre','like','%'.$request->busqueda.'%')
+            ->orWhere('imgs.descripcion','like','%'.$request->busqueda.'%')
+            ->join('imgs','recipes.id', '=', 'imgs.recipe_id')
+                ->select('recipes.*', 'imgs.*')->orderBy('recipes.created_at','desc')->get();
+            $busqueda=$request->busqueda;
+        }
+        else{
+            $recetas=Recipe::join('imgs','recipes.id', '=', 'imgs.recipe_id')
+                ->select('recipes.*', 'imgs.*')->orderBy('recipes.created_at','desc')->get();
+            $busqueda='';
+        }
             
-        return Inertia::render('Admin/Recetas/Recetas',['recetas' => $recetas]);
+        return Inertia::render('Admin/Recetas/Recetas',[
+            'recetas' => $recetas,
+            'busqueda'=>$busqueda,
+        ]);
     }
 
     public function receta($id){
