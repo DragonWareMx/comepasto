@@ -1,5 +1,5 @@
-// import React, { useEffect, useState } from 'react';
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+// import * as React from 'react';
 import { Inertia } from '@inertiajs/inertia'
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import route from 'ziggy-js';
@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-const Recetas = ({recetas,busqueda}) => {
+const Recetas = ({recetas}) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -113,7 +113,7 @@ const Recetas = ({recetas,busqueda}) => {
     };
 
     const [values, setValues] = React.useState({
-        busqueda: busqueda || '',
+        busqueda:'',
       });
       const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -124,6 +124,14 @@ const Recetas = ({recetas,busqueda}) => {
 
         Inertia.get('/admin/recetas',values)
     }
+
+    useEffect(()=>{
+        const delayDebounceFn = setTimeout(() => {
+            Inertia.get('/admin/recetas',values, {only:['recetas'], preserveState:true})
+          }, 300)
+      
+        return () => clearTimeout(delayDebounceFn)
+    },[values.busqueda])
     
     return ( 
         <>

@@ -1,5 +1,5 @@
-// import React, { useEffect, useState } from 'react';
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+// import * as React from 'react';
 import { Inertia } from '@inertiajs/inertia'
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import route from 'ziggy-js';
@@ -128,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-const Preguntas = () => {
+const Preguntas = ({preguntas}) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -160,6 +160,26 @@ const Preguntas = () => {
 
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
+
+    const [values, setValues] = React.useState({
+        busqueda: '',
+      });
+    const handleChanges = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+    };
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.get('/admin/preguntas',values)
+    }
+
+    useEffect(()=>{
+        const delayDebounceFn = setTimeout(() => {
+            Inertia.get('/admin/preguntas',values, {only:['preguntas'], preserveState:true})
+          }, 300)
+      
+        return () => clearTimeout(delayDebounceFn)
+    },[values.busqueda])
     
     return ( 
         <>
@@ -182,7 +202,7 @@ const Preguntas = () => {
                 {/* CONTENIDO GENERAL */}
                 <Grid item xs={12} style={{marginBottom:'25px', borderRadius:'4px', border:'1px solid #E1E3EA'}}>
                     <Grid item xs={12} style={{padding:'26px',display:'flex',alignItems:'stretch',justifyContent:'space-between'}}>
-                        <Grid item xs={10}>     
+                        <form style={{width:'100%'}} onSubmit={handleSubmit}>     
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
                                     <SearchIcon style={{fontSize:'22px'}} />
@@ -195,10 +215,13 @@ const Preguntas = () => {
                                     input: classes.inputInput,
                                 }}
                                 inputProps={{ 'aria-label': 'search' }}
+                                value={values.busqueda}
+                                onChange={handleChanges('busqueda')}
+                                autoFocus
                                 />
                             </div>
-                        </Grid>
-                        <Grid>
+                        </form>
+                        {/* <Grid>
                             <Button
                                 className="button-filter"
                                 onClick={handleClick}
@@ -216,66 +239,36 @@ const Preguntas = () => {
                                 <MenuItem onClick={handleClose}>Título</MenuItem>
                                 <MenuItem onClick={handleClose}>Categoría</MenuItem>
                             </Menu>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
-                    
-                    <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} style={{backgroundColor:'transparent',borderBottom:'1px solid #E1E3EA'}}>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1bh-content"
-                            id="panel1bh-header"
-                            >
-                            <div className="title-pregunta">¿Todos los productos de la tienda son veganos?</div>
-                        </AccordionSummary>
-                        <AccordionDetails style={{display:'flex',flexWrap:'wrap'}}>
-                            <Grid item xs={12} className="categoria-txt">NOMBRE DE LA CATEGORÍA</Grid>
-                            <Grid item xs={12} className="respuesta-txt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Grid>
-                            <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
-                                <Grid style={{width:'135px',marginRight:'10px'}}>
-                                    <form>
-                                    <InertiaLink href="#!" style={{textDecoration:'none'}}>
-                                    <Button
-                                        className="button-filter"
-                                        startIcon={<DeleteOutlineIcon />}
-                                        type="submit"
-                                    >
-                                        Eliminar
-                                    </Button>
-                                    </InertiaLink>
-                                    </form>
-                                </Grid>
-                            </Grid>
-                        </AccordionDetails>
-                    </Accordion>
 
-                    <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')} style={{backgroundColor:'transparent'}}>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel2bh-content"
-                            id="panel2bh-header"
-                            >
-                            <div className="title-pregunta">¿Todos los productos de la tienda son veganos?</div>
-                        </AccordionSummary>
-                        <AccordionDetails style={{display:'flex',flexWrap:'wrap'}}>
-                            <Grid item xs={12} className="categoria-txt">NOMBRE DE LA CATEGORÍA</Grid>
-                            <Grid item xs={12} className="respuesta-txt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Grid>
-                            <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
-                                <Grid style={{width:'135px',marginRight:'10px'}}>
-                                    <form>
-                                    <InertiaLink href="#!" style={{textDecoration:'none'}}>
-                                    <Button
-                                        className="button-filter"
-                                        startIcon={<DeleteOutlineIcon />}
-                                        type="submit"
-                                    >
-                                        Eliminar
-                                    </Button>
-                                    </InertiaLink>
-                                    </form>
+                    {preguntas.map((pregunta, index) => (
+                        <Accordion key={index} expanded={expanded === index} onChange={handleChange(index)} style={{backgroundColor:'transparent',borderBottom:'1px solid #E1E3EA'}}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1bh-content"
+                                id="panel1bh-header"
+                                >
+                                <div className="title-pregunta">{pregunta.question}</div>
+                            </AccordionSummary>
+                            <AccordionDetails style={{display:'flex',flexWrap:'wrap'}}>
+                                <Grid item xs={12} className="categoria-txt">{pregunta.type}</Grid>
+                                <Grid item xs={12} className="respuesta-txt">{pregunta.answer}</Grid>
+                                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
+                                    <Grid style={{width:'135px',marginRight:'10px'}}>
+                                        <InertiaLink method='POST' href={"/admin/preguntas/eliminar/"+pregunta.id} style={{textDecoration:'none'}}>
+                                            <Button
+                                                className="button-filter"
+                                                startIcon={<DeleteOutlineIcon />}
+                                            >
+                                                Eliminar
+                                            </Button>
+                                        </InertiaLink>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </AccordionDetails>
-                    </Accordion>
+                            </AccordionDetails>
+                        </Accordion>
+                    ))}
 
                 </Grid>
             </Grid>
