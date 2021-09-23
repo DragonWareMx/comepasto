@@ -97,6 +97,8 @@ Route::get('/admin/clientes', [App\Http\Controllers\AdminController::class, 'cli
 Route::get('/admin/clientes/{id}', [App\Http\Controllers\AdminController::class, 'cliente'])->name('admin.cliente');
 
 Route::get('/admin/preguntas', [App\Http\Controllers\AdminController::class, 'preguntas'])->name('admin.preguntas');
+Route::post('/admin/preguntas/eliminar/{id}', [App\Http\Controllers\AdminController::class, 'preguntasEliminar'])->name('admin.preguntas.eliminar');
+Route::post('/admin/preguntas/create', [App\Http\Controllers\AdminController::class, 'preguntasCreate'])->name('admin.preguntas.create');
 
 Route::get('/admin/banners', [App\Http\Controllers\AdminController::class, 'banners'])->name('admin.banners');
 
