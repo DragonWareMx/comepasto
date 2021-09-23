@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import route from 'ziggy-js';
-import { makeStyles, createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import Cart from '../layout/Cart'
+import Account from '../layout/Account'
 import SearchIcon from '@material-ui/icons/Search';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -15,6 +16,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import { IconButton } from '@material-ui/core';
 import teal from '@material-ui/core/colors/teal';
 // import DialogTitle from '@material-ui/core/DialogTitle';
 
@@ -31,9 +33,12 @@ const useStyles = makeStyles((theme) => ({
         color: '#333333',
         marginTop: '20px',
         marginBottom: '20px',
-      "&:not(.Mui-disabled):hover::before": {
-        borderColor: "#1DA3A8"
+        "&:not(.Mui-disabled):hover::before": {
+            borderColor: "#1DA3A8"
         },
+    },
+    userbutton: {
+        position: 'relative',
     },
     formTextLabel: {
         fontFamily: 'Atma',
@@ -41,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         lineHeight: '19.5px',
         color: '#9E9E9E'
     },
-  }));
+}));
 
 const theme = createMuiTheme({
     palette: {
@@ -94,11 +99,11 @@ export default function Navbar() {
 
 
     const handleClickOpen = () => {
-      setOpen(true);
+        setOpen(true);
     };
-  
+
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
     };
 
     function handleChange(e) {
@@ -170,7 +175,10 @@ export default function Navbar() {
                         </InertiaLink>
                     </div>
                     <div className="div-iconos">
-                        <SearchIcon fontSize="large" style={{ color: '#1DA3A8',cursor:'pointer'}}  onClick={handleClickOpen} />
+                        <IconButton aria-label="cart" className={classes.userbutton} onClick={handleClickOpen}>
+                            <SearchIcon fontSize="large" style={{ color: '#1DA3A8', cursor: 'pointer' }} />
+                        </IconButton>
+                        <Account />
                         <Cart bDialog={true} />
                     </div>
                 </div>
@@ -203,7 +211,7 @@ export default function Navbar() {
                 </div>
                 <div className="right">
                     <div className="div-iconos">
-                        <SearchIcon fontSize="large" style={{ color: '#1DA3A8' }}  onClick={handleClickOpen}/>
+                        <SearchIcon fontSize="large" style={{ color: '#1DA3A8' }} onClick={handleClickOpen} />
                         <Cart bDialog={false} />
                     </div>
                 </div>
@@ -232,36 +240,36 @@ export default function Navbar() {
                 <form onSubmit={handleSubmit}>
                     {/* <DialogTitle className='busqueda_title'>Búscar</DialogTitle> */}
                     <DialogContent>
-                    <DialogContentText style={{fontFamily:'Oxygen', fontSize:15, color:'#7c7c7c'}}>
-                        Busca tu producto favorito en comepasto.
-                    </DialogContentText>
+                        <DialogContentText style={{ fontFamily: 'Oxygen', fontSize: 15, color: '#7c7c7c' }}>
+                            Busca tu producto favorito en comepasto.
+                        </DialogContentText>
                         <MuiThemeProvider theme={theme}>
-                        <TextField
-                            autoFocus
-                            id="busqueda"
-                            type="text"
-                            fullWidth
-                            required
-                            InputProps={{
-                                className: classes.input,
-                            }}
-                            InputLabelProps={{
-                                classes: {
-                                    root: classes.formTextLabel
-                                }
-                            }}
-                            value={values.busqueda}
-                            onChange={handleChange}
-                        />
+                            <TextField
+                                autoFocus
+                                id="busqueda"
+                                type="text"
+                                fullWidth
+                                required
+                                InputProps={{
+                                    className: classes.input,
+                                }}
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.formTextLabel
+                                    }
+                                }}
+                                value={values.busqueda}
+                                onChange={handleChange}
+                            />
                         </MuiThemeProvider>
                     </DialogContent>
                     <DialogActions>
-                    <Button onClick={handleClose} color="primary" style={{fontFamily:'Atma', fontSize:14, color:'#7E7E7E', textDecoration:'none'}}>
-                        Cancelar
-                    </Button>
-                    <Button type='submit' color="primary" style={{fontFamily:'Atma', fontSize:14,color: '#FFFFFF', textDecoration:'none',backgroundColor:'#1DA3A8',paddingLeft:15,paddingRight:15,marginRight:15}}>
-                        Buscar
-                    </Button>
+                        <Button onClick={handleClose} color="primary" style={{ fontFamily: 'Atma', fontSize: 14, color: '#7E7E7E', textDecoration: 'none' }}>
+                            Cancelar
+                        </Button>
+                        <Button type='submit' color="primary" style={{ fontFamily: 'Atma', fontSize: 14, color: '#FFFFFF', textDecoration: 'none', backgroundColor: '#1DA3A8', paddingLeft: 15, paddingRight: 15, marginRight: 15 }}>
+                            Buscar
+                        </Button>
                     </DialogActions>
                 </form>
             </Dialog>

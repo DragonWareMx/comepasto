@@ -42,7 +42,72 @@ class PaymentController extends Controller
             session()->put('direccion', $request->direction);
             return redirect()->route('stripe.index');
         }
-        dd($request->all());
+        if ($request->tipo_de_pago == 'transferencia' || $request->tipo_de_pago == 'efectivo') {
+            DB::beginTransaction();
+            try {
+                //code..
+                $compras = User::findOrFail(Auth::id())->cart()->get();
+                $subtotal = 0;
+                foreach ($compras as $item) {
+                    $subtotal += ($item->precio * ((100 - $item->descuento) / 100)) * $item->pivot->cantidad;
+                    if ($item->pivot->cantidad > $item->stock) {
+                        //Se vacía el carrito
+                        $cart = User::findOrFail(Auth::id())->cart()->detach();
+                        return redirect()->back()->with('error', 'Un producto ya no se encuentra disponible, revisa tu carrito!');
+                    }
+                }
+                if ($request->tipo_de_envio  == 'domicilio') {
+                    $envio = session()->get('costoEnvio');
+                } else {
+                    $envio = 0;
+                }
+                $total = $subtotal + $envio;
+
+                $venta = new Sale;
+                $venta->client_id = Auth::id();
+                $venta->costoProducto = $subtotal;
+                $venta->costoEnvio = $envio;
+                $venta->formaPago = $request->tipo_de_pago;
+                $venta->total = $total;
+                $venta->ganancia = 0;
+                $venta->tipo_entrega = $request->tipo_de_envio;
+                $venta->direccion = $request->direction;
+                $venta->save();
+
+                foreach ($compras as $item) {
+                    $venta->product()->attach(
+                        $item->id,
+                        [
+                            'costo' => $item->costo,
+                            'precio' => $item->precio,
+                            'descuento' => $item->descuento,
+                            'cantidad' => $item->pivot->cantidad,
+                        ]
+                    );
+                    $producto = Product::findOrFail($item->id);
+                    $producto->stock = $producto->stock - $item->pivot->cantidad;
+                    $producto->save();
+                }
+                //Se vacía el carrito
+                $cart = User::findOrFail(Auth::id())->cart()->detach();
+                //Se envía el correo electronico
+                $this->mandarCorreo($venta->id);
+                //se vacía la sesión
+                session()->forget('direccion');
+                DB::commit();
+                return redirect()->route('gracias', $venta->id)->with('success', 'Compra realizada con éxito!');
+            } catch (\Throwable $th) {
+                //throw $th;
+                DB::rollback();
+                return redirect()->back()->with('error', 'Ocurrió un error inesperado, por favor intentalo más tarde.');
+            }
+        }
+        //Aqui va lo de paypal
+        if ($request->tipo_de_pago == 'paypal') {
+            $paypal = new PaypalController();
+            return $paypal->payment($request);
+        }
+        return redirect()->back()->with('error', 'Ocurrió un error inesperado, por favor intentalo más tarde.');
     }
 
     public function stripe()
@@ -70,6 +135,11 @@ class PaymentController extends Controller
             foreach ($compras as $item) {
                 $subtotal += ($item->precio * ((100 - $item->descuento) / 100)) * $item->pivot->cantidad;
                 $metadata[] = $item->name . ' cantidad= ' . $item->pivot->cantidad;
+                if ($item->pivot->cantidad > $item->stock) {
+                    //Se vacía el carrito
+                    $cart = User::findOrFail(Auth::id())->cart()->detach();
+                    return redirect()->back()->with('error', 'Un producto ya no se encuentra disponible, revisa tu carrito!');
+                }
             }
             if (session()->get('tipo_de_envio')  == 'domicilio') {
                 $envio = session()->get('costoEnvio');
@@ -98,6 +168,7 @@ class PaymentController extends Controller
             $venta->ganancia = 0;
             $venta->tipo_entrega = session()->get('tipo_de_envio');
             $venta->direccion = session()->get('direccion');
+            $venta->statusPago = true;
             $venta->save();
 
             foreach ($compras as $item) {
@@ -142,13 +213,12 @@ class PaymentController extends Controller
             return redirect()->route('stripe.index')->with('error', $status);
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th);
             DB::rollback();
             return redirect()->route('stripe.index')->with('error', 'Algo salió mal, por favor intentalo más tarde.');
         }
     }
 
-    private function mandarCorreo($id_sale)
+    public function mandarCorreo($id_sale)
     {
         $var = config('app.env');
         if ($var == 'production') {
@@ -159,5 +229,14 @@ class PaymentController extends Controller
             Mail::to(Auth::user()->email)->send(new ReceiptSale($id_sale));
             Mail::to(Auth::user()->email)->send(new ReceiptComepasto($id_sale));
         }
+    }
+
+    public function showGreetings($id)
+    {
+        $sale = Sale::find($id);
+        if ($sale && $sale->client->id == Auth::id()) {
+            return Inertia::render('Gracias');
+        }
+        return redirect()->route('inicio');
     }
 }

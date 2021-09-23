@@ -80,13 +80,13 @@ const columns = [
     width: 350,
     editable: false,
 },
-{
-    field: 'estatus',
-    headerName: 'ESTATUS',
-    // type: 'number',
-    width: 200,
-    editable: false,
-},
+// {
+//     field: 'estatus',
+//     headerName: 'ESTATUS',
+//     // type: 'number',
+//     width: 200,
+//     editable: false,
+// },
 {
     field: 'entrega',
     headerName: 'TIPO DE ENTREGA',
@@ -101,14 +101,9 @@ const columns = [
     width: 180,
     editable: false,
 },
-];
-  
-  const rows = [
-    { id: 1, fecha: '20/08/2021 09:32', cliente: 'Lorem ipsum dolor sit amet', estatus: 'En camino', entrega:'A domicilio', total:'$240.00 MXN' },
-  ];
+]; 
 
-
-const Pedidos = () => {
+const Pedidos = ({total,ganancias, pedidos}) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -121,6 +116,13 @@ const Pedidos = () => {
         setAnchorEl(null);
     };
     
+    // const rows = [
+    //     { id: 1, fecha: '20/08/2021 09:32', cliente: 'Lorem ipsum dolor sit amet', estatus: 'En camino', entrega:'A domicilio', total:'$240.00 MXN' },
+    //   ];
+
+    const rows = pedidos;
+
+
     return ( 
         <>
         <Container> 
@@ -145,7 +147,7 @@ const Pedidos = () => {
                         <Grid item xs={2}><LocalShippingIcon style={{color:'#1DA3A8'}} /></Grid>
                         <Grid item xs={10}>
                             <Tooltip title="Total de pedidos registrados"><Grid item={12} className="title-item-resume">TOTAL DE PEDIDOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">100</Grid>
+                            <Grid item={12} className="txt-item-resume">{total}</Grid>
                         </Grid>
                     </Grid>
 
@@ -153,7 +155,7 @@ const Pedidos = () => {
                         <Grid item xs={2}><MonetizationOnOutlinedIcon style={{color:'#1DA3A8'}} /></Grid>
                         <Grid item xs={10}>
                         <Tooltip title="Valor total de los pedidos realizados"><Grid item={12} className="title-item-resume">TOTAL EN PEDIDOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">$ 12,000 MXN</Grid>
+                            <Grid item={12} className="txt-item-resume">$ {ganancias} MXN</Grid>
                         </Grid>
                     </Grid>
 

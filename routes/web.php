@@ -44,6 +44,8 @@ Route::post('/cotizar', [App\Http\Controllers\PaymentController::class, 'cotizar
 Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'payment'])->name('payment');
 Route::get('/payment/stripe', [App\Http\Controllers\PaymentController::class, 'stripe'])->name('stripe.index');
 Route::post('/payment/stripe/pay', [App\Http\Controllers\PaymentController::class, 'stripePay'])->name('stripe.pay');
+Route::get('/payment/gracias/{id}', [App\Http\Controllers\PaymentController::class, 'showGreetings'])->name('gracias');
+Route::get('/payment/paypal', [App\Http\Controllers\PaypalController::class, 'status'])->name('paypal.payment');
 
 // Route::get('/payment/test', [App\Http\Controllers\PaymentController::class, 'mandarCorreo']);
 
@@ -74,6 +76,7 @@ Route::get('/preguntas', [App\Http\Controllers\QuestionController::class, 'pregu
 Route::get('/cuenta', [App\Http\Controllers\CuentaController::class, 'index'])->name('cuenta');
 Route::get('/mispedidos', [App\Http\Controllers\CuentaController::class, 'misPedidos'])->name('misPedidos');
 Route::get('/informacion', [App\Http\Controllers\CuentaController::class, 'informacion'])->name('informacion');
+Route::post('/informacion/editar', [App\Http\Controllers\CuentaController::class, 'infoEdit'])->name('informacion.editar');
 Route::get('/direcciones', [App\Http\Controllers\CuentaController::class, 'direcciones'])->name('direcciones');
 Route::get('/direcciones/agregar', [App\Http\Controllers\CuentaController::class, 'direccionesAdd'])->name('direcciones.agregar');
 Route::get('/direcciones/editar/{id}', [App\Http\Controllers\CuentaController::class, 'direccionesEdit'])->name('direcciones.editar');
@@ -84,6 +87,7 @@ Route::get('/admin/', [App\Http\Controllers\AdminController::class, 'index'])->n
 Route::get('/admin/productos/{id}', [App\Http\Controllers\AdminController::class, 'producto'])->name('admin.producto');
 Route::get('/admin/productos/editar/{id}', [App\Http\Controllers\AdminController::class, 'productoEditar'])->name('admin.producto.editar');
 Route::get('/admin/productos-agregar', [App\Http\Controllers\AdminController::class, 'productoAgregar'])->name('admin.producto.agregar');
+Route::post('/admin/productos/{id}/inventario', [App\Http\Controllers\AdminController::class, 'productoInventario'])->name('admin.producto.inventario');
 
 Route::get('/admin/pedidos', [App\Http\Controllers\AdminController::class, 'pedidos'])->name('admin.pedidos');
 Route::get('/admin/pedidos/{id}', [App\Http\Controllers\AdminController::class, 'pedido'])->name('admin.pedido');

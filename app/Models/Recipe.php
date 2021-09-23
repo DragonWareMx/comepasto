@@ -9,7 +9,7 @@ class Recipe extends Model
 {
     use HasFactory;
 
-    public function products(){
+    public function product(){
         return $this->belongsToMany('App\Models\Product');
     }
 

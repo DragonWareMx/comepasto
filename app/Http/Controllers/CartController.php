@@ -187,12 +187,12 @@ class CartController extends Controller
             return \Redirect::back()->with('info','Inicia sesión.');
         }
 
-        $recipe=Recipe::with('products:id')->findOrFail($id);
+        $recipe=Recipe::with('product:id')->findOrFail($id);
 
         //contador para wachar los productos que no se puedan agregar
         $cont=0;
 
-        foreach ($recipe->products as $product) {
+        foreach ($recipe->product as $product) {
             //se encuentra el producto
             $product = Product::find($product->id);
             

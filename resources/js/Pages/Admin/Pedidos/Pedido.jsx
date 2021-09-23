@@ -34,7 +34,7 @@ import UpdateIcon from '@material-ui/icons/Update';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
-const Pedido = () => {
+const Pedido = ({pedido}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -96,7 +96,7 @@ const Pedido = () => {
                                 <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                     <Grid item xs={12} sm={6}>
                                         <Grid item xs={12} className="title-item-info t-i-i-pedidos">ID</Grid>
-                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>#1223881</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>#{pedido.id}</Grid>
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <Grid item xs={12} className="title-item-info t-i-i-pedidos">PEDIDO REALIZADO DESDE</Grid>
@@ -106,16 +106,16 @@ const Pedido = () => {
                                 <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                     <Grid item xs={12} sm={6}>
                                         <Grid item xs={12} className="title-item-info t-i-i-pedidos">CLIENTE</Grid>
-                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Lorem ipsum dolor sit amet</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>{pedido.client.name}</Grid>
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <Grid item xs={12} className="title-item-info t-i-i-pedidos">TELÉFONO</Grid>
-                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>44 44 44 44 44</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>{pedido.client.tel && pedido.client.tel}</Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Grid item xs={12} className="title-item-info t-i-i-pedidos">DIRECCIÓN</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</Grid>
+                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>{pedido.direccion ? pedido.direccion : 'En tienda'}</Grid>
                                 </Grid>
                             </Grid>
 
@@ -130,27 +130,27 @@ const Pedido = () => {
                             <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                                 <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                     <Grid item xs={12} sm={6}>
-                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">TIPO DE PAGOx</Grid>
-                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Efectivo</Grid>
+                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">TIPO DE PAGO</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>{pedido.formaPago}</Grid>
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <Grid item xs={12} className="title-item-info t-i-i-pedidos">ESTATUS DEL PAGO</Grid>
-                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Página web</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>#############</Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                     <Grid item xs={12} sm={6}>
                                         <Grid item xs={12} className="title-item-info t-i-i-pedidos">TIPO DE ENTREGA</Grid>
-                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>Lorem ipsum dolor sit</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>{pedido.tipo_entrega}</Grid>
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">COSTOS DE ENVÍO</Grid>
-                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>$90.00</Grid>
+                                        <Grid item xs={12} className="title-item-info t-i-i-pedidos">COSTO DE ENVÍO</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>${pedido.costoEnvio}</Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Grid item xs={12} className="title-item-info t-i-i-pedidos">OBSERVACIONES</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</Grid>
+                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>######################</Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -171,41 +171,42 @@ const Pedido = () => {
                                     </TableRow>
                                     </TableHead>
                                     <TableBody>
+                                        {pedido.product && pedido.product.map((product, index)=>(
+                                            <TableRow key={index}>
+                                                <TableCell component="th" scope="row" className="body-row-txt" style={{display:'flex',alignItems:'center'}}>
+                                                    <Grid style={{width:'max-content'}} >
+                                                        <InertiaLink href={route('admin.producto',product.id)}>
+                                                            <img src={product.foto && '/img/PRODUCTOS/'+product.foto} className="img-product-pedido" />
+                                                        </InertiaLink>
+                                                    </Grid>
+                                                    <Grid>
+                                                        {/* Max, 50 caracteres */}
+                                                        <Tooltip title="Nombre completo del producto" placement="top-start">
+                                                            <Grid item xs={12}>
+                                                                <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none',color:'#474747'}}>
+                                                                    {product.name}
+                                                                </InertiaLink>
+                                                            </Grid>
+                                                        </Tooltip>
+                                                        <Grid item xs={12} className="txt-descuento">DESCUENTO {product.pivot.descuento}%</Grid>
+                                                    </Grid>  
+                                                </TableCell>
+                                                <TableCell align="right" className="body-row-txt">${product.pivot.precio}</TableCell>
+                                                <TableCell align="right" className="body-row-txt">{product.pivot.cantidad}</TableCell>
+                                                <TableCell align="right" className="body-row-txt">${product.pivot.precio * product.pivot.cantidad}</TableCell>
+                                            </TableRow>
+                                        ))}
                                         <TableRow >
-                                            <TableCell component="th" scope="row" className="body-row-txt" style={{display:'flex',alignItems:'center'}}>
-                                                <Grid style={{width:'max-content'}} >
-                                                    <InertiaLink href={route('admin.producto',1)}>
-                                                        <img src="/img/PRODUCTOS/1.png" className="img-product-pedido" />
-                                                    </InertiaLink>
-                                                </Grid>
-                                                <Grid>
-                                                    {/* Max, 50 caracteres */}
-                                                    <Tooltip title="Nombre completo del producto" placement="top-start">
-                                                        <Grid item xs={12}>
-                                                            <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none',color:'#474747'}}>
-                                                                Lorem ipsum dolor sit amet consectetur adipisicing...
-                                                            </InertiaLink>
-                                                        </Grid>
-                                                    </Tooltip>
-                                                    <Grid item xs={12} className="txt-descuento">DESCUENTO 0%</Grid>
-                                                </Grid>
-                                                
-                                            </TableCell>
-                                            <TableCell align="right" className="body-row-txt">$55.00</TableCell>
-                                            <TableCell align="right" className="body-row-txt">2</TableCell>
-                                            <TableCell align="right" className="body-row-txt">$110.00</TableCell>
-                                        </TableRow>
-                                        <TableRow >
-                                            <TableCell component="th" scope="row" className="body-row-txt">Costos de envío</TableCell>
+                                            <TableCell component="th" scope="row" className="body-row-txt">Costo de envío</TableCell>
                                             <TableCell align="right" className="body-row-txt"> </TableCell>
                                             <TableCell align="right" className="body-row-txt"> </TableCell>
-                                            <TableCell align="right" className="body-row-txt">$90.00</TableCell>
+                                            <TableCell align="right" className="body-row-txt">${pedido.costoEnvio}</TableCell>
                                         </TableRow>
                                         <TableRow >
                                             <TableCell component="th" scope="row" className="body-row-txt">Total</TableCell>
                                             <TableCell align="right" className="body-row-txt"> </TableCell>
                                             <TableCell align="right" className="body-row-txt"> </TableCell>
-                                            <TableCell align="right" className="body-row-txt"><b>$200.00</b></TableCell>
+                                            <TableCell align="right" className="body-row-txt"><b>${pedido.total}</b></TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>

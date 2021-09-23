@@ -1,5 +1,5 @@
-// import React, { useEffect, useState } from 'react';
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+// import * as React from 'react';
 import { Inertia } from '@inertiajs/inertia'
 import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import route from 'ziggy-js';
@@ -111,6 +111,27 @@ const Recetas = ({recetas}) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const [values, setValues] = React.useState({
+        busqueda:'',
+      });
+      const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+      };
+
+    function handleSubmit(e) {
+        e.preventDefault()
+
+        Inertia.get('/admin/recetas',values)
+    }
+
+    useEffect(()=>{
+        const delayDebounceFn = setTimeout(() => {
+            Inertia.get('/admin/recetas',values, {only:['recetas'], preserveState:true})
+          }, 300)
+      
+        return () => clearTimeout(delayDebounceFn)
+    },[values.busqueda])
     
     return ( 
         <>
@@ -133,7 +154,7 @@ const Recetas = ({recetas}) => {
                 {/* CONTENIDO GENERAL */}
                 <Grid item xs={12} style={{marginBottom:'25px', borderRadius:'4px', border:'1px solid #E1E3EA'}}>
                     <Grid item xs={12} style={{padding:'26px',display:'flex',alignItems:'stretch',justifyContent:'space-between',borderBottom:'1px solid #E1E3EA'}}>
-                        <Grid item xs={10}>     
+                        <form style={{width:'100%'}} onSubmit={handleSubmit}>     
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
                                     <SearchIcon style={{fontSize:'22px'}} />
@@ -146,10 +167,13 @@ const Recetas = ({recetas}) => {
                                     input: classes.inputInput,
                                 }}
                                 inputProps={{ 'aria-label': 'search' }}
+                                value={values.busqueda}
+                                onChange={handleChange('busqueda')}
+                                autoFocus
                                 />
                             </div>
-                        </Grid>
-                        <Grid>
+                        </form>
+                        {/* <Grid>
                             <Button
                                 className="button-filter"
                                 onClick={handleClick}
@@ -166,7 +190,7 @@ const Recetas = ({recetas}) => {
                             >
                                 <MenuItem onClick={handleClose}>Título</MenuItem>
                             </Menu>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                     
                     <Grid container direction="row" justify="flex-start" alignItems="stretch" spacing={3} style={{padding:'26px'}}>

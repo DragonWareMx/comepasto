@@ -21,6 +21,7 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -65,27 +66,27 @@ const theme = createMuiTheme({
     },
 });
 
-const currencies = [
-    {
-      value: '1',
-      label: 'Lorem ipsum 1',
-    },
-    {
-      value: '2',
-      label: 'Lorem ipsum 2',
-    },
-    {
-      value: '3',
-      label: 'Lorem ipsum 3',
-    },
-    {
-      value: '4',
-      label: 'Lorem ipsum 4',
-    },
-  ];
 
-const AgregarProducto = () => {
+const AgregarProducto = ({marcas,tipos,categorias}) => {
+
+    const currencies = [
+        {label:'1',
+        label:'lorem ipsum'
+        },
+    ]
+
     const [anchorEl, setAnchorEl] = React.useState(null);
+
+    //CHIPS
+    const [inputValue, setInputValue] = React.useState('');
+    const [autoCompleteValue, setAutoCompleteValue] = React.useState(null);
+
+    const handleDelete = (chipToDelete) => () => {
+        setValues({
+            ...values, 
+            categorias: values.categorias.filter((chip) => chip.id !== chipToDelete.id)
+        });
+    };
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -131,23 +132,61 @@ const AgregarProducto = () => {
     // Select
     const [currency, setCurrency] = React.useState('1');
 
-    const [state, setState] = React.useState({
-        checkedA: true,
-        checkedB: true,
-    });
-
-    const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked });
-      };
-
-    const handleDelete = () => {
-
+    const handleChange = (prop) => (event) => {
+        if(prop == 'soyaFree' || prop == 'trigoFree'){
+            setValues({ ...values, [prop]: event.target.checked });
+        }
+        else{
+            setValues({ ...values, [prop]: event.target.value });
+        }
     };
+
+    // const handleDelete = () => {
+
+    // };
 
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
 
     const classes = useStyles();
+
+    function readURL() {
+        var input=document.getElementById('imgProducto');
+        if (input.files && input.files[0]) {
+            setValues(values => ({
+                ...values,
+                imgProducto: input.files[0],
+            }))
+            var reader = new FileReader();
+            var preview = document.getElementById('imgContainer');
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    const addCategoria = (prop) => (event) => {
+        // setValues.categorias.push(event.target.value)
+        setValues(values => ({
+            ...values,
+            categorias: values.categorias.push(event.target.value),
+        }))
+    };
+
+    const [values, setValues] = React.useState({
+        imgProducto: null,
+        nombre: '',
+        presentacion: '',
+        precio: '',
+        descuento: '',
+        ingredientes: '',
+        marca: '',
+        tipo: '',
+        categorias: [],
+        soyaFree: false,
+        trigoFree: false
+    });
 
     return ( 
         <>
@@ -165,14 +204,15 @@ const AgregarProducto = () => {
                     {/* contenido */}
                     <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                         <Grid item xs={4} sm={2} style={{marginBottom:'20px',display:'flex',justifyContent:'center',flexWrap:'wrap'}}>
-                            <img src="/img/icons/imgDefault.png" className="img-product-view" />
+                            <img id='imgContainer' src="/img/icons/imgDefault.png" className="img-product-view" style={{objectFit:'cover'}}/>
                             <input
                                 accept="image/*"
-                                id="contained-button-file"
+                                id="imgProducto"
                                 type="file"
                                 style={{display:'none'}}
+                                onChange={readURL}
                             />
-                            <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                            <label htmlFor="imgProducto" style={{marginTop:'20px'}}>
                                 <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
                                 Subir img
                                 </Button>
@@ -193,78 +233,93 @@ const AgregarProducto = () => {
                                             root: classes.formTextLabel
                                         }
                                     }}
+                                    onChange={handleChange('nombre')} 
                                 />
                             </Grid>
 
                             <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
-                                    <TextField
-                                        id="marca"
-                                        select
-                                        label="Marca"
-                                        placeholder="Selecciona una opción"
-                                        className="input-admin-50"
-                                        InputProps={{className: classes.input,}}
-                                        InputLabelProps={{
-                                            classes: {
-                                                root: classes.formTextLabel
-                                            }
-                                        }}
-                                        >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
+                                <Autocomplete
+                                    id="marca"
+                                    options={marcas}
+                                    getOptionLabel={(option) => option.name}
+                                    style={{ width: 300 }}
+                                    onChange={(event, newValue) => {
+                                        setValues({ ...values, marca: newValue ? newValue.id : null });
+                                    }}
+                                    renderInput={
+                                        (params) => 
+                                        <TextField {...params}
+                                            label="Marca"
+                                            placeholder="Selecciona una opción"
+                                            variant="outlined"
+                                            className="input-admin-50" 
+                                        />
+                                    }
+                                />
                                     <Grid className="link-add-bd" onClick={handleClickOpenModalMarca}>Agregar marca</Grid>
                                 </Grid>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
-                                    <TextField
+                                    <Autocomplete
                                         id="tipo"
-                                        select
-                                        label="Tipo"
-                                        className="input-admin-50"
-                                        InputProps={{className: classes.input,}}
-                                        InputLabelProps={{
-                                            classes: {
-                                                root: classes.formTextLabel
-                                            }
+                                        options={tipos}
+                                        getOptionLabel={(option) => option.name}
+                                        style={{ width: 300 }}
+                                        onChange={(event, newValue) => {
+                                            setValues({ ...values, tipo: newValue ? newValue.id : null });
                                         }}
-                                        >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
+                                        renderInput={
+                                            (params) => 
+                                            <TextField {...params}
+                                                label="Tipo"
+                                                placeholder="Selecciona una opción"
+                                                variant="outlined"
+                                                className="input-admin-50" 
+                                            />
+                                        }
+                                    />
                                     <Grid className="link-add-bd" onClick={handleClickOpenModalTipo}>Agregar tipo</Grid>
                                 </Grid>
                             </Grid>
 
                             <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
-                                    <TextField
+                                    <Autocomplete
                                         id="categorias"
-                                        select
-                                        label="Categorías"
-                                        className="input-admin-50"
-                                        InputProps={{className: classes.input,}}
-                                        InputLabelProps={{
-                                            classes: {
-                                                root: classes.formTextLabel
+                                        options={categorias}
+                                        value={autoCompleteValue}
+                                        getOptionLabel={(option) => option.name}
+                                        style={{ width: 300 }}
+                                        onChange={(event, newValue) => {
+                                            if(newValue){
+                                                setInputValue("");
+                                                setAutoCompleteValue(null)
+                                                if(!values.categorias.some(item => newValue.id === item.id))
+                                                    setValues({ ...values, categorias: [...values.categorias, {id: newValue.id, name: newValue.name}] });
                                             }
                                         }}
-                                        >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
+                                        inputValue={inputValue}
+                                        onInputChange={(event, newInputValue) => {
+                                            setInputValue(newInputValue);
+                                        }}
+                                        renderInput={
+                                            (params) => 
+                                            <TextField {...params}
+                                                label="Categorías"
+                                                placeholder="Selecciona una opción"
+                                                variant="outlined"
+                                                className="input-admin-50" 
+                                            />
+                                        }
+                                    />
                                     
-                                    <Chip onDelete={handleDelete} label="Categoría 1" className="chip-categoria" />
-                                    <Chip onDelete={handleDelete} label="Categoría 2" className="chip-categoria" />
+                                    {values.categorias.map((data) => {
+                                        return(<Chip
+                                            label={data.name}
+                                            onDelete={handleDelete(data)}
+                                            className="chip-categoria"
+                                        />)
+                                    })}
                                     
                                     <Grid className="link-add-bd" onClick={handleClickOpenModalCat}>Agregar categoría</Grid>
                                 </Grid>
@@ -280,6 +335,7 @@ const AgregarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={handleChange('presentacion')}
                                         >
                                     </TextField>
                                 </Grid>
@@ -298,6 +354,7 @@ const AgregarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={handleChange('precio')}
                                         >
                                     </TextField>
                                 </Grid>
@@ -313,6 +370,7 @@ const AgregarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={handleChange('descuento')}
                                         >
                                     </TextField>
                                 </Grid>
@@ -330,19 +388,20 @@ const AgregarProducto = () => {
                                         root: classes.formTextLabel
                                     }
                                     }}
+                                    onChange={handleChange('ingredientes')}
                                 />
                             </Grid>
 
                             <Grid item xs={12}>
                                 <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} className="checkbox-admin" onChange={handleChange} name="checkedA" />}
-                                    id="soya"
+                                    control={<Checkbox checked={values.soyaFree} className="checkbox-admin" onChange={handleChange('soyaFree')} name="checkedA" />}
+                                    id="soyaFree"
                                     label="Producto libre de soya"
                                     className="checkbox-label"
                                 />
                                 <FormControlLabel
-                                    control={<Checkbox checked={state.checkedB} className="checkbox-admin" onChange={handleChange} name="checkedB" />}
-                                    id="gluten"
+                                    control={<Checkbox checked={values.trigoFree} className="checkbox-admin" onChange={handleChange('trigoFree')} name="checkedB" />}
+                                    id="trigoFree"
                                     label="Producto libre de gluten"
                                     className="checkbox-label"
                                 />
@@ -402,7 +461,7 @@ const AgregarProducto = () => {
                         type="file"
                         style={{display:'none'}}
                     />
-                    <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                    <label htmlFor="imgNewMarca" style={{marginTop:'20px'}}>
                         <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
                         Subir img
                         </Button>
@@ -506,7 +565,7 @@ const AgregarProducto = () => {
                         type="file"
                         style={{display:'none'}}
                     />
-                    <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                    <label htmlFor="imgNewCat" style={{marginTop:'20px'}}>
                         <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
                         Subir img
                         </Button>
