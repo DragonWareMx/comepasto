@@ -276,7 +276,7 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
                 </Grid>
 
                 {/* CONTENIDO GENERAL */}
-                <Grid item xs={12} style={{height:400}}>
+                <Grid item xs={12} style={{height:500}}>
                     <DataGrid
                         components={{ Toolbar: QuickSearchToolbar }}
                         rows={rows}
