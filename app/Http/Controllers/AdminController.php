@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Brand;
 use App\Models\Type;
 use App\Models\Category;
+use App\Models\Question;
 
 class AdminController extends Controller
 {
@@ -108,8 +109,20 @@ class AdminController extends Controller
         return Inertia::render('Admin/Clientes/Cliente');
     }
 
-    public function preguntas(){
-        return Inertia::render('Admin/Preguntas/Preguntas');
+    public function preguntas(Request $request){
+        if($request->busqueda){
+            $preguntas=Question::
+            where('question','like','%'.$request->busqueda.'%')
+            ->orWhere('answer','like','%'.$request->busqueda.'%')
+            ->orWhere('type','like','%'.$request->busqueda.'%')
+            ->get();
+        }
+        else{
+            $preguntas=Question::get();
+        }
+        return Inertia::render('Admin/Preguntas/Preguntas',[
+            'preguntas'=>$preguntas,
+        ]);
     }
 
     public function banners(){
@@ -122,17 +135,14 @@ class AdminController extends Controller
             ->orWhere('imgs.descripcion','like','%'.$request->busqueda.'%')
             ->join('imgs','recipes.id', '=', 'imgs.recipe_id')
                 ->select('recipes.*', 'imgs.*')->orderBy('recipes.created_at','desc')->get();
-            $busqueda=$request->busqueda;
         }
         else{
             $recetas=Recipe::join('imgs','recipes.id', '=', 'imgs.recipe_id')
                 ->select('recipes.*', 'imgs.*')->orderBy('recipes.created_at','desc')->get();
-            $busqueda='';
         }
             
         return Inertia::render('Admin/Recetas/Recetas',[
             'recetas' => $recetas,
-            'busqueda'=>$busqueda,
         ]);
     }
 

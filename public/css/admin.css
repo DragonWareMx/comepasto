@@ -1,3 +1,8 @@
+body{
+    padding: 0px;
+    margin: 0px !important;
+}
+
 .top-admin{
     display: flex;
     justify-content: space-between;
@@ -101,7 +106,7 @@
 } */
 
 .MuiTypography-body1{
-    font-family: Atma !important;
+    font-family: Atma ;
 }
 
 .section-top-grid{
