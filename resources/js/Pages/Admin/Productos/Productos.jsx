@@ -208,7 +208,6 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
     const [rows, setRows] = React.useState(productos);
 
     const requestSearch = (searchValue) => {
-        console.log(searchValue)
         setSearchText(searchValue);
         const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
         const filteredRows = productos.filter((row) => {

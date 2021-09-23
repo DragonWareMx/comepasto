@@ -179,33 +179,37 @@ QuickSearchToolbar.propTypes = {
     value: PropTypes.string.isRequired,
 };
 
-const Clientes = () => {
+const Clientes = ({clients}) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+      setAnchorEl(event.currentTarget);
     };
-
+    
     const handleClose = () => {
-        setAnchorEl(null);
+      setAnchorEl(null);
     };
-
+    
     //buscador
     const [searchText, setSearchText] = React.useState('');
+    const [rows, setRows] = React.useState(clients);
 
     const requestSearch = (searchValue) => {
-        console.log(searchValue)
         setSearchText(searchValue);
         const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
-        const filteredRows = productos.filter((row) => {
+        const filteredRows = clients.filter((row) => {
           return Object.keys(row).some((field) => {
             return searchRegex.test(row[field].toString());
           });
         });
         setRows(filteredRows);
     };
+
+    React.useEffect(() => {
+      setRows(clients);
+    }, [clients]);
     
     return ( 
         <>
