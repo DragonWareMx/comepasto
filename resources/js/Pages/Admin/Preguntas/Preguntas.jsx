@@ -163,6 +163,9 @@ const Preguntas = ({preguntas}) => {
 
     const [values, setValues] = React.useState({
         busqueda: '',
+        pregunta: '',
+        respuesta: '',
+        categoria: '',
       });
     const handleChanges = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -171,6 +174,11 @@ const Preguntas = ({preguntas}) => {
     function handleSubmit(e) {
         e.preventDefault()
         Inertia.get('/admin/preguntas',values)
+    }
+
+    function submitPregunta(e) {
+        e.preventDefault()
+        Inertia.post('/admin/preguntas/create',values)
     }
 
     useEffect(()=>{
@@ -281,7 +289,7 @@ const Preguntas = ({preguntas}) => {
             fullWidth={fullWidth}
             maxWidth={maxWidth}
         >
-        <form noValidate autoComplete="off">
+        <form noValidate autoComplete="off" onSubmit={submitPregunta}>
             <DialogTitle  className="title-dialog">{"Agregar pregunta"}</DialogTitle>
             <DialogContent>
             <DialogContentText id="alert-dialog-description" className="dialog-content">
@@ -290,6 +298,7 @@ const Preguntas = ({preguntas}) => {
                     <TextField
                         id="categorias"
                         select
+                        required
                         label="Categorías"
                         style={{width:'100%'}}
                         InputProps={{className: classes.input,}}
@@ -298,6 +307,8 @@ const Preguntas = ({preguntas}) => {
                                 root: classes.formTextLabel
                             }
                         }}
+                        value={values.categoria}
+                        onChange={handleChanges('categoria')}
                         >
                         {currencies.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -311,6 +322,7 @@ const Preguntas = ({preguntas}) => {
                         id="titulo" 
                         type="text"
                         label="Título" 
+                        required
                         style={{width:'100%'}}
                         InputProps={{className: classes.input,}}
                         InputLabelProps={{
@@ -318,12 +330,15 @@ const Preguntas = ({preguntas}) => {
                                 root: classes.formTextLabel
                             }
                         }}
+                        value={values.pregunta}
+                        onChange={handleChanges('pregunta')}
                     />
                 </Grid>
                 <Grid item xs={12} style={{marginBottom:'20px'}}>
                     <TextField 
                         id="respuesta" 
                         multiline
+                        required
                         label="Respuesta" 
                         style={{width:'100%'}}
                         InputProps={{className: classes.input,}}
@@ -332,6 +347,8 @@ const Preguntas = ({preguntas}) => {
                             root: classes.formTextLabel
                         }
                         }}
+                        value={values.respuesta}
+                        onChange={handleChanges('respuesta')}
                     />
                 </Grid>
                 </MuiThemeProvider>

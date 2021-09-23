@@ -125,6 +125,42 @@ class AdminController extends Controller
         ]);
     }
 
+    public function preguntasEliminar($id){
+        try {
+            DB::beginTransaction();
+            $pregunta=Question::findOrFail($id);
+            $pregunta->delete();
+            DB::commit();
+            return \Redirect::back()->with('success','Pregunta eliminada con éxito.');
+
+        } catch (\Throwable $th) {
+           DB::rollback();
+           return \Redirect::back()->with('error','Ocurrió un problema, vuelva a intentarlo más tarde.');
+        }
+    }
+
+    public function preguntasCreate(Request $request){
+        $validated = $request->validate([
+            'pregunta' => ['required', 'string','max:255'],
+            'respuesta' => ['required', 'string'],
+            'categoria' => ['required', 'numeric'],
+        ]);
+        try {
+            DB::beginTransaction();
+            $pregunta=new Question;
+            $pregunta->question=$request->pregunta;
+            $pregunta->answer=$request->respuesta;
+            $pregunta->type=$request->categoria;
+            $pregunta->save();
+            DB::commit();
+            return \Redirect::back()->with('success','Pregunta creada con éxito.');
+
+        } catch (\Throwable $th) {
+           DB::rollback();
+           return \Redirect::back()->with('error','Ocurrió un problema, vuelva a intentarlo más tarde.');
+        }
+    }
+
     public function banners(){
         return Inertia::render('Admin/Banners/Banners');
     }
