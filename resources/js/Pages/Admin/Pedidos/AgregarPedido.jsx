@@ -12,13 +12,11 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-// import Menu from '@material-ui/core/Menu';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
-// import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Table from '@material-ui/core/Table';
@@ -31,12 +29,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import TuneIcon from '@material-ui/icons/Tune';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import UpdateIcon from '@material-ui/icons/Update';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import PublishIcon from '@material-ui/icons/Publish';
 
 const useStyles = makeStyles((theme) => ({
     input: {
@@ -107,6 +101,20 @@ const AgregarPedido = () => {
         setAnchorEl(null);
     };
 
+    // MODAL AGREGAR CLIENTE
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpenModal = () => {
+        setOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setOpen(false);
+    };
+
+    const [fullWidth, setFullWidth] = React.useState(true);
+    const [maxWidth, setMaxWidth] = React.useState('sm');
+
     const classes = useStyles();
 
     return ( 
@@ -120,6 +128,7 @@ const AgregarPedido = () => {
 
                 <Grid item xs={12} >
                 <form noValidate autoComplete="off" style={{marginBottom:'25px',display:'flex',flexWrap:'wrap',justifyContent:'space-between',alignItems:'flex-start'}}>
+                    <MuiThemeProvider theme={theme}>
                     <Grid item xs={12} sm={12} md={8}>
                         <Grid item xs={12} className="grid-section">
                             <Grid item xs={12} className="section-top-grid">
@@ -148,7 +157,7 @@ const AgregarPedido = () => {
                                             </MenuItem>
                                         ))}
                                     </TextField>
-                                    <Grid className="link-add-bd" style={{width:'95%', margin:'0px 0px 15px 0px'}}>Agregar cliente</Grid>
+                                    <Grid className="link-add-bd" style={{width:'95%', margin:'0px 0px 15px 0px'}} onClick={handleClickOpenModal}>Agregar cliente</Grid>
                                 </Grid>
 
                                 {/* LOS 3 DATOS SIGUIENTES SE CARGARAN DEPENDIENDO DEL CLIENTE QUE SE AGREGUE O SELECCIONE, SI SE PUEDE, SI NO QUE NO SALGA TELEFONO Y DIRECCION */}
@@ -443,11 +452,142 @@ const AgregarPedido = () => {
                             </Grid>
                         </Grid>
                     </Grid>
+                    </MuiThemeProvider>
                 </form >
                 </Grid>
 
             </Grid>
         </Container>
+
+        {/* MODAL AGREGAR CLIENTE */}
+        <Dialog
+            open={open}
+            onClose={handleCloseModal}
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
+        >
+        <form noValidate autoComplete="off">
+            <DialogTitle  className="title-dialog">{"Agregar cliente"}</DialogTitle>
+            <DialogContent>
+            <DialogContentText id="alert-dialog-description" className="dialog-content">
+                <MuiThemeProvider>
+                <Grid item xs={12}>
+                    <TextField 
+                        id="nombre" 
+                        type="text"
+                        label="Nombre completo" 
+                        className="input-admin-100"
+                        InputProps={{className: classes.input,}}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.formTextLabel
+                            }
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
+                    <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
+                        <TextField
+                            id="correo"
+                            label="Correo electrónico"
+                            className="input-admin-50"
+                            style={{marginBottom:'25px'}}
+                            InputProps={{className: classes.input,}}
+                            InputLabelProps={{
+                                classes: {
+                                    root: classes.formTextLabel
+                                }
+                            }}
+                            >
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
+                        <TextField
+                            id="telefono"
+                            type="phone"
+                            label="Teléfono"
+                            className="input-admin-50"
+                            style={{marginBottom:'25px'}}
+                            InputProps={{className: classes.input,}}
+                            InputLabelProps={{
+                                classes: {
+                                    root: classes.formTextLabel
+                                }
+                            }}
+                            >
+                        </TextField>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
+                    <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
+                        <TextField
+                            id="password"
+                            type="password"
+                            label="Contraseña"
+                            className="input-admin-50"
+                            style={{marginBottom:'25px'}}
+                            InputProps={{className: classes.input,}}
+                            InputLabelProps={{
+                                classes: {
+                                    root: classes.formTextLabel
+                                }
+                            }}
+                            >
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
+                        <TextField
+                            id="passConfi"
+                            type="password"
+                            label="Confirmar contraseña"
+                            className="input-admin-50"
+                            style={{marginBottom:'25px'}}
+                            InputProps={{className: classes.input,}}
+                            InputLabelProps={{
+                                classes: {
+                                    root: classes.formTextLabel
+                                }
+                            }}
+                            >
+                        </TextField>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField 
+                        id="direccion" 
+                        multiline
+                        label="Dirección" 
+                        className="input-admin-100"
+                        InputProps={{className: classes.input,}}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.formTextLabel
+                            }
+                        }}
+                    />
+                </Grid>
+
+
+
+
+
+                </MuiThemeProvider>
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
+                    <Grid className="btn-cancelar-op" onClick={handleCloseModal}>CANCELAR</Grid>
+                    <Button
+                        className="button-filter button-update btn-second"
+                        type="submit"
+                        startIcon={<ArrowRightAltIcon />}
+                    >
+                        Agregar
+                    </Button>
+                </Grid>
+            </DialogActions>
+        </form>
+        </Dialog>
 
     </>
     )
