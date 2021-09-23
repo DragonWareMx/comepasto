@@ -278,10 +278,13 @@ const Product = ({ product, products, recipes }) => {
         <>
             {/* PRODUCTO */}
             <Container>
-            <Alert severity="error" style={{marginTop: "43px"}}>
-                <AlertTitle>Producto no disponible</AlertTitle>
-                De momento este producto ya no se encuentra disponible, <InertiaLink href="/preguntas#contacto" style={{textDecoration: "none", color: "rgb(97, 26, 21)", fontWeight: "bold"}}>contáctanos</InertiaLink> por disponibilidad. 
-            </Alert>
+                {product.stock <= 0 &&
+                    <Alert severity="error" style={{marginTop: "43px"}}>
+                        <AlertTitle>Producto no disponible</AlertTitle>
+                        De momento este producto ya no se encuentra disponible, <InertiaLink href="/preguntas#contacto" style={{textDecoration: "none", color: "rgb(97, 26, 21)", fontWeight: "bold"}}>contáctanos</InertiaLink> por disponibilidad. 
+                    </Alert>
+                }
+                
                 <Grid
                     container
                     direction="row"

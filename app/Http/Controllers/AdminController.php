@@ -10,6 +10,7 @@ use App\Models\Recipe;
 use Illuminate\Support\Facades\DB;
 use App\Models\Brand;
 use App\Models\Type;
+use App\Models\Client;
 use App\Models\Category;
 use App\Models\Question;
 
@@ -102,7 +103,14 @@ class AdminController extends Controller
     }
 
     public function clientes(){
-        return Inertia::render('Admin/Clientes/Clientes');
+        $clients = Client::leftJoin('sales', 'sales.client_id', '=', 'clients.id')
+                        ->selectRaw('clients.id, name AS nombre,tel AS telefono, email AS correo, clients.created_at AS registro, SUM(sales.total) AS total')
+                        ->groupBy('clients.id', 'clients.name', 'clients.tel', 'clients.email', 'clients.created_at')
+                        ->get();
+
+        return Inertia::render('Admin/Clientes/Clientes', [
+            'clients' => $clients
+        ]);
     }
 
     public function cliente(){
