@@ -181,11 +181,16 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
         descuento: producto.descuento || '',
         ingredientes: producto.ingredientes || '',
         marca: producto.brand || '',
-        tipo: '',
-        categorias: [],
+        tipo: producto.type || '',
+        categoria: producto.category || '',
         soyaFree: producto.soyaFree || false,
         trigoFree: producto.trigoFree || false
     });
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.patch(route('admin.producto.patch',producto.id),values)
+    }
 
     return ( 
         <>
@@ -203,7 +208,7 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                     {/* contenido */}
                     <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                         <Grid item xs={4} sm={2} style={{marginBottom:'20px',display:'flex',justifyContent:'center',flexWrap:'wrap'}}>
-                            <img id='imgContainer' src="/img/icons/imgDefault.png" className="img-product-view" style={{objectFit:'cover'}}/>
+                            <img id='imgContainer' src={"/img/PRODUCTOS/"+producto.foto} className="img-product-view" style={{objectFit:'cover'}}/>
                             <input
                                 accept="image/*"
                                 id="imgProducto"
@@ -218,7 +223,7 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                             </label>
                         </Grid>
                         <Grid item xs={12} sm={10} className="container-inputs">
-                        <form noValidate autoComplete="off">
+                        <form onSubmit={handleSubmit} autoComplete="off">
                         <MuiThemeProvider theme={theme}>
                             <Grid item xs={12}>
                                 <TextField 
@@ -267,8 +272,9 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                         getOptionLabel={(option) => option.name}
                                         className='autocompleteProductos'
                                         onChange={(event, newValue) => {
-                                            setValues({ ...values, tipo: newValue ? newValue.id : null });
+                                            setValues({ ...values, tipo: newValue ? newValue : null });
                                         }}
+                                        value={values.tipo}
                                         renderInput={
                                             (params) => 
                                             <TextField {...params}
@@ -286,45 +292,27 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                             <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
                                     <Autocomplete
-                                        id="categorias"
-                                        options={categorias}
-                                        value={autoCompleteValue}
+                                        id="tipo"
+                                        options={tipos}
                                         getOptionLabel={(option) => option.name}
                                         className='autocompleteProductos'
                                         onChange={(event, newValue) => {
-                                            if(newValue){
-                                                setInputValue("");
-                                                setAutoCompleteValue(null)
-                                                if(!values.categorias.some(item => newValue.id === item.id))
-                                                    setValues({ ...values, categorias: [...values.categorias, {id: newValue.id, name: newValue.name}] });
-                                            }
+                                            setValues({ ...values, categoria: newValue ? newValue : null });
                                         }}
-                                        inputValue={inputValue}
-                                        onInputChange={(event, newInputValue) => {
-                                            setInputValue(newInputValue);
-                                        }}
+                                        value={values.categoria}
                                         renderInput={
                                             (params) => 
                                             <TextField {...params}
-                                                label="Categorías"
+                                                label="Tipo"
                                                 placeholder="Selecciona una opción"
                                                 variant="outlined"
-                                                className={classes.root} 
-
+                                                className={classes.root}  
                                             />
                                         }
                                     />
-                                    
-                                    {values.categorias.map((data) => {
-                                        return(<Chip
-                                            label={data.name}
-                                            onDelete={handleDelete(data)}
-                                            className="chip-categoria"
-                                        />)
-                                    })}
-                                    
-                                    <Grid className="link-add-bd" onClick={handleClickOpenModalCat}>Agregar categoría</Grid>
+                                    <Grid className="link-add-bd" onClick={handleClickOpenModalTipo}>Agregar tipo</Grid>
                                 </Grid>
+                                
                                 <Grid item xs={12} sm={6} style={{marginBottom:'20px'}}>
                                     <TextField
                                         id="presentacion"
