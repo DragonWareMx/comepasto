@@ -33,6 +33,11 @@
     color:#505050 !important;
 }
 
+.autocompleteProductos{
+    width: 100%;
+    margin-right: 45px;
+}
+
 
 @media(max-width:600px){
     .title-item-info{

@@ -42,7 +42,40 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Atma',
         fontSize: '15px',
         color: '#9E9E9E'
-    }
+    },
+    root: {
+        width: '100%',
+        marginRight:'5%',
+        "& .MuiOutlinedInput-input": {
+          color: "#9c9c9c"
+        },
+        "& .MuiInputLabel-root": {
+          color: "#9c9c9c"
+        },
+        "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+            border:'none',
+            borderRadius:'0px',
+            borderBottom: "1px solid #8b8b8b"
+        },
+        "&:hover .MuiOutlinedInput-input": {
+          color: "#1DA3A8"
+        },
+        "&:hover .MuiInputLabel-root": {
+          color: "#1DA3A8"
+        },
+        "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+          borderBottom: "1px solid #1DA3A8"
+        },
+        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input": {
+          color: "#8b8b8b"
+        },
+        "& .MuiInputLabel-root.Mui-focused": {
+          color: "#8b8b8b"
+        },
+        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+          borderColor: "#8b8b8b"
+        }
+      },
 }));
 
 const theme = createMuiTheme({
@@ -233,7 +266,8 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                             root: classes.formTextLabel
                                         }
                                     }}
-                                    onChange={handleChange('nombre')} 
+                                    onChange={handleChange('nombre')}
+                                    value={values.nombre}
                                 />
                             </Grid>
 
@@ -243,7 +277,7 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                     id="marca"
                                     options={marcas}
                                     getOptionLabel={(option) => option.name}
-                                    style={{ width: 300 }}
+                                    className='autocompleteProductos'
                                     onChange={(event, newValue) => {
                                         setValues({ ...values, marca: newValue ? newValue.id : null });
                                     }}
@@ -253,7 +287,7 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                             label="Marca"
                                             placeholder="Selecciona una opción"
                                             variant="outlined"
-                                            className="input-admin-50" 
+                                            className={classes.root} 
                                         />
                                     }
                                 />
@@ -264,7 +298,7 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                         id="tipo"
                                         options={tipos}
                                         getOptionLabel={(option) => option.name}
-                                        style={{ width: 300 }}
+                                        className='autocompleteProductos'
                                         onChange={(event, newValue) => {
                                             setValues({ ...values, tipo: newValue ? newValue.id : null });
                                         }}
@@ -274,7 +308,7 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                                 label="Tipo"
                                                 placeholder="Selecciona una opción"
                                                 variant="outlined"
-                                                className="input-admin-50" 
+                                                className={classes.root}  
                                             />
                                         }
                                     />
@@ -289,7 +323,7 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                         options={categorias}
                                         value={autoCompleteValue}
                                         getOptionLabel={(option) => option.name}
-                                        style={{ width: 300 }}
+                                        className='autocompleteProductos'
                                         onChange={(event, newValue) => {
                                             if(newValue){
                                                 setInputValue("");
@@ -308,7 +342,8 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                                 label="Categorías"
                                                 placeholder="Selecciona una opción"
                                                 variant="outlined"
-                                                className="input-admin-50" 
+                                                className={classes.root} 
+
                                             />
                                         }
                                     />
@@ -336,6 +371,7 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                             }
                                         }}
                                         onChange={handleChange('presentacion')}
+                                        value={values.presentacion}
                                         >
                                     </TextField>
                                 </Grid>
@@ -355,6 +391,7 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                             }
                                         }}
                                         onChange={handleChange('precio')}
+                                        value={values.precio}
                                         >
                                     </TextField>
                                 </Grid>
@@ -362,6 +399,7 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                     <TextField
                                         id="descuento"
                                         type="number"
+                                        max='100'
                                         label="Descuento (%)"
                                         className="input-admin-50"
                                         InputProps={{className: classes.input,}}
@@ -371,6 +409,7 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                             }
                                         }}
                                         onChange={handleChange('descuento')}
+                                        value={values.descuento}
                                         >
                                     </TextField>
                                 </Grid>
@@ -389,6 +428,7 @@ const AgregarProducto = ({marcas,tipos,categorias}) => {
                                     }
                                     }}
                                     onChange={handleChange('ingredientes')}
+                                    value={values.ingredientes}
                                 />
                             </Grid>
 
