@@ -130,10 +130,6 @@ const columns = [
     editable: false,
 },
 ];
-  
-  const rows = [
-    { id: 1, nombre: 'Lorem ipsum dolor sit amet', telefono: '44 44 44 44 44 ', correo: 'correo@ejemplo.com', registro:'30/08/2021', total:'$240.00 MXN' },
-  ];
 
   function escapeRegExp(value) {
     return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -179,33 +175,37 @@ QuickSearchToolbar.propTypes = {
     value: PropTypes.string.isRequired,
 };
 
-const Clientes = () => {
+const Clientes = ({clients}) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+      setAnchorEl(event.currentTarget);
     };
-
+    
     const handleClose = () => {
-        setAnchorEl(null);
+      setAnchorEl(null);
     };
-
+    
     //buscador
     const [searchText, setSearchText] = React.useState('');
+    const [rows, setRows] = React.useState(clients);
 
     const requestSearch = (searchValue) => {
-        console.log(searchValue)
         setSearchText(searchValue);
         const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
-        const filteredRows = productos.filter((row) => {
+        const filteredRows = clients.filter((row) => {
           return Object.keys(row).some((field) => {
             return searchRegex.test(row[field].toString());
           });
         });
         setRows(filteredRows);
     };
+
+    React.useEffect(() => {
+      setRows(clients);
+    }, [clients]);
     
     return ( 
         <>
@@ -217,47 +217,7 @@ const Clientes = () => {
                 </Grid>
 
                 {/* CONTENIDO GENERAL */}
-                <Grid item xs={12} style={{marginBottom:'25px', borderRadius:'4px', border:'1px solid #E1E3EA'}}>
-                    <Grid item xs={12} style={{padding:'26px',display:'flex',alignItems:'stretch',justifyContent:'space-between'}}>
-                        <Grid item xs={10}>     
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon style={{fontSize:'22px'}} />
-                                </div>
-                                <InputBase
-                                placeholder="Buscar..."
-                                className="input-search"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'search' }}
-                                />
-                            </div>
-                        </Grid>
-                        <Grid>
-                            <Button
-                                className="button-filter"
-                                onClick={handleClick}
-                                startIcon={<FilterListIcon />}
-                            >
-                                Filtrar
-                            </Button>
-                            <Menu
-                                id="filter-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Nombre</MenuItem>
-                                <MenuItem onClick={handleClose}>Teléfono</MenuItem>
-                                <MenuItem onClick={handleClose}>Correo eletrónico</MenuItem>
-                            </Menu>
-                        </Grid>
-                    </Grid>
-                    {/* Este height es provisional */}
-                    <Grid item xs={12} style={{height:'300px'}}>
+                <Grid item xs={12} style={{height:'500px'}}>
                     <DataGrid
                         components={{ Toolbar: QuickSearchToolbar }}
                         rows={rows}
@@ -273,8 +233,6 @@ const Clientes = () => {
                             },
                         }}
                     />
-                    </Grid>
-
                 </Grid>
             </Grid>
         </Container>

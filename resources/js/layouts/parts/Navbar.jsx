@@ -170,19 +170,19 @@ export function Navbar(props) {
                         <InertiaLink href={route('admin.productos')} as="button" type="button" className={classes.inertiaLink}>
                             <ShoppingCartIcon style={{ color: '#5B5B5B' }} />
                         </InertiaLink>
-                        <InertiaLink href={route('admin.productos')} as="button" type="button" className={classes.inertiaLink}>
+                        <InertiaLink href={route('admin.pedidos')} as="button" type="button" className={classes.inertiaLink}>
                             <LocalShippingIcon style={{ color: '#5B5B5B' }} />
                         </InertiaLink>
-                        <InertiaLink href={route('admin.productos')} as="button" type="button" className={classes.inertiaLink}>
+                        <InertiaLink href={route('admin.clientes')} as="button" type="button" className={classes.inertiaLink}>
                             <PeopleOutlineIcon style={{ color: '#5B5B5B' }} />
                         </InertiaLink>
-                        <InertiaLink href={route('admin.productos')} as="button" type="button" className={classes.inertiaLink}>
+                        <InertiaLink href={route('admin.recetas')} as="button" type="button" className={classes.inertiaLink}>
                             <RestaurantIcon style={{ color: '#5B5B5B' }} />
                         </InertiaLink>
-                        <InertiaLink href={route('admin.productos')} as="button" type="button" className={classes.inertiaLink}>
+                        <InertiaLink href={route('admin.banners')} as="button" type="button" className={classes.inertiaLink}>
                             <PhotoLibraryIcon style={{ color: '#5B5B5B' }} />
                         </InertiaLink>
-                        <InertiaLink href={route('admin.productos')} as="button" type="button" className={classes.inertiaLink}>
+                        <InertiaLink href={route('admin.preguntas')} as="button" type="button" className={classes.inertiaLink}>
                             <QuestionAnswerIcon style={{ color: '#5B5B5B' }} />
                         </InertiaLink>
                         <div className={classes.separador}></div>
@@ -209,7 +209,7 @@ export function Navbar(props) {
                                     <ListItemText primary="Productos" classes={{ primary: classes.texto }} />
                                 </ListItem>
                             </InertiaLink>
-                            <InertiaLink href={route('admin.productos')} className={classes.inertiaLink2}>
+                            <InertiaLink href={route('admin.pedidos')} className={classes.inertiaLink2}>
                                 <ListItem button>
                                     <ListItemIcon>
                                         <LocalShippingIcon style={{ color: '#5B5B5B' }} />
@@ -217,7 +217,7 @@ export function Navbar(props) {
                                     <ListItemText primary="Pedidos" classes={{ primary: classes.texto }} />
                                 </ListItem>
                             </InertiaLink>
-                            <InertiaLink href={route('admin.productos')} className={classes.inertiaLink2}>
+                            <InertiaLink href={route('admin.clientes')} className={classes.inertiaLink2}>
                                 <ListItem button>
                                     <ListItemIcon>
                                         <PeopleOutlineIcon style={{ color: '#5B5B5B' }} />
@@ -225,7 +225,7 @@ export function Navbar(props) {
                                     <ListItemText primary="Clientes" classes={{ primary: classes.texto }} />
                                 </ListItem>
                             </InertiaLink>
-                            <InertiaLink href={route('admin.productos')} className={classes.inertiaLink2}>
+                            <InertiaLink href={route('admin.recetas')} className={classes.inertiaLink2}>
                                 <ListItem button>
                                     <ListItemIcon>
                                         <RestaurantIcon style={{ color: '#5B5B5B' }} />
@@ -233,7 +233,7 @@ export function Navbar(props) {
                                     <ListItemText primary="Recetas" classes={{ primary: classes.texto }} />
                                 </ListItem>
                             </InertiaLink>
-                            <InertiaLink href={route('admin.productos')} className={classes.inertiaLink2}>
+                            <InertiaLink href={route('admin.banners')} className={classes.inertiaLink2}>
                                 <ListItem button>
                                     <ListItemIcon>
                                         <PhotoLibraryIcon style={{ color: '#5B5B5B' }} />
@@ -241,7 +241,7 @@ export function Navbar(props) {
                                     <ListItemText primary="Banners" classes={{ primary: classes.texto }} />
                                 </ListItem>
                             </InertiaLink>
-                            <InertiaLink href={route('admin.productos')} className={classes.inertiaLink2}>
+                            <InertiaLink href={route('admin.preguntas')} className={classes.inertiaLink2}>
                                 <ListItem button>
                                     <ListItemIcon>
                                         <QuestionAnswerIcon style={{ color: '#5B5B5B' }} />
