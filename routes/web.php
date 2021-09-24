@@ -83,7 +83,7 @@ Route::get('/direcciones/editar/{id}', [App\Http\Controllers\CuentaController::c
 Route::get('/mispagos', [App\Http\Controllers\CuentaController::class, 'misPagos'])->name('misPagos');
 
 // ADMIN ---------
-Route::get('/admin/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.productos');
+Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.productos');
 Route::get('/admin/productos/{id}', [App\Http\Controllers\AdminController::class, 'producto'])->name('admin.producto');
 Route::get('/admin/productos/editar/{id}', [App\Http\Controllers\AdminController::class, 'productoEditar'])->name('admin.producto.editar');
 Route::get('/admin/productos-agregar', [App\Http\Controllers\AdminController::class, 'productoAgregar'])->name('admin.producto.agregar');
