@@ -42,7 +42,16 @@ class AdminController extends Controller
     }
 
     public function productoEditar($id){
-        return Inertia::render('Admin/Productos/EditarProducto');
+        $producto=Product::with('brand:id,name')->findOrFail($id);
+        $marcas=Brand::select('id','name')->get();
+        $tipos=Type::select('id','name')->get();
+        $categorias=Category::select('id','name')->get();
+        return Inertia::render('Admin/Productos/EditarProducto',[
+            'producto'=>$producto,
+            'marcas'=>$marcas,
+            'tipos'=>$tipos,
+            'categorias'=>$categorias,
+        ]);
     }
 
     public function productoAgregar(){
