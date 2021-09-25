@@ -42,7 +42,10 @@ class AdminController extends Controller
     }
 
     public function productoEditar($id){
-        $producto=Product::with('brand:id,name')->findOrFail($id);
+        $producto=Product::with('brand:id,name')
+            ->with('type:id,name')
+            ->with('category:id,name')
+            ->findOrFail($id);
         $marcas=Brand::select('id','name')->get();
         $tipos=Type::select('id','name')->get();
         $categorias=Category::select('id','name')->get();
@@ -54,6 +57,9 @@ class AdminController extends Controller
         ]);
     }
 
+    public function productoPatch(Request $request, $id){
+        dd('holi we',$id,$request);
+    }
     public function productoAgregar(){
         $marcas=Brand::select('id','name')->get();
         $tipos=Type::select('id','name')->get();
