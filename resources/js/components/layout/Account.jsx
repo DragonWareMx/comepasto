@@ -5,9 +5,6 @@ import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Login from '../auth/Login'
-import Register from '../auth/Register'
-
 import route from 'ziggy-js';
 
 
@@ -26,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Account() {
+export default function Account({ abrirLogin }) {
     const classes = useStyles();
     const { auth, flash } = usePage().props
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -38,29 +35,6 @@ export default function Account() {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    //esto de aqui es para que funcione el login
-    const [dialogLogin, setDialogLogin] = React.useState(false);
-    const [dialogRegister, setDialogRegister] = React.useState(false);
-
-    const handleDialogLoginClose = () => {
-        setDialogLogin(false);
-    };
-
-    const handleOpenLogin = () => {
-        handleClose();
-        setDialogLogin(true);
-    }
-
-    const handleDialogRegisterClose = () => {
-        setDialogRegister(false);
-    };
-
-    const handleOpenRegister = () => {
-        handleClose();
-        setDialogLogin(false);
-        setDialogRegister(true);
-    }
 
     return (
         <>
@@ -91,14 +65,11 @@ export default function Account() {
                     </MenuItem>
                 }
                 {!auth.user &&
-                    <MenuItem onClick={handleOpenLogin}>
+                    <MenuItem onClick={abrirLogin}>
                         <div className={classes.inertia}>Iniciar Sesión</div>
                     </MenuItem>
                 }
             </Menu>
-
-            <Login dialog={dialogLogin} handleClose={handleDialogLoginClose} openRegister={handleOpenRegister} openLogin={handleOpenLogin} />
-            <Register dialog={dialogRegister} handleClose={handleDialogRegisterClose} />
         </>
     )
 }
