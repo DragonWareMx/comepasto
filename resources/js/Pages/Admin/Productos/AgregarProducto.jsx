@@ -106,13 +106,7 @@ const theme = createMuiTheme({
 });
 
 const AgregarProducto = ({ marcas, tipos, categorias }) => {
-    const currencies = [{ label: "1", label: "lorem ipsum" }];
-
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    //CHIPS
-    const [inputValue, setInputValue] = React.useState("");
-    const [autoCompleteValue, setAutoCompleteValue] = React.useState(null);
+    const { errors } = usePage().props;
 
     const handleDelete = (chipToDelete) => () => {
         setValues({
@@ -121,14 +115,6 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                 (chip) => chip.id !== chipToDelete.id
             ),
         });
-    };
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
     };
 
     // MODAL AGREGAR MARCA
@@ -164,9 +150,6 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
         setOpenCat(false);
     };
 
-    // Select
-    const [currency, setCurrency] = React.useState("1");
-
     const handleChange = (prop) => (event) => {
         if (prop == "soyaFree" || prop == "trigoFree") {
             setValues({ ...values, [prop]: event.target.checked });
@@ -175,21 +158,17 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
         }
     };
 
-    // const handleDelete = () => {
-
-    // };
-
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState("sm");
 
     const classes = useStyles();
 
     function readURL() {
-        var input = document.getElementById("imgProducto");
+        var input = document.getElementById("foto");
         if (input.files && input.files[0]) {
             setValues((values) => ({
                 ...values,
-                imgProducto: input.files[0],
+                foto: input.files[0],
             }));
             var reader = new FileReader();
             var preview = document.getElementById("imgContainer");
@@ -200,27 +179,34 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
         }
     }
 
-    const addCategoria = (prop) => (event) => {
-        // setValues.categorias.push(event.target.value)
-        setValues((values) => ({
-            ...values,
-            categorias: values.categorias.push(event.target.value),
-        }));
-    };
-
     const [values, setValues] = React.useState({
-        imgProducto: null,
+        foto: null,
         nombre: "",
         presentacion: "",
         precio: "",
         descuento: "",
         ingredientes: "",
-        marca: "",
-        tipo: "",
-        categorias: [],
+        marca: null,
+        tipo: null,
+        categoria: null,
         soyaFree: false,
         trigoFree: false,
+        error: false,
     });
+
+    //manda el forumulario
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        Inertia.post(route("admin.producto.store"), values, {
+            onError: () => {
+                setValues((values) => ({
+                    ...values,
+                    error: true,
+                }));
+            },
+        });
+    }
 
     return (
         <>
@@ -271,13 +257,13 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                 />
                                 <input
                                     accept="image/*"
-                                    id="imgProducto"
+                                    id="foto"
                                     type="file"
                                     style={{ display: "none" }}
                                     onChange={readURL}
                                 />
                                 <label
-                                    htmlFor="imgProducto"
+                                    htmlFor="foto"
                                     style={{ marginTop: "20px" }}
                                 >
                                     <Button
@@ -296,7 +282,10 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                 sm={10}
                                 className="container-inputs"
                             >
-                                <form noValidate autoComplete="off">
+                                <form
+                                    autoComplete="off"
+                                    onSubmit={handleSubmit}
+                                >
                                     <MuiThemeProvider theme={theme}>
                                         <Grid item xs={12}>
                                             <TextField
@@ -316,6 +305,15 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                     "nombre"
                                                 )}
                                                 value={values.nombre}
+                                                error={
+                                                    errors.nombre &&
+                                                    values.error == true &&
+                                                    true
+                                                }
+                                                helperText={
+                                                    values.error == true &&
+                                                    errors.nombre
+                                                }
                                             />
                                         </Grid>
 
@@ -443,9 +441,8 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                 }}
                                             >
                                                 <Autocomplete
-                                                    id="categorias"
+                                                    id="categoria"
                                                     options={categorias}
-                                                    value={autoCompleteValue}
                                                     getOptionLabel={(option) =>
                                                         option.name
                                                     }
@@ -454,44 +451,17 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                         event,
                                                         newValue
                                                     ) => {
-                                                        if (newValue) {
-                                                            setInputValue("");
-                                                            setAutoCompleteValue(
-                                                                null
-                                                            );
-                                                            if (
-                                                                !values.categorias.some(
-                                                                    (item) =>
-                                                                        newValue.id ===
-                                                                        item.id
-                                                                )
-                                                            )
-                                                                setValues({
-                                                                    ...values,
-                                                                    categorias:
-                                                                        [
-                                                                            ...values.categorias,
-                                                                            {
-                                                                                id: newValue.id,
-                                                                                name: newValue.name,
-                                                                            },
-                                                                        ],
-                                                                });
-                                                        }
-                                                    }}
-                                                    inputValue={inputValue}
-                                                    onInputChange={(
-                                                        event,
-                                                        newInputValue
-                                                    ) => {
-                                                        setInputValue(
-                                                            newInputValue
-                                                        );
+                                                        setValues({
+                                                            ...values,
+                                                            categoria: newValue
+                                                                ? newValue.id
+                                                                : null,
+                                                        });
                                                     }}
                                                     renderInput={(params) => (
                                                         <TextField
                                                             {...params}
-                                                            label="Categorías"
+                                                            label="Categoría"
                                                             placeholder="Selecciona una opción"
                                                             variant="outlined"
                                                             className={
@@ -500,22 +470,6 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                         />
                                                     )}
                                                 />
-
-                                                {values.categorias.map(
-                                                    (data) => {
-                                                        return (
-                                                            <Chip
-                                                                label={
-                                                                    data.name
-                                                                }
-                                                                onDelete={handleDelete(
-                                                                    data
-                                                                )}
-                                                                className="chip-categoria"
-                                                            />
-                                                        );
-                                                    }
-                                                )}
 
                                                 <Grid
                                                     className="link-add-bd"

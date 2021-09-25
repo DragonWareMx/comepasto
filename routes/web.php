@@ -87,6 +87,7 @@ Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->na
 Route::get('/admin/productos/{id}', [App\Http\Controllers\AdminController::class, 'producto'])->name('admin.producto');
 Route::get('/admin/productos/editar/{id}', [App\Http\Controllers\AdminController::class, 'productoEditar'])->name('admin.producto.editar');
 Route::get('/admin/productos-agregar', [App\Http\Controllers\AdminController::class, 'productoAgregar'])->name('admin.producto.agregar');
+Route::post('/admin/productos-agregar', [App\Http\Controllers\AdminController::class, 'storeProducto'])->name('admin.producto.store');
 Route::post('/admin/productos/{id}/inventario', [App\Http\Controllers\AdminController::class, 'productoInventario'])->name('admin.producto.inventario');
 
 Route::get('/admin/pedidos', [App\Http\Controllers\AdminController::class, 'pedidos'])->name('admin.pedidos');
