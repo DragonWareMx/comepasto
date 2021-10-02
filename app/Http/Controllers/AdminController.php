@@ -10,7 +10,7 @@ use App\Models\Recipe;
 use Illuminate\Support\Facades\DB;
 use App\Models\Brand;
 use App\Models\Type;
-use App\Models\Client;
+use App\Models\User;
 use App\Models\Category;
 use App\Models\Question;
 
@@ -80,8 +80,11 @@ class AdminController extends Controller
             ->select('sales.id','sales.created_at as fecha','users.name as cliente', 'sales.total as total','tipo_entrega as entrega')
             ->orderBy('id','DESC')
         ->get();
+
         $total=$pedidos->count();
+
         $ganancias=$pedidos->sum('total');
+        
         return Inertia::render('Admin/Pedidos/Pedidos',[
             'total'=>$total,
             'ganancias'=>$ganancias,
@@ -103,9 +106,9 @@ class AdminController extends Controller
     }
 
     public function clientes(){
-        $clients = Client::leftJoin('sales', 'sales.client_id', '=', 'clients.id')
-                        ->selectRaw('clients.id, name AS nombre,tel AS telefono, email AS correo, clients.created_at AS registro, SUM(sales.total) AS total')
-                        ->groupBy('clients.id', 'clients.name', 'clients.tel', 'clients.email', 'clients.created_at')
+        $clients = User::leftJoin('sales', 'sales.client_id', '=', 'users.id')
+                        ->selectRaw('users.id, name AS nombre,tel AS telefono, email AS correo, users.created_at AS registro, SUM(sales.total) AS total')
+                        ->groupBy('users.id', 'users.name', 'users.tel', 'users.email', 'users.created_at')
                         ->get();
 
         return Inertia::render('Admin/Clientes/Clientes', [
