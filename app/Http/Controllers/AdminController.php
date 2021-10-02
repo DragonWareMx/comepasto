@@ -71,6 +71,51 @@ class AdminController extends Controller
         ]);
     }
 
+    public function storeProducto(Request $request){
+        $validated = $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
+
+            //---informacion personal---
+            'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            // 'apellido_paterno' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            // 'apellido_materno' => ['nullable','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            // 'fecha_de_nacimiento' => 'required|date|before:17 years ago',
+            // 'sexo' => 'required|in:h,m,o',
+
+            // //---informacion institucional---
+            
+            // //-de momento las matriculas son numeros solamente de tamaño maximo de 255-
+            // 'matricula' => 'required|digits_between:7,10|numeric|unique:users,matricula',
+            // 'regimen' => 'required|exists:regimes,nombre',
+            // 'unidad' => 'required|exists:units,nombre',
+            // 'categoria' => 'required|exists:categories,nombre',
+
+            // //direccion
+            // 'estado' => ['required','max:50','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            // 'ciudad' => ['required','max:60','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            // 'colonia' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            // 'calle' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            // 'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]*\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            // 'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]*\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            // 'codigo_postal' => ['required','max:9','regex:/^\d{5}$/i'],
+
+            // //---cuenta---
+            // 'tarjeton_de_pago' => 'required|file|mimes:jpeg,png,jpg,pdf|max:51200',
+            // 'email' => 'required|email:rfc|max:255|unique:users',
+            // 'contrasena' => [
+            //     'required',
+            //     Password::min(8)
+            //         ->mixedCase()
+            //         ->letters()
+            //         ->numbers()
+            //         ->uncompromised(),
+            // ],
+            // 'confirmar_contrasena' => 'required|same:contrasena',
+            // 'rol' => 'required|exists:roles,name'
+        ]);
+        // El nuevo usuario es valido...
+    }
+
     public function productoInventario(Request $request, $id){
         $validated = $request->validate([
             'stock' => 'required|numeric',
