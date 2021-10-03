@@ -176,8 +176,11 @@ class AdminController extends Controller
         ]);
     }
 
-    public function cliente(){
-        return Inertia::render('Admin/Clientes/Cliente');
+    public function cliente($id){
+        $cliente=User::with('sale','sale.product')->findOrFail($id);
+        return Inertia::render('Admin/Clientes/Cliente',[
+            'cliente'=>$cliente,
+        ]);
     }
 
     public function preguntas(Request $request){
