@@ -147,9 +147,9 @@ const MisPedidos = ({ compras }) => {
 
                             {
                                 compras && compras.length == 0 &&
-                                <>
+                                <div style={{ fontFamily: 'Atma', fontSize: '22px' }}>
                                     Aún no tienes compras. No esperes más, ve a nuestra tienda y come pasto.
-                                </>
+                                </div>
                             }
 
                         </Grid>

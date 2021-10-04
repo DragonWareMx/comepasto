@@ -143,8 +143,10 @@ class PaymentController extends Controller
             }
             if (session()->get('tipo_de_envio')  == 'domicilio') {
                 $envio = session()->get('costoEnvio');
+                $direccion = session()->get('direccion');
             } else {
                 $envio = 0;
+                $direccion = '';
             }
             $total = $subtotal + $envio;
             $charge = Stripe::charges()->create([
@@ -167,7 +169,7 @@ class PaymentController extends Controller
             $venta->total = $total;
             $venta->ganancia = 0;
             $venta->tipo_entrega = session()->get('tipo_de_envio');
-            $venta->direccion = session()->get('direccion');
+            $venta->direccion = $direccion;
             $venta->statusPago = true;
             $venta->save();
 
