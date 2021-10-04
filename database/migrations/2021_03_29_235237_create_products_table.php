@@ -20,9 +20,9 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('type_id');
             $table->unsignedBigInteger('brand_id');
-            $table->unsignedDecimal('costo');
+            // $table->unsignedDecimal('costo');
             $table->unsignedDecimal('precio');
-            $table->unsignedBigInteger('stock');
+            $table->unsignedBigInteger('stock')->default(0);
             $table->string('name',100);
             $table->text('ingredientes')->nullable();
             $table->string('presentacion',250)->nullable();
@@ -30,7 +30,7 @@ class CreateProductsTable extends Migration
             $table->boolean('soyaFree')->default(False);
             $table->boolean('trigoFree')->default(False);
             $table->text('tablaNutri')->nullable();
-            $table->unsignedDecimal('descuento')->default(0.0);
+            $table->unsignedDecimal('descuento', 5, 2)->default(0.0);
             $table->string('foto',250);
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');

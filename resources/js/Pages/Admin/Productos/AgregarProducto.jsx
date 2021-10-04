@@ -12,6 +12,7 @@ import Layout from "../../../layouts/LayoutAdmin";
 import ModalConfirmacion from "../../../components/common/modalConfirmacion";
 import "/css/admin.css";
 import "/css/adminProductos.css";
+import Alert from '@material-ui/lab/Alert';
 
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -183,8 +184,8 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
         foto: null,
         nombre: "",
         presentacion: "",
-        precio: "",
-        descuento: "",
+        precio: 0.00,
+        descuento: 0.00,
         ingredientes: "",
         marca: null,
         tipo: null,
@@ -221,6 +222,13 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                             <ArrowBackIcon style={{ marginRight: "9px" }} />
                             Productos
                         </InertiaLink>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                    {
+                        errors.foto &&
+                        <Alert severity="error" style={{marginBottom: 10}}>{errors.foto}</Alert> 
+                    }
                     </Grid>
 
                     <Grid item xs={12} className="grid-section">
@@ -261,7 +269,7 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                     type="file"
                                     style={{ display: "none" }}
                                     onChange={readURL}
-                                />
+                                    />
                                 <label
                                     htmlFor="foto"
                                     style={{ marginTop: "20px" }}
@@ -275,6 +283,7 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                         Subir img
                                     </Button>
                                 </label>
+
                             </Grid>
                             <Grid
                                 item
@@ -314,6 +323,8 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                     values.error == true &&
                                                     errors.nombre
                                                 }
+                                                maxLength="100"
+                                                required
                                             />
                                         </Grid>
 
@@ -361,6 +372,7 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                             className={
                                                                 classes.root
                                                             }
+                                                            required
                                                         />
                                                     )}
                                                 />
@@ -409,6 +421,7 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                             className={
                                                                 classes.root
                                                             }
+                                                            required
                                                         />
                                                     )}
                                                 />
@@ -467,6 +480,7 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                             className={
                                                                 classes.root
                                                             }
+                                                            required
                                                         />
                                                     )}
                                                 />
@@ -504,6 +518,16 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                         "presentacion"
                                                     )}
                                                     value={values.presentacion}
+                                                    maxLength="250"
+                                                    error={
+                                                        errors.presentacion &&
+                                                        values.error == true &&
+                                                        true
+                                                    }
+                                                    helperText={
+                                                        values.error == true &&
+                                                        errors.presentacion
+                                                    }
                                                 ></TextField>
                                             </Grid>
                                         </Grid>
@@ -530,6 +554,7 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                     InputProps={{
                                                         className:
                                                             classes.input,
+                                                        inputProps: {min: 0, max: 999999.99}
                                                     }}
                                                     InputLabelProps={{
                                                         classes: {
@@ -540,6 +565,16 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                         "precio"
                                                     )}
                                                     value={values.precio}
+                                                    required   
+                                                    error={
+                                                        errors.precio &&
+                                                        values.error == true &&
+                                                        true
+                                                    }
+                                                    helperText={
+                                                        values.error == true &&
+                                                        errors.precio
+                                                    }                                                
                                                 ></TextField>
                                             </Grid>
                                             <Grid
@@ -557,6 +592,7 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                     InputProps={{
                                                         className:
                                                             classes.input,
+                                                        inputProps: {min: 0, max: 100.00}
                                                     }}
                                                     InputLabelProps={{
                                                         classes: {
@@ -567,6 +603,16 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                         "descuento"
                                                     )}
                                                     value={values.descuento}
+                                                    required
+                                                    error={
+                                                        errors.descuento &&
+                                                        values.error == true &&
+                                                        true
+                                                    }
+                                                    helperText={
+                                                        values.error == true &&
+                                                        errors.descuento
+                                                    }
                                                 ></TextField>
                                             </Grid>
                                         </Grid>
@@ -589,6 +635,15 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                     "ingredientes"
                                                 )}
                                                 value={values.ingredientes}
+                                                error={
+                                                    errors.ingredientes &&
+                                                    values.error == true &&
+                                                    true
+                                                }
+                                                helperText={
+                                                    values.error == true &&
+                                                    errors.ingredientes
+                                                }
                                             />
                                         </Grid>
 
