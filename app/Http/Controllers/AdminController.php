@@ -194,7 +194,16 @@ class AdminController extends Controller
     }
 
     public function receta($id){
-        return Inertia::render('Admin/Recetas/Receta');
+        $receta=Recipe::join('imgs','recipes.id', '=', 'imgs.recipe_id')
+            ->select('recipes.*', 'imgs.*')->findOrFail($id);
+
+        $productos=DB::table('product_recipe')
+            ->join('products', 'product_recipe.product_id', '=', 'products.id')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('products.name', 'products.foto', 'products.id', 'products.uuid', 'categories.name as categoria')
+            ->where('recipe_id', '=', $id)->get();
+
+        return Inertia::render('Admin/Recetas/Receta',['receta' => $receta, 'productos' => $productos]);
     }
 
     public function recetaEditar($id){

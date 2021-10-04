@@ -26,7 +26,7 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 
 
-const Receta = () => {
+const Receta = ({receta, productos}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -77,31 +77,29 @@ const Receta = () => {
                         {/* contenido */}
                         <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                             <Grid item xs={12} md={6}>
-                                <img src="/img/RECETAS/maruchan.jpg" className="img-receta-admin" />
+                                <img src={"/storage/recetas/" + receta.url} className="img-receta-admin" />
                             </Grid>
                             <Grid item xs={12} md={6} className="grid-derecho-title-re"> 
                                 <Grid item xs={12} style={{marginBottom:'36px'}}>
                                     <Grid item xs={12} className="title-item-info t-i-i-pedidos">NOMBRE</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</Grid>
+                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>{receta.nombre}</Grid>
                                 </Grid>
                                 <Grid item xs={12} style={{marginBottom:'36px'}}>
                                     <Grid item xs={12} className="title-item-info t-i-i-pedidos">DESCRIPCIÓN</Grid>
-                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</Grid>
+                                    <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>{receta.descripcion}</Grid>
                                 </Grid>
                             </Grid>
                             <Grid item xs={12} style={{marginBottom:'36px'}}>
                                 <Grid item xs={12} className="title-item-info t-i-i-pedidos">INGREDIENTES</Grid>
                                 <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>
-                                    {/* {receta.ingredientes && <div dangerouslySetInnerHTML={{ __html: receta.ingredientes }} />} */}
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</Grid>
+                                    {receta.ingredientes && <div dangerouslySetInnerHTML={{ __html: receta.ingredientes }} />}
+                                    </Grid>
                             </Grid>
                             <Grid item xs={12}>
                                 <Grid item xs={12} className="title-item-info t-i-i-pedidos">PREPARACIÓN</Grid>
                                 <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>
-                                    {/* {receta.preparacion && <div dangerouslySetInnerHTML={{ __html: receta.preparacion }} />} */}
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Grid>
+                                    {receta.preparacion && <div dangerouslySetInnerHTML={{ __html: receta.preparacion }} />}
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -113,53 +111,23 @@ const Receta = () => {
                                 <Grid>Productos de comepasto</Grid>
                             </Grid>
 
-                            <Grid item xs={12} className="item-pro-receta">
+                            {productos && productos.map(producto=>(
+                            <Grid item xs={12} className="item-pro-receta" key={producto.id + "producto"} id={producto.id}>
                                 <Grid item xs={2} className="img-pro-receta">
-                                    <img src="/img/PRODUCTOS/1.png" />
+                                    <img src={"/storage/productos/" + producto.foto} />
                                 </Grid>
                                 <Grid item xs={10}>
-                                    <Tooltip title="Nombre completo del producto" arrow placement="top-start">
+                                    <Tooltip title={producto.name} arrow placement="top-start">
                                         <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none'}}>
                                             <Typography xs={12} className="title-pro-receta" noWrap>
-                                                lorem ipsum dolor sit amet consectetur...
+                                                {producto.name}
                                             </Typography>
                                         </InertiaLink>
                                     </Tooltip>
-                                    <Typography xs={12} className="type-pro-receta">Carníco, lorem ipsum</Typography>
+                                    <Typography xs={12} className="type-pro-receta" style={{textTransform:'capitalize'}}>{producto.categoria}</Typography>
                                 </Grid>
                             </Grid>
-
-                            <Grid item xs={12} className="item-pro-receta">
-                                <Grid item xs={2} className="img-pro-receta">
-                                    <img src="/img/PRODUCTOS/2.png" />
-                                </Grid>
-                                <Grid item xs={10}>
-                                    <Tooltip title="Nombre completo del producto" arrow placement="top-start">
-                                        <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none'}}>
-                                            <Typography xs={12} className="title-pro-receta" noWrap>
-                                                lorem ipsum dolor sit amet consectetur...
-                                            </Typography>
-                                        </InertiaLink>
-                                    </Tooltip>
-                                    <Typography xs={12} className="type-pro-receta">Carníco, lorem ipsum</Typography>
-                                </Grid>
-                            </Grid>
-
-                            <Grid item xs={12} className="item-pro-receta">
-                                <Grid item xs={2} className="img-pro-receta">
-                                    <img src="/img/PRODUCTOS/3.png" />
-                                </Grid>
-                                <Grid item xs={10}>
-                                    <Tooltip title="Nombre completo del producto" arrow placement="top-start">
-                                        <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none'}}>
-                                            <Typography xs={12} className="title-pro-receta" noWrap>
-                                                lorem ipsum dolor sit amet consectetur...
-                                            </Typography>
-                                        </InertiaLink>
-                                    </Tooltip>
-                                    <Typography xs={12} className="type-pro-receta">Carníco, lorem ipsum</Typography>
-                                </Grid>
-                            </Grid>
+                            ))}
                         </Grid>
                     </Grid>
                 </Grid>

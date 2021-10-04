@@ -7,7 +7,7 @@ import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import Layout from '../../../layouts/LayoutAdmin';
 import '/css/admin.css';
 import '/css/adminPreguntas.css';
-import Receta from '../../../components/Recetas/Receta';
+import Receta from '../../../components/Recetas/RecetaAdmin';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -173,24 +173,6 @@ const Recetas = ({recetas}) => {
                                 />
                             </div>
                         </form>
-                        {/* <Grid>
-                            <Button
-                                className="button-filter"
-                                onClick={handleClick}
-                                startIcon={<FilterListIcon />}
-                            >
-                                Filtrar
-                            </Button>
-                            <Menu
-                                id="filter-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Título</MenuItem>
-                            </Menu>
-                        </Grid> */}
                     </Grid>
                     
                     <Grid container direction="row" justify="flex-start" alignItems="stretch" spacing={3} style={{padding:'26px'}}>
