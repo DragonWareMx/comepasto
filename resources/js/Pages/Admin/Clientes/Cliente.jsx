@@ -18,6 +18,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { conformsTo } from 'lodash';
+import { gridDateFormatter } from '@material-ui/data-grid';
 
 const Cliente = ({cliente}) => {
 
@@ -26,6 +27,16 @@ const Cliente = ({cliente}) => {
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
+
+    function dateFormat(date) {
+        var date = new Date(date)
+        var month = date.getMonth()
+        if(month < 10) month = '0'+month
+        var day = date.getDate()
+        if(day < 10) day= '0'+day
+        var year = date.getFullYear()
+        return day + "/" + month + "/" + year
+    }
 
     return ( 
         <>
@@ -61,7 +72,7 @@ const Cliente = ({cliente}) => {
                                     <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px',marginBottom:'0px'}}>{cliente.direccion}</Grid>
                                 </Grid>
                             </Grid>
-                            <Grid item xs={12} className="button-pay" style={{cursor:'initial'}}>Fecha de registro: {cliente.created_at && cliente.created_at}</Grid>
+                            <Grid item xs={12} className="button-pay" style={{cursor:'initial'}}>Fecha de registro: {cliente.created_at && dateFormat(cliente.created_at)}</Grid>
                         </Grid>
                         
                     </Grid>
@@ -85,7 +96,7 @@ const Cliente = ({cliente}) => {
                                     >
                                             <Grid item className="grid-child-gray">
                                                 <Grid className="header-title">PEDIDO REALIZADO</Grid>
-                                                <Grid className="header-info">{sale.created_at}</Grid>
+                                                <Grid className="header-info">{sale.created_at && dateFormat(sale.created_at)}</Grid>
                                             </Grid>
 
                                             <Grid item className="grid-child-gray">
