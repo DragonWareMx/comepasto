@@ -35,6 +35,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 //iconos
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -103,41 +104,65 @@ const useStylesSearch = makeStyles(
 );
 
 const columns = [
-{ field: 'id', headerName: 'ID', width: 90 },
+{ field: 'id', headerName: 'ID', width: 50 },
 {
     field: 'nombre',
     headerName: 'NOMBRE',
-    width: 500,
     editable: false,
     disableColumnSelector:false,
+    flex: 1,
 },
 {
     field: 'marca',
     headerName: 'MARCA',
-    width: 180,
     editable: false,
+    flex: 0.5,
 },
 {
     field: 'precio',
     headerName: 'PRECIO',
-    // type: 'number',
-    width: 150,
     editable: false,
+    flex: 0.5,
+    valueFormatter: (params) => {
+      const precio = parseFloat(params.value).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+      return `$ ${precio}`;
+    },
 },
 {
-    field: 'descuento',
-    headerName: 'DESCUENTO',
-    width: 180,
-    editable: false,
+  field: 'descuento',
+  headerName: 'DESCUENTO',
+  editable: false,
+  flex: 0.5,
+  valueFormatter: (params) => {
+    return `${params.value} %`;
+  },
 },
-// {
-//     field: 'atributos',
-//     headerName: 'ATRIBUTOS',
-//     description: 'No es posible reordenar esta columna.',
-//     sortable: false,
-//     width: 180,
-//     editable: false,
-// },
+{
+  field: 'precio_descuento',
+  headerName: 'PRECIO DESCUENTO',
+  editable: false,
+  flex: 0.5,
+  valueFormatter: (params) => {
+    const precio = parseFloat(params.value).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+    return `$ ${precio}`;
+  },
+},
+{
+  field: 'stock',
+  headerName: 'STOCK',
+  editable: false,
+  flex: 0.5,
+},
+{
+  field: "",
+  headerName: "EDITAR",
+  flex: 0.5,
+  renderCell: (params) => (
+    <InertiaLink href={route('admin.producto', params.row.id)} style={{textDecoration: 'none', color: 'gray'}}><EditIcon/></InertiaLink>
+  ),
+  sortable: false,
+  editable: false,
+}
 ];
   
 function escapeRegExp(value) {
@@ -221,6 +246,23 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
     React.useEffect(() => {
         setRows(productos);
       }, [productos]);
+
+    function showPrice(precio, descuento){
+        if(descuento){
+            var fPrecio = parseFloat(precio);
+            var fDescuento = parseFloat(descuento)
+
+            var nPrecio = fPrecio - (fPrecio * (fDescuento/100))
+
+            if(nPrecio < 0)
+                nPrecio = 0
+
+            return nPrecio.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
+        else{
+            return parseFloat(precio).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
+    }
     
     return ( 
         <>
@@ -254,7 +296,7 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
                         <Grid item xs={2}><MonetizationOnOutlinedIcon style={{color:'#1DA3A8'}} /></Grid>
                         <Grid item xs={10}>
                         <Tooltip title="Valor total de los productos disponibles"><Grid item xs={12} className="title-item-resume">TOTAL EN PRODUCTOS</Grid></Tooltip>
-                            <Grid item xs={12} className="txt-item-resume">$ {totalProductos} MXN</Grid>
+                            <Grid item xs={12} className="txt-item-resume">$ {showPrice(totalProductos, null)} MXN</Grid>
                         </Grid>
                     </Grid>
 
@@ -276,12 +318,12 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
                 </Grid>
 
                 {/* CONTENIDO GENERAL */}
-                <Grid item xs={12} style={{height:500}}>
+                <Grid item xs={12} style={{height:800, marginBottom: 50}}>
                     <DataGrid
                         components={{ Toolbar: QuickSearchToolbar }}
                         rows={rows}
                         columns={columns}
-                        pageSize={5}
+                        pageSize={15}
                         rowsPerPageOptions={[5]}
                         disableSelectionOnClick
                         componentsProps={{

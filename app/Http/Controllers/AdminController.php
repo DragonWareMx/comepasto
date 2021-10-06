@@ -18,15 +18,21 @@ use Illuminate\Support\Str;
 class AdminController extends Controller
 {
     public function index(){
-        $productos=Product::get();
-        $total=$productos->count();
-        $sinStock=$productos->where('stock','<=',0)->count();
-        $stock=$productos->sum('stock');
-        $totalProductos=DB::table('products')->sum(DB::raw('stock * precio'));
         $productos=Product::
             leftJoin('brands','products.brand_id','=','brands.id')
-            ->select('products.id','products.name as nombre','brands.name as marca', 'precio' , 'descuento')->get();
-        return Inertia::render('Admin/Productos/Productos',[
+            ->select('products.id','products.name as nombre','brands.name as marca', 'precio' , 'descuento', 'stock')
+            ->selectRaw('(`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)) AS precio_descuento')
+            ->get();
+        
+        $total=$productos->count();
+
+        $sinStock=$productos->where('stock','<=',0)->count();
+
+        $stock=$productos->sum('stock');
+
+        $totalProductos=DB::table('products')->sum(DB::raw('stock * precio'));
+        
+            return Inertia::render('Admin/Productos/Productos',[
             'total'=>$total,
             'sinStock'=>$sinStock,
             'stock'=>$stock,
@@ -61,6 +67,7 @@ class AdminController extends Controller
     public function productoPatch(Request $request, $id){
         dd('holi we',$id,$request);
     }
+
     public function productoAgregar(){
         $marcas=Brand::select('id','name')->get();
         $tipos=Type::select('id','name')->get();
@@ -75,14 +82,14 @@ class AdminController extends Controller
     public function storeProducto(Request $request){
         $validated = $request->validate([
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
-            'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required','max:100','regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
             'marca' => 'required|exists:brands,id',
             'tipo' => 'required|exists:types,id',
             'categoria' => 'required|exists:categories,id',
-            'presentacion' => ['nullable','max:250','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'presentacion' => ['nullable','max:250','regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
             'precio' => 'required|between:0,999999.99|numeric',
             'descuento' => 'required|between:0,100.00|numeric',
-            'ingredientes' => ['nullable','max:8000','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'ingredientes' => ['nullable','max:8000','regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
             'soyaFree' => 'required|boolean',
             'trigoFree' => 'required|boolean',
         ]);
@@ -91,6 +98,8 @@ class AdminController extends Controller
         //COMIENZA LA TRANSACCION
         DB::beginTransaction();
 
+        //variables para comprobar la subida de archivos
+        $foto = null;
         try {
             DB::commit();
 
@@ -119,6 +128,13 @@ class AdminController extends Controller
             return \Redirect::route('admin.productos')->with('success','El producto ha sido registrado con éxito!');
         } catch (\Exception $e) {
             DB::rollBack();
+
+            //si hay foto se elimina del servidor
+            if($foto)
+            {
+                \Storage::delete($foto);
+            }
+
             return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el producto, inténtelo más tarde.');
         }
     }
