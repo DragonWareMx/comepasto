@@ -107,7 +107,7 @@ const Cliente = ({cliente}) => {
                                     
                                     <AccordionDetails>
                                         <Grid item xs={12} className="grid-white">
-                                            <Grid item xs={12} className="status-pedido">PREGUNTAR QUE ES CADA NUMERO!!!!!!!</Grid>
+                                            <Grid item xs={12} className="status-pedido">{sale.status}</Grid>
                                                 <Grid container>
                                                     {/* ITEMS PEDIDOS  */}
                                                     {sale.product && sale.product.map((product, indice)=>(
