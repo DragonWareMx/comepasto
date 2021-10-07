@@ -66,6 +66,45 @@ const Pedido = ({pedido}) => {
         setOpenConfirmacion(false);
     };
 
+    const [values, setValues] = React.useState({
+        estatus: pedido.status || '',
+    });
+
+    const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+    };
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.patch(route('admin.pedido.patch',pedido.id),values)
+    }
+
+    function handlePago(e) {
+        e.preventDefault()
+        Inertia.patch(route('admin.pedido.pagado',pedido.id))
+        setOpenConfirmacion(false);
+    }
+
+    function pedidoDelete(e){
+        e.preventDefault()
+        Inertia.delete(route('admin.pedido.delete',pedido.id))
+        setOpen(false);
+    }
+
+    function dateFormat(date) {
+        var date = new Date(date)
+        var month = date.getMonth()
+        if(month < 10) month = '0'+month
+        var day = date.getDate()
+        if(day < 10) day= '0'+day
+        var year = date.getFullYear()
+        var hours = date.getHours();
+        if(hours < 10) hours= '0'+hours
+        var minutes = date.getMinutes();
+        if(minutes < 10) minutes= '0'+minutes
+        return day + "/" + month + "/" + year + " " + hours + ":" + minutes 
+    }
+
     return ( 
         <>
         <Container> 
@@ -135,7 +174,7 @@ const Pedido = ({pedido}) => {
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <Grid item xs={12} className="title-item-info t-i-i-pedidos">ESTATUS DEL PAGO</Grid>
-                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>#############</Grid>
+                                        <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>{pedido.statusPago == 0 ? 'Pendiente' : 'Pagado'}</Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
@@ -148,10 +187,10 @@ const Pedido = ({pedido}) => {
                                         <Grid item xs={12}className="item-info-txt i-i-t-pedidos" style={{padding:'0px'}}>${pedido.costoEnvio}</Grid>
                                     </Grid>
                                 </Grid>
-                                <Grid item xs={12}>
+                                {/* <Grid item xs={12}>
                                     <Grid item xs={12} className="title-item-info t-i-i-pedidos">OBSERVACIONES</Grid>
                                     <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>######################</Grid>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Grid>
 
@@ -221,11 +260,11 @@ const Pedido = ({pedido}) => {
                                 <Grid>Estatus del producto</Grid>
                             </Grid>
                             {/* FORM DE ACTUALIZACION DE STOCK */}
-                            <form noValidate autoComplete="off" style={{padding:'20px 23px'}}>
+                            <form autoComplete="off" style={{padding:'20px 23px'}} onSubmit={handleSubmit}>
                                 <Grid item xs={12}>
-                                    <select type="number" className="input-stock" style={{width:'100%'}}>
+                                    <select type="number" className="input-stock" style={{width:'100%'}} value={values.estatus} onChange={handleChange('estatus')}>
                                         <option value="pendiente" selected>Pendiente</option>
-                                        <option value="camino">En camino</option>
+                                        <option value="en camino">En camino</option>
                                         <option value="entregado">Entregado</option>
                                     </select>
                                 </Grid>
@@ -242,16 +281,26 @@ const Pedido = ({pedido}) => {
                             </form >
                             <Grid item xs={12} style={{borderTop:'1px solid #DDDDDD',padding:'20px 23px'}}>
                                 
-                                <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#1DA3A8',fontSize:'38px',marginRight:'16px'}} /> PEDIDO EL 21/08/2021 14:59</Grid>
+                                <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#1DA3A8',fontSize:'38px',marginRight:'16px'}} /> PEDIDO EL {pedido.created_at && dateFormat(pedido.created_at)}</Grid>
                                 <hr className="hr-timeline" />
                                 <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#1DA3A8',fontSize:'38px',marginRight:'16px'}} /> PROCESADO</Grid>
                                 <hr className="hr-timeline" />
-                                <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#1DA3A8',fontSize:'38px',marginRight:'16px'}} /> EN CAMINO</Grid>
+                                {(pedido.status == 'en camino' || pedido.status == 'entregado') ? 
+                                    <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#1DA3A8',fontSize:'38px',marginRight:'16px'}} /> EN CAMINO</Grid>
+                                    :
+                                    <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#CCCCCC',fontSize:'38px',marginRight:'16px'}} /> EN CAMINO</Grid>
+                                }
                                 <hr className="hr-timeline" />
-                                <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#CCCCCC',fontSize:'38px',marginRight:'16px'}} /> COMPLETADO</Grid>
+                                {pedido.status == 'entregado' ?
+                                    <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#1DA3A8',fontSize:'38px',marginRight:'16px'}} /> COMPLETADO</Grid>
+                                    :
+                                    <Grid item xs={12} className="item-timeline"><CheckCircleIcon style={{color:'#CCCCCC',fontSize:'38px',marginRight:'16px'}} /> COMPLETADO</Grid>
+                                }
                             </Grid>
 
-                            <Grid item xs={12} onClick={handleClickOpenModalConfirmacion} className="button-pay"><CheckCircleOutlineIcon style={{marginRight:'25px'}} />Marcar como pagado</Grid>
+                            {!pedido.statusPago &&
+                                <Grid item xs={12} onClick={handleClickOpenModalConfirmacion} className="button-pay"><CheckCircleOutlineIcon style={{marginRight:'25px'}} />Marcar como pagado</Grid>
+                            }
                         </Grid>
                     </Grid>
                     </Grid>
@@ -271,7 +320,7 @@ const Pedido = ({pedido}) => {
             </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <form noValidate autoComplete="off">
+                <form noValidate autoComplete="off" onSubmit={pedidoDelete}>
                 <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
                     <Grid className="btn-cancelar-op" onClick={handleCloseModal}>CANCELAR</Grid>
                     <Button
@@ -297,7 +346,7 @@ const Pedido = ({pedido}) => {
             </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <form noValidate autoComplete="off">
+                <form noValidate autoComplete="off" onSubmit={handlePago}>
                 <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
                     <Grid className="btn-cancelar-op" onClick={handleCloseModalConfirmacion}>CANCELAR</Grid>
                     <Button

@@ -245,6 +245,52 @@ class AdminController extends Controller
         ]);
     }
 
+    public function pedidoEstatus(Request $request, $id){
+        $validated = $request->validate([
+            'estatus' => ["required" , "max:50", "in:en camino,pendiente,entregado"]  ,
+        ]);
+        $pedido = Sale::findOrFail($id);
+        try {
+            DB::beginTransaction();
+            $pedido->status = $request->estatus;
+            $pedido->save();
+            DB::commit();
+            return \Redirect::back()->with('success', 'Estatus actualizado con éxito.');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return \Redirect::back()->with('error', 'Ocurrió un problema, vuelva a intentarlo más tarde.');
+        }
+    }
+
+    public function pedidoPagado($id){
+        $pedido = Sale::findOrFail($id);
+        try {
+            DB::beginTransaction();
+            $pedido->statusPago = 1;
+            $pedido->save();
+            DB::commit();
+            return \Redirect::back()->with('success', 'El pedido se marcó como pagado.');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return \Redirect::back()->with('error', 'Ocurrió un problema, vuelva a intentarlo más tarde.');
+        }
+    }
+
+    public function pedidoDelete($id)
+    {
+        $pedido = Sale::findOrFail($id);
+        try {
+            DB::beginTransaction();
+            $pedido->delete();
+            DB::commit();
+            return \Redirect::route('admin.pedidos')->with('success', 'El pedido se ha eliminado con éxito!');
+        } catch (\Throwable $th) {
+            dd($th);
+            DB::rollback();
+            return \Redirect::back()->with('error', 'Ocurrió un problema, vuelva a intentarlo más tarde.');
+        }
+    }
+
     public function pedidosAgregar()
     {
         return Inertia::render('Admin/Pedidos/AgregarPedido');

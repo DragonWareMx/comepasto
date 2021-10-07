@@ -96,6 +96,9 @@ Route::patch('/admin/productos/patch/{id}', [App\Http\Controllers\AdminControlle
 Route::get('/admin/pedidos', [App\Http\Controllers\AdminController::class, 'pedidos'])->name('admin.pedidos');
 Route::get('/admin/pedidos/{id}', [App\Http\Controllers\AdminController::class, 'pedido'])->name('admin.pedido');
 Route::get('/admin/pedidos-agregar', [App\Http\Controllers\AdminController::class, 'pedidosAgregar'])->name('admin.pedidos.agregar');
+Route::patch('/admin/pedidos/{id}/estatus', [App\Http\Controllers\AdminController::class, 'pedidoEstatus'])->name('admin.pedido.patch');
+Route::patch('/admin/pedidos/{id}/pagado', [App\Http\Controllers\AdminController::class, 'pedidoPagado'])->name('admin.pedido.pagado');
+Route::delete('/admin/pedidos/{id}/delete', [App\Http\Controllers\AdminController::class, 'pedidoDelete'])->name('admin.pedido.delete');
 
 Route::get('/admin/clientes', [App\Http\Controllers\AdminController::class, 'clientes'])->name('admin.clientes');
 Route::get('/admin/clientes/{id}', [App\Http\Controllers\AdminController::class, 'cliente'])->name('admin.cliente');
