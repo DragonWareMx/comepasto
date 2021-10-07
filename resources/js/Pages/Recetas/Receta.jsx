@@ -95,7 +95,7 @@ const Recetas = ({receta, productos}) => {
                         <Grid className="list-ingredients">{receta.ingredientes && <div dangerouslySetInnerHTML={{ __html: receta.ingredientes }} />}</Grid>
                             <Divider />
                             <List component="nav" aria-label="main mailbox folders" >
-                                <a href={receta.link} target="_blank" style={{"textDecoration":"none"}}>
+                                <a href={receta.link} target="_blank" style={{"textDecoration":"none","color":"#7E7E7E"}}>
                                 <ListItem button >
                                     <ListItemIcon>
                                         <YouTubeIcon />

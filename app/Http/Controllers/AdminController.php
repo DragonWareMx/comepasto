@@ -213,4 +213,23 @@ class AdminController extends Controller
     public function recetasAgregar(){
         return Inertia::render('Admin/Recetas/AgregarReceta');
     }
+
+    public function recetaEliminar($id){
+        DB::beginTransaction();
+        try {
+            $receta = Recipe::findOrFail($id);
+            // buscar y eliminar las imagenes y los productos
+            DB::table('product_recipe')->where('recipe_id',$id)->delete();
+            DB::table('imgs')->where('recipe_id',$id)->delete();
+
+            $receta->delete();
+            DB::commit();
+            $status = "Receta eliminada con éxito";
+            return redirect()->route('admin.recetas')->with('success','Receta actualizada con éxito.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $status = "Hubo un problema al procesar tu solicitud. Inténtalo más tarde";
+            return redirect()->route('admin.recetas')->with('error','Ocurrió un problema, vuelva a intentarlo más tarde.');
+        }
+    }
 }
