@@ -21,13 +21,17 @@ import {
   } from '@material-ui/data-grid';
 import PropTypes from 'prop-types';
 
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+
+//iconos
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import SearchIcon from '@material-ui/icons/Search';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import ClearIcon from '@material-ui/icons/Clear';
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -109,13 +113,6 @@ const columns = [
     width: 350,
     editable: false,
 },
-// {
-//     field: 'estatus',
-//     headerName: 'ESTATUS',
-//     // type: 'number',
-//     width: 200,
-//     editable: false,
-// },
 {
     field: 'entrega',
     headerName: 'TIPO DE ENTREGA',
@@ -125,8 +122,6 @@ const columns = [
 {
     field: 'total',
     headerName: 'TOTAL',
-    description: 'No es posible reordenar esta columna.',
-    sortable: false,
     width: 180,
     editable: false,
 },
@@ -177,22 +172,6 @@ QuickSearchToolbar.propTypes = {
 };
 
 const Pedidos = ({total,ganancias, pedidos}) => {
-    const classes = useStyles();
-
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    
-    // const rows = [
-    //     { id: 1, fecha: '20/08/2021 09:32', cliente: 'Lorem ipsum dolor sit amet', estatus: 'En camino', entrega:'A domicilio', total:'$240.00 MXN' },
-    //   ];
-
     //buscador
     const [searchText, setSearchText] = React.useState('');
     const [rows, setRows] = React.useState(pedidos);
@@ -212,6 +191,22 @@ const Pedidos = ({total,ganancias, pedidos}) => {
       setRows(pedidos);
     }, [pedidos]);
 
+    function showPrice(precio, descuento){
+        if(descuento){
+            var fPrecio = parseFloat(precio);
+            var fDescuento = parseFloat(descuento)
+
+            var nPrecio = fPrecio - (fPrecio * (fDescuento/100))
+
+            if(nPrecio < 0)
+                nPrecio = 0
+
+            return nPrecio.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
+        else{
+            return parseFloat(precio).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
+    }
 
     return ( 
         <>
@@ -245,7 +240,7 @@ const Pedidos = ({total,ganancias, pedidos}) => {
                         <Grid item xs={2}><MonetizationOnOutlinedIcon style={{color:'#1DA3A8'}} /></Grid>
                         <Grid item xs={10}>
                         <Tooltip title="Valor total de los pedidos realizados"><Grid item={12} className="title-item-resume">TOTAL EN PEDIDOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">$ {ganancias} MXN</Grid>
+                            <Grid item={12} className="txt-item-resume">$ {showPrice(ganancias, null)} MXN</Grid>
                         </Grid>
                     </Grid>
 
@@ -266,57 +261,23 @@ const Pedidos = ({total,ganancias, pedidos}) => {
                     </Grid>
                 </Grid>
 
-                {/* CONTENIDO GENERAL */}
-                <Grid item xs={12} style={{marginBottom:'25px', borderRadius:'4px', border:'1px solid #E1E3EA'}}>
-                    <Grid item xs={12} style={{padding:'26px',display:'flex',alignItems:'stretch',justifyContent:'space-between'}}>
-                        <Grid item xs={10}>     
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon style={{fontSize:'22px'}} />
-                                </div>
-                                <InputBase
-                                placeholder="Buscar..."
-                                className="input-search"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'search' }}
-                                />
-                            </div>
-                        </Grid>
-                        <Grid>
-                            <Button
-                                className="button-filter"
-                                onClick={handleClick}
-                                startIcon={<FilterListIcon />}
-                            >
-                                Filtrar
-                            </Button>
-                            <Menu
-                                id="filter-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Cliente</MenuItem>
-                                <MenuItem onClick={handleClose}>Estatus</MenuItem>
-                                <MenuItem onClick={handleClose}>Tipo de entrega</MenuItem>
-                            </Menu>
-                        </Grid>
-                    </Grid>
-                    {/* Este height es provisional */}
-                    <Grid item xs={12} style={{height:'300px'}}>
+                {/* Este height es provisional */}
+                <Grid item xs={12} style={{height:800, marginBottom: 50}}>
                     <DataGrid
+                        components={{ Toolbar: QuickSearchToolbar }}
                         rows={rows}
                         columns={columns}
-                        pageSize={5}
-                        rowsPerPageOptions={[5]}
+                        pageSize={15}
+                        rowsPerPageOptions={[15]}
                         disableSelectionOnClick
+                        componentsProps={{
+                            toolbar: {
+                            value: searchText,
+                            onChange: (event) => requestSearch(event.target.value),
+                            clearSearch: () => requestSearch(''),
+                            },
+                        }}
                     />
-                    </Grid>
-
                 </Grid>
             </Grid>
         </Container>
