@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Inertia } from '@inertiajs/inertia'
-import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { withStyles, makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import route from 'ziggy-js';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import Layout from '../../../layouts/LayoutAdmin';
-import ModalConfirmacion from '../../../components/common/modalConfirmacion';
 import '/css/admin.css';
 import '/css/adminProductos.css';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -22,10 +19,9 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import PublishIcon from '@material-ui/icons/Publish';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 
@@ -44,7 +40,40 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Atma',
         fontSize: '15px',
         color: '#9E9E9E'
-    }
+    },
+    root: {
+        width: '100%',
+        marginRight:'5%',
+        "& .MuiOutlinedInput-input": {
+          color: "#9c9c9c"
+        },
+        "& .MuiInputLabel-root": {
+          color: "#9c9c9c"
+        },
+        "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+            border:'none',
+            borderRadius:'0px',
+            borderBottom: "1px solid #8b8b8b"
+        },
+        "&:hover .MuiOutlinedInput-input": {
+          color: "#1DA3A8"
+        },
+        "&:hover .MuiInputLabel-root": {
+          color: "#1DA3A8"
+        },
+        "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+          borderBottom: "1px solid #1DA3A8"
+        },
+        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input": {
+          color: "#8b8b8b"
+        },
+        "& .MuiInputLabel-root.Mui-focused": {
+          color: "#8b8b8b"
+        },
+        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+          borderColor: "#8b8b8b"
+        }
+      },
 }));
 
 const theme = createMuiTheme({
@@ -68,46 +97,17 @@ const theme = createMuiTheme({
     },
 });
 
-const currencies = [
-    {
-      value: '1',
-      label: 'Lorem ipsum 1',
-    },
-    {
-      value: '2',
-      label: 'Lorem ipsum 2',
-    },
-    {
-      value: '3',
-      label: 'Lorem ipsum 3',
-    },
-    {
-      value: '4',
-      label: 'Lorem ipsum 4',
-    },
-  ];
 
-const EditarProducto = () => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+const EditarProducto = ({producto,marcas,tipos,categorias}) => {
+    //CHIPS
+    const [inputValue, setInputValue] = React.useState('');
+    const [autoCompleteValue, setAutoCompleteValue] = React.useState(null);
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    // MODAL ELIMINAR
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpenModal = () => {
-        setOpen(true);
-        setAnchorEl(null);
-    };
-
-    const handleCloseModal = () => {
-        setOpen(false);
+    const handleDelete = (chipToDelete) => () => {
+        setValues({
+            ...values, 
+            categorias: values.categorias.filter((chip) => chip.id !== chipToDelete.id)
+        });
     };
 
     // MODAL AGREGAR MARCA
@@ -143,26 +143,65 @@ const EditarProducto = () => {
         setOpenCat(false);
     };
 
-    // Select
-    const [currency, setCurrency] = React.useState('1');
-
-    const [state, setState] = React.useState({
-        checkedA: true,
-        checkedB: true,
-    });
-
-    const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked });
-      };
-
-    const handleDelete = () => {
-
+    const handleChange = (prop) => (event) => {
+        if(prop == 'soyaFree' || prop == 'trigoFree'){
+            setValues({ ...values, [prop]: event.target.checked });
+        }
+        else{
+            setValues({ ...values, [prop]: event.target.value });
+        }
     };
-
-    const classes = useStyles();
 
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
+
+    const classes = useStyles();
+
+    function readURL() {
+        var input=document.getElementById('imgProducto');
+        if (input.files && input.files[0]) {
+            setValues(values => ({
+                ...values,
+                imgProducto: input.files[0],
+            }))
+            var reader = new FileReader();
+            var preview = document.getElementById('imgContainer');
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function loadImgs() {
+        var input = document.getElementById("fotos");
+        if (input.files && input.files[0]) {
+            setValues((values) => ({
+                ...values,
+                fotos: input.files,
+            }));
+        }
+    }
+
+    const [values, setValues] = React.useState({
+        imgProducto: null,
+        fotos:null,
+        nombre: producto.name || '',
+        presentacion: producto.presentacion || '',
+        precio: producto.precio || '',
+        descuento: producto.descuento || '',
+        ingredientes: producto.ingredientes || '',
+        marca: producto.brand || '',
+        tipo: producto.type || '',
+        categoria: producto.category || '',
+        soyaFree: producto.soyaFree || false,
+        trigoFree: producto.trigoFree || false
+    });
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.patch(route('admin.producto.patch',producto.id),values)
+    }
 
     return ( 
         <>
@@ -175,36 +214,49 @@ const EditarProducto = () => {
                
                 <Grid item xs={12} className="grid-section">
                     <Grid item xs={12} className="section-top-grid">
-                        <Grid>Editar producto</Grid>
-                        <MoreVertIcon onClick={handleClick} style={{cursor:'pointer'}} />
-                        <Menu
-                            id="options-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                        >
-                            <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
-                        </Menu>
+                        <Grid>Agregar producto</Grid>
                     </Grid>
                     {/* contenido */}
                     <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                         <Grid item xs={4} sm={2} style={{marginBottom:'20px',display:'flex',justifyContent:'center',flexWrap:'wrap'}}>
-                            <img src="/img/PRODUCTOS/1.png" className="img-product-view" />
+                            <img id='imgContainer' src={"/img/PRODUCTOS/"+producto.foto} className="img-product-view" style={{objectFit:'cover'}}/>
                             <input
                                 accept="image/*"
-                                id="contained-button-file"
+                                id="imgProducto"
                                 type="file"
                                 style={{display:'none'}}
+                                onChange={readURL}
                             />
-                            <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                            <label htmlFor="imgProducto" style={{marginTop:'20px'}}>
                                 <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
-                                Editar
+                                Subir img
                                 </Button>
                             </label>
+                            {/* VARIAS IMAGENES  */}
+                            <input
+                                    accept="image/*"
+                                    id="fotos"
+                                    type="file"
+                                    style={{ display: "none" }}
+                                    multiple
+                                    onChange={loadImgs}
+                                    />
+                                <label
+                                    htmlFor="fotos"
+                                    style={{ marginTop: "20px" }}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        className="button-add"
+                                        startIcon={<PublishIcon />}
+                                        component="span"
+                                    >
+                                        Subir imgs
+                                    </Button>
+                                </label>
                         </Grid>
                         <Grid item xs={12} sm={10} className="container-inputs">
-                        <form noValidate autoComplete="off">
+                        <form onSubmit={handleSubmit} autoComplete="off">
                         <MuiThemeProvider theme={theme}>
                             <Grid item xs={12}>
                                 <TextField 
@@ -218,81 +270,82 @@ const EditarProducto = () => {
                                             root: classes.formTextLabel
                                         }
                                     }}
+                                    onChange={handleChange('nombre')} 
+                                    value={values.nombre}
                                 />
                             </Grid>
 
                             <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
-                                    <TextField
-                                        id="marca"
-                                        select
-                                        label="Marca"
-                                        placeholder="Selecciona una opción"
-                                        className="input-admin-50"
-                                        InputProps={{className: classes.input,}}
-                                        InputLabelProps={{
-                                            classes: {
-                                                root: classes.formTextLabel
-                                            }
-                                        }}
-                                        >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
+                                <Autocomplete
+                                    id="marca"
+                                    options={marcas}
+                                    getOptionLabel={(option) => option.name}
+                                    className='autocompleteProductos'
+                                    onChange={(event, newValue) => {
+                                        setValues({ ...values, marca: newValue ? newValue : null });
+                                    }}
+                                    value={values.marca}
+                                    renderInput={
+                                        (params) => 
+                                        <TextField {...params}
+                                            label="Marca"
+                                            placeholder="Selecciona una opción"
+                                            variant="outlined"
+                                            className={classes.root} 
+                                        />
+                                    }
+                                />
                                     <Grid className="link-add-bd" onClick={handleClickOpenModalMarca}>Agregar marca</Grid>
                                 </Grid>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
-                                    <TextField
+                                    <Autocomplete
                                         id="tipo"
-                                        select
-                                        label="Tipo"
-                                        className="input-admin-50"
-                                        InputProps={{className: classes.input,}}
-                                        InputLabelProps={{
-                                            classes: {
-                                                root: classes.formTextLabel
-                                            }
+                                        options={tipos}
+                                        getOptionLabel={(option) => option.name}
+                                        className='autocompleteProductos'
+                                        onChange={(event, newValue) => {
+                                            setValues({ ...values, tipo: newValue ? newValue : null });
                                         }}
-                                        >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
+                                        value={values.tipo}
+                                        renderInput={
+                                            (params) => 
+                                            <TextField {...params}
+                                                label="Tipo"
+                                                placeholder="Selecciona una opción"
+                                                variant="outlined"
+                                                className={classes.root}  
+                                            />
+                                        }
+                                    />
                                     <Grid className="link-add-bd" onClick={handleClickOpenModalTipo}>Agregar tipo</Grid>
                                 </Grid>
                             </Grid>
 
                             <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
-                                    <TextField
-                                        id="categorias"
-                                        select
-                                        label="Categorías"
-                                        className="input-admin-50"
-                                        InputProps={{className: classes.input,}}
-                                        InputLabelProps={{
-                                            classes: {
-                                                root: classes.formTextLabel
-                                            }
+                                    <Autocomplete
+                                        id="tipo"
+                                        options={tipos}
+                                        getOptionLabel={(option) => option.name}
+                                        className='autocompleteProductos'
+                                        onChange={(event, newValue) => {
+                                            setValues({ ...values, categoria: newValue ? newValue : null });
                                         }}
-                                        >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                    
-                                    <Chip onDelete={handleDelete} label="Categoría 1" className="chip-categoria" />
-                                    <Chip onDelete={handleDelete} label="Categoría 2" className="chip-categoria" />
-                                    
-                                    <Grid className="link-add-bd" onClick={handleClickOpenModalCat}>Agregar categoría</Grid>
+                                        value={values.categoria}
+                                        renderInput={
+                                            (params) => 
+                                            <TextField {...params}
+                                                label="Tipo"
+                                                placeholder="Selecciona una opción"
+                                                variant="outlined"
+                                                className={classes.root}  
+                                            />
+                                        }
+                                    />
+                                    <Grid className="link-add-bd" onClick={handleClickOpenModalTipo}>Agregar tipo</Grid>
                                 </Grid>
+                                
                                 <Grid item xs={12} sm={6} style={{marginBottom:'20px'}}>
                                     <TextField
                                         id="presentacion"
@@ -305,6 +358,8 @@ const EditarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={handleChange('presentacion')}
+                                        value={values.presentacion}
                                         >
                                     </TextField>
                                 </Grid>
@@ -323,6 +378,8 @@ const EditarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={handleChange('precio')}
+                                        value={values.precio}
                                         >
                                     </TextField>
                                 </Grid>
@@ -330,6 +387,7 @@ const EditarProducto = () => {
                                     <TextField
                                         id="descuento"
                                         type="number"
+                                        max='100'
                                         label="Descuento (%)"
                                         className="input-admin-50"
                                         InputProps={{className: classes.input,}}
@@ -338,6 +396,8 @@ const EditarProducto = () => {
                                                 root: classes.formTextLabel
                                             }
                                         }}
+                                        onChange={handleChange('descuento')}
+                                        value={values.descuento}
                                         >
                                     </TextField>
                                 </Grid>
@@ -355,26 +415,28 @@ const EditarProducto = () => {
                                         root: classes.formTextLabel
                                     }
                                     }}
+                                    onChange={handleChange('ingredientes')}
+                                    value={values.ingredientes}
                                 />
                             </Grid>
 
                             <Grid item xs={12}>
                                 <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} className="checkbox-admin" onChange={handleChange} name="checkedA" />}
-                                    id="soya"
+                                    control={<Checkbox checked={values.soyaFree} className="checkbox-admin" onChange={handleChange('soyaFree')} name="checkedA" />}
+                                    id="soyaFree"
                                     label="Producto libre de soya"
                                     className="checkbox-label"
                                 />
                                 <FormControlLabel
-                                    control={<Checkbox checked={state.checkedB} className="checkbox-admin" onChange={handleChange} name="checkedB" />}
-                                    id="gluten"
+                                    control={<Checkbox checked={values.trigoFree} className="checkbox-admin" onChange={handleChange('trigoFree')} name="checkedB" />}
+                                    id="trigoFree"
                                     label="Producto libre de gluten"
                                     className="checkbox-label"
                                 />
                             </Grid>
 
                             <Grid className="input-admin-100" style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px',paddingRight:'0px',marginTop:'20px'}}>
-                                <InertiaLink href={route('admin.producto',1)} className="btn-cancelar-op">CANCELAR</InertiaLink>
+                                <InertiaLink href={route('admin.productos')} className="btn-cancelar-op">CANCELAR</InertiaLink>
                                 <Button
                                     className="button-filter button-update btn-second"
                                     type="submit"
@@ -388,39 +450,10 @@ const EditarProducto = () => {
                         </Grid>
                         
                     </Grid>
-
-
-
                 </Grid>
             </Grid>
         </Container>
-        {/* MODAL ELIMINAR */}
-        <Dialog
-            open={open}
-            onClose={handleCloseModal}
-        >
-            <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas eliminar este producto?"}</DialogTitle>
-            <DialogContent>
-            <DialogContentText id="alert-dialog-description" className="dialog-content">
-                Toda la información relacionada con este producto se verá afectada por esta acción.
-            </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <form noValidate autoComplete="off">
-                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
-                    <Grid className="btn-cancelar-op" onClick={handleCloseModal}>CANCELAR</Grid>
-                    <Button
-                        className="button-filter button-update btn-second"
-                        type="submit"
-                        startIcon={<DeleteOutlineIcon />}
-                    >
-                        Eliminar
-                    </Button>
-                </Grid>
-                </form>
-            </DialogActions>
-        </Dialog>
-
+        
 
         {/* MODAL AGREGAR MARCA */}
         <Dialog
@@ -456,7 +489,7 @@ const EditarProducto = () => {
                         type="file"
                         style={{display:'none'}}
                     />
-                    <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                    <label htmlFor="imgNewMarca" style={{marginTop:'20px'}}>
                         <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
                         Subir img
                         </Button>
@@ -560,7 +593,7 @@ const EditarProducto = () => {
                         type="file"
                         style={{display:'none'}}
                     />
-                    <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                    <label htmlFor="imgNewCat" style={{marginTop:'20px'}}>
                         <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
                         Subir img
                         </Button>

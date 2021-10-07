@@ -83,6 +83,7 @@ const Informacion = () => {
 
     const [values, setValues] = React.useState({
         correo: auth.user.email,
+        nombre: auth.user.name,
         password: '',
         password_confirmation: '',
         telefono: auth.user.tel,
@@ -172,6 +173,25 @@ const Informacion = () => {
                                                         }
                                                     }}
                                                     type="email" />
+                                            </Grid>
+
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    id="nombre"
+                                                    onChange={handleChange('nombre')}
+                                                    required
+                                                    value={values.nombre}
+                                                    label="Nombre"
+                                                    className="input-edit-info"
+                                                    error={errors.nombre && values.nombre == true && true}
+                                                    helperText={values.error == true && errors.nombre}
+                                                    InputProps={{ className: classes.input, }}
+                                                    InputLabelProps={{
+                                                        classes: {
+                                                            root: classes.formTextLabel
+                                                        }
+                                                    }}
+                                                    type="text" />
                                             </Grid>
 
                                             <Grid item xs={12}>

@@ -5,7 +5,7 @@ import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/
 import Cart from '../layout/Cart'
 import Account from '../layout/Account'
 import SearchIcon from '@material-ui/icons/Search';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import MenuIcon from '@material-ui/icons/Menu';
 import Slide from '@material-ui/core/Slide';
 import { Inertia } from '@inertiajs/inertia'
@@ -20,6 +20,8 @@ import { IconButton } from '@material-ui/core';
 import teal from '@material-ui/core/colors/teal';
 // import DialogTitle from '@material-ui/core/DialogTitle';
 
+import Login from '../auth/Login';
+import Register from '../auth/Register';
 
 const useStyles = makeStyles((theme) => ({
     input: {
@@ -46,6 +48,17 @@ const useStyles = makeStyles((theme) => ({
         lineHeight: '19.5px',
         color: '#9E9E9E'
     },
+    button: {
+        backgroundColor: "transparent",
+        border: '0px',
+        padding: '0px',
+        fontFamily: 'Atma',
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: '18px',
+        lineHeight: '29px',
+        color: '#FFDE59',
+    }
 }));
 
 const theme = createMuiTheme({
@@ -76,6 +89,7 @@ export default function Navbar() {
     });
     const [NavDialog, setNavDialog] = React.useState(false);
     const [open, setOpen] = React.useState(false);
+    const { auth, flash } = usePage().props
 
 
     useEffect(() => {
@@ -140,6 +154,29 @@ export default function Navbar() {
         })
     }
 
+    //esto de aqui es para que funcione el login
+    const [dialogLogin, setDialogLogin] = React.useState(false);
+    const [dialogRegister, setDialogRegister] = React.useState(false);
+
+    const handleDialogLoginClose = () => {
+        setDialogLogin(false);
+    };
+
+    const handleOpenLogin = () => {
+        handleClose();
+        setDialogLogin(true);
+    }
+
+    const handleDialogRegisterClose = () => {
+        setDialogRegister(false);
+    };
+
+    const handleOpenRegister = () => {
+        handleClose();
+        setDialogLogin(false);
+        setDialogRegister(true);
+    }
+
     return (
         <div>
             <nav className="main-navbar" id="main-navbar" style={{ zIndex: 999 }}>
@@ -178,7 +215,7 @@ export default function Navbar() {
                         <IconButton aria-label="cart" className={classes.userbutton} onClick={handleClickOpen}>
                             <SearchIcon fontSize="large" style={{ color: '#1DA3A8', cursor: 'pointer' }} />
                         </IconButton>
-                        <Account />
+                        <Account abrirLogin={handleOpenLogin} />
                         <Cart bDialog={true} />
                     </div>
                 </div>
@@ -223,6 +260,15 @@ export default function Navbar() {
                         <li><InertiaLink href={route('recetas')}>RECETAS</InertiaLink></li>
                         <li><InertiaLink href={route('quienesSomos')}>QUIÉNES SOMOS</InertiaLink></li>
                         <li><InertiaLink href={route('preguntas')}>PREGUNTAS FRECUENTES</InertiaLink></li>
+                        {!auth.user ?
+                            <li><a onClick={handleOpenLogin}>INICIAR SESIÓN</a></li>
+                            :
+                            <>
+                                <li><a href={route('cuenta')}>MI CUENTA</a></li>
+                                <li><InertiaLink as="button" method='POST' href={route('logout')} className={classes.button}>CERRAR SESIÓN</InertiaLink></li>
+                            </>
+                        }
+
                     </ul>
                 </nav>
             </Slide>
@@ -236,6 +282,8 @@ export default function Navbar() {
                     </ul>
                 </nav>
             } */}
+            <Login dialog={dialogLogin} handleClose={handleDialogLoginClose} openRegister={handleOpenRegister} openLogin={handleOpenLogin} />
+            <Register dialog={dialogRegister} handleClose={handleDialogRegisterClose} />
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <form onSubmit={handleSubmit}>
                     {/* <DialogTitle className='busqueda_title'>Búscar</DialogTitle> */}

@@ -45,11 +45,13 @@ class CuentaController extends Controller
                 'correo' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . Auth::id()],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 'telefono' => ['required', 'numeric', 'digits: 10', 'unique:users,tel,' . Auth::id()],
+                'nombre' => ['required', 'string', 'max:255'],
             ]);
         } else {
             $validated = $request->validate([
                 'correo' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . Auth::id()],
                 'telefono' => ['required', 'numeric', 'digits: 10', 'unique:users,tel,' . Auth::id()],
+                'nombre' => ['required', 'string', 'max:255'],
             ]);
         }
         DB::beginTransaction();
@@ -57,6 +59,7 @@ class CuentaController extends Controller
             $usuario = User::findOrFail(Auth::id());
             $usuario->email = $request->correo;
             $usuario->tel = $request->telefono;
+            $usuario->name = $request->nombre;
             if ($request->password) {
                 $usuario->password = Hash::make($request->password);
             }
