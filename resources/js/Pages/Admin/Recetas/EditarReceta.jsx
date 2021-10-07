@@ -70,7 +70,7 @@ const theme = createMuiTheme({
     },
 });
 
-const EditarReceta = () => {
+const EditarReceta = ({receta, productos}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const classes = useStyles();
@@ -112,7 +112,24 @@ const EditarReceta = () => {
           value: '4',
           label: 'Lorem ipsum 4',
         },
-      ];
+    ];
+
+    const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+    };
+
+    const [values, setValues] = React.useState({
+        // imgProducto: null,
+        fotos:null,
+        nombre: receta.nombre || '',
+        descripcion: receta.descripcion || '',
+        link: receta.link || '',
+    });
+
+    // function handleSubmit(e) {
+    //     e.preventDefault()
+    //     Inertia.patch(route('admin.producto.patch',receta.id),values)
+    // }
 
     return ( 
         <>
@@ -143,7 +160,7 @@ const EditarReceta = () => {
                         <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                             <Grid item xs={12} style={{display:'flex',alignItems:'flex-end',flexWrap:'wrap'}}>
                                 <Grid item xs={12} md={6}>
-                                    <img src="/img/RECETAS/maruchan.jpg" className="img-receta-admin" />
+                                    <img src={"/storage/recetas/" + receta.url} className="img-receta-admin" />
                                 </Grid>
                                 <Grid className="grid-derecho-title-re" style={{paddingBottom:'5px'}}>
                                     <input
@@ -167,6 +184,7 @@ const EditarReceta = () => {
                                             id="nombre" 
                                             type="text"
                                             label="Nombre" 
+                                            required
                                             style={{width:'100%'}}
                                             InputProps={{className: classes.input,}}
                                             InputLabelProps={{
@@ -174,6 +192,8 @@ const EditarReceta = () => {
                                                     root: classes.formTextLabel
                                                 }
                                             }}
+                                            onChange={handleChange('nombre')} 
+                                            value={values.nombre}
                                         />
                                     </Grid>
                                     <Grid item xs={12} style={{marginBottom:'32px'}}>
@@ -181,6 +201,7 @@ const EditarReceta = () => {
                                             id="descripcion" 
                                             type="text"
                                             label="Descripción" 
+                                            required
                                             multiline
                                             style={{width:'100%'}}
                                             InputProps={{className: classes.input,}}
@@ -189,20 +210,42 @@ const EditarReceta = () => {
                                                     root: classes.formTextLabel
                                                 }
                                             }}
+                                            onChange={handleChange('descripcion')} 
+                                            value={values.descripcion}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} style={{marginBottom:'32px'}}>
+                                        <TextField 
+                                            id="link" 
+                                            type="url"
+                                            label="link" 
+                                            required
+                                            style={{width:'100%'}}
+                                            InputProps={{className: classes.input,}}
+                                            InputLabelProps={{
+                                                classes: {
+                                                    root: classes.formTextLabel
+                                                }
+                                            }}
+                                            onChange={handleChange('link')} 
+                                            value={values.link}
                                         />
                                     </Grid>
                                     <Grid item xs={12} style={{marginBottom:'32px'}}>
                                     {/* https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/react.html */}
-                                        <Grid item xs={12} className="txt-pre-ckeditor">Instrucciones</Grid>
+                                        <Grid item xs={12} className="txt-pre-ckeditor">Ingredientes</Grid>
                                         <CKEditor
                                             editor={ ClassicEditor }
-                                            data="<p>Hello from CKEditor 5!</p>"
+                                            data={receta.ingredientes}
                                             config={ {
                                                 language: 'es',
                                             } }
                                             onChange={ ( event, editor ) => {
                                                 const data = editor.getData();
-                                                console.log( { event, editor, data } );
+                                                setValues(values => ({
+                                                    ...values,
+                                                    contenido: data,
+                                                }))
                                             } }
                                         />
                                             
@@ -211,13 +254,16 @@ const EditarReceta = () => {
                                         <Grid item xs={12} className="txt-pre-ckeditor">Preparación</Grid>
                                         <CKEditor
                                             editor={ ClassicEditor }
-                                            data="<p>Hello from CKEditor 5!</p>"
+                                            data={receta.preparacion}
                                             config={ {
                                                 language: 'es',
                                             } }
                                             onChange={ ( event, editor ) => {
                                                 const data = editor.getData();
-                                                console.log( { event, editor, data } );
+                                                setValues(values => ({
+                                                    ...values,
+                                                    contenido: data,
+                                                }))
                                             } }
                                         />
                                             
@@ -235,74 +281,30 @@ const EditarReceta = () => {
                                 <Grid>Productos de comepasto</Grid>
                             </Grid>
 
-                            <Grid item xs={12} className="item-pro-receta" style={{flexWrap:'wrap'}}> 
-                                <Grid item xs={12} style={{display:'flex'}}>
-                                    <Grid item xs={2} className="img-pro-receta">
-                                        <img src="/img/PRODUCTOS/1.png" />
+                            {productos && productos.map(producto=>(
+                                <Grid item xs={12} className="item-pro-receta" style={{flexWrap:'wrap'}} key={producto.id + "producto"} id={producto.id}> 
+                                    <Grid item xs={12} style={{display:'flex'}}>
+                                        <Grid item xs={2} className="img-pro-receta">
+                                        <img src={"/storage/productos/" + producto.foto} />
+                                        </Grid>
+                                        <Grid item xs={10}>
+                                            <Tooltip title={producto.name} arrow placement="top-start">
+                                                <InertiaLink href={route('admin.producto',producto.id)} style={{textDecoration:'none'}}>
+                                                    <Typography xs={12} className="title-pro-receta" noWrap>
+                                                    {producto.name}
+                                                    </Typography>
+                                                </InertiaLink>
+                                            </Tooltip>
+                                            <Typography xs={12} className="type-pro-receta">{producto.categoria}</Typography>
+                                        </Grid>
                                     </Grid>
-                                    <Grid item xs={10}>
-                                        <Tooltip title="Nombre completo del producto" arrow placement="top-start">
-                                            <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none'}}>
-                                                <Typography xs={12} className="title-pro-receta" noWrap>
-                                                    lorem ipsum dolor sit amet consectetur...
-                                                </Typography>
-                                            </InertiaLink>
-                                        </Tooltip>
-                                        <Typography xs={12} className="type-pro-receta">Carníco, lorem ipsum</Typography>
-                                    </Grid>
-                                </Grid>
-                                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
-                                    <IconButton aria-label="delete">
-                                        <DeleteOutlineIcon />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
-
-                            <Grid item xs={12} className="item-pro-receta" style={{flexWrap:'wrap'}}> 
-                                <Grid item xs={12} style={{display:'flex'}}>
-                                    <Grid item xs={2} className="img-pro-receta">
-                                        <img src="/img/PRODUCTOS/2.png" />
-                                    </Grid>
-                                    <Grid item xs={10}>
-                                        <Tooltip title="Nombre completo del producto" arrow placement="top-start">
-                                            <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none'}}>
-                                                <Typography xs={12} className="title-pro-receta" noWrap>
-                                                    lorem ipsum dolor sit amet consectetur...
-                                                </Typography>
-                                            </InertiaLink>
-                                        </Tooltip>
-                                        <Typography xs={12} className="type-pro-receta">Carníco, lorem ipsum</Typography>
+                                    <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
+                                        <IconButton aria-label="delete">
+                                            <DeleteOutlineIcon />
+                                        </IconButton>
                                     </Grid>
                                 </Grid>
-                                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
-                                    <IconButton aria-label="delete">
-                                        <DeleteOutlineIcon />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
-
-                            <Grid item xs={12} className="item-pro-receta" style={{flexWrap:'wrap'}}> 
-                                <Grid item xs={12} style={{display:'flex'}}>
-                                    <Grid item xs={2} className="img-pro-receta">
-                                        <img src="/img/PRODUCTOS/3.png" />
-                                    </Grid>
-                                    <Grid item xs={10}>
-                                        <Tooltip title="Nombre completo del producto" arrow placement="top-start">
-                                            <InertiaLink href={route('admin.producto',1)} style={{textDecoration:'none'}}>
-                                                <Typography xs={12} className="title-pro-receta" noWrap>
-                                                    lorem ipsum dolor sit amet consectetur...
-                                                </Typography>
-                                            </InertiaLink>
-                                        </Tooltip>
-                                        <Typography xs={12} className="type-pro-receta">Carníco, lorem ipsum</Typography>
-                                    </Grid>
-                                </Grid>
-                                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
-                                    <IconButton aria-label="delete">
-                                        <DeleteOutlineIcon />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
+                            ))}
 
                             <Grid item xs={12} className="item-pro-receta"> 
                                 <Grid item xs={2} className="img-pro-receta">
@@ -353,18 +355,18 @@ const EditarReceta = () => {
         >
             <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas eliminar esta receta?"}</DialogTitle>
             <DialogActions>
-                <form noValidate autoComplete="off">
                 <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
                     <Grid className="btn-cancelar-op" onClick={handleCloseModal}>CANCELAR</Grid>
-                    <Button
+                    <InertiaLink
+                        href={route('admin.receta.eliminar',receta.id)}
+                        method="delete"
                         className="button-filter button-update btn-second"
-                        type="submit"
-                        startIcon={<DeleteOutlineIcon />}
+                        style={{display:'flex',alignItems:'center', textDecoration: 'none', borderRadius:'4px'}}
                     >
-                        Eliminar
-                    </Button>
+                        <DeleteOutlineIcon style={{marginRight:'8px', fontSize:'20px'}}></DeleteOutlineIcon>
+                        ELIMINAR
+                    </InertiaLink>
                 </Grid>
-                </form>
             </DialogActions>
         </Dialog>
     </>

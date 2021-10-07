@@ -70,7 +70,7 @@ const Receta = ({receta, productos}) => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <InertiaLink href={route('admin.receta.editar',1)} style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
+                                <InertiaLink href={route('admin.receta.editar',receta.id)} style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
                                 <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
                             </Menu>
                         </Grid>
