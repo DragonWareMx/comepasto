@@ -17,20 +17,23 @@ use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $productos=Product::
             leftJoin('brands','products.brand_id','=','brands.id')
             ->select('products.id','products.name as nombre','brands.name as marca', 'precio' , 'descuento', 'stock')
             ->selectRaw('(`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)) AS precio_descuento')
+            ->when($request->deleted == "true", function ($query, $deleted) {
+                return $query->onlyTrashed();
+            })
             ->get();
         
         $total=$productos->count();
 
-        $sinStock=$productos->where('stock','<=',0)->count();
+        $sinStock=Product::where('stock','<=',0)->count();
 
-        $stock=$productos->sum('stock');
+        $stock=Product::sum('stock');
 
-        $totalProductos=DB::table('products')->sum(DB::raw('stock * precio'));
+        $totalProductos=Product::sum(DB::raw('stock * (`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)) '));
         
             return Inertia::render('Admin/Productos/Productos',[
             'total'=>$total,
@@ -42,10 +45,65 @@ class AdminController extends Controller
     }
 
     public function producto($id){
-        $producto=Product::with('brand:name,id','type:id,name','category:id,name','img:product_id,url')->findOrFail($id);
+        $producto=Product::withTrashed()->with('brand:name,id','type:id,name','category:id,name','img:product_id,url')->findOrFail($id);
+
+        $recetas = Recipe::with('img:descripcion,url,recipe_id')
+                        ->whereHas('img')
+                        ->whereHas('product', function($query) use ($producto){
+                            return $query->where('products.id', $producto->id);
+                        })
+                        ->select('id', 'nombre')
+                        ->get();
+
         return Inertia::render('Admin/Productos/Producto',[
             'producto'=>$producto,
+            'recetas'=>$recetas
         ]);
+    }
+
+    public function ProductoDelete($id)
+    {
+        DB::beginTransaction();
+        try{
+            $product = Product::find($id);
+
+            if(!$product){
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar eliminar el producto, inténtelo más tarde.');
+            }
+
+            $product->delete();
+
+            DB::commit();
+            return \Redirect::route('admin.productos')->with('success','¡Producto eliminado con éxito!');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar eliminar el usuario, inténtelo más tarde.');
+        }
+    }
+
+    public function productoRestore($id)
+    {
+        DB::beginTransaction();
+        try{
+            $product = Product::withTrashed()->find($id);
+
+            if(!$product){
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el producto, inténtelo más tarde.');
+            }
+
+            $product->restore();
+
+            DB::commit();
+            return \Redirect::back()->with('success','¡Producto restaurado con éxito!');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el producto, inténtelo más tarde.');
+        }
     }
 
     public function productoEditar($id){

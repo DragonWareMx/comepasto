@@ -20,6 +20,8 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
   } from '@material-ui/data-grid';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
@@ -171,12 +173,35 @@ function escapeRegExp(value) {
 
 function QuickSearchToolbar(props) {
     const classes = useStylesSearch();
+
+    const [checked, setChecked] = React.useState(false);
+  
+    const handleChange = (event) => {
+      setChecked(event.target.checked);
+
+      Inertia.reload({data: {deleted: event.target.checked}})
+    };
   
     return (
       <div className={classes.root}>
         <div>
           <GridToolbarFilterButton />
+
+
           <GridToolbarDensitySelector />
+          <Grid style={{margin: 4}} >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={checked}
+                  onChange={handleChange}
+                  name="checkedB"
+                  color="primary"
+                />
+              }
+              label="Ver eliminados"
+            />
+          </Grid>
         </div>
         <TextField
           variant="standard"

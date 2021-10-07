@@ -55,7 +55,7 @@ const Receta = ({receta, productos}) => {
             <Grid container style={{paddingTop:'34px'}}>
                 {/* TOP PAGE, BACK BUTTON */}
                 <Grid item xs={12} className="top-admin">
-                    <InertiaLink href={route('admin.recetas')} className="title-page subtitle-page"><ArrowBackIcon style={{marginRight:'9px'}} />Recetas</InertiaLink>
+                    <button onClick={() => {history.back()}} className="title-page subtitle-page" style={{background: "none", border: "none", cursor: "pointer", padding: 0}} ><ArrowBackIcon style={{marginRight:'9px'}} />Recetas</button>
                 </Grid>
 
                 <Grid item xs={12} style={{marginBottom:'25px',display:'flex',flexWrap:'wrap',justifyContent:'space-between',alignItems:'flex-start'}}>

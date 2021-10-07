@@ -17,6 +17,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Alert from '@material-ui/lab/Alert';
+import Receta from '../../../components/Recetas/RecetaAdmin';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -24,9 +26,9 @@ import TuneIcon from '@material-ui/icons/Tune';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import UpdateIcon from '@material-ui/icons/Update';
 
-import Receta from '../../../components/Recetas/Receta';
+//import Receta from '../../../components/Recetas/Receta';
 
-const Producto = ({producto}) => {
+const Producto = ({producto, recetas}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -103,24 +105,42 @@ const Producto = ({producto}) => {
             <Grid container style={{paddingTop:'34px'}}>
                 {/* TOP PAGE, BACK BUTTON */}
                 <Grid item xs={12} className="top-admin">
-                    <InertiaLink href={route('admin.productos')} className="title-page subtitle-page"><ArrowBackIcon style={{marginRight:'9px'}} />Productos</InertiaLink>
+                    <button onClick={() => {history.back()}} className="title-page subtitle-page" style={{background: "none", border: "none", cursor: "pointer", padding: 0}} ><ArrowBackIcon style={{marginRight:'9px'}} />Productos</button>
                 </Grid>
+
+                {producto.deleted_at &&
+                    <Grid item xs={12} style={{marginBottom: 20}} >
+                        <Alert severity="warning" 
+                        action={
+                            <Button color="inherit" size="small" onClick={() => { Inertia.put(route('admin.producto.restore', producto.id)) }}>
+                                RESTAURAR
+                            </Button>
+                        }
+                        >
+                            Este producto ha sido eliminado.
+                        </Alert>
+                    </Grid>
+                }
 
                 <Grid item xs={12} style={{marginBottom:'25px',display:'flex',flexWrap:'wrap',justifyContent:'space-between'}}>
                     <Grid item xs={12} sm={12} md={8} className="grid-section">
                         <Grid item xs={12} className="section-top-grid">
                             <Grid>Información general</Grid>
-                            <MoreVertIcon onClick={handleClick} style={{cursor:'pointer'}} />
-                            <Menu
-                                id="options-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <InertiaLink href={route('admin.producto.editar',1)} style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
-                                <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
-                            </Menu>
+                            {!producto.deleted_at &&
+                            <>
+                                <MoreVertIcon onClick={handleClick} style={{cursor:'pointer'}} />
+                                <Menu
+                                    id="options-menu"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleClose}
+                                >
+                                    <InertiaLink href={route('admin.producto.editar',1)} style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
+                                    <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
+                                </Menu>
+                            </>
+                            }
                         </Grid>
                         {/* contenido */}
                         <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
@@ -196,8 +216,13 @@ const Producto = ({producto}) => {
                                 {/* <TextField className="input-stock" id="stock-product" label="Stock" type="number" InputLabelProps={{ shrink: true }} variant="outlined" /> */}
                                 <Grid item xs={12} style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                                     <Grid className="label-input-custom">STOCK</Grid>
-                                    <input type="number" className="input-stock" value={values.stock} onChange={handleChange('stock')}/>
+                                    {!producto.deleted_at ?
+                                        <input type="number" className="input-stock" value={values.stock} onChange={handleChange('stock')}/>
+                                        :
+                                        values.stock
+                                    }
                                 </Grid>
+                                {!producto.deleted_at &&
                                 <Grid item xs={12} style={{display:'flex', justifyContent:'flex-end'}}>
                                     <Button
                                         className="button-filter button-update"
@@ -207,6 +232,7 @@ const Producto = ({producto}) => {
                                         Actualizar
                                     </Button>
                                 </Grid>
+                                }
                             </form >
                         </Grid>
                     </Grid>
@@ -216,6 +242,19 @@ const Producto = ({producto}) => {
                             <Grid>Recetas con este producto</Grid>
                         </Grid>
                         <Grid style={{padding:'20px'}}>
+
+                        <Grid container direction="row" justify="flex-start" alignItems="stretch" spacing={3} style={{padding:'26px'}}>
+                            {recetas && recetas.map(receta=>(
+                                <Grid item xs={12} sm={4} id={receta.id} key={receta.id + "receta"}>
+                                    <Receta 
+                                        img={receta.img.length > 0 ? receta.img[0].url : "default.jpg"}
+                                        nombre={receta.nombre}
+                                        id={receta.id}
+                                        descripcion={receta.img[0].descripcion}
+                                    />
+                                </Grid>
+                            ))}       
+                        </Grid>
                             {/* Componente de recetas y carrousel */}
 
                             {/* <OwlCarousel 
@@ -263,13 +302,15 @@ const Producto = ({producto}) => {
                 <form noValidate autoComplete="off">
                 <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
                     <Grid className="btn-cancelar-op" onClick={handleCloseModal}>CANCELAR</Grid>
-                    <Button
-                        className="button-filter button-update btn-second"
-                        type="submit"
-                        startIcon={<DeleteOutlineIcon />}
-                    >
-                        Eliminar
-                    </Button>
+                    <InertiaLink href={route('admin.producto.delete', producto.id)} method="delete" style={{textDecoration: "none"}}>
+                        <Button
+                            className="button-filter button-update btn-second"
+                            type="submit"
+                            startIcon={<DeleteOutlineIcon />}
+                        >
+                            Eliminar
+                        </Button>
+                    </InertiaLink>
                 </Grid>
                 </form>
             </DialogActions>
