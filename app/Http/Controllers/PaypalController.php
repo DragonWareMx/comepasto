@@ -153,7 +153,7 @@ class PaypalController extends Controller
                 $venta->total = session()->get('total');
                 $venta->ganancia = 0;
                 $venta->tipo_entrega = session()->get('tipo_de_envio');
-                $venta->direccion = session()->get('direccion');
+                $venta->direccion = (session()->get('tipo_de_envio') == 'domicilio') ? session()->get('direccion') : '';
                 $venta->statusPago = true;
                 $venta->save();
 

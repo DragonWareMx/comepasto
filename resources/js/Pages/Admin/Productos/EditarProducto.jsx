@@ -173,8 +173,19 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
         }
     }
 
+    function loadImgs() {
+        var input = document.getElementById("fotos");
+        if (input.files && input.files[0]) {
+            setValues((values) => ({
+                ...values,
+                fotos: input.files,
+            }));
+        }
+    }
+
     const [values, setValues] = React.useState({
         imgProducto: null,
+        fotos:null,
         nombre: producto.name || '',
         presentacion: producto.presentacion || '',
         precio: producto.precio || '',
@@ -221,6 +232,28 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                 Subir img
                                 </Button>
                             </label>
+                            {/* VARIAS IMAGENES  */}
+                            <input
+                                    accept="image/*"
+                                    id="fotos"
+                                    type="file"
+                                    style={{ display: "none" }}
+                                    multiple
+                                    onChange={loadImgs}
+                                    />
+                                <label
+                                    htmlFor="fotos"
+                                    style={{ marginTop: "20px" }}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        className="button-add"
+                                        startIcon={<PublishIcon />}
+                                        component="span"
+                                    >
+                                        Subir imgs
+                                    </Button>
+                                </label>
                         </Grid>
                         <Grid item xs={12} sm={10} className="container-inputs">
                         <form onSubmit={handleSubmit} autoComplete="off">

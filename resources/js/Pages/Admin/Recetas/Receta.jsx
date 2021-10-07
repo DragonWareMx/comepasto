@@ -70,7 +70,7 @@ const Receta = ({receta, productos}) => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <InertiaLink href={route('admin.receta.editar',1)} style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
+                                <InertiaLink href={route('admin.receta.editar',receta.id)} style={{textDecoration:'none'}}> <MenuItem onClick={handleClose} className="option-menu">Editar <TuneIcon style={{marginleft:'5px', fontSize:'20px'}} /></MenuItem></InertiaLink>
                                 <MenuItem  onClick={handleClickOpenModal} className="option-menu">Eliminar <DeleteOutlineIcon style={{marginLeft:'5px', fontSize:'20px'}} /></MenuItem>
                             </Menu>
                         </Grid>
@@ -95,10 +95,16 @@ const Receta = ({receta, productos}) => {
                                     {receta.ingredientes && <div dangerouslySetInnerHTML={{ __html: receta.ingredientes }} />}
                                     </Grid>
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} style={{marginBottom:'36px'}}>
                                 <Grid item xs={12} className="title-item-info t-i-i-pedidos">PREPARACIÓN</Grid>
                                 <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>
                                     {receta.preparacion && <div dangerouslySetInnerHTML={{ __html: receta.preparacion }} />}
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Grid item xs={12} className="title-item-info t-i-i-pedidos">LINK</Grid>
+                                <Grid item xs={12}className="item-info-txt i-i-t-pedidos mg-0" style={{padding:'0px'}}>
+                                    <a href={receta.link} target="_blank" style={{color:"#1DA3A8"}}>{receta.link}</a>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -141,18 +147,18 @@ const Receta = ({receta, productos}) => {
         >
             <DialogTitle  className="title-dialog">{"¿Estás seguro que deseas eliminar esta receta?"}</DialogTitle>
             <DialogActions>
-                <form noValidate autoComplete="off">
                 <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
                     <Grid className="btn-cancelar-op" onClick={handleCloseModal}>CANCELAR</Grid>
-                    <Button
+                    <InertiaLink
+                        href={route('admin.receta.eliminar',receta.id)}
+                        method="delete"
                         className="button-filter button-update btn-second"
-                        type="submit"
-                        startIcon={<DeleteOutlineIcon />}
+                        style={{display:'flex',alignItems:'center', textDecoration: 'none', borderRadius:'4px'}}
                     >
-                        Eliminar
-                    </Button>
+                        <DeleteOutlineIcon style={{marginRight:'8px', fontSize:'20px'}}></DeleteOutlineIcon>
+                        ELIMINAR
+                    </InertiaLink>
                 </Grid>
-                </form>
             </DialogActions>
         </Dialog>
     </>

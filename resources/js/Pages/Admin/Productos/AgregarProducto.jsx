@@ -180,8 +180,19 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
         }
     }
 
+    function loadImgs() {
+        var input = document.getElementById("fotos");
+        if (input.files && input.files[0]) {
+            setValues((values) => ({
+                ...values,
+                fotos: input.files,
+            }));
+        }
+    }
+
     const [values, setValues] = React.useState({
         foto: null,
+        fotos: null,
         nombre: "",
         presentacion: "",
         precio: 0.00,
@@ -281,6 +292,29 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                         component="span"
                                     >
                                         Subir img
+                                    </Button>
+                                </label>
+
+                                {/* VARIAS IMAGENES  */}
+                                <input
+                                    accept="image/*"
+                                    id="fotos"
+                                    type="file"
+                                    style={{ display: "none" }}
+                                    multiple
+                                    onChange={loadImgs}
+                                    />
+                                <label
+                                    htmlFor="fotos"
+                                    style={{ marginTop: "20px" }}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        className="button-add"
+                                        startIcon={<PublishIcon />}
+                                        component="span"
+                                    >
+                                        Subir imgs
                                     </Button>
                                 </label>
 
