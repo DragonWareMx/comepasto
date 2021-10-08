@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'Leonardo López Castillo',
             'email' =>  'test@dragonware.com.mx',
+            'rol' => 'admin',
             'password' => Hash::make('viledruid9000'),
             'direccion' =>  'Enrique Segoviano',
         ]);
