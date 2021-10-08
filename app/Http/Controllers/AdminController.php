@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Recipe;
+use App\Models\Img;
 use Illuminate\Support\Facades\DB;
 use App\Models\Brand;
 use App\Models\Type;
@@ -439,6 +440,60 @@ class AdminController extends Controller
             DB::rollBack();
             $status = "Hubo un problema al procesar tu solicitud. Inténtalo más tarde";
             return redirect()->route('admin.recetas')->with('error','Ocurrió un problema, vuelva a intentarlo más tarde.');
+        }
+    }
+
+    public function recetaPatch(Request $request, $id){
+        // dd($request);
+        $validated = $request->validate([
+            'imgProducto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
+            'nombre' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
+            'descripcion' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
+            'link' => 'required|url',
+            'ingredientes' => 'required',
+        ]);
+
+        //COMIENZA LA TRANSACCION
+        DB::beginTransaction();
+
+        try {
+            
+            $receta = Recipe::findOrFail($id);
+
+            $receta->nombre = $request->nombre;
+            $receta->ingredientes = $request->ingredientes;
+            $receta->preparacion = $request->preparacion;
+            $receta->link = $request->link;
+
+            $recetaImg = Img::where('recipe_id',$id)->first();
+
+            $recetaImg->descripcion = $request->descripcion;
+            
+            if(!is_null($request->file('imgProducto'))){
+                
+                // Eliminar la foto del servidor
+                // Cambiar el nombre de la img con carbon?
+                // Guardar la img en el server
+                // Guardar el url en la bd
+                //guarda la foto
+                    \Storage::delete('public/recetas/'.$recetaImg->url);
+                    $NewImg = $request->file('imgProducto')->store('public/recetas');
+                    $NewImg->url = $request->file('imgProducto')->hashName();
+                
+            }
+
+            $receta->save();
+            $recetaImg->save();
+            DB::commit();
+
+        //REDIRECCIONA A LA VISTA DE RECETA
+        return \Redirect::route('admin.receta',$id)->with('success', 'La receta ha sido actualizada con éxito!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if($NewImg)
+                \Storage::delete($NewImg);
+
+            return \Redirect::route('admin.receta',$id)->with('error', 'Ha ocurrido un error al intentar actualizar la receta, inténtelo más tarde.');
         }
     }
 }
