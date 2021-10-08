@@ -103,10 +103,12 @@ Route::post('/admin/preguntas/eliminar/{id}', [App\Http\Controllers\AdminControl
 Route::post('/admin/preguntas/create', [App\Http\Controllers\AdminController::class, 'preguntasCreate'])->name('admin.preguntas.create');
 
 Route::get('/admin/banners', [App\Http\Controllers\AdminController::class, 'banners'])->name('admin.banners');
+Route::post('/admin/banners', [App\Http\Controllers\AdminController::class, 'newBanner'])->name('admin.banners.new');
+Route::post('/admin/banners/ordenar', [App\Http\Controllers\AdminController::class, 'ordenarBanner'])->name('admin.banners.ordenar');
+Route::delete('/admin/banners/eliminar/{id}', [App\Http\Controllers\AdminController::class, 'deleteBanner'])->name('admin.banners.delete');
+Route::post('/admin/banners/recienborrados', [App\Http\Controllers\AdminController::class, 'updateBanner'])->name('admin.banners.update');
 
 Route::get('/admin/recetas', [App\Http\Controllers\AdminController::class, 'recetas'])->name('admin.recetas');
 Route::get('/admin/recetas/{id}', [App\Http\Controllers\AdminController::class, 'receta'])->name('admin.receta');
 Route::get('/admin/recetas/editar/{id}', [App\Http\Controllers\AdminController::class, 'recetaEditar'])->name('admin.receta.editar');
 Route::get('/admin/recetas-agregar', [App\Http\Controllers\AdminController::class, 'recetasAgregar'])->name('admin.recetas.agregar');
-
-

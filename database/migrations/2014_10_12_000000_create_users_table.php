@@ -19,10 +19,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('direccion',250);
-            $table->string('tel',10)->unique()->nullable();
-            $table->string('fb',250)->nullable();
-            $table->enum('preferPayment',['paypal','stripe','efectivo','transferencia'])->nullable();//forma de pago preferida
+            $table->string('direccion', 250);
+            $table->string('tel', 10)->unique()->nullable();
+            $table->string('fb', 250)->nullable();
+            $table->enum('rol', ['cliente', 'admin'])->default('cliente');
+            $table->enum('preferPayment', ['paypal', 'stripe', 'efectivo', 'transferencia'])->nullable(); //forma de pago preferida
             $table->rememberToken();
             $table->timestamps();
         });

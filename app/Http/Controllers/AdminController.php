@@ -15,9 +15,16 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Question;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('soyadmin');
+    }
+
     public function index()
     {
         $productos = Product::leftJoin('brands', 'products.brand_id', '=', 'brands.id')
@@ -266,10 +273,85 @@ class AdminController extends Controller
         }
     }
 
-    public function banners()
+    public function banners(Request $request)
     {
-        $banners = Banner::get();
+        if ($request->wantsJson()) {
+            $banner = Banner::orderBy('created_at', 'desc')->first(['id', 'url', 'orden']);
+            return $banner;
+        }
+        $banners = Banner::orderBy('orden', 'asc')->get(['id', 'url', 'orden']);
+
         return Inertia::render('Admin/Banners/Banners', ['banners' => $banners]);
+    }
+
+    public function newBanner(Request $request)
+    {
+        if ($request->file('foto')) {
+            DB::beginTransaction();
+            try {
+                $file = request()->file('foto');
+                $imageName = time() . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('banners', $imageName, 'public');
+                $ultimo = Banner::orderBy('orden', 'desc')->first();
+                $banner = new Banner();
+                $banner->url = $imageName;
+                $banner->orden = $ultimo->orden + 1;
+                $banner->brand_id = 1;
+                $banner->activo = 1;
+                $banner->save();
+                DB::commit();
+                return redirect()->back()->with('success', 'Banner agregado con éxito!');
+            } catch (\Throwable $th) {
+                //throw $th;
+                DB::rollBack();
+                unlink(public_path('/img/carrousel/' . $imageName));
+                return redirect()->back()->with('error', 'Ocurrió un error, por favor intentálo de nuevo.')->withErrors('eumiki');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Imágen no válida, intentálo de nuevo!')->withErrors('eu miki');
+    }
+
+    public function deleteBanner($id)
+    {
+        DB::beginTransaction();
+        try {
+            $banner = Banner::findOrFail($id);
+            Storage::disk('public')->delete('banners/' . $banner->url);
+            $banner->delete();
+            DB::commit();
+            return redirect()->back()->with('success', 'Banner borrado con éxito!');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocurrió un error, por favor intentálo de nuevo.')->withErrors('eumiki');
+        }
+    }
+
+    public function updateBanner()
+    {
+        $banner = Banner::orderBy('orden', 'asc')->get(['id', 'url', 'orden']);
+        return $banner;
+    }
+
+    public function ordenarBanner(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $i = 1;
+            foreach ($request->cards as $card) {
+                $banner = Banner::findOrFail($card['id']);
+                $banner->orden = $i;
+                $banner->save();
+                $i++;
+            }
+            DB::commit();
+            return redirect()->back()->with('success', 'Banner ordenado con éxito!');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocurrió un error, por favor intentálo de nuevo.')->withErrors('eumiki');
+        }
     }
 
     public function recetas(Request $request)
