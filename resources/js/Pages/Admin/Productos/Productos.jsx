@@ -182,9 +182,8 @@ function QuickSearchToolbar(props) {
       <div className={classes.root}>
         <div>
           <GridToolbarFilterButton />
-
-
           <GridToolbarDensitySelector />
+
           <Grid style={{margin: 4}} >
             <FormControlLabel
               control={
@@ -198,6 +197,7 @@ function QuickSearchToolbar(props) {
               label="Ver eliminados"
             />
           </Grid>
+          
         </div>
         <TextField
           variant="standard"

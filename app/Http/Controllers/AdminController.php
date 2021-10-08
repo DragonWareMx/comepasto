@@ -26,7 +26,7 @@ class AdminController extends Controller
         $this->middleware('soyadmin');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $productos = Product::leftJoin('brands', 'products.brand_id', '=', 'brands.id')
             ->select('products.id', 'products.name as nombre', 'brands.name as marca', 'precio', 'descuento', 'stock')
@@ -36,7 +36,7 @@ class AdminController extends Controller
             })
             ->get();
         
-            $total = $productos->count();
+        $total = $productos->count();
 
         $sinStock=Product::where('stock','<=',0)->count();
 
@@ -227,27 +227,36 @@ class AdminController extends Controller
         }
     }
 
-    public function pedidos()
+    public function pedidos(Request $request)
     {
         $pedidos = Sale::leftJoin('users', 'sales.client_id', '=', 'users.id')
-            ->select('sales.id', 'sales.created_at as fecha', 'users.name as cliente', 'sales.total as total', 'tipo_entrega as entrega','sales.status')
+            ->select('sales.id', 'sales.created_at as fecha', 'users.name as cliente', 'sales.total as total', 'tipo_entrega as entrega','sales.status', 'sales.costoEnvio', 'sales.formaPago')
             ->orderBy('id', 'DESC')
+            ->when($request->deleted == "true", function ($query, $deleted) {
+                return $query->onlyTrashed();
+            })
             ->get();
 
         $total = $pedidos->count();
 
-        $ganancias = $pedidos->sum('total');
+        $ganancias = Sale::sum('total');
+
+        $pedidos_completados = Sale::where('status', 'entregado')->count();
+
+        $pedidos_pendientes = Sale::where('status', '!=','entregado')->count();
 
         return Inertia::render('Admin/Pedidos/Pedidos', [
             'total' => $total,
             'ganancias' => $ganancias,
             'pedidos' => $pedidos,
+            'pedidos_completados' => $pedidos_completados,
+            'pedidos_pendientes' => $pedidos_pendientes,
         ]);
     }
 
     public function pedido($id)
     {
-        $pedido = Sale::with('client', 'product')
+        $pedido = Sale::withTrashed()->with('client', 'product')
             ->findOrFail($id);
         return Inertia::render('Admin/Pedidos/Pedido', [
             'pedido' => $pedido,
@@ -294,9 +303,31 @@ class AdminController extends Controller
             DB::commit();
             return \Redirect::route('admin.pedidos')->with('success', 'El pedido se ha eliminado con éxito!');
         } catch (\Throwable $th) {
-            dd($th);
             DB::rollback();
             return \Redirect::back()->with('error', 'Ocurrió un problema, vuelva a intentarlo más tarde.');
+        }
+    }
+
+    public function pedidoRestore($id)
+    {
+        DB::beginTransaction();
+        try{
+            $pedido = Sale::withTrashed()->find($id);
+
+            if(!$pedido){
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el pedido, inténtelo más tarde.');
+            }
+
+            $pedido->restore();
+
+            DB::commit();
+            return \Redirect::back()->with('success','¡Pedido restaurado con éxito!');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el pedido, inténtelo más tarde.');
         }
     }
 
