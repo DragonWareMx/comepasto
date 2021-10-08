@@ -435,7 +435,7 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                 />
                             </Grid>
 
-                            <Grid className="input-admin-100" style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px',paddingRight:'0px',marginTop:'20px'}}>
+                            <Grid className="input-admin-100" style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'0px 0px 0px 0px',marginBottom:'10px',marginTop:'20px'}}>
                                 <InertiaLink href={route('admin.productos')} className="btn-cancelar-op">CANCELAR</InertiaLink>
                                 <Button
                                     className="button-filter button-update btn-second"
