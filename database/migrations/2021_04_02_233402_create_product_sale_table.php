@@ -22,9 +22,11 @@ class CreateProductSaleTable extends Migration
             $table->unsignedDecimal('descuento')->default(0.0);
             $table->unsignedInteger('cantidad');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
+
         });
     }
 
