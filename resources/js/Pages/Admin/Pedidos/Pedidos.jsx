@@ -32,6 +32,7 @@ import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlin
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -103,14 +104,21 @@ const columns = [
 {
     field: 'fecha',
     headerName: 'FECHA',
-    width: 200,
+    width: 160,
     editable: false,
     disableColumnSelector:false,
 },
 {
     field: 'cliente',
     headerName: 'CLIENTE',
-    width: 350,
+    width: 200,
+    editable: false,
+},
+{
+    field: 'status',
+    headerName: 'ESTATUS',
+    // type: 'number',
+    width: 200,
     editable: false,
 },
 {
@@ -125,6 +133,17 @@ const columns = [
     width: 180,
     editable: false,
 },
+{
+    field: "",
+    headerName: "EDITAR",
+    flex: 0.5,
+    width:50,
+    renderCell: (params) => (
+      <InertiaLink href={route('admin.pedido', params.row.id)} style={{textDecoration: 'none', color: 'gray'}}><EditIcon/></InertiaLink>
+    ),
+    sortable: false,
+    editable: false,
+  }
 ]; 
 
 function escapeRegExp(value) {
