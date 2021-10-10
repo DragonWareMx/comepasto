@@ -99,6 +99,7 @@ Route::get('/admin/pedidos-agregar', [App\Http\Controllers\AdminController::clas
 Route::patch('/admin/pedidos/{id}/estatus', [App\Http\Controllers\AdminController::class, 'pedidoEstatus'])->name('admin.pedido.patch');
 Route::patch('/admin/pedidos/{id}/pagado', [App\Http\Controllers\AdminController::class, 'pedidoPagado'])->name('admin.pedido.pagado');
 Route::delete('/admin/pedidos/{id}/delete', [App\Http\Controllers\AdminController::class, 'pedidoDelete'])->name('admin.pedido.delete');
+Route::put('/admin/pedidos/{id}/restore', [App\Http\Controllers\AdminController::class, 'pedidoRestore'])->name('admin.pedido.restore');
 
 Route::get('/admin/clientes', [App\Http\Controllers\AdminController::class, 'clientes'])->name('admin.clientes');
 Route::get('/admin/clientes/{id}', [App\Http\Controllers\AdminController::class, 'cliente'])->name('admin.cliente');
@@ -108,6 +109,10 @@ Route::post('/admin/preguntas/eliminar/{id}', [App\Http\Controllers\AdminControl
 Route::post('/admin/preguntas/create', [App\Http\Controllers\AdminController::class, 'preguntasCreate'])->name('admin.preguntas.create');
 
 Route::get('/admin/banners', [App\Http\Controllers\AdminController::class, 'banners'])->name('admin.banners');
+Route::post('/admin/banners', [App\Http\Controllers\AdminController::class, 'newBanner'])->name('admin.banners.new');
+Route::post('/admin/banners/ordenar', [App\Http\Controllers\AdminController::class, 'ordenarBanner'])->name('admin.banners.ordenar');
+Route::delete('/admin/banners/eliminar/{id}', [App\Http\Controllers\AdminController::class, 'deleteBanner'])->name('admin.banners.delete');
+Route::post('/admin/banners/recienborrados', [App\Http\Controllers\AdminController::class, 'updateBanner'])->name('admin.banners.update');
 
 Route::get('/admin/recetas', [App\Http\Controllers\AdminController::class, 'recetas'])->name('admin.recetas');
 Route::get('/admin/recetas/{id}', [App\Http\Controllers\AdminController::class, 'receta'])->name('admin.receta');
