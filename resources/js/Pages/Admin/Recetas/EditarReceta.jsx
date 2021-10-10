@@ -128,6 +128,15 @@ const EditarReceta = ({receta, productos}) => {
             };
             reader.readAsDataURL(input.files[0]);
         }
+
+        // var inputFotos = document.getElementById('foto');
+        // if (inputFotos.files && inputFotos.files[0]) {
+        //     setValues(values => ({
+        //         ...values,
+        //         foto: inputFotos.files[0],
+        //     }))
+        //     document.getElementById("profileImage").src = window.URL.createObjectURL(inputFotos.files[0]);
+        // }
     }
 
     const handleChange = (prop) => (event) => {

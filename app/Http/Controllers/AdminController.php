@@ -444,7 +444,7 @@ class AdminController extends Controller
     }
 
     public function recetaPatch(Request $request, $id){
-        // dd($request);
+        dd($request);
         $validated = $request->validate([
             'imgProducto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
             'nombre' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
