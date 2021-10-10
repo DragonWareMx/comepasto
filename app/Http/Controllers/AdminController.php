@@ -558,14 +558,19 @@ class AdminController extends Controller
     }
 
     public function recetaPatch(Request $request, $id){
-        dd($request);
+        // dd($request);
         $validated = $request->validate([
-            'imgProducto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
+            'foto' => ['nullable','image','mimes:jpeg,png,jpg,gif','max:51200'],
+            // 'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
             'nombre' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
             'descripcion' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
             'link' => 'required|url',
             'ingredientes' => 'required',
         ]);
+        // dd("aqui");
+
+        //variables para comprobar la subida de archivos
+        $NewImg = null; 
 
         //COMIENZA LA TRANSACCION
         DB::beginTransaction();
@@ -583,7 +588,7 @@ class AdminController extends Controller
 
             $recetaImg->descripcion = $request->descripcion;
             
-            if(!is_null($request->file('imgProducto'))){
+            if(!is_null($request->file('foto'))){
                 
                 // Eliminar la foto del servidor
                 // Cambiar el nombre de la img con carbon?
@@ -591,8 +596,8 @@ class AdminController extends Controller
                 // Guardar el url en la bd
                 //guarda la foto
                     \Storage::delete('public/recetas/'.$recetaImg->url);
-                    $NewImg = $request->file('imgProducto')->store('public/recetas');
-                    $NewImg->url = $request->file('imgProducto')->hashName();
+                    $NewImg = $request->file('foto')->store('public/recetas');
+                    $NewImg->url = $request->file('foto')->hashName();
                 
             }
 

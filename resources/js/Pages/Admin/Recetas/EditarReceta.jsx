@@ -22,6 +22,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import '@ckeditor/ckeditor5-build-classic/build/translations/es';
 import IconButton from '@material-ui/core/IconButton';
+import Alert from '@material-ui/lab/Alert';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -71,6 +72,7 @@ const theme = createMuiTheme({
 });
 
 const EditarReceta = ({receta, productos}) => {
+    const { errors } = usePage().props;
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const classes = useStyles();
@@ -115,28 +117,19 @@ const EditarReceta = ({receta, productos}) => {
     ];
 
     function readURL() {
-        var input=document.getElementById('imgProducto');
+        var input = document.getElementById("foto");
         if (input.files && input.files[0]) {
-            setValues(values => ({
+            setValues((values) => ({
                 ...values,
-                imgProducto: input.files[0],
-            }))
+                foto: input.files[0],
+            }));
             var reader = new FileReader();
-            var preview = document.getElementById('imgContainer');
+            var preview = document.getElementById("imgContainer");
             reader.onload = function (e) {
                 preview.src = e.target.result;
             };
             reader.readAsDataURL(input.files[0]);
         }
-
-        // var inputFotos = document.getElementById('foto');
-        // if (inputFotos.files && inputFotos.files[0]) {
-        //     setValues(values => ({
-        //         ...values,
-        //         foto: inputFotos.files[0],
-        //     }))
-        //     document.getElementById("profileImage").src = window.URL.createObjectURL(inputFotos.files[0]);
-        // }
     }
 
     const handleChange = (prop) => (event) => {
@@ -144,17 +137,26 @@ const EditarReceta = ({receta, productos}) => {
     };
 
     const [values, setValues] = React.useState({
-        imgProducto: null,
+        foto: null,
         nombre: receta.nombre || '',
         descripcion: receta.descripcion || '',
         link: receta.link || '',
         ingredientes: receta.ingredientes || '',
         preparacion: receta.preparacion || '',
+        error: false,
     });
 
     function handleSubmit(e) {
-        e.preventDefault()
-        Inertia.patch(route('admin.receta.patch',receta.id),values)
+        e.preventDefault();
+
+        Inertia.patch(route("admin.receta.patch",receta.id), values, {
+            onError: () => {
+                setValues((values) => ({
+                    ...values,
+                    error: true,
+                }));
+            },
+        });
     }
 
     return ( 
@@ -166,7 +168,14 @@ const EditarReceta = ({receta, productos}) => {
                     <InertiaLink href={route('admin.recetas')} className="title-page subtitle-page"><ArrowBackIcon style={{marginRight:'9px'}} />Recetas</InertiaLink>
                 </Grid>
 
-                <form onSubmit={handleSubmit} autoComplete="off">
+                <Grid item xs={12}>
+                    {
+                        errors.foto &&
+                        <Alert severity="error" style={{marginBottom: 10}}>{errors.foto}</Alert> 
+                    }
+                    </Grid>
+
+                <form onSubmit={handleSubmit} autoComplete="off" encType="multipart/form-data">
                 <Grid item xs={12} style={{marginBottom:'25px',display:'flex',flexWrap:'wrap',justifyContent:'space-between',alignItems:'flex-start'}}>
                     <Grid item xs={12} sm={12} md={8} className="grid-section">
                         <Grid item xs={12} className="section-top-grid">
@@ -191,12 +200,12 @@ const EditarReceta = ({receta, productos}) => {
                                 <Grid className="grid-derecho-title-re" style={{paddingBottom:'5px'}}>
                                     <input
                                         accept="image/*"
-                                        id="imgProducto"
+                                        id="foto"
                                         type="file"
-                                        style={{display:'none'}}
+                                        style={{ display: "none" }}
                                         onChange={readURL}
-                                    />
-                                    <label htmlFor="imgProducto" style={{marginTop:'20px'}}>
+                                        />
+                                    <label htmlFor="foto" style={{marginTop:'20px'}}>
                                         <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
                                         Editar
                                         </Button>
@@ -221,6 +230,15 @@ const EditarReceta = ({receta, productos}) => {
                                             }}
                                             onChange={handleChange('nombre')} 
                                             value={values.nombre}
+                                            error={
+                                                errors.nombre &&
+                                                values.error == true &&
+                                                true
+                                            }
+                                            helperText={
+                                                values.error == true &&
+                                                errors.nombre
+                                            }
                                         />
                                     </Grid>
                                     <Grid item xs={12} style={{marginBottom:'32px'}}>
@@ -239,6 +257,15 @@ const EditarReceta = ({receta, productos}) => {
                                             }}
                                             onChange={handleChange('descripcion')} 
                                             value={values.descripcion}
+                                            error={
+                                                errors.descripcion &&
+                                                values.error == true &&
+                                                true
+                                            }
+                                            helperText={
+                                                values.descripcion == true &&
+                                                errors.nombre
+                                            }
                                         />
                                     </Grid>
                                     <Grid item xs={12} style={{marginBottom:'32px'}}>
@@ -256,6 +283,15 @@ const EditarReceta = ({receta, productos}) => {
                                             }}
                                             onChange={handleChange('link')} 
                                             value={values.link}
+                                            error={
+                                                errors.link &&
+                                                values.error == true &&
+                                                true
+                                            }
+                                            helperText={
+                                                values.error == true &&
+                                                errors.link
+                                            }
                                         />
                                     </Grid>
                                     <Grid item xs={12} style={{marginBottom:'32px'}}>
