@@ -27,6 +27,7 @@ class CreateSalesTable extends Migration
             $table->boolean('statusPago')->default(false);
             $table->enum('status', ['pendiente', 'en camino', 'entregado'])->default('pendiente');
             $table->text('direccion')->nullable();
+            $table->softDeletes();
 
             $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
         });

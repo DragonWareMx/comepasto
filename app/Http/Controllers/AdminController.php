@@ -222,7 +222,7 @@ class AdminController extends Controller
     public function pedidos()
     {
         $pedidos = Sale::leftJoin('users', 'sales.client_id', '=', 'users.id')
-            ->select('sales.id', 'sales.created_at as fecha', 'users.name as cliente', 'sales.total as total', 'tipo_entrega as entrega')
+            ->select('sales.id', 'sales.created_at as fecha', 'users.name as cliente', 'sales.total as total', 'tipo_entrega as entrega','sales.status')
             ->orderBy('id', 'DESC')
             ->get();
 

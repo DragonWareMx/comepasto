@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import InputBase from '@material-ui/core/InputBase';
@@ -99,7 +100,7 @@ const columns = [
 {
     field: 'nombre',
     headerName: 'NOMBRE',
-    width: 350,
+    width: 220,
     editable: false,
     disableColumnSelector:false,
 },
@@ -129,6 +130,17 @@ const columns = [
     width: 180,
     editable: false,
 },
+{
+  field: "",
+  headerName: "EDITAR",
+  flex: 0.5,
+  width:50,
+  renderCell: (params) => (
+    <InertiaLink href={route('admin.cliente', params.row.id)} style={{textDecoration: 'none', color: 'gray'}}><EditIcon/></InertiaLink>
+  ),
+  sortable: false,
+  editable: false,
+}
 ];
 
   function escapeRegExp(value) {
