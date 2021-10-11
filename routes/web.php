@@ -92,6 +92,7 @@ Route::get('/admin/productos-agregar', [App\Http\Controllers\AdminController::cl
 Route::post('/admin/productos-agregar', [App\Http\Controllers\AdminController::class, 'storeProducto'])->name('admin.producto.store');
 Route::post('/admin/productos/{id}/inventario', [App\Http\Controllers\AdminController::class, 'productoInventario'])->name('admin.producto.inventario');
 Route::patch('/admin/productos/patch/{id}', [App\Http\Controllers\AdminController::class, 'productoPatch'])->name('admin.producto.patch');
+Route::post('/admin/cosa/store', [App\Http\Controllers\AdminController::class, 'storeCosa'])->name('admin.cosa.store');
 
 Route::get('/admin/pedidos', [App\Http\Controllers\AdminController::class, 'pedidos'])->name('admin.pedidos');
 Route::get('/admin/pedidos/{id}', [App\Http\Controllers\AdminController::class, 'pedido'])->name('admin.pedido');

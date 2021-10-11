@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Question;
 use Illuminate\Support\Str;
+use App\Models\Supplier;
 
 class AdminController extends Controller
 {
@@ -440,5 +441,46 @@ class AdminController extends Controller
             $status = "Hubo un problema al procesar tu solicitud. Inténtalo más tarde";
             return redirect()->route('admin.recetas')->with('error','Ocurrió un problema, vuelva a intentarlo más tarde.');
         }
+    }
+
+    public function storeCosa(Request $request){
+        $validated = $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
+            'nombre' => ['required', 'max:100', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
+            'cosa' => ['required','in:marca,categoria,tipo']
+        ]);
+
+        
+        //COMIENZA LA TRANSACCION
+        DB::beginTransaction();
+
+        //variables para comprobar la subida de archivos
+        $foto = null;
+
+        try {
+            if($request->cosa=='marca'){
+                $supplier= new Supplier();
+                $supplier->nombre=$request->nombre;
+                $supplier->responsable=Auth::user()->email;
+                $supplier->save();
+
+                $brand= new Brand();
+                $brand->name=$request->nombre;
+                //guarda la foto
+                $foto = $request->file('foto')->store('public/img/logos');
+                $brand->logo = $request->file('foto')->hashName();
+                $brand->supplier_id=$brand->id;
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            //si hay foto se elimina del servidor
+            if ($foto) {
+                \Storage::delete($foto);
+            }
+
+            return \Redirect::back()->with('error', 'Ha ocurrido un error, inténtelo más tarde.');
+        }
+
     }
 }
