@@ -92,7 +92,7 @@ const theme = createMuiTheme({
     },
 });
 
-const AgregarCosa = ({cosa, foto}) => {
+const AgregarCosa = ({cosa, foto, link}) => {
 
     const inputFoto= useRef(null);
     const containerFoto=useRef(null);
@@ -136,6 +136,7 @@ const AgregarCosa = ({cosa, foto}) => {
     const [values, setValues] = React.useState({
         foto: null,
         nombre:'',
+        link:'',
         cosa:cosa || '',
     });
 
@@ -144,7 +145,17 @@ const AgregarCosa = ({cosa, foto}) => {
 
         Inertia.post(route("admin.cosa.store"), values, {
             onError: () => {},
-            onSuccess:()=>{}
+            onSuccess:()=>{
+                setOpen(false)
+                if(cosa=='marca' || cosa=='categoria'){
+                    var preview = containerFoto.current
+                    preview.src = '/img/icons/imgDefault.png'
+                    setValues({...values, link : '',nombre : '',foto : null})
+                }
+                else
+                    setValues({...values, nombre : '',foto : null})
+                
+            }
         });
     }
 
@@ -195,6 +206,30 @@ const AgregarCosa = ({cosa, foto}) => {
                                     onChange={handleChange('nombre')}
                                 />
                             </Grid>
+                            {link &&
+                                <Grid
+                                item
+                                xs={12}
+                                style={{ marginBottom: "20px" }}
+                                >
+                                    <TextField
+                                        id="link"
+                                        type="text"
+                                        label="Link"
+                                        style={{ width: "100%" }}
+                                        InputProps={{
+                                            className: classes.input,
+                                        }}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.formTextLabel,
+                                            },
+                                        }}
+                                        value={values.link}
+                                        onChange={handleChange('link')}
+                                    />
+                                </Grid>
+                            }
                             {foto &&
                             <Grid
                             item

@@ -445,7 +445,6 @@ class AdminController extends Controller
 
     public function storeCosa(Request $request){
         $validated = $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
             'nombre' => ['required', 'max:100', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
             'cosa' => ['required','in:marca,categoria,tipo']
         ]);
@@ -459,9 +458,13 @@ class AdminController extends Controller
 
         try {
             if($request->cosa=='marca'){
+                $validated = $request->validate([
+                    'link' => 'required|url',
+                    'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
+                ]);
                 $supplier= new Supplier();
                 $supplier->nombre=$request->nombre;
-                $supplier->responsable=Auth::user()->email;
+                $supplier->responsable=\Auth::user()->email;
                 $supplier->save();
 
                 $brand= new Brand();
@@ -469,11 +472,38 @@ class AdminController extends Controller
                 //guarda la foto
                 $foto = $request->file('foto')->store('public/img/logos');
                 $brand->logo = $request->file('foto')->hashName();
-                $brand->supplier_id=$brand->id;
+                $brand->supplier_id=$supplier->id;
+                $brand->link=$request->link;
+                $brand->save();
+
+                DB::commit();
+                return \Redirect::back()->with('success', 'Marca agregada con éxito.');
+            }
+            else if($request->cosa=='tipo'){
+                $type=new Type();
+                $type->name=$request->nombre;
+                $type->save();
+
+                DB::commit();
+                return \Redirect::back()->with('success', 'Tipo agregado con éxito.');
+            }
+            else{
+                $validated = $request->validate([
+                    'foto' => 'required|image|mimes:png|max:51200',
+                ]);
+                $category=new Category();
+                $category->name=strtoupper($request->nombre);
+
+                $foto = $request->file('foto')->store('public/categories');
+                $category->icono = $request->file('foto')->hashName();
+                $category->save();
+
+                DB::commit();
+                return \Redirect::back()->with('success', 'Categoría agregada con éxito.');
             }
         } catch (\Exception $e) {
-            DB::rollBack();
 
+            DB::rollBack();
             //si hay foto se elimina del servidor
             if ($foto) {
                 \Storage::delete($foto);

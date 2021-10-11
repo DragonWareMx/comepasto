@@ -361,6 +361,7 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                 <AgregarCosa
                                                     cosa={'marca'}
                                                     foto={true}
+                                                    link={true}
                                                 ></AgregarCosa>
                                             </Grid>
                                             <Grid
