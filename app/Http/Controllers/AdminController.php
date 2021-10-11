@@ -558,7 +558,7 @@ class AdminController extends Controller
     }
 
     public function recetaPatch(Request $request, $id){
-        // dd($request);
+        dd($request);
         $validated = $request->validate([
             'foto' => ['nullable','image','mimes:jpeg,png,jpg,gif','max:51200'],
             // 'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',

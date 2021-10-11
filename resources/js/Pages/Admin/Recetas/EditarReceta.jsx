@@ -159,6 +159,12 @@ const EditarReceta = ({receta, productos}) => {
         });
     }
 
+    const deleteProduct = () => {
+        // alert(id);
+        // var Delete = document.getElementById("producto1");
+        // Delete.remove();
+    };
+
     return ( 
         <>
         <Container> 
@@ -175,7 +181,7 @@ const EditarReceta = ({receta, productos}) => {
                     }
                     </Grid>
 
-                <form onSubmit={handleSubmit} autoComplete="off" encType="multipart/form-data">
+                <form onSubmit={handleSubmit}>
                 <Grid item xs={12} style={{marginBottom:'25px',display:'flex',flexWrap:'wrap',justifyContent:'space-between',alignItems:'flex-start'}}>
                     <Grid item xs={12} sm={12} md={8} className="grid-section">
                         <Grid item xs={12} className="section-top-grid">
@@ -345,7 +351,7 @@ const EditarReceta = ({receta, productos}) => {
                             </Grid>
 
                             {productos && productos.map(producto=>(
-                                <Grid item xs={12} className="item-pro-receta" style={{flexWrap:'wrap'}} key={producto.id + "producto"} id={producto.id}> 
+                                <Grid item xs={12} className="item-pro-receta" style={{flexWrap:'wrap'}} key={producto.id + "producto"} id={"producto"+producto.id}> 
                                     <Grid item xs={12} style={{display:'flex'}}>
                                         <Grid item xs={2} className="img-pro-receta">
                                         <img src={"/storage/productos/" + producto.foto} />
@@ -362,7 +368,7 @@ const EditarReceta = ({receta, productos}) => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
-                                        <IconButton aria-label="delete">
+                                        <IconButton aria-label="delete" onClick={deleteProduct("producto"+producto.id)}>
                                             <DeleteOutlineIcon />
                                         </IconButton>
                                     </Grid>
