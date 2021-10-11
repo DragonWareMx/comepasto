@@ -149,7 +149,7 @@ const EditarReceta = ({receta, productos}) => {
     function handleSubmit(e) {
         e.preventDefault();
 
-        Inertia.patch(route("admin.receta.patch",receta.id), values, {
+        Inertia.post(route("admin.receta.patch",receta.id), values, {
             onError: () => {
                 setValues((values) => ({
                     ...values,
@@ -354,7 +354,7 @@ const EditarReceta = ({receta, productos}) => {
                                 <Grid item xs={12} className="item-pro-receta" style={{flexWrap:'wrap'}} key={producto.id + "producto"} id={"producto"+producto.id}> 
                                     <Grid item xs={12} style={{display:'flex'}}>
                                         <Grid item xs={2} className="img-pro-receta">
-                                        <img src={"/storage/productos/" + producto.foto} />
+                                        <img src={"/storage/products/" + producto.foto} />
                                         </Grid>
                                         <Grid item xs={10}>
                                             <Tooltip title={producto.name} arrow placement="top-start">

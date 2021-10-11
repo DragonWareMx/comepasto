@@ -51,12 +51,16 @@ const useStyles = makeStyles((theme) => ({
         padding: "0px",
         border: "none"
     },
+    containerXL:{
+        maxWidth:"1920px",
+    },
 }));
 
 const Recetas = ({receta, productos}) => {
     const classes = useStyles();
     return (
         <>
+        <Container maxWidth={false} className={classes.containerXL}>
             <Grid container direction="row" flexwrap="wrap">
                 <Grid item xs={12} sm={6} style={{padding:'25px'}} className="gridA">
                     {/* Titulo de la receta */}
@@ -77,7 +81,7 @@ const Recetas = ({receta, productos}) => {
                     <Grid container direction="row" justify="flex-start" alignItems="center" spacing={0} style={{display:'flex',flexWrap:'wrap'}}>
                         
                         {productos && productos.map(producto=>(
-                        <Grid  className="grid-img-producto" key={producto.id + "producto"} id={producto.id}><InertiaLink href={route('product.show', producto.uuid)}><Tooltip title={producto.name}><img src={"/storage/productos/" + producto.foto}></img></Tooltip></InertiaLink></Grid>
+                        <Grid  className="grid-img-producto" key={producto.id + "producto"} id={producto.id}><InertiaLink href={route('product.show', producto.uuid)}><Tooltip title={producto.name}><img src={"/storage/products/" + producto.foto}></img></Tooltip></InertiaLink></Grid>
                         ))}
                         
                         <InertiaLink href={route('cart.recipe', receta.id)} method="post" as="button" style={{textDecoration:'none', margin:'25px', marginBottom:'0px'}} className={classes.inertiaButton} preserveScroll>
@@ -113,6 +117,7 @@ const Recetas = ({receta, productos}) => {
 
                 </Grid>
             </Grid>
+            </Container>
         </>
     )
 }

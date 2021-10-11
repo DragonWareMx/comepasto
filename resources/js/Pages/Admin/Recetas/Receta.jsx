@@ -120,7 +120,7 @@ const Receta = ({receta, productos}) => {
                             {productos && productos.map(producto=>(
                             <Grid item xs={12} className="item-pro-receta" key={producto.id + "producto"} id={producto.id}>
                                 <Grid item xs={2} className="img-pro-receta">
-                                    <img src={"/storage/productos/" + producto.foto} />
+                                    <img src={"/storage/products/" + producto.foto} />
                                 </Grid>
                                 <Grid item xs={10}>
                                     <Tooltip title={producto.name} arrow placement="top-start">

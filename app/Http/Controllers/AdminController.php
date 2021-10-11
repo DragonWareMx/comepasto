@@ -558,7 +558,7 @@ class AdminController extends Controller
     }
 
     public function recetaPatch(Request $request, $id){
-        dd($request);
+        // dd($request);
         $validated = $request->validate([
             'foto' => ['nullable','image','mimes:jpeg,png,jpg,gif','max:51200'],
             // 'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
@@ -597,7 +597,7 @@ class AdminController extends Controller
                 //guarda la foto
                     \Storage::delete('public/recetas/'.$recetaImg->url);
                     $NewImg = $request->file('foto')->store('public/recetas');
-                    $NewImg->url = $request->file('foto')->hashName();
+                    $recetaImg->url = $request->file('foto')->hashName();
                 
             }
 

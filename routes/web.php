@@ -117,7 +117,7 @@ Route::post('/admin/banners/recienborrados', [App\Http\Controllers\AdminControll
 Route::get('/admin/recetas', [App\Http\Controllers\AdminController::class, 'recetas'])->name('admin.recetas');
 Route::get('/admin/recetas/{id}', [App\Http\Controllers\AdminController::class, 'receta'])->name('admin.receta');
 Route::get('/admin/recetas/editar/{id}', [App\Http\Controllers\AdminController::class, 'recetaEditar'])->name('admin.receta.editar');
-Route::patch('/admin/recetas/editar/{id}', [App\Http\Controllers\AdminController::class, 'recetaPatch'])->name('admin.receta.patch');
+Route::post('/admin/recetas/editar/{id}', [App\Http\Controllers\AdminController::class, 'recetaPatch'])->name('admin.receta.patch');
 Route::get('/admin/recetas-agregar', [App\Http\Controllers\AdminController::class, 'recetasAgregar'])->name('admin.recetas.agregar');
 Route::delete('/admin/recetas/eliminar/{id}', [App\Http\Controllers\AdminController::class, 'recetaEliminar'])->name('admin.receta.eliminar');
 
