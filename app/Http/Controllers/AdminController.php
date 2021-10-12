@@ -16,7 +16,7 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Question;
 use Illuminate\Support\Str;
-use App\Models\Supplier;x
+use App\Models\Supplier;
 use Illuminate\Support\Facades\Storage;
 use Image;
 
