@@ -120,5 +120,6 @@ Route::get('/admin/recetas/{id}', [App\Http\Controllers\AdminController::class, 
 Route::get('/admin/recetas/editar/{id}', [App\Http\Controllers\AdminController::class, 'recetaEditar'])->name('admin.receta.editar');
 Route::post('/admin/recetas/editar/{id}', [App\Http\Controllers\AdminController::class, 'recetaPatch'])->name('admin.receta.patch');
 Route::get('/admin/recetas-agregar', [App\Http\Controllers\AdminController::class, 'recetasAgregar'])->name('admin.recetas.agregar');
+Route::post('/admin/recetas-agregar', [App\Http\Controllers\AdminController::class, 'recetasStore'])->name('admin.recetas.agregar.store');
 Route::delete('/admin/recetas/eliminar/{id}', [App\Http\Controllers\AdminController::class, 'recetaEliminar'])->name('admin.receta.eliminar');
 
