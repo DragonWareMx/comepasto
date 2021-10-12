@@ -382,57 +382,6 @@ const EditarReceta = ({receta, productosBefore, productos}) => {
                                 </Select>
                             </Grid>
 
-                            {/* {productosBefore && productosBefore.map(producto=>(
-                                <Grid item xs={12} className="item-pro-receta" style={{flexWrap:'wrap'}} key={producto.id + "producto"} id={"producto"+producto.id}> 
-                                    <Grid item xs={12} style={{display:'flex'}}>
-                                        <Grid item xs={2} className="img-pro-receta">
-                                        <img src={"/storage/products/" + producto.foto} />
-                                        </Grid>
-                                        <Grid item xs={10}>
-                                            <Tooltip title={producto.name} arrow placement="top-start">
-                                                <InertiaLink href={route('admin.producto',producto.id)} style={{textDecoration:'none'}}>
-                                                    <Typography xs={12} className="title-pro-receta" noWrap>
-                                                    {producto.name}
-                                                    </Typography>
-                                                </InertiaLink>
-                                            </Tooltip>
-                                            <Typography xs={12} className="type-pro-receta">{producto.categoria}</Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end'}}>
-                                        <IconButton aria-label="delete" onClick={deleteProduct("producto"+producto.id)}>
-                                            <DeleteOutlineIcon />
-                                        </IconButton>
-                                    </Grid>
-                                </Grid>
-                            ))} */}
-
-                            {/* <Grid item xs={12} className="item-pro-receta"> 
-                                <Grid item xs={2} className="img-pro-receta">
-                                    <img src="/img/icons/imgDefault.png" />
-                                </Grid>
-                                <Grid item xs={10}>
-                                    <TextField
-                                        id="producto"
-                                        select
-                                        label="Selecciona un producto"
-                                        style={{width:'100%'}}
-                                        InputProps={{className: classes.input,}}
-                                        InputLabelProps={{
-                                            classes: {
-                                                root: classes.formTextLabel
-                                            }
-                                        }}
-                                        >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                </Grid>
-                            </Grid> */}
-
                             <Grid className="input-admin-100" style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'0px 0px 0px 0px',marginBottom:'10px',marginTop:'20px'}}>
                                 <InertiaLink href={route('admin.receta',receta.id)} className="btn-cancelar-op">CANCELAR</InertiaLink>
                                 <Button
