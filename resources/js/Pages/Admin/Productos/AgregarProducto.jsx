@@ -190,6 +190,13 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                     }
                     </Grid>
 
+                    <Grid item xs={12}>
+                    {
+                        errors.fotos &&
+                        <Alert severity="error" style={{marginBottom: 10}}>{errors.fotos}</Alert> 
+                    }
+                    </Grid>
+
                     <Grid item xs={12} className="grid-section">
                         <Grid item xs={12} className="section-top-grid">
                             <Grid>Agregar producto</Grid>
@@ -525,7 +532,7 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                     InputProps={{
                                                         className:
                                                             classes.input,
-                                                        inputProps: {min: 0, max: 999999.99}
+                                                        inputProps: {min: 0, max: 999999.99, step: 0.01}
                                                     }}
                                                     InputLabelProps={{
                                                         classes: {
@@ -563,7 +570,7 @@ const AgregarProducto = ({ marcas, tipos, categorias }) => {
                                                     InputProps={{
                                                         className:
                                                             classes.input,
-                                                        inputProps: {min: 0, max: 100.00}
+                                                        inputProps: {min: 0, max: 100.00, step: 0.01}
                                                     }}
                                                     InputLabelProps={{
                                                         classes: {

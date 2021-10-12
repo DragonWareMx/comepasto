@@ -18,6 +18,7 @@ use App\Models\Question;
 use Illuminate\Support\Str;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Storage;
+// use Image;
 
 class AdminController extends Controller
 {
@@ -134,25 +135,10 @@ class AdminController extends Controller
 
     public function productoPatch(Request $request, $id)
     {
-        dd('holi we', $id, $request);
-    }
-
-    public function productoAgregar()
-    {
-        $marcas = Brand::select('id', 'name')->get();
-        $tipos = Type::select('id', 'name')->get();
-        $categorias = Category::select('id', 'name')->get();
-        return Inertia::render('Admin/Productos/AgregarProducto', [
-            'marcas' => $marcas,
-            'tipos' => $tipos,
-            'categorias' => $categorias,
-        ]);
-    }
-
-    public function storeProducto(Request $request)
-    {
         $validated = $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
+            'imgProducto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
+            'fotos' => 'nullable',
+            'fotos.*' => 'image|mimes:jpeg,png,jpg,gif|max:51200',
             'nombre' => ['required', 'max:100', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
             'marca' => 'required|exists:brands,id',
             'tipo' => 'required|exists:types,id',
@@ -171,14 +157,133 @@ class AdminController extends Controller
 
         //variables para comprobar la subida de archivos
         $foto = null;
+        $fotos = [];
         try {
+            $product = Product::findOrFail($id);
+
+            if($request->file('imgProducto')){
+                Storage::delete('public/products/'.$product->foto);
+
+                //guarda la foto
+                $foto = $request->file('imgProducto')->store('public/products');
+                $product->foto = $request->file('imgProducto')->hashName();
+            }
+
+            //informacion
+            $product->name = $request->nombre;
+            $product->brand_id = $request->marca;
+            $product->type_id = $request->tipo;
+            $product->category_id = $request->categoria;
+            $product->presentacion = $request->presentacion;
+            $product->precio = $request->precio;
+            $product->descuento = $request->descuento;
+            $product->ingredientes = $request->ingredientes;
+            $product->soyaFree = $request->soyaFree;
+            $product->trigoFree = $request->trigoFree;
+
+            $product->save();
+            
+            if($request->file('fotos')){
+                //borra las fotos viejas
+                foreach ($product->img()->get() as $img) {
+                    Storage::delete('public/products/'.$img->url);
+                    $img->delete();
+                }
+
+                //guarda las fotos
+                foreach ($request->file('fotos') as $fotoS) {
+                    $newImagen = new Img;
+                    $newImagen->product_id = $product->id;
+                    
+                    $fotoName = $fotoS->store('public/products');
+                    $newImagen->url = $fotoS->hashName();
+                    
+                    $newImagen->save();
+    
+                    array_push($fotos, $fotoName);
+                }
+            }
+
             DB::commit();
 
+            //REDIRECCIONA A LA VISTA DE PRODUCTOS
+            return \Redirect::route('admin.productos')->with('success', 'El producto ha sido registrado con éxito!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            //si hay foto se elimina del servidor
+            if ($foto) {
+                Storage::delete($foto);
+            }
+
+            //si hay fotos se elimina del servidor
+            if (sizeof($fotos) > 0) {
+                foreach ($fotos as $fotoS) {
+                    \Storage::delete($fotoS);
+                }
+            }
+
+            return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el producto, inténtelo más tarde.');
+        }
+    }
+
+    public function productoAgregar()
+    {
+        $marcas = Brand::select('id', 'name')->get();
+        $tipos = Type::select('id', 'name')->get();
+        $categorias = Category::select('id', 'name')->get();
+        return Inertia::render('Admin/Productos/AgregarProducto', [
+            'marcas' => $marcas,
+            'tipos' => $tipos,
+            'categorias' => $categorias,
+        ]);
+    }
+
+    public function storeProducto(Request $request)
+    {
+        $validated = $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
+            'fotos' => 'nullable',
+            'fotos.*' => 'image|mimes:jpeg,png,jpg,gif|max:51200',
+            'nombre' => ['required', 'max:100', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
+            'marca' => 'required|exists:brands,id',
+            'tipo' => 'required|exists:types,id',
+            'categoria' => 'required|exists:categories,id',
+            'presentacion' => ['nullable', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
+            'precio' => 'required|between:0,999999.99|numeric',
+            'descuento' => 'required|between:0,100.00|numeric',
+            'ingredientes' => ['nullable', 'max:8000', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
+            'soyaFree' => 'required|boolean',
+            'trigoFree' => 'required|boolean',
+        ]);
+        // El nuevo producto es valido...
+
+        //COMIENZA LA TRANSACCION
+        DB::beginTransaction();
+
+        //variables para comprobar la subida de archivos
+        $foto = null;
+        $fotos = [];
+        try {
             $newProduct = new Product;
 
             //guarda la foto
             $foto = $request->file('foto')->store('public/products');
             $newProduct->foto = $request->file('foto')->hashName();
+
+            //guarda la foto comprimida
+            // $image = $request->foto;
+            // // $input['imagename'] = pathinfo($image->getClientOriginalName(),PATHINFO_FILENAME).'_'.time().'.'.$image->getClientOriginalExtension();
+            
+            // $destinationPath = public_path('/storage/products');
+            // $img = Image::make($image->getRealPath());
+            // $img->resize(768, null, function ($constraint) {
+            //     $constraint->aspectRatio();
+            // })->save($destinationPath.'/'.$request->file('foto')->hashName());
+            //------------------------
+            
+            //borar la foto orignial
+            //unlink(public_path().'/storage/img/originals/'.$name);
 
             //informacion
             $newProduct->uuid = Str::uuid();
@@ -195,6 +300,21 @@ class AdminController extends Controller
 
             $newProduct->save();
 
+            //guarda las fotos
+            foreach ($request->file('fotos') as $fotoS) {
+                $newImagen = new Img;
+                $newImagen->product_id = $newProduct->id;
+                
+                $fotoName = $fotoS->store('public/products');
+                $newImagen->url = $fotoS->hashName();
+                
+                $newImagen->save();
+
+                array_push($fotos, $fotoName);
+            }
+
+            DB::commit();
+
             //REDIRECCIONA A LA VISTA DE PRODUCTOS
             return \Redirect::route('admin.productos')->with('success', 'El producto ha sido registrado con éxito!');
         } catch (\Exception $e) {
@@ -203,6 +323,13 @@ class AdminController extends Controller
             //si hay foto se elimina del servidor
             if ($foto) {
                 \Storage::delete($foto);
+            }
+
+            //si hay fotos se elimina del servidor
+            if (sizeof($fotos) > 0) {
+                foreach ($fotos as $fotoS) {
+                    \Storage::delete($fotoS);
+                }
             }
 
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el producto, inténtelo más tarde.');
@@ -629,14 +756,17 @@ class AdminController extends Controller
     }
 
     public function recetaPatch(Request $request, $id){
-        // dd($request);
         $validated = $request->validate([
-            'imgProducto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
+            'foto' => ['nullable','image','mimes:jpeg,png,jpg,gif','max:51200'],
+            // 'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
             'nombre' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
             'descripcion' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
             'link' => 'required|url',
             'ingredientes' => 'required',
         ]);
+
+        //variables para comprobar la subida de archivos
+        $NewImg = null; 
 
         //COMIENZA LA TRANSACCION
         DB::beginTransaction();
@@ -654,7 +784,7 @@ class AdminController extends Controller
 
             $recetaImg->descripcion = $request->descripcion;
             
-            if(!is_null($request->file('imgProducto'))){
+            if(!is_null($request->file('foto'))){
                 
                 // Eliminar la foto del servidor
                 // Cambiar el nombre de la img con carbon?
@@ -662,8 +792,8 @@ class AdminController extends Controller
                 // Guardar el url en la bd
                 //guarda la foto
                     \Storage::delete('public/recetas/'.$recetaImg->url);
-                    $NewImg = $request->file('imgProducto')->store('public/recetas');
-                    $NewImg->url = $request->file('imgProducto')->hashName();
+                    $NewImg = $request->file('foto')->store('public/recetas');
+                    $recetaImg->url = $request->file('foto')->hashName();
                 
             }
 

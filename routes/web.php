@@ -91,7 +91,7 @@ Route::get('/admin/productos/editar/{id}', [App\Http\Controllers\AdminController
 Route::get('/admin/productos-agregar', [App\Http\Controllers\AdminController::class, 'productoAgregar'])->name('admin.producto.agregar');
 Route::post('/admin/productos-agregar', [App\Http\Controllers\AdminController::class, 'storeProducto'])->name('admin.producto.store');
 Route::post('/admin/productos/{id}/inventario', [App\Http\Controllers\AdminController::class, 'productoInventario'])->name('admin.producto.inventario');
-Route::patch('/admin/productos/patch/{id}', [App\Http\Controllers\AdminController::class, 'productoPatch'])->name('admin.producto.patch');
+Route::post('/admin/productos/patch/{id}', [App\Http\Controllers\AdminController::class, 'productoPatch'])->name('admin.producto.patch');
 Route::post('/admin/cosa/store', [App\Http\Controllers\AdminController::class, 'storeCosa'])->name('admin.cosa.store');
 
 Route::get('/admin/pedidos', [App\Http\Controllers\AdminController::class, 'pedidos'])->name('admin.pedidos');
@@ -118,7 +118,7 @@ Route::post('/admin/banners/recienborrados', [App\Http\Controllers\AdminControll
 Route::get('/admin/recetas', [App\Http\Controllers\AdminController::class, 'recetas'])->name('admin.recetas');
 Route::get('/admin/recetas/{id}', [App\Http\Controllers\AdminController::class, 'receta'])->name('admin.receta');
 Route::get('/admin/recetas/editar/{id}', [App\Http\Controllers\AdminController::class, 'recetaEditar'])->name('admin.receta.editar');
-Route::patch('/admin/recetas/editar/{id}', [App\Http\Controllers\AdminController::class, 'recetaPatch'])->name('admin.receta.patch');
+Route::post('/admin/recetas/editar/{id}', [App\Http\Controllers\AdminController::class, 'recetaPatch'])->name('admin.receta.patch');
 Route::get('/admin/recetas-agregar', [App\Http\Controllers\AdminController::class, 'recetasAgregar'])->name('admin.recetas.agregar');
 Route::delete('/admin/recetas/eliminar/{id}', [App\Http\Controllers\AdminController::class, 'recetaEliminar'])->name('admin.receta.eliminar');
 
