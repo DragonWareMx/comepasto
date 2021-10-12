@@ -375,7 +375,9 @@ const EditarReceta = ({receta, productosBefore, productos}) => {
                                 >
                                 {productos.map((producto) => (
                                     <MenuItem key={producto.id} value={producto.name}>
-                                    <Checkbox checked={values.productosSelect.indexOf(producto.name) > -1} />
+                                    <Checkbox 
+                                        style={{color:'#1DA3A8'}}
+                                        checked={values.productosSelect.indexOf(producto.name) > -1} />
                                     <ListItemText primary={producto.name} />
                                     </MenuItem>
                                 ))}
