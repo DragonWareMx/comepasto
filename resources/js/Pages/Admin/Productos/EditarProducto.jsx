@@ -26,6 +26,8 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import PublishIcon from '@material-ui/icons/Publish';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 
+import AgregarCosa from "../../../components/common/AgregarCosa"
+
 const useStyles = makeStyles((theme) => ({
     input: {
         fontFamily: "Oxygen",
@@ -101,50 +103,6 @@ const theme = createMuiTheme({
 
 const EditarProducto = ({producto,marcas,tipos,categorias}) => {
     const { errors } = usePage().props;
-
-    //CHIPS
-    const [inputValue, setInputValue] = React.useState('');
-    const [autoCompleteValue, setAutoCompleteValue] = React.useState(null);
-
-    const handleDelete = (chipToDelete) => () => {
-        setValues({
-            ...values, 
-            categorias: values.categorias.filter((chip) => chip.id !== chipToDelete.id)
-        });
-    };
-
-    // MODAL AGREGAR MARCA
-    const [openMarca, setOpenMarca] = React.useState(false);
-
-    const handleClickOpenModalMarca = () => {
-        setOpenMarca(true);
-    };
-
-    const handleCloseModalMarca = () => {
-        setOpenMarca(false);
-    };
-
-    // MODAL AGREGAR TIPO
-    const [openTipo, setOpenTipo] = React.useState(false);
-
-    const handleClickOpenModalTipo = () => {
-        setOpenTipo(true);
-    };
-
-    const handleCloseModalTipo = () => {
-        setOpenTipo(false);
-    };
-
-    // MODAL AGREGAR CATEGORIA
-    const [openCat, setOpenCat] = React.useState(false);
-
-    const handleClickOpenModalCat = () => {
-        setOpenCat(true);
-    };
-
-    const handleCloseModalCat = () => {
-        setOpenCat(false);
-    };
 
     const handleChange = (prop) => (event) => {
         if(prop == 'soyaFree' || prop == 'trigoFree'){
@@ -238,7 +196,7 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                     {/* contenido */}
                     <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                         <Grid item xs={4} sm={2} style={{marginBottom:'20px',display:'flex',justifyContent:'center',flexWrap:'wrap'}}>
-                            <img id='imgContainer' src={"/img/PRODUCTOS/"+producto.foto} className="img-product-view" style={{objectFit:'cover'}}/>
+                            <img id='imgContainer' src={"/storage/products/"+producto.foto} className="img-product-view" style={{objectFit:'cover'}}/>
                             <input
                                 accept="image/*"
                                 id="imgProducto"
@@ -326,7 +284,11 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                         />
                                     }
                                 />
-                                    <Grid className="link-add-bd" onClick={handleClickOpenModalMarca}>Agregar marca</Grid>
+                                    <AgregarCosa
+                                        cosa={'marca'}
+                                        foto={true}
+                                        link={true}
+                                    ></AgregarCosa>
                                 </Grid>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
                                     <Autocomplete
@@ -348,15 +310,18 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                             />
                                         }
                                     />
-                                    <Grid className="link-add-bd" onClick={handleClickOpenModalTipo}>Agregar tipo</Grid>
+                                    <AgregarCosa
+                                        cosa={'tipo'}
+                                        foto={false}
+                                    ></AgregarCosa>
                                 </Grid>
                             </Grid>
 
                             <Grid item xs={12} style={{display:'flex',flexWrap:'wrap'}}>
                                 <Grid item xs={12} sm={6} style={{display:'flex',flexWrap:'wrap'}}>
                                     <Autocomplete
-                                        id="tipo"
-                                        options={tipos}
+                                        id="categoria"
+                                        options={categorias}
                                         getOptionLabel={(option) => option.name}
                                         className='autocompleteProductos'
                                         onChange={(event, newValue) => {
@@ -366,14 +331,17 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                         renderInput={
                                             (params) => 
                                             <TextField {...params}
-                                                label="Tipo"
+                                                label="Categoría"
                                                 placeholder="Selecciona una opción"
                                                 variant="outlined"
                                                 className={classes.root}  
                                             />
                                         }
                                     />
-                                    <Grid className="link-add-bd" onClick={handleClickOpenModalTipo}>Agregar tipo</Grid>
+                                    <AgregarCosa
+                                        cosa={'categoria'}
+                                        foto={true}
+                                    ></AgregarCosa>
                                 </Grid>
                                 
                                 <Grid item xs={12} sm={6} style={{marginBottom:'20px'}}>
@@ -530,171 +498,6 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                 </Grid>
             </Grid>
         </Container>
-        
-
-        {/* MODAL AGREGAR MARCA */}
-        <Dialog
-            open={openMarca}
-            onClose={handleCloseModalMarca}
-            fullWidth={fullWidth}
-            maxWidth={maxWidth}
-        >
-        <form noValidate autoComplete="off">
-            <DialogTitle  className="title-dialog">{"Agregar marca"}</DialogTitle>
-            <DialogContent>
-            <DialogContentText id="alert-dialog-description" className="dialog-content">
-                <MuiThemeProvider>
-                <Grid item xs={12} style={{marginBottom:'20px'}}>
-                    <TextField 
-                        id="newMarca" 
-                        type="text"
-                        label="Nombre" 
-                        style={{width:'100%'}}
-                        InputProps={{className: classes.input,}}
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.formTextLabel
-                            }
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={12} style={{display:'flex',alignItems:'center',marginBottom:'15px'}}>
-                    <img src="/img/icons/imgDefault.png" style={{marginRight:'15px',width:'30%',minWidth:'80px',maxHeight:'150px',objectFit:'cover'}} />
-                    <input
-                        accept="image/*"
-                        id="imgNewMarca"
-                        type="file"
-                        style={{display:'none'}}
-                    />
-                    <label htmlFor="imgNewMarca" style={{marginTop:'20px'}}>
-                        <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
-                        Subir img
-                        </Button>
-                    </label>
-                </Grid>
-                </MuiThemeProvider>
-            </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
-                    <Grid className="btn-cancelar-op" onClick={handleCloseModalMarca}>CANCELAR</Grid>
-                    <Button
-                        className="button-filter button-update btn-second"
-                        type="submit"
-                        startIcon={<ArrowRightAltIcon />}
-                    >
-                        Agregar
-                    </Button>
-                </Grid>
-            </DialogActions>
-        </form>
-        </Dialog>
-
-
-        {/* MODAL AGREGAR TIPO */}
-        <Dialog
-            open={openTipo}
-            onClose={handleCloseModalTipo}
-            fullWidth={fullWidth}
-            maxWidth={maxWidth}
-        >
-        <form noValidate autoComplete="off">
-            <DialogTitle  className="title-dialog">{"Agregar tipo"}</DialogTitle>
-            <DialogContent>
-            <DialogContentText id="alert-dialog-description" className="dialog-content">
-                <MuiThemeProvider>
-                <Grid item xs={12} style={{marginBottom:'20px'}}>
-                    <TextField 
-                        id="newTipo" 
-                        type="text"
-                        label="Nombre" 
-                        style={{width:'100%'}}
-                        InputProps={{className: classes.input,}}
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.formTextLabel
-                            }
-                        }}
-                    />
-                </Grid>
-                </MuiThemeProvider>
-            </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
-                    <Grid className="btn-cancelar-op" onClick={handleCloseModalTipo}>CANCELAR</Grid>
-                    <Button
-                        className="button-filter button-update btn-second"
-                        type="submit"
-                        startIcon={<ArrowRightAltIcon />}
-                    >
-                        Agregar
-                    </Button>
-                </Grid>
-            </DialogActions>
-        </form>
-        </Dialog>
-
-        {/* MODAL AGREGAR CATEGORIA */}
-        <Dialog
-            open={openCat}
-            onClose={handleCloseModalCat}
-            fullWidth={fullWidth}
-            maxWidth={maxWidth}
-        >   
-        <form noValidate autoComplete="off">
-            <DialogTitle  className="title-dialog">{"Agregar categoría"}</DialogTitle>
-            <DialogContent>
-            <DialogContentText id="alert-dialog-description" className="dialog-content">
-                
-                <MuiThemeProvider>
-                <Grid item xs={12} style={{marginBottom:'20px'}}>
-                    <TextField 
-                        id="newCat" 
-                        type="text"
-                        label="Nombre" 
-                        style={{width:'100%'}}
-                        InputProps={{className: classes.input,}}
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.formTextLabel
-                            }
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={12} style={{display:'flex',alignItems:'center',marginBottom:'15px'}}>
-                    <img src="/img/icons/imgDefault.png" style={{marginRight:'15px',width:'30%',minWidth:'80px',maxHeight:'150px',objectFit:'cover'}} />
-                    <input
-                        accept="image/*"
-                        id="imgNewCat"
-                        type="file"
-                        style={{display:'none'}}
-                    />
-                    <label htmlFor="imgNewCat" style={{marginTop:'20px'}}>
-                        <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
-                        Subir img
-                        </Button>
-                    </label>
-                </Grid>
-                </MuiThemeProvider>
-            </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                
-                <Grid item xs={12} style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px'}}>
-                    <Grid className="btn-cancelar-op" onClick={handleCloseModalCat}>CANCELAR</Grid>
-                    <Button
-                        className="button-filter button-update btn-second"
-                        type="submit"
-                        startIcon={<ArrowRightAltIcon />}
-                    >
-                        Agregar
-                    </Button>
-                </Grid>
-                
-            </DialogActions>
-        </form>
-        </Dialog>
         </>
     )
 }
