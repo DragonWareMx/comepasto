@@ -704,7 +704,6 @@ class AdminController extends Controller
     }
 
     public function recetasStore(Request $request){
-        // dd($request);
         $validated = $request->validate([
             'foto' => ['nullable','image','mimes:jpeg,png,jpg,gif','max:51200'],
             'nombre' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
@@ -789,7 +788,6 @@ class AdminController extends Controller
             $status = "Hubo un problema al procesar tu solicitud. Inténtalo más tarde";
             return redirect()->route('admin.recetas')->with('error','Ocurrió un problema, vuelva a intentarlo más tarde.');
         }
-        // eliminar la foto
     }
 
     public function storeCosa(Request $request){
@@ -863,7 +861,6 @@ class AdminController extends Controller
     }
 
     public function recetaPatch(Request $request, $id){
-        // dd($request);
         $validated = $request->validate([
             'foto' => ['nullable','image','mimes:jpeg,png,jpg,gif','max:51200'],
             'nombre' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
@@ -925,15 +922,11 @@ class AdminController extends Controller
                     if($before->id == $productoNew->id){
                         $eliminar=false;
                     }
-                    
                 }
                 
                 // borrado
                 if($eliminar == true){
-                    
                      $productoBorrar = DB::table('product_recipe')->where('recipe_id',$id)->where('product_id',$before->id)->delete();
-                    //  dd($productoBorrar);
-                    //  $productoBorrar->delete();
                 }
                 $i++;
             }
