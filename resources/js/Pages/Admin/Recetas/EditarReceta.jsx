@@ -23,6 +23,10 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import '@ckeditor/ckeditor5-build-classic/build/translations/es';
 import IconButton from '@material-ui/core/IconButton';
 import Alert from '@material-ui/lab/Alert';
+import ListItemText from '@material-ui/core/ListItemText';
+import Select from '@material-ui/core/Select';
+import Checkbox from '@material-ui/core/Checkbox';
+import Input from '@material-ui/core/Input';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -71,7 +75,7 @@ const theme = createMuiTheme({
     },
 });
 
-const EditarReceta = ({receta, productos}) => {
+const EditarReceta = ({receta, productosBefore, productos}) => {
     const { errors } = usePage().props;
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -97,24 +101,6 @@ const EditarReceta = ({receta, productos}) => {
         setOpen(false);
     };
 
-    const currencies = [
-        {
-          value: '1',
-          label: 'Lorem ipsum 1',
-        },
-        {
-          value: '2',
-          label: 'Lorem ipsum 2',
-        },
-        {
-          value: '3',
-          label: 'Lorem ipsum 3',
-        },
-        {
-          value: '4',
-          label: 'Lorem ipsum 4',
-        },
-    ];
 
     function readURL() {
         var input = document.getElementById("foto");
@@ -132,6 +118,17 @@ const EditarReceta = ({receta, productos}) => {
         }
     }
 
+    function seleccionados(){
+        var disponibles = [];
+        var i=0;
+        productosBefore.forEach(function (producto){
+            disponibles[i]=producto.name;
+            i++;
+        })
+        return disponibles;
+    }
+
+
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
     };
@@ -143,13 +140,14 @@ const EditarReceta = ({receta, productos}) => {
         link: receta.link || '',
         ingredientes: receta.ingredientes || '',
         preparacion: receta.preparacion || '',
+        productosSelect: seleccionados(),
         error: false,
     });
 
     function handleSubmit(e) {
         e.preventDefault();
 
-        Inertia.post(route("admin.receta.patch",receta.id), values, {
+        Inertia.post(route("admin.receta.patch",receta.recipe_id), values, {
             onError: () => {
                 setValues((values) => ({
                     ...values,
@@ -159,10 +157,15 @@ const EditarReceta = ({receta, productos}) => {
         });
     }
 
-    const deleteProduct = () => {
-        // alert(id);
-        // var Delete = document.getElementById("producto1");
-        // Delete.remove();
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+    PaperProps: {
+        style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+        },
+    },
     };
 
     return ( 
@@ -350,7 +353,36 @@ const EditarReceta = ({receta, productos}) => {
                                 <Grid>Productos de comepasto</Grid>
                             </Grid>
 
-                            {productos && productos.map(producto=>(
+                            <Grid item xs={12} className="item-pro-receta"> 
+                                <Select
+                                id="productosSelect"
+                                multiple
+                                style={{width:'100%'}}
+                                value={values.productosSelect}
+                                onChange={handleChange('productosSelect')}
+                                input={<Input />}
+                                renderValue={(selected) => selected.join(', ')}
+                                MenuProps={MenuProps}
+                                error={
+                                    errors.productosSelect &&
+                                    values.error == true &&
+                                    true
+                                }
+                                helperText={
+                                    values.error == true &&
+                                    errors.productosSelect
+                                }
+                                >
+                                {productos.map((producto) => (
+                                    <MenuItem key={producto.id} value={producto.name}>
+                                    <Checkbox checked={values.productosSelect.indexOf(producto.name) > -1} />
+                                    <ListItemText primary={producto.name} />
+                                    </MenuItem>
+                                ))}
+                                </Select>
+                            </Grid>
+
+                            {/* {productosBefore && productosBefore.map(producto=>(
                                 <Grid item xs={12} className="item-pro-receta" style={{flexWrap:'wrap'}} key={producto.id + "producto"} id={"producto"+producto.id}> 
                                     <Grid item xs={12} style={{display:'flex'}}>
                                         <Grid item xs={2} className="img-pro-receta">
@@ -373,9 +405,9 @@ const EditarReceta = ({receta, productos}) => {
                                         </IconButton>
                                     </Grid>
                                 </Grid>
-                            ))}
+                            ))} */}
 
-                            <Grid item xs={12} className="item-pro-receta"> 
+                            {/* <Grid item xs={12} className="item-pro-receta"> 
                                 <Grid item xs={2} className="img-pro-receta">
                                     <img src="/img/icons/imgDefault.png" />
                                 </Grid>
@@ -399,7 +431,7 @@ const EditarReceta = ({receta, productos}) => {
                                         ))}
                                     </TextField>
                                 </Grid>
-                            </Grid>
+                            </Grid> */}
 
                             <Grid className="input-admin-100" style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'0px 0px 0px 0px',marginBottom:'10px',marginTop:'20px'}}>
                                 <InertiaLink href={route('admin.receta',receta.id)} className="btn-cancelar-op">CANCELAR</InertiaLink>

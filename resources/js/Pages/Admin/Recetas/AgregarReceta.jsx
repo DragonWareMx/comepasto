@@ -24,7 +24,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -128,12 +127,6 @@ const EditarReceta = ({productos}) => {
             },
         });
     }
-
-    // const [productoName, setProductoName] = React.useState([]);
-
-    const handleChangeS = (event) => {
-        setProductoName(event.target.value);
-    };
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -332,6 +325,15 @@ const EditarReceta = ({productos}) => {
                                 input={<Input />}
                                 renderValue={(selected) => selected.join(', ')}
                                 MenuProps={MenuProps}
+                                error={
+                                    errors.productosSelect &&
+                                    values.error == true &&
+                                    true
+                                }
+                                helperText={
+                                    values.error == true &&
+                                    errors.productosSelect
+                                }
                                 >
                                 {disponibles.map((producto) => (
                                     <MenuItem key={producto.id} value={producto.name}>
