@@ -402,7 +402,7 @@ const EditarReceta = ({receta, productos}) => {
                             </Grid>
 
                             <Grid className="input-admin-100" style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'0px 0px 0px 0px',marginBottom:'10px',marginTop:'20px'}}>
-                                <InertiaLink href={route('admin.receta',1)} className="btn-cancelar-op">CANCELAR</InertiaLink>
+                                <InertiaLink href={route('admin.receta',receta.id)} className="btn-cancelar-op">CANCELAR</InertiaLink>
                                 <Button
                                     className="button-filter button-update btn-second"
                                     type="submit"

@@ -535,7 +535,83 @@ class AdminController extends Controller
 
     public function recetasAgregar()
     {
-        return Inertia::render('Admin/Recetas/AgregarReceta');
+        // $productos = DB::table('product_recipe')
+        //     ->join('products', 'product_recipe.product_id', '=', 'products.id')
+        //     ->join('categories', 'products.category_id', '=', 'categories.id')
+        //     ->select('products.name', 'products.foto', 'products.id', 'products.uuid', 'categories.name as categoria');
+        
+        $productos = Product::join('categories', 'products.category_id', '=', 'categories.id')
+                    ->select('products.name', 'products.foto', 'products.id', 'products.uuid', 'categories.name as categoria')
+                    ->orderBy('name', 'asc')
+                    ->get();
+                    // dd($productos);
+        return Inertia::render('Admin/Recetas/AgregarReceta', ['productos' => $productos]);
+    }
+
+    public function recetasStore(Request $request){
+        // dd($request);
+        $validated = $request->validate([
+            'foto' => ['nullable','image','mimes:jpeg,png,jpg,gif','max:51200'],
+            'nombre' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
+            'descripcion' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
+            'link' => 'required|url',
+            'ingredientes' => 'required',
+            'productosSelect' => 'required',
+        ]);
+
+        //variables para comprobar la subida de archivos
+        $NewImg = null; 
+
+        //COMIENZA LA TRANSACCION
+        DB::beginTransaction();
+
+        try {
+            
+            $receta = new Recipe;
+
+            $receta->nombre = $request->nombre;
+            $receta->ingredientes = $request->ingredientes;
+            $receta->preparacion = $request->preparacion;
+            $receta->link = $request->link;
+
+            $receta->save();
+
+            // Guardar los productos seleccionados
+            $i= 0;
+
+            foreach ($request->productosSelect as $seleccionado){
+                $producto = Product::where('name', $request->productosSelect[$i])->select('id')->first();
+                $values = array('product_id' => $producto->id,'recipe_id' => $receta->id);
+                DB::table('product_recipe')->insert($values);
+                $i++;
+            }
+                        
+            $recetaImg = new Img;
+            $recetaImg->recipe_id = $receta->id;
+            $recetaImg->descripcion = $request->descripcion;
+            
+            if(!is_null($request->file('foto'))){
+                
+                // Cambiar el nombre de la img 
+                // Guardar la img en el server
+                // Guardar el url en la bd
+                //guarda la foto
+                    $NewImg = $request->file('foto')->store('public/recetas');
+                    $recetaImg->url = $request->file('foto')->hashName();
+            }
+            
+            $recetaImg->save();
+            DB::commit();
+
+        //REDIRECCIONA A LA VISTA DE RECETA
+        return \Redirect::route('admin.recetas')->with('success', 'La receta ha sido creada con éxito!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if($NewImg)
+                \Storage::delete($NewImg);
+
+            return \Redirect::route('admin.recetas')->with('error', 'Ha ocurrido un error al intentar crear la receta, inténtelo más tarde.');
+        }
     }
 
     public function recetaEliminar($id){
@@ -544,23 +620,26 @@ class AdminController extends Controller
             $receta = Recipe::findOrFail($id);
             // buscar y eliminar las imagenes y los productos
             DB::table('product_recipe')->where('recipe_id',$id)->delete();
+            $recetaImg = Img::where('recipe_id',$id)->first();
+            \Storage::delete('public/recetas/'.$recetaImg->url);
+
             DB::table('imgs')->where('recipe_id',$id)->delete();
 
             $receta->delete();
             DB::commit();
             $status = "Receta eliminada con éxito";
-            return redirect()->route('admin.recetas')->with('success','Receta actualizada con éxito.');
+            return redirect()->route('admin.recetas')->with('success','Receta eliminada con éxito.');
         } catch (\Throwable $th) {
             DB::rollBack();
             $status = "Hubo un problema al procesar tu solicitud. Inténtalo más tarde";
             return redirect()->route('admin.recetas')->with('error','Ocurrió un problema, vuelva a intentarlo más tarde.');
         }
+        // eliminar la foto
     }
 
     public function recetaPatch(Request $request, $id){
         $validated = $request->validate([
             'foto' => ['nullable','image','mimes:jpeg,png,jpg,gif','max:51200'],
-            // 'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
             'nombre' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
             'descripcion' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
             'link' => 'required|url',
