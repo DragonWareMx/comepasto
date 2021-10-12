@@ -114,22 +114,39 @@ const EditarReceta = ({receta, productos}) => {
         },
     ];
 
+    function readURL() {
+        var input=document.getElementById('imgProducto');
+        if (input.files && input.files[0]) {
+            setValues(values => ({
+                ...values,
+                imgProducto: input.files[0],
+            }))
+            var reader = new FileReader();
+            var preview = document.getElementById('imgContainer');
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
     };
 
     const [values, setValues] = React.useState({
-        // imgProducto: null,
-        fotos:null,
+        imgProducto: null,
         nombre: receta.nombre || '',
         descripcion: receta.descripcion || '',
         link: receta.link || '',
+        ingredientes: receta.ingredientes || '',
+        preparacion: receta.preparacion || '',
     });
 
-    // function handleSubmit(e) {
-    //     e.preventDefault()
-    //     Inertia.patch(route('admin.producto.patch',receta.id),values)
-    // }
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.patch(route('admin.receta.patch',receta.id),values)
+    }
 
     return ( 
         <>
@@ -140,7 +157,7 @@ const EditarReceta = ({receta, productos}) => {
                     <InertiaLink href={route('admin.recetas')} className="title-page subtitle-page"><ArrowBackIcon style={{marginRight:'9px'}} />Recetas</InertiaLink>
                 </Grid>
 
-                <form noValidate autoComplete="off">
+                <form onSubmit={handleSubmit} autoComplete="off">
                 <Grid item xs={12} style={{marginBottom:'25px',display:'flex',flexWrap:'wrap',justifyContent:'space-between',alignItems:'flex-start'}}>
                     <Grid item xs={12} sm={12} md={8} className="grid-section">
                         <Grid item xs={12} className="section-top-grid">
@@ -160,16 +177,17 @@ const EditarReceta = ({receta, productos}) => {
                         <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                             <Grid item xs={12} style={{display:'flex',alignItems:'flex-end',flexWrap:'wrap'}}>
                                 <Grid item xs={12} md={6}>
-                                    <img src={"/storage/recetas/" + receta.url} className="img-receta-admin" />
+                                    <img id='imgContainer' src={"/storage/recetas/" + receta.url} className="img-receta-admin" />
                                 </Grid>
                                 <Grid className="grid-derecho-title-re" style={{paddingBottom:'5px'}}>
                                     <input
                                         accept="image/*"
-                                        id="contained-button-file"
+                                        id="imgProducto"
                                         type="file"
                                         style={{display:'none'}}
+                                        onChange={readURL}
                                     />
-                                    <label htmlFor="contained-button-file" style={{marginTop:'20px'}}>
+                                    <label htmlFor="imgProducto" style={{marginTop:'20px'}}>
                                         <Button variant="contained" className="button-add" startIcon={<PublishIcon />} component="span">
                                         Editar
                                         </Button>
@@ -244,7 +262,7 @@ const EditarReceta = ({receta, productos}) => {
                                                 const data = editor.getData();
                                                 setValues(values => ({
                                                     ...values,
-                                                    contenido: data,
+                                                    ingredientes: data,
                                                 }))
                                             } }
                                         />
@@ -262,7 +280,7 @@ const EditarReceta = ({receta, productos}) => {
                                                 const data = editor.getData();
                                                 setValues(values => ({
                                                     ...values,
-                                                    contenido: data,
+                                                    preparacion: data,
                                                 }))
                                             } }
                                         />
@@ -332,7 +350,7 @@ const EditarReceta = ({receta, productos}) => {
                                 </Grid>
                             </Grid>
 
-                            <Grid className="input-admin-100" style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'8px 24px',marginBottom:'10px',paddingRight:'0px',marginTop:'20px'}}>
+                            <Grid className="input-admin-100" style={{display:'flex',justifyContent:'flex-end',alignItems:'center',padding:'0px 0px 0px 0px',marginBottom:'10px',marginTop:'20px'}}>
                                 <InertiaLink href={route('admin.receta',1)} className="btn-cancelar-op">CANCELAR</InertiaLink>
                                 <Button
                                     className="button-filter button-update btn-second"

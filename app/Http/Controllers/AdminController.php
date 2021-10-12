@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Recipe;
+use App\Models\Img;
 use Illuminate\Support\Facades\DB;
 use App\Models\Brand;
 use App\Models\Type;
@@ -16,19 +17,27 @@ use App\Models\Category;
 use App\Models\Question;
 use Illuminate\Support\Str;
 use App\Models\Supplier;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
-    public function index(Request $request){
-        $productos=Product::leftJoin('brands','products.brand_id','=','brands.id')
-            ->select('products.id','products.name as nombre','brands.name as marca', 'precio' , 'descuento', 'stock')
+
+    public function __construct()
+    {
+        $this->middleware('soyadmin');
+    }
+
+    public function index(Request $request)
+    {
+        $productos = Product::leftJoin('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.id', 'products.name as nombre', 'brands.name as marca', 'precio', 'descuento', 'stock')
             ->selectRaw('(`products`.`precio` - `products`.`precio`*(`products`.`descuento`/100)) AS precio_descuento')
             ->when($request->deleted == "true", function ($query, $deleted) {
                 return $query->onlyTrashed();
             })
             ->get();
         
-            $total = $productos->count();
+        $total = $productos->count();
 
         $sinStock=Product::where('stock','<=',0)->count();
 
@@ -219,27 +228,36 @@ class AdminController extends Controller
         }
     }
 
-    public function pedidos()
+    public function pedidos(Request $request)
     {
         $pedidos = Sale::leftJoin('users', 'sales.client_id', '=', 'users.id')
-            ->select('sales.id', 'sales.created_at as fecha', 'users.name as cliente', 'sales.total as total', 'tipo_entrega as entrega','sales.status')
+            ->select('sales.id', 'sales.created_at as fecha', 'users.name as cliente', 'sales.total as total', 'tipo_entrega as entrega','sales.status', 'sales.costoEnvio', 'sales.formaPago')
             ->orderBy('id', 'DESC')
+            ->when($request->deleted == "true", function ($query, $deleted) {
+                return $query->onlyTrashed();
+            })
             ->get();
 
         $total = $pedidos->count();
 
-        $ganancias = $pedidos->sum('total');
+        $ganancias = Sale::sum('total');
+
+        $pedidos_completados = Sale::where('status', 'entregado')->count();
+
+        $pedidos_pendientes = Sale::where('status', '!=','entregado')->count();
 
         return Inertia::render('Admin/Pedidos/Pedidos', [
             'total' => $total,
             'ganancias' => $ganancias,
             'pedidos' => $pedidos,
+            'pedidos_completados' => $pedidos_completados,
+            'pedidos_pendientes' => $pedidos_pendientes,
         ]);
     }
 
     public function pedido($id)
     {
-        $pedido = Sale::with('client', 'product')
+        $pedido = Sale::withTrashed()->with('client', 'product')
             ->findOrFail($id);
         return Inertia::render('Admin/Pedidos/Pedido', [
             'pedido' => $pedido,
@@ -286,9 +304,31 @@ class AdminController extends Controller
             DB::commit();
             return \Redirect::route('admin.pedidos')->with('success', 'El pedido se ha eliminado con éxito!');
         } catch (\Throwable $th) {
-            dd($th);
             DB::rollback();
             return \Redirect::back()->with('error', 'Ocurrió un problema, vuelva a intentarlo más tarde.');
+        }
+    }
+
+    public function pedidoRestore($id)
+    {
+        DB::beginTransaction();
+        try{
+            $pedido = Sale::withTrashed()->find($id);
+
+            if(!$pedido){
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el pedido, inténtelo más tarde.');
+            }
+
+            $pedido->restore();
+
+            DB::commit();
+            return \Redirect::back()->with('success','¡Pedido restaurado con éxito!');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el pedido, inténtelo más tarde.');
         }
     }
 
@@ -368,10 +408,85 @@ class AdminController extends Controller
         }
     }
 
-    public function banners()
+    public function banners(Request $request)
     {
-        $banners = Banner::get();
+        if ($request->wantsJson()) {
+            $banner = Banner::orderBy('created_at', 'desc')->first(['id', 'url', 'orden']);
+            return $banner;
+        }
+        $banners = Banner::orderBy('orden', 'asc')->get(['id', 'url', 'orden']);
+
         return Inertia::render('Admin/Banners/Banners', ['banners' => $banners]);
+    }
+
+    public function newBanner(Request $request)
+    {
+        if ($request->file('foto')) {
+            DB::beginTransaction();
+            try {
+                $file = request()->file('foto');
+                $imageName = time() . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('banners', $imageName, 'public');
+                $ultimo = Banner::orderBy('orden', 'desc')->first();
+                $banner = new Banner();
+                $banner->url = $imageName;
+                $banner->orden = $ultimo->orden + 1;
+                $banner->brand_id = 1;
+                $banner->activo = 1;
+                $banner->save();
+                DB::commit();
+                return redirect()->back()->with('success', 'Banner agregado con éxito!');
+            } catch (\Throwable $th) {
+                //throw $th;
+                DB::rollBack();
+                unlink(public_path('/img/carrousel/' . $imageName));
+                return redirect()->back()->with('error', 'Ocurrió un error, por favor intentálo de nuevo.')->withErrors('eumiki');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Imágen no válida, intentálo de nuevo!')->withErrors('eu miki');
+    }
+
+    public function deleteBanner($id)
+    {
+        DB::beginTransaction();
+        try {
+            $banner = Banner::findOrFail($id);
+            Storage::disk('public')->delete('banners/' . $banner->url);
+            $banner->delete();
+            DB::commit();
+            return redirect()->back()->with('success', 'Banner borrado con éxito!');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocurrió un error, por favor intentálo de nuevo.')->withErrors('eumiki');
+        }
+    }
+
+    public function updateBanner()
+    {
+        $banner = Banner::orderBy('orden', 'asc')->get(['id', 'url', 'orden']);
+        return $banner;
+    }
+
+    public function ordenarBanner(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $i = 1;
+            foreach ($request->cards as $card) {
+                $banner = Banner::findOrFail($card['id']);
+                $banner->orden = $i;
+                $banner->save();
+                $i++;
+            }
+            DB::commit();
+            return redirect()->back()->with('success', 'Banner ordenado con éxito!');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocurrió un error, por favor intentálo de nuevo.')->withErrors('eumiki');
+        }
     }
 
     public function recetas(Request $request)
@@ -511,6 +626,59 @@ class AdminController extends Controller
 
             return \Redirect::back()->with('error', 'Ha ocurrido un error, inténtelo más tarde.');
         }
+    }
 
+    public function recetaPatch(Request $request, $id){
+        // dd($request);
+        $validated = $request->validate([
+            'imgProducto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
+            'nombre' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
+            'descripcion' => ['required', 'max:250', 'regex:/^[A-Za-z0-9À-ÖØ-öø-ÿ_! \"#$%&\'()*+,\-.\\:\/;=?@^_]+$/'],
+            'link' => 'required|url',
+            'ingredientes' => 'required',
+        ]);
+
+        //COMIENZA LA TRANSACCION
+        DB::beginTransaction();
+
+        try {
+            
+            $receta = Recipe::findOrFail($id);
+
+            $receta->nombre = $request->nombre;
+            $receta->ingredientes = $request->ingredientes;
+            $receta->preparacion = $request->preparacion;
+            $receta->link = $request->link;
+
+            $recetaImg = Img::where('recipe_id',$id)->first();
+
+            $recetaImg->descripcion = $request->descripcion;
+            
+            if(!is_null($request->file('imgProducto'))){
+                
+                // Eliminar la foto del servidor
+                // Cambiar el nombre de la img con carbon?
+                // Guardar la img en el server
+                // Guardar el url en la bd
+                //guarda la foto
+                    \Storage::delete('public/recetas/'.$recetaImg->url);
+                    $NewImg = $request->file('imgProducto')->store('public/recetas');
+                    $NewImg->url = $request->file('imgProducto')->hashName();
+                
+            }
+
+            $receta->save();
+            $recetaImg->save();
+            DB::commit();
+
+        //REDIRECCIONA A LA VISTA DE RECETA
+        return \Redirect::route('admin.receta',$id)->with('success', 'La receta ha sido actualizada con éxito!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if($NewImg)
+                \Storage::delete($NewImg);
+
+            return \Redirect::route('admin.receta',$id)->with('error', 'Ha ocurrido un error al intentar actualizar la receta, inténtelo más tarde.');
+        }
     }
 }

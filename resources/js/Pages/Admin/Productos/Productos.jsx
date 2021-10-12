@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Inertia } from '@inertiajs/inertia'
 import { makeStyles } from '@material-ui/core/styles';
 import route from 'ziggy-js';
-import { InertiaLink, usePage } from '@inertiajs/inertia-react';
+import { InertiaLink } from '@inertiajs/inertia-react';
 import Layout from '../../../layouts/LayoutAdmin';
 import '/css/admin.css';
 
@@ -12,9 +12,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import InputBase from '@material-ui/core/InputBase';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import {
     DataGrid,
     GridToolbarDensitySelector,
@@ -32,7 +29,6 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
-import FilterListIcon from '@material-ui/icons/FilterList';
 
 //iconos
 import ClearIcon from '@material-ui/icons/Clear';
@@ -186,9 +182,8 @@ function QuickSearchToolbar(props) {
       <div className={classes.root}>
         <div>
           <GridToolbarFilterButton />
-
-
           <GridToolbarDensitySelector />
+
           <Grid style={{margin: 4}} >
             <FormControlLabel
               control={
@@ -202,6 +197,7 @@ function QuickSearchToolbar(props) {
               label="Ver eliminados"
             />
           </Grid>
+          
         </div>
         <TextField
           variant="standard"
@@ -236,23 +232,6 @@ function QuickSearchToolbar(props) {
 
 
 const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
-
-    // const rows = [
-    //     {id: 1, nombre: 'Lorem ipsum dolor sit amet', marca: 'Lorem ipsum', precio: '$ 250.00 MXN', descuento:'- 10%', atributos:'soya free, gluten free' },
-    // ];
-
-    const classes = useStyles();
-
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
     //buscador
     const [searchText, setSearchText] = React.useState('');
     const [rows, setRows] = React.useState(productos);
@@ -349,7 +328,7 @@ const Productos = ({total, sinStock, stock, totalProductos, productos}) => {
                         rows={rows}
                         columns={columns}
                         pageSize={15}
-                        rowsPerPageOptions={[5]}
+                        rowsPerPageOptions={[15]}
                         disableSelectionOnClick
                         componentsProps={{
                             toolbar: {

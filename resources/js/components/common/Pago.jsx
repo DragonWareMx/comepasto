@@ -440,6 +440,7 @@ export default function Pago({ dialog, handleClose, subtotal, handleCloseCarrito
         var long = position.coords.longitude;
         console.log('mi posicion: ', lat, long);
         getDirection(lat, long);
+        setLocation({ lat: lat, lng: long });
         setDefaultLocation({
             lat: lat, lng: long
         })

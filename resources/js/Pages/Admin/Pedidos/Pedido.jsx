@@ -25,10 +25,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Tooltip from '@material-ui/core/Tooltip';
+import Alert from '@material-ui/lab/Alert';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import TuneIcon from '@material-ui/icons/Tune';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import UpdateIcon from '@material-ui/icons/Update';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
@@ -113,6 +113,20 @@ const Pedido = ({pedido}) => {
                 <Grid item xs={12} className="top-admin">
                     <InertiaLink href={route('admin.pedidos')} className="title-page subtitle-page"><ArrowBackIcon style={{marginRight:'9px'}} />Pedidos</InertiaLink>
                 </Grid>
+
+                {pedido.deleted_at &&
+                    <Grid item xs={12} style={{marginBottom: 20}} >
+                        <Alert severity="warning" 
+                        action={
+                            <Button color="inherit" size="small" onClick={() => { Inertia.put(route('admin.pedido.restore', pedido.id)) }}>
+                                RESTAURAR
+                            </Button>
+                        }
+                        >
+                            Este pedido ha sido eliminado.
+                        </Alert>
+                    </Grid>
+                }
 
                 <Grid item xs={12} style={{marginBottom:'25px',display:'flex',flexWrap:'wrap',justifyContent:'space-between',alignItems:'flex-start'}}>
                     <Grid item xs={12} sm={12} md={8}>

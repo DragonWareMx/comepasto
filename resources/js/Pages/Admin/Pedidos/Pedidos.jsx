@@ -11,9 +11,9 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import InputBase from '@material-ui/core/InputBase';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 import {
     DataGrid,
     GridToolbarDensitySelector,
@@ -21,13 +21,17 @@ import {
   } from '@material-ui/data-grid';
 import PropTypes from 'prop-types';
 
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+
+//iconos
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import SearchIcon from '@material-ui/icons/Search';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
@@ -96,46 +100,62 @@ const useStylesSearch = makeStyles(
 );
 
 const columns = [
-{ field: 'id', headerName: 'ID', width: 90 },
+{ field: 'id', headerName: 'ID', flex: 0.4 },
 {
     field: 'fecha',
     headerName: 'FECHA',
-    width: 160,
+    flex: 0.7,
     editable: false,
     disableColumnSelector:false,
 },
 {
     field: 'cliente',
     headerName: 'CLIENTE',
-    width: 200,
+    flex: 1,
     editable: false,
 },
 {
     field: 'status',
     headerName: 'ESTATUS',
-    // type: 'number',
-    width: 200,
+    flex: 0.5,
     editable: false,
 },
 {
     field: 'entrega',
     headerName: 'TIPO DE ENTREGA',
-    width: 200,
+    flex: 0.5,
     editable: false,
 },
 {
     field: 'total',
     headerName: 'TOTAL',
-    description: 'No es posible reordenar esta columna.',
-    sortable: false,
-    width: 180,
+    flex: 0.5,
+    editable: false,
+    valueFormatter: (params) => {
+        const precio = parseFloat(params.value).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        return `$ ${precio}`;
+    },
+},
+{
+    field: 'costoEnvio',
+    headerName: 'COSTO ENVÍO',
+    flex: 0.5,
+    editable: false,
+    valueFormatter: (params) => {
+        const precio = parseFloat(params.value).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        return `$ ${precio}`;
+    },
+},
+{
+    field: 'formaPago',
+    headerName: 'FORMA DE PAGO',
+    flex: 0.5,
     editable: false,
 },
 {
     field: "",
     headerName: "EDITAR",
-    flex: 0.5,
-    width:50,
+    flex: 0.4,
     renderCell: (params) => (
       <InertiaLink href={route('admin.pedido', params.row.id)} style={{textDecoration: 'none', color: 'gray'}}><EditIcon/></InertiaLink>
     ),
@@ -150,12 +170,35 @@ function escapeRegExp(value) {
 
 function QuickSearchToolbar(props) {
     const classes = useStylesSearch();
+
+    const [checked, setChecked] = React.useState(false);
+  
+    const handleChange = (event) => {
+      setChecked(event.target.checked);
+
+      Inertia.reload({data: {deleted: event.target.checked}})
+    };
   
     return (
       <div className={classes.root}>
         <div>
           <GridToolbarFilterButton />
           <GridToolbarDensitySelector />
+
+          <Grid style={{margin: 4}} >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={checked}
+                  onChange={handleChange}
+                  name="checkedB"
+                  color="primary"
+                />
+              }
+              label="Ver eliminados"
+            />
+          </Grid>
+
         </div>
         <TextField
           variant="standard"
@@ -188,23 +231,7 @@ QuickSearchToolbar.propTypes = {
     value: PropTypes.string.isRequired,
 };
 
-const Pedidos = ({total,ganancias, pedidos}) => {
-    const classes = useStyles();
-
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    
-    // const rows = [
-    //     { id: 1, fecha: '20/08/2021 09:32', cliente: 'Lorem ipsum dolor sit amet', estatus: 'En camino', entrega:'A domicilio', total:'$240.00 MXN' },
-    //   ];
-
+const Pedidos = ({total,ganancias, pedidos, pedidos_completados, pedidos_pendientes}) => {
     //buscador
     const [searchText, setSearchText] = React.useState('');
     const [rows, setRows] = React.useState(pedidos);
@@ -224,6 +251,22 @@ const Pedidos = ({total,ganancias, pedidos}) => {
       setRows(pedidos);
     }, [pedidos]);
 
+    function showPrice(precio, descuento){
+        if(descuento){
+            var fPrecio = parseFloat(precio);
+            var fDescuento = parseFloat(descuento)
+
+            var nPrecio = fPrecio - (fPrecio * (fDescuento/100))
+
+            if(nPrecio < 0)
+                nPrecio = 0
+
+            return nPrecio.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
+        else{
+            return parseFloat(precio).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
+    }
 
     return ( 
         <>
@@ -257,7 +300,7 @@ const Pedidos = ({total,ganancias, pedidos}) => {
                         <Grid item xs={2}><MonetizationOnOutlinedIcon style={{color:'#1DA3A8'}} /></Grid>
                         <Grid item xs={10}>
                         <Tooltip title="Valor total de los pedidos realizados"><Grid item={12} className="title-item-resume">TOTAL EN PEDIDOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">$ {ganancias} MXN</Grid>
+                            <Grid item={12} className="txt-item-resume">$ {showPrice(ganancias, null)} MXN</Grid>
                         </Grid>
                     </Grid>
 
@@ -265,7 +308,7 @@ const Pedidos = ({total,ganancias, pedidos}) => {
                         <Grid item xs={2}><CheckCircleOutlineOutlinedIcon style={{color:'#27AB6E'}} /></Grid>
                         <Grid item xs={10}>
                         <Tooltip title="Total de pedidos completados exitosamente"><Grid item={12} className="title-item-resume">PEDIDOS COMPLETADOS</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">241</Grid>
+                            <Grid item={12} className="txt-item-resume">{pedidos_completados}</Grid>
                         </Grid>
                     </Grid>
 
@@ -273,62 +316,28 @@ const Pedidos = ({total,ganancias, pedidos}) => {
                         <Grid item xs={2}><HighlightOffOutlinedIcon style={{color:'#D9822B'}} /></Grid>
                         <Grid item xs={10}>
                         <Tooltip title="Total de pedidos en espera"><Grid item={12} className="title-item-resume">PEDIDOS PENDIENTES</Grid></Tooltip>
-                            <Grid item={12} className="txt-item-resume">5</Grid>
+                            <Grid item={12} className="txt-item-resume">{pedidos_pendientes}</Grid>
                         </Grid>
                     </Grid>
                 </Grid>
 
-                {/* CONTENIDO GENERAL */}
-                <Grid item xs={12} style={{marginBottom:'25px', borderRadius:'4px', border:'1px solid #E1E3EA'}}>
-                    <Grid item xs={12} style={{padding:'26px',display:'flex',alignItems:'stretch',justifyContent:'space-between'}}>
-                        <Grid item xs={10}>     
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon style={{fontSize:'22px'}} />
-                                </div>
-                                <InputBase
-                                placeholder="Buscar..."
-                                className="input-search"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'search' }}
-                                />
-                            </div>
-                        </Grid>
-                        <Grid>
-                            <Button
-                                className="button-filter"
-                                onClick={handleClick}
-                                startIcon={<FilterListIcon />}
-                            >
-                                Filtrar
-                            </Button>
-                            <Menu
-                                id="filter-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Cliente</MenuItem>
-                                <MenuItem onClick={handleClose}>Estatus</MenuItem>
-                                <MenuItem onClick={handleClose}>Tipo de entrega</MenuItem>
-                            </Menu>
-                        </Grid>
-                    </Grid>
-                    {/* Este height es provisional */}
-                    <Grid item xs={12} style={{height:'300px'}}>
+                {/* Este height es provisional */}
+                <Grid item xs={12} style={{height:800, marginBottom: 50}}>
                     <DataGrid
+                        components={{ Toolbar: QuickSearchToolbar }}
                         rows={rows}
                         columns={columns}
-                        pageSize={5}
-                        rowsPerPageOptions={[5]}
+                        pageSize={15}
+                        rowsPerPageOptions={[15]}
                         disableSelectionOnClick
+                        componentsProps={{
+                            toolbar: {
+                            value: searchText,
+                            onChange: (event) => requestSearch(event.target.value),
+                            clearSearch: () => requestSearch(''),
+                            },
+                        }}
                     />
-                    </Grid>
-
                 </Grid>
             </Grid>
         </Container>

@@ -16,7 +16,8 @@ class CreateBannersTable extends Migration
         Schema::create('banners', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('url',250);
+            $table->string('url', 250);
+            $table->unsignedBigInteger('orden');
             $table->unsignedBigInteger('brand_id');
             $table->tinyInteger('activo');
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
