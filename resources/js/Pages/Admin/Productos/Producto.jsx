@@ -145,7 +145,7 @@ const Producto = ({producto, recetas}) => {
                         {/* contenido */}
                         <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                             <Grid item xs={4} sm={1} style={{marginRight:'20px',marginBottom:'20px'}}>
-                                <img src={producto.img[0] && '/img/PRODUCTOS/'+producto.img[0].url} className="img-product-view" />
+                                <img src={producto.foto && '/storage/products/'+producto.foto} className="img-product-view" />
                             </Grid>
                             <Grid item xs={12} sm={10}>
                                 {/* ITEM DE INFO */}

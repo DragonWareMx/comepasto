@@ -190,7 +190,7 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
 
                 <Grid item xs={12} className="grid-section">
                     <Grid item xs={12} className="section-top-grid">
-                        <Grid>Agregar producto</Grid>
+                        <Grid>Editar producto</Grid>
                     </Grid>
 
                     {/* contenido */}
@@ -271,9 +271,9 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                     getOptionLabel={(option) => option.name}
                                     className='autocompleteProductos'
                                     onChange={(event, newValue) => {
-                                        setValues({ ...values, marca: newValue ? newValue : null });
+                                        setValues({ ...values, marca: newValue ? newValue.id : null });
                                     }}
-                                    value={values.marca}
+                                    defaultValue={producto.brand}
                                     renderInput={
                                         (params) => 
                                         <TextField {...params}
@@ -297,9 +297,9 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                         getOptionLabel={(option) => option.name}
                                         className='autocompleteProductos'
                                         onChange={(event, newValue) => {
-                                            setValues({ ...values, tipo: newValue ? newValue : null });
+                                            setValues({ ...values, tipo: newValue ? newValue.id : null });
                                         }}
-                                        value={values.tipo}
+                                        defaultValue={producto.type}
                                         renderInput={
                                             (params) => 
                                             <TextField {...params}
@@ -325,9 +325,9 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                         getOptionLabel={(option) => option.name}
                                         className='autocompleteProductos'
                                         onChange={(event, newValue) => {
-                                            setValues({ ...values, categoria: newValue ? newValue : null });
+                                            setValues({ ...values, categoria: newValue ? newValue.id : null });
                                         }}
-                                        value={values.categoria}
+                                        defaultValue={producto.category}
                                         renderInput={
                                             (params) => 
                                             <TextField {...params}
