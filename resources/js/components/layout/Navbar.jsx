@@ -265,6 +265,9 @@ export default function Navbar() {
                             :
                             <>
                                 <li><a href={route('cuenta')}>MI CUENTA</a></li>
+                                {auth.user.rol == 'admin' &&
+                                    <li><a href="/admin">ADMINISTRAR</a></li>
+                                }
                                 <li><InertiaLink as="button" method='POST' href={route('logout')} className={classes.button}>CERRAR SESIÓN</InertiaLink></li>
                             </>
                         }
