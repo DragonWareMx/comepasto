@@ -18,7 +18,7 @@ use App\Models\Question;
 use Illuminate\Support\Str;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Storage;
-// use Image;
+use Image;
 
 class AdminController extends Controller
 {
@@ -165,8 +165,18 @@ class AdminController extends Controller
                 Storage::delete('public/products/'.$product->foto);
 
                 //guarda la foto
-                $foto = $request->file('imgProducto')->store('public/products');
-                $product->foto = $request->file('imgProducto')->hashName();
+                $foto = $request->file('foto')->store('public/products');
+                $fileName = $request->file('foto')->hashName();
+                $product->foto = $fileName;
+
+                $image = Image::make(Storage::get($foto));
+
+                $image->resize(1280, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+
+                Storage::put($foto, (string) $image->encode('jpg', 30));
             }
 
             //informacion
@@ -194,9 +204,20 @@ class AdminController extends Controller
                 foreach ($request->file('fotos') as $fotoS) {
                     $newImagen = new Img;
                     $newImagen->product_id = $product->id;
-                    
+
+                    //guarda la foto
                     $fotoName = $fotoS->store('public/products');
-                    $newImagen->url = $fotoS->hashName();
+                    $fileName = $fotoS->hashName();
+                    $newImagen->url = $fileName;
+
+                    $image = Image::make(Storage::get($foto));
+
+                    $image->resize(1280, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+
+                    Storage::put($foto, (string) $image->encode('jpg', 30));
                     
                     $newImagen->save();
     
@@ -269,21 +290,17 @@ class AdminController extends Controller
 
             //guarda la foto
             $foto = $request->file('foto')->store('public/products');
-            $newProduct->foto = $request->file('foto')->hashName();
+            $fileName = $request->file('foto')->hashName();
+            $newProduct->foto = $fileName;
 
-            //guarda la foto comprimida
-            // $image = $request->foto;
-            // // $input['imagename'] = pathinfo($image->getClientOriginalName(),PATHINFO_FILENAME).'_'.time().'.'.$image->getClientOriginalExtension();
-            
-            // $destinationPath = public_path('/storage/products');
-            // $img = Image::make($image->getRealPath());
-            // $img->resize(768, null, function ($constraint) {
-            //     $constraint->aspectRatio();
-            // })->save($destinationPath.'/'.$request->file('foto')->hashName());
-            //------------------------
-            
-            //borar la foto orignial
-            //unlink(public_path().'/storage/img/originals/'.$name);
+            $image = Image::make(Storage::get($foto));
+
+            $image->resize(1280, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            Storage::put($foto, (string) $image->encode('jpg', 30));
 
             //informacion
             $newProduct->uuid = Str::uuid();
@@ -301,16 +318,29 @@ class AdminController extends Controller
             $newProduct->save();
 
             //guarda las fotos
-            foreach ($request->file('fotos') as $fotoS) {
-                $newImagen = new Img;
-                $newImagen->product_id = $newProduct->id;
-                
-                $fotoName = $fotoS->store('public/products');
-                $newImagen->url = $fotoS->hashName();
-                
-                $newImagen->save();
+            if($request->file('fotos')){
+                foreach ($request->file('fotos') as $fotoS) {
+                    $newImagen = new Img;
+                    $newImagen->product_id = $newProduct->id;
 
-                array_push($fotos, $fotoName);
+                    //guarda la foto
+                    $fotoName = $fotoS->store('public/products');
+                    $fileName = $fotoS->hashName();
+                    $newImagen->url = $fileName;
+
+                    $image = Image::make(Storage::get($foto));
+
+                    $image->resize(1280, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+
+                    Storage::put($foto, (string) $image->encode('jpg', 30));
+                    
+                    $newImagen->save();
+    
+                    array_push($fotos, $fotoName);
+                }
             }
 
             DB::commit();
@@ -349,7 +379,6 @@ class AdminController extends Controller
             DB::commit();
             return \Redirect::back()->with('success', 'Stock actualizado con éxito.');
         } catch (\Throwable $th) {
-            dd($th);
             DB::rollback();
             return \Redirect::back()->with('error', 'Ocurrió un problema, vuelva a intentarlo más tarde.');
         }
