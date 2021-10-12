@@ -71,7 +71,7 @@ const QuienesSomos = ({brands}) => {
                         {brands && brands.map((brand,index)=>(
                             <Tooltip title={brand.name} key={index}>
                                 <Grid container item xs={4} sm={2} alignItems="center" className="quienes_marca_paps">
-                                    <img className="quienes_marca" src={"/img/logos/"+brand.logo} alt=""/>
+                                    <img className="quienes_marca" src={"/storage/img/logos/"+brand.logo} alt=""/>
                                 </Grid>
                             </Tooltip>
                         ))}

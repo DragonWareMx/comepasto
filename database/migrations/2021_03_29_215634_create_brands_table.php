@@ -19,7 +19,7 @@ class CreateBrandsTable extends Migration
             $table->string('name',250);
             $table->unsignedBigInteger('supplier_id');
             $table->string('logo',250); //url del logo
-            $table->string('link',250); //url del sitio de la marca
+            $table->text('link'); //url del sitio de la marca
 
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
         });
