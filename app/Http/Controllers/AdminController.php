@@ -16,7 +16,7 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Question;
 use Illuminate\Support\Str;
-use App\Models\Supplier;
+use App\Models\Supplier;x
 use Illuminate\Support\Facades\Storage;
 use Image;
 
@@ -165,8 +165,8 @@ class AdminController extends Controller
                 Storage::delete('public/products/'.$product->foto);
 
                 //guarda la foto
-                $foto = $request->file('foto')->store('public/products');
-                $fileName = $request->file('foto')->hashName();
+                $foto = $request->file('imgProducto')->store('public/products');
+                $fileName = $request->file('imgProducto')->hashName();
                 $product->foto = $fileName;
 
                 $image = Image::make(Storage::get($foto));
