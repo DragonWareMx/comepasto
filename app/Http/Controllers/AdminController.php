@@ -817,7 +817,7 @@ class AdminController extends Controller
                 $brand= new Brand();
                 $brand->name=$request->nombre;
                 //guarda la foto
-                $foto = $request->file('foto')->store('public/img/logos');
+                $foto = $request->file('foto')->store('public/logos');
                 $brand->logo = $request->file('foto')->hashName();
                 $brand->supplier_id=$supplier->id;
                 $brand->link=$request->link;
