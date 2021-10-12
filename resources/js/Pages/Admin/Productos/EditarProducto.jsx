@@ -20,6 +20,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Alert from '@material-ui/lab/Alert';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -99,6 +100,8 @@ const theme = createMuiTheme({
 
 
 const EditarProducto = ({producto,marcas,tipos,categorias}) => {
+    const { errors } = usePage().props;
+
     //CHIPS
     const [inputValue, setInputValue] = React.useState('');
     const [autoCompleteValue, setAutoCompleteValue] = React.useState(null);
@@ -191,16 +194,24 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
         precio: producto.precio || '',
         descuento: producto.descuento || '',
         ingredientes: producto.ingredientes || '',
-        marca: producto.brand || '',
-        tipo: producto.type || '',
-        categoria: producto.category || '',
+        marca: producto.brand.id || '',
+        tipo: producto.type.id || '',
+        categoria: producto.category.id || '',
         soyaFree: producto.soyaFree || false,
-        trigoFree: producto.trigoFree || false
+        trigoFree: producto.trigoFree || false,
+        error: false,
     });
 
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.patch(route('admin.producto.patch',producto.id),values)
+        Inertia.post(route('admin.producto.patch',producto.id),values, {
+            onError: () => {
+                setValues((values) => ({
+                    ...values,
+                    error: true,
+                }));
+            },
+        })
     }
 
     return ( 
@@ -211,11 +222,19 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                 <Grid item xs={12} className="top-admin">
                     <InertiaLink href={route('admin.productos')} className="title-page subtitle-page"><ArrowBackIcon style={{marginRight:'9px'}} />Productos</InertiaLink>
                 </Grid>
-               
+
+                <Grid item xs={12}>
+                {
+                    errors.imgProducto &&
+                    <Alert severity="error" style={{marginBottom: 10}}>{errors.imgProducto}</Alert> 
+                }
+                </Grid>
+
                 <Grid item xs={12} className="grid-section">
                     <Grid item xs={12} className="section-top-grid">
                         <Grid>Agregar producto</Grid>
                     </Grid>
+
                     {/* contenido */}
                     <Grid item xs={12} style={{padding:'20px',display:'flex',alignItems:'flex-start',flexWrap:'wrap'}}>
                         <Grid item xs={4} sm={2} style={{marginBottom:'20px',display:'flex',justifyContent:'center',flexWrap:'wrap'}}>
@@ -272,6 +291,17 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                     }}
                                     onChange={handleChange('nombre')} 
                                     value={values.nombre}
+                                    error={
+                                        errors.nombre &&
+                                        values.error == true &&
+                                        true
+                                    }
+                                    helperText={
+                                        values.error == true &&
+                                        errors.nombre
+                                    }
+                                    maxLength="100"
+                                    required
                                 />
                             </Grid>
 
@@ -360,6 +390,16 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                         }}
                                         onChange={handleChange('presentacion')}
                                         value={values.presentacion}
+                                        maxLength="250"
+                                        error={
+                                            errors.presentacion &&
+                                            values.error == true &&
+                                            true
+                                        }
+                                        helperText={
+                                            values.error == true &&
+                                            errors.presentacion
+                                        }
                                         >
                                     </TextField>
                                 </Grid>
@@ -372,7 +412,11 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                         type="number"
                                         label="Precio"
                                         className="input-admin-50"
-                                        InputProps={{className: classes.input,}}
+                                        InputProps={{
+                                            className:
+                                                classes.input,
+                                            inputProps: {min: 0, max: 999999.99, step: 0.01}
+                                        }}
                                         InputLabelProps={{
                                             classes: {
                                                 root: classes.formTextLabel
@@ -380,6 +424,16 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                         }}
                                         onChange={handleChange('precio')}
                                         value={values.precio}
+                                        required   
+                                        error={
+                                            errors.precio &&
+                                            values.error == true &&
+                                            true
+                                        }
+                                        helperText={
+                                            values.error == true &&
+                                            errors.precio
+                                        }   
                                         >
                                     </TextField>
                                 </Grid>
@@ -390,7 +444,11 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                         max='100'
                                         label="Descuento (%)"
                                         className="input-admin-50"
-                                        InputProps={{className: classes.input,}}
+                                        InputProps={{
+                                            className:
+                                                classes.input,
+                                            inputProps: {min: 0, max: 100.00, step: 0.01}
+                                        }}
                                         InputLabelProps={{
                                             classes: {
                                                 root: classes.formTextLabel
@@ -398,6 +456,16 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                         }}
                                         onChange={handleChange('descuento')}
                                         value={values.descuento}
+                                        required
+                                        error={
+                                            errors.descuento &&
+                                            values.error == true &&
+                                            true
+                                        }
+                                        helperText={
+                                            values.error == true &&
+                                            errors.descuento
+                                        }
                                         >
                                     </TextField>
                                 </Grid>
@@ -417,6 +485,15 @@ const EditarProducto = ({producto,marcas,tipos,categorias}) => {
                                     }}
                                     onChange={handleChange('ingredientes')}
                                     value={values.ingredientes}
+                                    error={
+                                        errors.ingredientes &&
+                                        values.error == true &&
+                                        true
+                                    }
+                                    helperText={
+                                        values.error == true &&
+                                        errors.ingredientes
+                                    }
                                 />
                             </Grid>
 
