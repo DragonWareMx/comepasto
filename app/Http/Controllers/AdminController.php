@@ -858,7 +858,7 @@ class AdminController extends Controller
                 \Storage::delete($foto);
             }
 
-            return \Redirect::back()->with('error', 'Ha ocurrido un error, inténtelo más tarde.');
+            return \Redirect::back()->with('error', 'Ha ocurrido un error, inténtelo más tarde, el formato de la imagen debe ser PNG.');
         }
     }
 
