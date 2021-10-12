@@ -925,14 +925,16 @@ class AdminController extends Controller
                     if($before->id == $productoNew->id){
                         $eliminar=false;
                     }
-                    dd($eliminar);
-                }
-                // borrado
-                // if($eliminar == true){
                     
-                //     $productoBorrar = DB::table('product_recipe')->where('recipe_id',$id)->where('product_id',$before->id)->first();
-                //     $productoBorrar->delete();
-                // }
+                }
+                
+                // borrado
+                if($eliminar == true){
+                    
+                     $productoBorrar = DB::table('product_recipe')->where('recipe_id',$id)->where('product_id',$before->id)->delete();
+                    //  dd($productoBorrar);
+                    //  $productoBorrar->delete();
+                }
                 $i++;
             }
 
