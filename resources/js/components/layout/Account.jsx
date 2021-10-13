@@ -59,6 +59,11 @@ export default function Account({ abrirLogin }) {
                         <InertiaLink href={route('cuenta')} className={classes.inertia}>Mi cuenta</InertiaLink>
                     </MenuItem>
                 }
+                {auth.user && auth.user.rol == "admin" &&
+                    <MenuItem onClick={handleClose}>
+                        <InertiaLink href={'/admin'} className={classes.inertia}>Administrar</InertiaLink>
+                    </MenuItem>
+                }
                 {auth.user &&
                     <MenuItem onClick={handleClose}>
                         <InertiaLink href={route('logout')} method={'post'} as={'button'} className={classes.inertia}>Cerrar sesión</InertiaLink>

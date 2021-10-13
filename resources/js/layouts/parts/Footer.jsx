@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme) => ({
     logo: {
         width: '19px',
         height: '13px',
-        marginLeft: '10px'
+        marginLeft: '10px',
+        filter: "brightness(40%)"
     },
     link: {
         textDecoration: 'none',
@@ -38,7 +39,7 @@ export default function Footer() {
     return (
         <div className={classes.footer}>
             <a href="https://dragonware.com.mx" target="_blank" className={classes.link}>
-                Desarrollado por DragonWare <img src="/img/icons/dragonware.png" className={classes.logo} />
+                Desarrollado por DragonWare <img src="/img/icons/dragonBlanco.png" className={classes.logo} />
             </a>
         </div>
     )
