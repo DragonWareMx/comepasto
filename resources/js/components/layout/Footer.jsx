@@ -13,7 +13,7 @@ export default function Footer() {
                             Comepasto
                         </div>
                         <div className="footer-copy">
-                            © Copyright 2021 comepasto
+                            <a href="/terminos-y-condiciones" target="_blank" style={{color:'white',textDecoration: 'none'}}>© Copyright 2021 comepasto</a>
                         </div>
                     </div>
                 </div>
@@ -22,13 +22,13 @@ export default function Footer() {
                         <a href="http://facebook.com" target="_blank">
                             <img src="/img/icons/fb2.png" alt="" srcSet="" style={{ width: "20px", height: "20px" }} />
                         </a>
-                        <a href="http://facebook.com" target="_blank">
+                        <a href="https://www.instagram.com/comepastov/?hl=es-la" target="_blank">
                             <img src="/img/icons/ig2.png" alt="" srcSet="" style={{ width: "20px", height: "20px" }} />
                         </a>
-                        <a href="http://facebook.com" target="_blank">
+                        <a href="https://api.whatsapp.com/send?phone=524432431668" target="_blank">
                             <img src="/img/icons/whats.png" alt="" srcSet="" style={{ width: "20px", height: "20px" }} />
                         </a>
-                        <a href="http://facebook.com" target="_blank">
+                        <a href="mailto:comepastov@gmail.com" target="_blank">
                             <img src="/img/icons/mail.png" alt="" srcSet="" style={{ width: "20px", height: "20px" }} />
                         </a>
                     </div>
