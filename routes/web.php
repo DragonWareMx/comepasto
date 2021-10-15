@@ -26,6 +26,14 @@ Route::get('/inertia', function () {
     return Inertia::render('Ejemplo');
 });
 
+Route::get('/terminos-y-condiciones', function () {
+    return Inertia::render('Terminos');
+});
+
+Route::get('/politica-y-privacidad', function () {
+    return Inertia::render('Politica');
+});
+
 // RUTAS DE AUTH
 //Auth::routes();
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
