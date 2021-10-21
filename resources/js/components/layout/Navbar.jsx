@@ -186,7 +186,7 @@ export default function Navbar() {
                             <img src="/img/icons/fb.png" alt="Facebok" width={"25px"} height={"25px"} />
                             Facebook
                         </a>
-                        <a className="icono" href="https://instagram.com/comepastov/" style={{ marginLeft: "15px" }} target='_blank'>
+                        <a className="icono" href="https://www.instagram.com/comepastov/?hl=es-la" style={{ marginLeft: "15px" }} target='_blank'>
                             <img src="/img/icons/ig.png" alt="Instagram" width={"25px"} height={"25px"} />
                             Instagram
                         </a>
