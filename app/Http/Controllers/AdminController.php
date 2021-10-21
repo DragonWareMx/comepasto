@@ -849,7 +849,7 @@ class AdminController extends Controller
                 return \Redirect::back()->with('success', 'Categoría agregada con éxito.');
             }
         } catch (\Exception $e) {
-
+            dd($e);
             DB::rollBack();
             //si hay foto se elimina del servidor
             if ($foto) {
