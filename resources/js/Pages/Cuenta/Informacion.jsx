@@ -137,7 +137,7 @@ const Informacion = () => {
 
                         <Grid container direction="row" justify="space-between" style={{ marginTop: 20 }}>
                             <Grid item xs={12} className="info-txt-datos info-little-envio" >Consulta información acerca del uso de tus datos personales en nuestro&nbsp;
-                                <a href="#!" target="_blank">Aviso de privacidad</a> y <a href="#!" target="_blank">Términos y Condiciones</a> de Comepasto.
+                                <a href="/politica-y-privacidad" target="_blank">Política de privacidad</a> y <a href="/terminos-y-condiciones" target="_blank">Términos y Condiciones</a> de Comepasto.
                             </Grid>
 
                             <Grid item xs={12} sm={9} md={6} style={{ marginTop: 26 }} id="info-grid">
