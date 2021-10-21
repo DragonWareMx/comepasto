@@ -361,6 +361,7 @@ class AdminController extends Controller
                     \Storage::delete($fotoS);
                 }
             }
+            dd($e);
 
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el producto, inténtelo más tarde.');
         }
@@ -855,6 +856,8 @@ class AdminController extends Controller
             if ($foto) {
                 \Storage::delete($foto);
             }
+
+            dd($e);
 
             return \Redirect::back()->with('error', 'Ha ocurrido un error, inténtelo más tarde, el formato de la imagen debe ser PNG.');
         }
