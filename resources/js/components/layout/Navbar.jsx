@@ -163,7 +163,8 @@ export default function Navbar() {
     };
 
     const handleOpenLogin = () => {
-        handleClose();
+        // handleClose();
+        handleClick();
         setDialogLogin(true);
     }
 
@@ -256,10 +257,10 @@ export default function Navbar() {
             <Slide in={NavDialog} direction="down" mountOnEnter unmountOnExit>
                 <nav className="navigation">
                     <ul>
-                        <li><InertiaLink href={route('inicio')}>TIENDA</InertiaLink></li>
-                        <li><InertiaLink href={route('recetas')}>RECETAS</InertiaLink></li>
-                        <li><InertiaLink href={route('quienesSomos')}>QUIÉNES SOMOS</InertiaLink></li>
-                        <li><InertiaLink href={route('preguntas')}>PREGUNTAS FRECUENTES</InertiaLink></li>
+                        <li><InertiaLink href={route('inicio')} onClick={handleClick}>TIENDA</InertiaLink></li>
+                        <li><InertiaLink href={route('recetas')} onClick={handleClick}>RECETAS</InertiaLink></li>
+                        <li><InertiaLink href={route('quienesSomos')} onClick={handleClick}>QUIÉNES SOMOS</InertiaLink></li>
+                        <li><InertiaLink href={route('preguntas')} onClick={handleClick}>PREGUNTAS FRECUENTES</InertiaLink></li>
                         {!auth.user ?
                             <li><a onClick={handleOpenLogin}>INICIAR SESIÓN</a></li>
                             :

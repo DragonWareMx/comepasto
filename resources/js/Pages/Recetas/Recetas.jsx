@@ -22,7 +22,7 @@ const Recetas = ({recetas}) => {
                                 </Grid>
                             </Grid>
                             <Grid container item xs={12} sm={4} direction="row" justify="flex-end" color="primary">
-                                <img className="img_recetas" src="/img/ilustraciones/Cooking-cuate.png" alt="Illustration by Freepik Storyset" />
+                                <a href="https://storyset.com/people" target="_blank"><img className="img_recetas" src="/img/ilustraciones/Cooking-cuate.png" alt="People illustrations by Storyset" /></a>
                             </Grid>
                         </Grid>
                     </Container>

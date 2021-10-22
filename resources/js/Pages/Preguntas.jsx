@@ -73,11 +73,13 @@ const Preguntas = ({tipo, questions, pregunta}) => {
                         </Grid>
                     </Grid>
                     <Grid item xs={12} sm={4}>
+                        <a href="https://storyset.com/people" target="_blank" alt="People illustrations by Storyset">
                         <AsyncImage 
                             src={"/img/ilustraciones/questions.svg"}
                             imageComponent={<img className="pregunta_svg" src="/img/ilustraciones/questions.svg" alt="" />}
                             loadingComponent={<CircularProgress style={{width: 100, height: 100, color: "#1DA3A8", display:'flex', margin:'auto'}} />}
                         />
+                        </a>
                     </Grid>
                     <Grid container style={{marginBottom:47}}>
                         {questions && questions.map((question, index)=>(
@@ -88,11 +90,13 @@ const Preguntas = ({tipo, questions, pregunta}) => {
                         <Grid item xs={12} style={{color:'#1DA3A8',fontFamily:'Atma',fontSize:25,textAlign:'center'}}>¿No encuentras tu pregunta?</Grid>
                         <Grid item xs={12} style={{color:'#535353',fontFamily:'Oxygen',fontSize:17,textAlign:'center'}}>Puedes ponerte en contacto con nosotros en</Grid>
                         <Grid item xs={5} style={{marginLeft:50}}>
+                            <a href="https://storyset.com/people" target="_blank" alt="People illustrations by Storyset">
                             <AsyncImage 
                                 src={"/img/ilustraciones/contact.svg"}
                                 imageComponent={<img className="pregunta_svg" src="/img/ilustraciones/contact.svg" alt="" />}
                                 loadingComponent={<CircularProgress style={{width: 100, height: 100, color: "#1DA3A8", display:'flex', margin:'auto'}} />}
                             />
+                            </a>
                         </Grid>
                         <Grid item xs={12} sm={5}>
                             <Grid item xs={12} className='preguntas_contacto preguntas_first'>Contacto directo</Grid>

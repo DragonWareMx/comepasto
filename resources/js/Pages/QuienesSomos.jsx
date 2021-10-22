@@ -26,7 +26,7 @@ const QuienesSomos = ({brands}) => {
                                 </Grid>
                             </Grid>
                             <Grid container justify="center" alignItems="center" className="quienes_right">
-                               <img className="quienes_img" src="/img/ilustraciones/quienes.svg" alt="" />
+                               <a href="https://storyset.com/online" target="_blank"><img className="quienes_img" src="/img/ilustraciones/quienes.svg" alt="Online illustrations by Storyset" /></a>
                             </Grid>
                         </Grid>
                         <Grid container direction="row" justify="space-between" style={{marginTop:20}}>
