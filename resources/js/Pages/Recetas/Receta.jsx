@@ -19,6 +19,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import YouTubeIcon from '@material-ui/icons/YouTube';
+import Skeleton from 'react-loading-skeleton'; 
+import AsyncImage from '../../components/common/AsyncImage';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -72,7 +74,13 @@ const Recetas = ({receta, productos}) => {
                     <a href="#ingredientes_preparacion" className="a-despla">INGREDIENTES Y PREPARACIÓN <ArrowForwardIcon></ArrowForwardIcon></a>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <img src={"/storage/recetas/" + receta.url} style={{width:'100%', height:'100%', objectFit:'cover', maxHeight:'600px'}}></img>
+                    <AsyncImage 
+                        src={"/storage/recetas/" + receta.url}
+                        imageComponent={<img className="receta-image" src={"/storage/recetas/" + receta.url} alt="" style={{width:'100%', height:'100%', objectFit:'cover', maxHeight:'600px'}} />}
+                        loadingComponent={<Skeleton width="100%" height={180} />}
+                    />
+
+                    {/* <img src={"/storage/recetas/" + receta.url} style={{width:'100%', height:'100%', objectFit:'cover', maxHeight:'600px'}}></img> */}
                 </Grid>
 
                 {/* Productos de la receta */}
@@ -98,6 +106,7 @@ const Recetas = ({receta, productos}) => {
                         INGREDIENTES
                         <Grid className="list-ingredients">{receta.ingredientes && <div dangerouslySetInnerHTML={{ __html: receta.ingredientes }} />}</Grid>
                             <Divider />
+                            {receta.link ?                            
                             <List component="nav" aria-label="main mailbox folders" >
                                 <a href={receta.link} target="_blank" style={{"textDecoration":"none","color":"#7E7E7E"}}>
                                 <ListItem button >
@@ -108,6 +117,7 @@ const Recetas = ({receta, productos}) => {
                                 </ListItem>
                                 </a>
                             </List>
+                            : '' }
                     </Grid>
                     
                     <Grid item xs={12} md={8} className="title-receta grid-ingredientes" style={{"backgroundColor":"transparent"}}>

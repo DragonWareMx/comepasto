@@ -5,7 +5,10 @@ import Layout from '../../layouts/Layout';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Receta from '../../components/Recetas/Receta';
+import { CircularProgress } from '@material-ui/core';
 import Paginacion from '../../components/common/paginacion';
+
+import AsyncImage from '../../components/common/AsyncImage';
 
 const Recetas = ({recetas}) => {
     return (
@@ -22,7 +25,14 @@ const Recetas = ({recetas}) => {
                                 </Grid>
                             </Grid>
                             <Grid container item xs={12} sm={4} direction="row" justify="flex-end" color="primary">
-                                <a href="https://storyset.com/people" target="_blank"><img className="img_recetas" src="/img/ilustraciones/Cooking-cuate.png" alt="People illustrations by Storyset" /></a>
+                                <a href="https://storyset.com/people" target="_blank">
+                                <AsyncImage 
+                                    src={"/img/ilustraciones/Cooking-cuate.png"}
+                                    imageComponent={<img className="img_recetas" src="/img/ilustraciones/Cooking-cuate.png" alt="People illustrations by Storyset" />}
+                                    loadingComponent={<CircularProgress style={{width: 100, height: 100, color: "#1DA3A8", display:'flex', margin:'auto'}} />}
+                                />
+                                    {/* <img className="img_recetas" src="/img/ilustraciones/Cooking-cuate.png" alt="People illustrations by Storyset" /> */}
+                                    </a>
                             </Grid>
                         </Grid>
                     </Container>
