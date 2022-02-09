@@ -850,14 +850,11 @@ class AdminController extends Controller
                 return \Redirect::back()->with('success', 'Categoría agregada con éxito.');
             }
         } catch (\Exception $e) {
-            dd($e);
             DB::rollBack();
             //si hay foto se elimina del servidor
             if ($foto) {
                 \Storage::delete($foto);
             }
-
-            dd($e);
 
             return \Redirect::back()->with('error', 'Ha ocurrido un error, inténtelo más tarde, el formato de la imagen debe ser PNG.');
         }
